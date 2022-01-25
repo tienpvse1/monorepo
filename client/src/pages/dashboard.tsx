@@ -7,7 +7,6 @@ export const DashBoard = () => {
       <div className='dash-board'>
         <div className='container'>
           <CardBoard />
-          <h1>{import.meta.env.VITE_APP_NAME}</h1>
           <div className='statistic'>
             <DashBoardLineChart />
             <DashBoardProgressChart />
