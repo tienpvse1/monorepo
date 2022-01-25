@@ -1,6 +1,6 @@
 /client/node_modules
-/be/node_modules
-/be/dist
-/be/client
+/crm/node_modules
+/crm/dist
+/crm/client
 /node_modules
 /.vscode

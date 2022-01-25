@@ -1,0 +1,17 @@
+.login__StyledLogo-sc-13rvd86-1 {
+  height: 100px;
+  width: 100px;
+}
+
+.adminjs_Drawer {
+  transition: all ease 250ms;
+}
+
+.closed {
+  transform: translateX(500px);
+}
+
+.sidebar-branding__StyledLogo-sc-13gs4e8-0  > img {
+  height: 70px;
+  width: 70px;
+}

@@ -1,0 +1,54 @@
+version: '3.4'
+
+services:
+  mysql_db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - /data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ea2a6ec5a8fea230a089e5e1da5b00b56b42d0dd757252d1600d3f7f9d53561c9b86017f26e6e8e8d1f2dc518e215f6902181161b9287e3bd05c2a7a5358f525
+      MYSQL_DATABASE: crm
+    ports:
+      - 3307:3306
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=172.17.0.1
+      - PMA_USER=root
+      - PMA_PASSWORD=ea2a6ec5a8fea230a089e5e1da5b00b56b42d0dd757252d1600d3f7f9d53561c9b86017f26e6e8e8d1f2dc518e215f6902181161b9287e3bd05c2a7a5358f525
+      - PMA_PORT=3307
+  crm:
+    image: crm
+    volumes:
+      - /files/:/usr/src/app/files
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+      # database environment variables
+      MYSQL_ROOT_PASSWORD: ea2a6ec5a8fea230a089e5e1da5b00b56b42d0dd757252d1600d3f7f9d53561c9b86017f26e6e8e8d1f2dc518e215f6902181161b9287e3bd05c2a7a5358f525
+      MYSQL_DATABASE: crm
+      MYSQL_PORT: 3307
+      # app environment variables
+      APP_PORT: 8080
+      APP_PREFIX: api/v1
+      APP_SECRET_TOKEN: 4aa42a671f36fa5a01b4640eae7db406970073ba8bfa83420b074c19a0e286cff3d8ed418dfa40d493748016164b0f5986fac0ec700906157f934651e1a6bf1a
+      MYSQL_HOST: 172.17.0.1
+      APP_VERSION: 0.1
+      # google strategy config
+      GOOGLE_CLIENT_ID: 584576118618-dosui734g677u72dh002gvddhrdmuh4k.apps.googleusercontent.com
+      GOOGLE_SECRET_KEY: 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
+      #TODO : redirect this url by server's ip address in future
+      GOOGLE_SUCCESS_REDIRECT: http://kienvt.tech/api/v1/auth/google/redirect
+      FE_REDIRECT_URL: http://tienpvse.xyz/
+      GOOGLE_USERNAME: good66612@gmail.com
+      GOOGLE_PASSWORD: Username666
+    ports:
+      - 80:8080
