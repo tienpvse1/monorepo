@@ -12,6 +12,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: change to backend disk
         run: cd ~/actions-runner/_work/monorepo/monorepo/crm
+      - name: list out the dist
+        run: ls
       - name: remove the existing image
         run: docker rmi -f crm
       - name: stop the server
