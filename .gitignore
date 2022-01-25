@@ -1,0 +1,5 @@
+/client/node_modules
+/be/node_modules
+/be/dist
+/be/client
+/node_modules
