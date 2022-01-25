@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: change to backend disk
+        run: cd crm
+      - name: remove the existing image
+        run: docker rmi -f crm
+      - name: stop the server
+        run: docker-compose down
+      - name: change to client directory
+        run: cd ../client
+      - name: build client production
+        run: npm run build
+      - name: change to backend disk again
+        run: cd ../crm
+      - name: start the server
+        run: docker-compose up -d
