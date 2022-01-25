@@ -1,17 +1,16 @@
-import { Route, Routes } from "react-router-dom";
-import "./App.css";
-import { Error } from "./page/error";
-import { Home } from "./page/home";
+import { useRoutes } from 'react-router-dom';
+import './stylesheets/App.scss';
+import { route } from './routes/route-map';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import './constance/color';
 
+export const client = new QueryClient();
 function App() {
+  const elements = useRoutes(route);
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/home" element={<Home />} />
-        <Route path="/error" element={<Error />} />
-      </Routes>
-    </div>
+    <QueryClientProvider client={client}>
+      <div className='App'>{elements}</div>
+    </QueryClientProvider>
   );
 }
-
 export default App;

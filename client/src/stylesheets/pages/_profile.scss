@@ -1,0 +1,78 @@
+.content-profile-form {
+  padding: 25px 60px 15px;
+}
+
+.ant-select-selector {
+  border-radius: 10px !important;
+  height: 40px !important;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.ant-input-password {
+  border-radius: 10px !important;
+  height: 48px;
+}
+
+.input-phone-number .ant-input {
+  border-radius: 0px 10px 10px 0px !important;
+}
+
+.ant-input-group-addon {
+  border-radius: 10px 0px 0px 10px !important;
+}
+
+.profile-form-button {
+  width: 30%;
+  font-size: 16px !important;
+  font-weight: 400;
+  height: 35px !important;
+  background-color: #0047ab !important;
+  border-color: #0047ab !important;
+  &:hover {
+    background-color: #0073cf !important;
+    border-color: #0073cf !important;
+  }
+}
+
+.ant-checkbox-inner {
+  border-radius: 5px !important;
+  height: 16px !important;
+  width: 16px !important;
+}
+
+.ant-select-arrow svg {
+  color: black;
+}
+
+.ant-checkbox-wrapper {
+  font-size: 13.4px !important;
+  margin-top: 14px !important;
+}
+
+.lottie-bg {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  margin-right: 500px;
+}
+
+.profile-container {
+}
+
+.profile-form {
+  height: 1px;
+}
+
+.header-profile {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  h3 {
+    margin-left: 20px;
+    color: rgb(44, 44, 44);
+  }
+}

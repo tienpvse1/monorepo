@@ -15,7 +15,25 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "noUnusedLocals": true,
+    "strictPropertyInitialization": false,
+    "baseUrl": ".",
+    "paths": {
+      "@animation/*": ["./src/animation/*"],
+      "@axios": ["./src/axios"],
+      "@common/*": ["./src/common/*"],
+      "@components/*": ["./src/components/*"],
+      "@constance/*": ["./src/constance/*"],
+      "@cookies": ["./src/cookies"],
+      "@env/*": ["./src/env/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@interfaces/*": ["./src/interfaces/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@util/*": ["./src/util/*"]
+    }
   },
   "include": ["./src"]
 }

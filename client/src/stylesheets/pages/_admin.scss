@@ -1,0 +1,177 @@
+@import '../base/variables';
+//----------------------------------------------------------------------------------
+.wrapper-title-page {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    height: 90px;
+}
+
+.wrapper-title-page-2 {
+    height: 60px;
+    @extend .wrapper-title-page;
+}
+
+.title-admin-page {
+    font-weight: 550;
+    width: 100%;
+}
+
+.number-of-sales {
+    font-size: 35px;
+    color: $primary-text-color;
+    font-weight: 600;
+}
+
+.header-admin-page {
+    .ant-card-body {
+        padding: 0 !important;
+        padding-left: 18px !important;
+        height: 110px;
+    }
+    .ant-card-actions {
+        border-top: none;
+    }
+    .ant-card-head {
+        border-bottom: none;
+        height: 15px;
+    }
+    .ant-ribbon {
+        margin-top: 5px;
+        margin-right: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 30px;
+        height: 55px;
+        width: 55px;
+    }
+    .ant-ribbon-corner {
+        display: none;
+    }
+}
+
+.title-card-sales {
+    color: $primary-light-text-color;
+}
+
+.icon-card-sales {
+    font-size: 30px;
+}
+
+.icon-color-0 {
+    color: $primary-color;
+}
+
+.icon-color-1 {
+    color: #ff7a22;
+}
+
+.icon-color-2 {
+    color: #ebbf10;
+}
+
+.icon-color-3 {
+    color: #3194ff;
+}
+
+.percent-card {
+    color: $percent-increase;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.link-report a {
+    margin-right: 10px;
+    font-size: 15px;
+    color: $primary-light-text-color;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.card-sales {
+    border: $card-border;
+    box-shadow: $card-dashboard-shadow;
+}
+
+//----------------------------------------------------------------------------------
+.content-statistic-admin-page {
+    @extend .header-admin-page;
+}
+
+.graph-annotation {
+    display: flex;
+    justify-content: center;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.dot-column-chart {
+    height: 14px;
+    width: 14px;
+    margin-top: 6px;
+    margin-right: 15px;
+    @extend .dot;
+}
+
+.chart-dot-1 {
+    background-color: #f8cbca;
+    @extend .dot-column-chart;
+}
+
+.chart-dot-2 {
+    background-color: $primary-color;
+    @extend .dot-column-chart;
+}
+
+.title-card-sales-2 {
+    @extend .title-card-sales;
+    font-size: 17px;
+}
+
+.number-of-sales-2 {
+    margin-left: 10px;
+    @extend .number-of-sales;
+}
+
+.note-report {
+    color: $primary-light-text-color;
+    font-weight: 500;
+}
+
+.icon-chart {
+    font-size: 30px;
+}
+
+//----------------------------------------------------------------------------------
+.table-font-size {
+    font-size: 16px;
+    color: $primary-text-color;
+    font-weight: 600;
+}
+
+.table-font-size-2 {
+    @extend .note-report;
+}
+
+.table-admin-page {
+    .ant-table-thead {
+        display: none;
+    }
+    .ant-table-tbody>tr>td {
+        border-bottom: none;
+    }
+    .column-name {
+        margin-left: 15px;
+        @extend .table-font-size;
+    }
+    .column-amount {
+        @extend .table-font-size;
+    }
+    .column-products {
+        @extend .table-font-size-2;
+    }
+    .column-premium {
+        @extend .table-font-size-2;
+    }
+}

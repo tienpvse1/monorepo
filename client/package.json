@@ -1,27 +1,49 @@
 {
-  "name": "client",
+  "name": "crm",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview --host"
   },
-  "proxy": "http://localhost:8080",
+  "proxy": "http://localhost/",
   "dependencies": {
-    "axios": "^0.25.0",
+    "@ant-design/charts": "^1.3.4",
+    "@ant-design/icons": "^4.7.0",
+    "@vitejs/plugin-react": "^1.0.7",
+    "antd": "^4.18.3",
+    "axios": "^0.24.0",
+    "framer-motion": "^5.5.6",
     "react": "^17.0.2",
+    "react-beautiful-dnd": "^13.1.0",
+    "react-cookie": "^4.1.1",
+    "react-countup": "^4.3.3",
     "react-dom": "^17.0.2",
-    "react-router-dom": "^6.2.1"
+    "react-email-editor": "^1.5.0",
+    "react-error-boundary": "^3.1.4",
+    "react-facebook-login": "^4.1.1",
+    "react-google-button": "^0.7.2",
+    "react-loading": "^2.0.3",
+    "react-lottie": "^1.2.3",
+    "react-query": "^3.34.7",
+    "react-router-dom": "^6.2.1",
+    "sass": "^1.48.0",
+    "vite": "^2.7.2",
+    "vite-aliases": "^0.8.7"
   },
   "devDependencies": {
     "@types/react": "^17.0.33",
+    "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-dom": "^17.0.10",
-    "@typescript-eslint/eslint-plugin": "^5.10.1",
-    "@typescript-eslint/parser": "^5.10.1",
-    "@vitejs/plugin-react": "^1.0.7",
+    "@types/react-email-editor": "^1.1.2",
+    "@types/react-facebook-login": "^4.1.4",
+    "@types/react-lottie": "^1.2.6",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
+    "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "typescript": "^4.4.4",
-    "vite": "^2.7.2"
+    "eslint-plugin-react": "^7.28.0",
+    "typescript": "^4.4.4"
   }
 }

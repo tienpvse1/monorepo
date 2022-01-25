@@ -91,7 +91,7 @@ export class AuthService {
 
       if (!checkPasswordResult)
         throw new UnauthorizedException('Check your password');
-
+      response.cookie('token', this.generateJWTToken(account));
       response.status(HttpStatus.OK).json({
         data: {
           token: this.generateJWTToken(account),

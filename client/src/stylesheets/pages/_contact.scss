@@ -1,0 +1,9 @@
+@import "../base/variables";
+.contact-container .ant-table {
+    padding: 20px;
+    border-radius: 10px;
+    -webkit-box-shadow: $card-dashboard-shadow;
+    box-shadow: $card-dashboard-shadow;
+    border: $card-border;
+    margin: 10px 20px;
+}
