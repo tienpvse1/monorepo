@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: change to backend disk
-        run: cd crm
+        run: cd ~/_work/crm/crm
       - name: remove the existing image
         run: docker rmi -f crm
       - name: stop the server
