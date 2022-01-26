@@ -7,6 +7,7 @@ import { EmailTemplate } from 'src/modules/email-template/entities/email-templat
 import { Lead } from 'src/modules/lead/entities/lead.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
 import { Pipeline } from 'src/modules/pipeline-module/pipeline/entities/pipeline.entity';
+import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -45,17 +46,19 @@ export class Account extends BaseEntity {
   @Column({ type: 'enum', enum: Roles, default: Roles.CLIENT })
   role: Roles;
 
-  @OneToMany(() => EmailTemplate, (emailTemplates) => emailTemplates.account)
-  emailTemplates: EmailTemplate[];
-
   @OneToOne(() => Pipeline, (pipeline) => pipeline.account)
   pipeline: Pipeline;
+
+  @OneToMany(() => EmailTemplate, (emailTemplates) => emailTemplates.account)
+  emailTemplates: EmailTemplate[];
 
   @OneToMany(() => Email, (email) => email.account)
   emails: Email[];
 
   @OneToMany(() => Lead, (lead) => lead.account)
   leads: Lead[];
+  @OneToMany(() => Schedule, (schedule) => schedule.account)
+  schedules: Schedule[];
 
   // hash the password before save or update it in database
   @BeforeInsert()
