@@ -4,6 +4,7 @@ import { IsEmail, Length } from 'class-validator';
 import { BaseEntity } from 'src/base/entity.base';
 import { Roles } from 'src/constance';
 import { EmailTemplate } from 'src/modules/email-template/entities/email-template.entity';
+import { Lead } from 'src/modules/lead/entities/lead.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
 import { Pipeline } from 'src/modules/pipeline-module/pipeline/entities/pipeline.entity';
 import {
@@ -52,6 +53,9 @@ export class Account extends BaseEntity {
 
   @OneToMany(() => Email, (email) => email.account)
   emails: Email[];
+
+  @OneToMany(() => Lead, (lead) => lead.account)
+  leads: Lead[];
 
   // hash the password before save or update it in database
   @BeforeInsert()

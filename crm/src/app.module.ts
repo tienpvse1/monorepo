@@ -17,6 +17,7 @@ import { EmailTemplateModule } from './modules/email-template/email-template.mod
 import { MessageModule } from './modules/message/message.module';
 import { AdminModule } from './admin/admin.module';
 import { ContactModule } from './modules/contact/contact.module';
+import { LeadModule } from './modules/lead/lead.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { ContactModule } from './modules/contact/contact.module';
     EmailTemplateModule,
     MessageModule,
     AdminModule,
+    LeadModule,
   ],
   providers: [GlobalModule],
 })
