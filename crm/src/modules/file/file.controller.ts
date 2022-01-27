@@ -30,7 +30,7 @@ export class FileController {
   @UseInterceptors(
     FilesInterceptor('files', 20, {
       storage: diskStorage({
-        destination: './files',
+        destination: './public/files',
         filename: (_req, file, cb) => {
           const name = file.originalname.split('.')[0];
           const fileExtName = extname(file.originalname);
