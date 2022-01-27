@@ -2,5 +2,6 @@
 /crm/node_modules
 /crm/dist
 /crm/public
+/crm/client
 /node_modules
 /.vscode
