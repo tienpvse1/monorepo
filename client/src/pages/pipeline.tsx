@@ -1,16 +1,18 @@
 import { PageTitlePipeline } from '@components/pipelines/page-title';
+import { ShadowColumnCreate } from '@components/pipelines/pipeline-column/shadow-column-create';
 import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-horizontal';
 import { useHandleDnD } from '@hooks/useHandleDnD';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
+import { useGetPipeLineUser } from '@modules/pipeline/query/pipeline.get';
 import { FC } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { PipeLineColumn } from '../components/pipelines/column';
 
 export const Pipeline: FC = () => {
 
-  // const { data } = useGetPipeLineUser();
-  // console.log('fetch-data:', data?.length);
+  const { data } = useGetPipeLineUser();
+  console.log('fetch-data:', data);
 
   const pipeLineDataApi: IPipeline[] = [
     {
@@ -61,7 +63,7 @@ export const Pipeline: FC = () => {
     }
   ]
 
-  const totalColumn = pipeLineDataApi[0].pipelineColumns.length || 1;
+  const totalColumn = data?.[0].pipelineColumns.length;
   const widthOfItem = 333;
 
   const {
@@ -115,17 +117,20 @@ export const Pipeline: FC = () => {
             type="column"
           >
             {(providedColumns) => (
-              <div
-                className='wrapper-droppable-columns'
-                style={{ width: `${widthOfItem * totalColumn}px` }}
-                {...providedColumns.droppableProps}
-                ref={providedColumns.innerRef}
-              >
-                {pipeline[0].pipelineColumns.map((pipeline: IPipelineColumn, index: number) =>
-                  <PipeLineColumn index={index} key={pipeline.name} pipelineColumn={pipeline} />)
-                }
-                {providedColumns.placeholder}
-              </div>
+              <>
+                <div
+                  className='wrapper-droppable-columns'
+                  style={{ width: `${widthOfItem * totalColumn}px` }}
+                  {...providedColumns.droppableProps}
+                  ref={providedColumns.innerRef}
+                >
+                  {data?.[0].pipelineColumns.map((pipeline: IPipelineColumn, index: number) =>
+                    <PipeLineColumn index={index} key={pipeline.name} pipelineColumn={pipeline} />)
+                  }
+                  {providedColumns.placeholder}
+                  <ShadowColumnCreate pipelineId={data?.[0].id}/>
+                </div>
+              </>
             )}
           </Droppable>
         </DragDropContext>

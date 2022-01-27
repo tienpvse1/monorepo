@@ -1,10 +1,8 @@
 import { Axios } from '@axios';
 import { useQuery } from 'react-query';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
-
-
-export const FETCH_PIPELINE = 'fetch-pipeline';
-export const PIPELINE = 'pipeline';
+import { controllers } from '@constance/controllers';
+const { PIPELINE } = controllers;
 
 export const getPipelineUser = async () => {
   const { instance } = new Axios();
@@ -13,6 +11,6 @@ export const getPipelineUser = async () => {
 }
 
 export const useGetPipeLineUser = () => {
-  const { data } = useQuery(FETCH_PIPELINE, getPipelineUser)
+  const { data } = useQuery(PIPELINE, getPipelineUser)
   return { data };
 }

@@ -2,8 +2,11 @@ import { PlusOutlined } from "@ant-design/icons"
 import { useToggle } from "@hooks/useToggle"
 import { IPipelineColumn } from "@modules/pipeline-column/entity/pipeline-column.entity"
 import { Button } from "antd"
+import { FC } from "react"
 import { Draggable } from "react-beautiful-dnd"
 import { PipelineItems } from "./items"
+import { ColumnNameHeader } from "./pipeline-column/column-name-header"
+import { FormEditColumnName } from "./pipeline-column/form-edit-column-name"
 import { CardCreateItem } from "./pipeline-items/card-create"
 
 interface PipeLineColumnProps {
@@ -11,22 +14,30 @@ interface PipeLineColumnProps {
   index: number;
 }
 
-export const PipeLineColumn = ({ pipelineColumn, index }: PipeLineColumnProps) => {
+export const PipeLineColumn: FC<PipeLineColumnProps> = ({ pipelineColumn, index }) => {
 
   const [show, setShow] = useToggle();
+  const [showEditForm, setShowEditForm] = useToggle();
 
   return (
-    <Draggable draggableId={pipelineColumn.name} index={index}>
+    <Draggable draggableId={pipelineColumn.id} index={index}>
       {(providedColumn) => (
         <div
           className="wrapper-draggable-pipeline-column"
           ref={providedColumn.innerRef}
           {...providedColumn.draggableProps}
         >
-          <div className="pipeline-column-header" >
-            <h1 {...providedColumn.dragHandleProps}>
-              {pipelineColumn.name.toUpperCase()}
-            </h1>
+          <div  {...providedColumn.dragHandleProps} className="pipeline-column-header" >
+            {showEditForm ?
+              <FormEditColumnName
+                pipelineColumn={pipelineColumn}
+                setShowEditForm={setShowEditForm}
+              /> :
+              <ColumnNameHeader
+                pipelineColumn={pipelineColumn}
+                setShowEditForm={setShowEditForm}
+              />
+            }
           </div>
           <Button
             onClick={setShow}
@@ -34,7 +45,7 @@ export const PipeLineColumn = ({ pipelineColumn, index }: PipeLineColumnProps) =
           >
             <PlusOutlined />
           </Button>
-          {show && <CardCreateItem />}
+          {show && <CardCreateItem pipelineColumnID={pipelineColumn.id} toggleClose={setShow} />}
           <PipelineItems pipelineColumn={pipelineColumn} />
         </div>
 

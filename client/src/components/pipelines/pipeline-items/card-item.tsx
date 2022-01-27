@@ -8,7 +8,7 @@ interface PipelineCardItemProps {
 }
 
 export const PipelineCardItem = ({ dataCardPipeline }: PipelineCardItemProps) => {
-  
+
   return (
     <>
       <Card
@@ -22,7 +22,10 @@ export const PipelineCardItem = ({ dataCardPipeline }: PipelineCardItemProps) =>
         <Meta
           title={
             <>
-              <span style={{ fontWeight: 300 }}><FlagOutlined style={{ color: 'green' }} /> Abm - {`${dataCardPipeline.id}`}</span>
+              <span style={{ fontWeight: 500 }}>
+                <FlagOutlined style={{ color: 'green' }} />
+                {` ${dataCardPipeline.name}`}
+              </span>
               <Tag color={'blue'} style={{ marginLeft: 10, borderRadius: 5 }}>Design</Tag>
             </>
           }
