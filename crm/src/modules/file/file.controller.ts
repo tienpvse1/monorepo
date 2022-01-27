@@ -5,16 +5,23 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { Public } from 'src/common/decorators/public.decorator';
+import { User } from 'src/common/decorators/user.decorator';
+import { AUTHORIZATION } from 'src/constance/swagger';
+import { getCustomRepository } from 'typeorm';
+import { AccountRepository } from '../account/account.repository';
+import { Account } from '../account/entities/account.entity';
+import { FileService } from './file.service';
 
 @Controller('file')
 @ApiTags('file')
+@ApiBearerAuth(AUTHORIZATION)
 export class FileController {
+  constructor(private readonly service: FileService) {}
+
   @Post('upload')
-  @Public()
   @ApiBody({
     schema: {
       type: 'object',
@@ -43,7 +50,22 @@ export class FileController {
       }),
     }),
   )
-  uploadFile(@UploadedFiles() files: Array<Express.Multer.File>) {
+  uploadFile(
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @User('id') id: string,
+  ) {
+    if (files.length === 0) return;
+    const accountRepository = getCustomRepository(AccountRepository);
+    const file = files[0];
+    this.service.addWithOneToOneRelation<Account>(
+      {
+        name: file.filename,
+        url: `http://kienvt.tech/files/${file.filename}`,
+      },
+      id,
+      accountRepository,
+      'file',
+    );
     return files;
   }
 }
