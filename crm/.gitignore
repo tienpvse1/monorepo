@@ -3,7 +3,6 @@
 /node_modules
 /documentation
 /data
-/public/files
 # Logs
 logs
 *.log
