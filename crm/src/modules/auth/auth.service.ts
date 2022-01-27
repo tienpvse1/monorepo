@@ -10,7 +10,6 @@ import { SessionService } from '../session/session.service';
 import { LoginRequestDto } from './interfaces/login-request.dto';
 import { IToken } from './interfaces/token.interface';
 import { IGoogleUser } from './interfaces/user.google';
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -25,6 +24,22 @@ export class AuthService {
   setSocialAccount(account: unknown) {
     Object.assign(account, { isSocialAccount: true });
   }
+
+  getAccount = async (email: string) => {
+    const account = await this.accountService.findOne({
+      where: { email },
+      select: [
+        'email',
+        'password',
+        'id',
+        'role',
+        'firstName',
+        'lastName',
+        'isSocialAccount',
+      ],
+    });
+    return account;
+  };
 
   generateJWTToken(account: Account) {
     const { email, id, firstName, lastName, role } = account;
@@ -68,23 +83,13 @@ export class AuthService {
     return;
   }
 
+  // deprecated
   async loginByEmailPassword(
     { email, password }: LoginRequestDto,
     response: Response,
   ) {
     try {
-      const account = await this.accountService.findOne({
-        where: { email },
-        select: [
-          'email',
-          'password',
-          'id',
-          'role',
-          'firstName',
-          'lastName',
-          'isSocialAccount',
-        ],
-      });
+      const account = await this.getAccount(email);
 
       if (!account.password)
         throw new UnauthorizedException(
@@ -121,20 +126,9 @@ export class AuthService {
     ip: string,
     response: Response,
   ) {
-    try {
-      const account = await this.accountService.findOne({
-        where: { email },
-        select: [
-          'email',
-          'password',
-          'id',
-          'role',
-          'firstName',
-          'lastName',
-          'isSocialAccount',
-        ],
-      });
+    const account = await this.getAccount(email);
 
+    try {
       if (!account.password)
         throw new UnauthorizedException(
           'account already registered with google login method',
@@ -143,6 +137,29 @@ export class AuthService {
 
       if (!checkPasswordResult)
         throw new UnauthorizedException('Check your password');
+
+      const sessionFromAccountId =
+        await this.sessionService.getSessionByAccountId(account.id);
+
+      if (sessionFromAccountId) {
+        const session = await this.sessionService.updateSession(
+          sessionFromAccountId.id,
+          getIp(ip),
+        );
+        response.cookie('sessionId', session.id);
+        return response.status(HttpStatus.OK).json({
+          data: {
+            sessionId: session.id,
+            publicData: {
+              role: account.role,
+              email: account.email,
+              id: account.id,
+            },
+          },
+          message: 'successfully',
+          statusCode: HttpStatus.OK,
+        });
+      }
 
       const session = await this.sessionService.create({
         accountId: account.id,

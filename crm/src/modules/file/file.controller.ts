@@ -50,14 +50,14 @@ export class FileController {
       }),
     }),
   )
-  uploadFile(
+  async uploadFile(
     @UploadedFiles() files: Array<Express.Multer.File>,
     @User('id') id: string,
   ) {
     if (files.length === 0) return;
     const accountRepository = getCustomRepository(AccountRepository);
     const file = files[0];
-    this.service.addWithOneToOneRelation<Account>(
+    await this.service.addWithOneToOneRelation<Account>(
       {
         name: file.filename,
         url: `http://kienvt.tech/files/${file.filename}`,

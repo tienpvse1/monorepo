@@ -1,6 +1,7 @@
 import { nanoid } from 'nanoid';
 import { BaseEntity } from 'src/base/entity.base';
 import { Roles } from 'src/constance';
+import { generateExpireDate } from 'src/util/check-expire';
 import { BeforeInsert, Column, Entity } from 'typeorm';
 
 @Entity({ name: 'session' })
@@ -20,6 +21,6 @@ export class Session extends BaseEntity {
   @BeforeInsert()
   init() {
     this.id = nanoid();
-    this.expiredAt = new Date(Date.now() + 1000 * 60 * 30);
+    this.expiredAt = generateExpireDate();
   }
 }
