@@ -29,7 +29,12 @@ export class SessionGuard implements CanActivate {
     if (new Date(session.expiredAt) < new Date()) {
       return false;
     }
-    if (session) return true;
+    if (session) {
+      request.user = {
+        id: session.accountId,
+      };
+      return true;
+    }
     return false;
   }
 }
