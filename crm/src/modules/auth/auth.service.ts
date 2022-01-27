@@ -3,8 +3,10 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync } from 'bcryptjs';
 import { Response } from 'express';
+import { getIp } from 'src/util/ip';
 import { AccountService } from '../account/account.service';
 import { Account } from '../account/entities/account.entity';
+import { SessionService } from '../session/session.service';
 import { LoginRequestDto } from './interfaces/login-request.dto';
 import { IToken } from './interfaces/token.interface';
 import { IGoogleUser } from './interfaces/user.google';
@@ -15,6 +17,7 @@ export class AuthService {
     private accountService: AccountService,
     private jwtService: JwtService,
     private config: ConfigService,
+    private sessionService: SessionService,
   ) {}
 
   // binding isSocialAccount field with true value to mark this account use social login method
@@ -95,6 +98,61 @@ export class AuthService {
       response.status(HttpStatus.OK).json({
         data: {
           token: this.generateJWTToken(account),
+          publicData: {
+            role: account.role,
+            email: account.email,
+            id: account.id,
+          },
+        },
+        message: 'successfully',
+        statusCode: HttpStatus.OK,
+      });
+    } catch (error) {
+      response.status(HttpStatus.UNAUTHORIZED).json({
+        message: error.message,
+        statusCode: HttpStatus.UNAUTHORIZED,
+        timestamp: new Date().toISOString(),
+      });
+    }
+  }
+
+  async loginUsingSession(
+    { email, password }: LoginRequestDto,
+    ip: string,
+    response: Response,
+  ) {
+    try {
+      const account = await this.accountService.findOne({
+        where: { email },
+        select: [
+          'email',
+          'password',
+          'id',
+          'role',
+          'firstName',
+          'lastName',
+          'isSocialAccount',
+        ],
+      });
+
+      if (!account.password)
+        throw new UnauthorizedException(
+          'account already registered with google login method',
+        );
+      const checkPasswordResult = compareSync(password, account.password);
+
+      if (!checkPasswordResult)
+        throw new UnauthorizedException('Check your password');
+
+      const session = await this.sessionService.create({
+        accountId: account.id,
+        role: account.role,
+        ip: getIp(ip),
+      });
+      response.cookie('sessionId', session.id);
+      response.status(HttpStatus.OK).json({
+        data: {
+          sessionId: session.id,
           publicData: {
             role: account.role,
             email: account.email,
