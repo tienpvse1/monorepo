@@ -10,9 +10,7 @@ import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { PipeLineColumn } from '../components/pipelines/column';
 
 export const Pipeline: FC = () => {
-
   const { data } = useGetPipeLineUser();
-  console.log('fetch-data:', data);
 
   const pipeLineDataApi: IPipeline[] = [
     {
@@ -124,8 +122,8 @@ export const Pipeline: FC = () => {
                   {...providedColumns.droppableProps}
                   ref={providedColumns.innerRef}
                 >
-                  {data?.[0].pipelineColumns.map((pipeline: IPipelineColumn, index: number) =>
-                    <PipeLineColumn index={index} key={pipeline.name} pipelineColumn={pipeline} />)
+                  {data?.[0].pipelineColumns.map((pipelineColumn: IPipelineColumn, index: number) =>
+                    <PipeLineColumn index={index} key={pipelineColumn.id} pipelineColumn={pipelineColumn} />)
                   }
                   {providedColumns.placeholder}
                   <ShadowColumnCreate pipelineId={data?.[0].id}/>

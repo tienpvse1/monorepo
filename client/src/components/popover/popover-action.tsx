@@ -1,26 +1,32 @@
 import { showDeleteConfirm } from '@components/modal-cofirm/delete-confirm';
 import { useToggle } from '@hooks/useToggle';
 import { Col, Popover, Row } from 'antd';
-import { useDeletePipelineColumn } from '@modules/pipeline-column/mutation/pipeline-column.delete';
 import React from 'react';
 
-interface PopoverActionColumnProps {
-  pipelineColumnId: string;
-  setShowEditForm: () => void;
+interface PopoverActionProps {
+  itemName1: string;
+  itemName2: string;
+  callbackMethodDelete?: () => void;
+  callbackMethodUpdate?: () => void;
 }
 
-export const PopoverActionColumn: React.FC<PopoverActionColumnProps> = ({ children, pipelineColumnId, setShowEditForm }) => {
-
+export const PopoverAction: React.FC<PopoverActionProps> = ({
+  children,
+  itemName1,
+  itemName2,
+  callbackMethodDelete,
+  callbackMethodUpdate
+}) => {
+  
   const [visible, setVisible] = useToggle();
-  const { deletePipelineColumn } = useDeletePipelineColumn();
 
   const handleDelete = () => {
-    showDeleteConfirm(() => deletePipelineColumn(pipelineColumnId));
+    showDeleteConfirm(callbackMethodDelete);
     setVisible();
   }
 
   const handleEdit = () => {
-    setShowEditForm();
+    callbackMethodUpdate();
   }
 
   return (
@@ -30,10 +36,10 @@ export const PopoverActionColumn: React.FC<PopoverActionColumnProps> = ({ childr
         content={
           <Row className="popover-content" gutter={[0, 4]}>
             <Col span={24}>
-              <span onClick={handleEdit}>Edit stage</span>
+              <span onClick={handleEdit}>{itemName1}</span>
             </Col>
             <Col span={24}>
-              <span onClick={handleDelete}>Delete</span>
+              <span onClick={handleDelete}>{itemName2}</span>
             </Col>
           </Row>
         }

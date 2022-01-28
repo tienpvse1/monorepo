@@ -7,7 +7,6 @@ import { Draggable } from "react-beautiful-dnd"
 import { PipelineItems } from "./items"
 import { ColumnNameHeader } from "./pipeline-column/column-name-header"
 import { FormEditColumnName } from "./pipeline-column/form-edit-column-name"
-import { CardCreateItem } from "./pipeline-items/card-create"
 
 interface PipeLineColumnProps {
   pipelineColumn: IPipelineColumn,
@@ -16,8 +15,8 @@ interface PipeLineColumnProps {
 
 export const PipeLineColumn: FC<PipeLineColumnProps> = ({ pipelineColumn, index }) => {
 
-  const [show, setShow] = useToggle();
-  const [showEditForm, setShowEditForm] = useToggle();
+  const [showCreateItemForm, setShowCreateItemForm] = useToggle();
+  const [showInput, setShowInput] = useToggle();
 
   return (
     <Draggable draggableId={pipelineColumn.id} index={index}>
@@ -28,25 +27,28 @@ export const PipeLineColumn: FC<PipeLineColumnProps> = ({ pipelineColumn, index 
           {...providedColumn.draggableProps}
         >
           <div  {...providedColumn.dragHandleProps} className="pipeline-column-header" >
-            {showEditForm ?
+            {showInput ?
               <FormEditColumnName
                 pipelineColumn={pipelineColumn}
-                setShowEditForm={setShowEditForm}
+                setShowInput={setShowInput}
               /> :
               <ColumnNameHeader
                 pipelineColumn={pipelineColumn}
-                setShowEditForm={setShowEditForm}
+                setShowInput={setShowInput}
               />
             }
           </div>
           <Button
-            onClick={setShow}
+            onClick={setShowCreateItemForm}
             style={{ marginTop: '10px', width: '100%', border: 'none' }}
           >
             <PlusOutlined />
           </Button>
-          {show && <CardCreateItem pipelineColumnID={pipelineColumn.id} toggleClose={setShow} />}
-          <PipelineItems pipelineColumn={pipelineColumn} />
+          <PipelineItems
+            showCreateItemForm={showCreateItemForm}
+            setShowCreateItemForm={setShowCreateItemForm}
+            pipelineColumn={pipelineColumn}
+          />
         </div>
 
       )}

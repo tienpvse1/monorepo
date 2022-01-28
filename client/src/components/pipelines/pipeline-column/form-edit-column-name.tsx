@@ -6,21 +6,21 @@ import { useUpdatePipelineColumn } from '@modules/pipeline-column/mutation/pipel
 import { Button, Form, Input } from 'antd';
 
 interface FormEditColumnNameProps {
-  setShowEditForm: () => void;
+  setShowInput: () => void;
   pipelineColumn: IPipelineColumn;
 }
 
-export const FormEditColumnName: React.FC<FormEditColumnNameProps> = ({ setShowEditForm, pipelineColumn }) => {
+export const FormEditColumnName: React.FC<FormEditColumnNameProps> = ({ setShowInput, pipelineColumn }) => {
 
   const { updatePipelineColumn } = useUpdatePipelineColumn();
 
   const handleSubmit = (value: ICreatePipelineColumnDto) => {
     if (value.name == '') {
-      setShowEditForm();
+      setShowInput();
       return;
     }
     updatePipelineColumn({ ...value, pipelineId: pipelineColumn.id });
-    setShowEditForm();
+    setShowInput();
   }
 
   return (
@@ -47,7 +47,7 @@ export const FormEditColumnName: React.FC<FormEditColumnNameProps> = ({ setShowE
           }}
         />
         <Button
-          onClick={setShowEditForm}
+          onClick={setShowInput}
           icon={<CloseOutlined style={{ fontSize: '14px' }} />}
           style={{
             height: '35px',

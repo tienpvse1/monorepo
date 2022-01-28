@@ -12,7 +12,7 @@ export const postPipelineItems = async (pipelineItems: ICreatePipelineItemsDto) 
   return data;
 }
 
-export const usePipelineItems = () => {
+export const usePostPipelineItems = () => {
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation(postPipelineItems,
     {

@@ -1,4 +1,4 @@
-import { usePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
+import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { Button, Card, Form, Input } from 'antd';
 import { FC } from 'react';
 
@@ -9,7 +9,7 @@ interface CardCreateItemProps {
 
 export const CardCreateItem: FC<CardCreateItemProps> = ({ pipelineColumnID, toggleClose }) => {
 
-  const { createPipelineItems } = usePipelineItems();
+  const { createPipelineItems } = usePostPipelineItems();
 
   const handleSubmit = (value) => {
     createPipelineItems(

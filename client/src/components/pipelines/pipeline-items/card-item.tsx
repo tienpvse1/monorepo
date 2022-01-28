@@ -1,34 +1,51 @@
-import { ClockCircleOutlined, FlagOutlined, MessageOutlined } from "@ant-design/icons";
+import { ClockCircleOutlined, FlagOutlined, MessageOutlined, MoreOutlined } from "@ant-design/icons";
 import { IPipelineItem } from "@modules/pipeline-items/entity/pipeline-items.entity";
-import { Avatar, Card, Divider, Tag } from "antd"
+import { useDeletePipelineItems } from "@modules/pipeline-items/mutation/pipeline-items.delete";
+import { Avatar, Button, Card, Divider, Tag } from "antd"
+import { PopoverAction } from "../../popover/popover-action";
 const { Meta } = Card;
 
 interface PipelineCardItemProps {
   dataCardPipeline: IPipelineItem;
 }
 
-export const PipelineCardItem = ({ dataCardPipeline }: PipelineCardItemProps) => {
+export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ dataCardPipeline }) => {
 
+  const { removePipelineItems } = useDeletePipelineItems();
+  const onDeletePipeLineItem = () => removePipelineItems(dataCardPipeline.id);
+  
   return (
     <>
       <Card
+        extra={
+          <PopoverAction
+            itemName1="Edit details"
+            itemName2="Delete"
+            callbackMethodDelete={onDeletePipeLineItem}
+          >
+            <Button
+              icon={<MoreOutlined />}
+              style={{ border: 'none', boxShadow: 'none' }}
+            />
+          </PopoverAction>
+        }
+        title={
+          <>
+            <span style={{ fontWeight: 500 }}>
+              <FlagOutlined style={{ color: 'green' }} />
+              {` ${dataCardPipeline.name}`}
+            </span>
+            <Tag color={'blue'} style={{ marginLeft: 10, borderRadius: 5 }}>Design</Tag>
+          </>
+        }
         style={{
           width: '100%',
-          height: 160,
+          height: '100%',
           borderRadius: 5,
           boxShadow: '0px 0px 9px 0px rgba(0, 0, 0, 0.1)'
         }}
       >
         <Meta
-          title={
-            <>
-              <span style={{ fontWeight: 500 }}>
-                <FlagOutlined style={{ color: 'green' }} />
-                {` ${dataCardPipeline.name}`}
-              </span>
-              <Tag color={'blue'} style={{ marginLeft: 10, borderRadius: 5 }}>Design</Tag>
-            </>
-          }
           description={
             <>
               <div style={{ fontSize: 16 }}>

@@ -7,6 +7,12 @@
 
 .wrapper-draggable-card {
     margin-top: 10px;
+    .ant-card-head {
+        border-bottom: none;
+    }
+    .ant-card-body {
+        padding: 10px 20px;
+    }
 }
 
 .wrapper-draggable-pipeline-column {
