@@ -5,7 +5,7 @@ export class CreateContactDto {
   name: string;
   @MinLength(20)
   address?: string;
-  @IsPhoneNumber()
+  @IsPhoneNumber('VN')
   phone?: string;
   @IsArray()
   type?: string[];

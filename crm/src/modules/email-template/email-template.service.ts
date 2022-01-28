@@ -1,17 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CRUDService } from 'src/base/base.service';
-import { EmailTemplateRepository } from './email-template.repository';
+import { BaseService } from 'src/base/nestjsx.service';
+import { Repository } from 'typeorm';
 import { EmailTemplate } from './entities/email-template.entity';
 
 @Injectable()
-export class EmailTemplateService extends CRUDService<
-  EmailTemplate,
-  EmailTemplateRepository
-> {
+export class EmailTemplateService extends BaseService<EmailTemplate> {
   constructor(
-    @InjectRepository(EmailTemplateRepository)
-    repository: EmailTemplateRepository,
+    @InjectRepository(EmailTemplate)
+    repository: Repository<EmailTemplate>,
   ) {
     super(repository);
   }

@@ -72,7 +72,7 @@ export class AuthService {
 
     // if account haven't exist in database, save it
     if (!account) {
-      const newAccount = await this.accountService.create(rest);
+      const newAccount = await this.accountService.createItem(rest);
       response.cookie('token', this.generateJWTToken(newAccount));
       response.redirect(this.config.get<string>('google.frontendUrl'));
       return;
