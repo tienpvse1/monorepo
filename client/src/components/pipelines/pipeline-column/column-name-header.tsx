@@ -2,7 +2,8 @@ import { MoreOutlined } from "@ant-design/icons";
 import { ThemeColor } from "@constance/color";
 import { IPipelineColumn } from "@modules/pipeline-column/entity/pipeline-column.entity";
 import { useDeletePipelineColumn } from "@modules/pipeline-column/mutation/pipeline-column.delete";
-import { Button } from "antd";
+import { Button, Typography } from "antd";
+const { Text } = Typography;
 import { PopoverAction } from "../../popover/popover-action";
 
 interface ColumnNameHeaderProps {
@@ -15,12 +16,14 @@ export const ColumnNameHeader: React.FC<ColumnNameHeaderProps> = ({ pipelineColu
   const { deletePipelineColumn } = useDeletePipelineColumn();
 
   const onDeletePipelineColumn = () => deletePipelineColumn(pipelineColumn.id);
-  
+
 
   return (
     <>
       <span className="title-pipeline-column" >
-        {pipelineColumn.name}
+        <Text style={{ width: '250px' }} ellipsis={{ tooltip: pipelineColumn.name }} >
+          {pipelineColumn.name}
+        </Text>
       </span>
       <PopoverAction
         itemName1="Edit stage"
