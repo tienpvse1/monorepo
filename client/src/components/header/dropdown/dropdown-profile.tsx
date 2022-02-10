@@ -1,6 +1,7 @@
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { PUBLIC_USER_INFO, SESSION_ID } from '@constance/cookie';
 import { clearOutPermissions } from '@db/permission.db';
+
 import { Menu } from 'antd';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +19,7 @@ export const MenuProfile = () => {
     navigate('/account');
   };
   return (
-    <Menu style={{ marginTop: '20px', borderRadius: '10px' }}>
+    <Menu className='items-dropdown-profile'>
       <Menu.Item key='profile' onClick={handleNavigateProfile}>
         <>
           <UserOutlined style={{ color: 'rgba(0,0,0,0.8)' }} />

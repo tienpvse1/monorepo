@@ -4,9 +4,12 @@ import React from 'react';
 import { CookiesProvider } from 'react-cookie';
 import ReactDOM from 'react-dom';
 import { ErrorBoundary } from 'react-error-boundary';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { AbilityProvider } from './context/permission.context';
+
+const queryClient = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,7 +17,9 @@ ReactDOM.render(
       <ErrorBoundary FallbackComponent={ErrorPage}>
         <CookiesProvider>
           <BrowserRouter>
-            <App />
+            <QueryClientProvider client={queryClient}>
+              <App />
+            </QueryClientProvider>
           </BrowserRouter>
         </CookiesProvider>
       </ErrorBoundary>
