@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Ip,
   Post,
   Req,
   Res,
@@ -34,6 +35,16 @@ export class AuthController {
     @Res() response: ExpressResponse,
   ) {
     this.authService.loginByEmailPassword(loginRequest, response);
+  }
+
+  @Post('session')
+  @Public()
+  loginUsingSessionMethod(
+    @Body() loginRequest: LoginRequestDto,
+    @Res() response: ExpressResponse,
+    @Ip() ip: string,
+  ) {
+    this.authService.loginUsingSession(loginRequest, ip, response);
   }
 
   @Get('google/redirect')

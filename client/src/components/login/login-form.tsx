@@ -12,11 +12,11 @@ export const LoginForm = () => {
   const handleLogin = async (authDto: IAuthDto) => {
     mutate(authDto);
   };
-  if (data) {    
+  if (data) {
     const publicData = JSON.stringify(data.publicData);
     setCookie(PUBLIC_USER_INFO, publicData || '', 7);
 
-    if(data.publicData.role == Role.ADMIN)
+    if (data.publicData.role == Role.ADMIN)
       return <Navigate to={'/admin'} replace />;
 
     return <Navigate to={'/'} replace />;
@@ -35,34 +35,33 @@ export const LoginForm = () => {
         <Form.Item
           name='email'
           rules={[
-            { required: true, type: 'email', message: 'Xin hãy nhập email!' },
+            { required: true, type: 'email', message: 'Please input your E-mail!' },
           ]}
         >
-          <Input placeholder='Email người dùng' />
+          <Input placeholder='Email' />
         </Form.Item>
         <Form.Item
           name='password'
-          rules={[{ required: true, message: 'Xin hãy nhập mật khẩu!' }]}
+          rules={[{ required: true, message: 'Please input your password!' }]}
         >
-          <Input type='password' placeholder='Mật khẩu' />
+          <Input type='password' placeholder='Password' />
         </Form.Item>
         <Form.Item style={{ marginTop: '-15px' }}>
           <Form.Item name='remember' valuePropName='checked' noStyle>
-            <Checkbox className='checkbox-login-form-forgot'>Ghi nhớ</Checkbox>
+            <Checkbox className='checkbox-login-form-forgot'>Remember me</Checkbox>
           </Form.Item>
 
           <a className='login-form-forgot' href=''>
-            Quên mật khẩu?
+            Forgot Password?
           </a>
         </Form.Item>
 
         <Button
-          shape='round'
           type='primary'
           htmlType='submit'
           className='login-form-button'
         >
-          Đăng nhập
+          Log in
         </Button>
       </Form>
     </>
