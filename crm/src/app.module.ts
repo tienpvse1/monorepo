@@ -26,6 +26,7 @@ import { PipelineItemModule } from './modules/pipeline-module/pipeline-item/pipe
 import { PipelineModule } from './modules/pipeline-module/pipeline/pipeline.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
 import { SessionModule } from './modules/session/session.module';
+import { PermissionModule } from './modules/permission/permission.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { SessionModule } from './modules/session/session.module';
     SessionModule,
     LeadModule,
     ScheduleModule,
+    PermissionModule,
   ],
   providers: [GlobalModule],
 })

@@ -7,6 +7,7 @@ import { EmailTemplate } from 'src/modules/email-template/entities/email-templat
 import { File } from 'src/modules/file/entities/file.entity';
 import { Lead } from 'src/modules/lead/entities/lead.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
+import { Permission } from 'src/modules/permission/entities/permission.entity';
 import { Pipeline } from 'src/modules/pipeline-module/pipeline/entities/pipeline.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
 import {
@@ -15,6 +16,7 @@ import {
   Column,
   Entity,
   Index,
+  ManyToMany,
   OneToMany,
   OneToOne,
 } from 'typeorm';
@@ -63,6 +65,10 @@ export class Account extends BaseEntity {
   leads: Lead[];
   @OneToMany(() => Schedule, (schedule) => schedule.account)
   schedules: Schedule[];
+
+  // many to many relation
+  @ManyToMany(() => Permission, (permissions) => permissions.accounts)
+  permissions: Permission[];
 
   // hash the password before save or update it in database
   @BeforeInsert()

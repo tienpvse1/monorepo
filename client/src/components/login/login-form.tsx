@@ -6,7 +6,6 @@ import { authenticateUser } from '@modules/auth/mutation/auth.post';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { useMutation } from 'react-query';
 import { Navigate } from 'react-router-dom';
-import { Can } from '../../context/permission.context';
 import { Modal } from './modal';
 export const LoginForm = () => {
   const { mutate, error, data, reset } = useMutation(authenticateUser, {});
@@ -17,9 +16,10 @@ export const LoginForm = () => {
     const publicData = JSON.stringify(data.publicData);
     setCookie(PUBLIC_USER_INFO, publicData || '', 7);
 
-    if (data.publicData.role == Role.ADMIN)
-      return <Navigate to={'/admin'} replace />;
-
+    if (data.publicData.role == Role.ADMIN) {
+      console.log('this dude is admin');
+      return <Navigate to={'/administration'} replace />;
+    }
     return <Navigate to={'/'} replace />;
   }
 

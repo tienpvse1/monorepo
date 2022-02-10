@@ -41,6 +41,26 @@ export class AuthService {
     return account;
   };
 
+  getAccountForAuth = async (email: string) => {
+    try {
+      const account = await this.accountService.findOne({
+        where: { email },
+        select: [
+          'email',
+          'password',
+          'id',
+          'role',
+          'firstName',
+          'lastName',
+          'isSocialAccount',
+          'permissions',
+        ],
+        relations: ['permissions'],
+      });
+      return account;
+    } catch (error) {}
+  };
+
   generateJWTToken(account: Account) {
     const { email, id, firstName, lastName, role } = account;
     const tokenPayload: Partial<IToken> = {
@@ -83,7 +103,7 @@ export class AuthService {
     return;
   }
 
-  // deprecated
+  // !deprecated
   async loginByEmailPassword(
     { email, password }: LoginRequestDto,
     response: Response,
@@ -126,7 +146,7 @@ export class AuthService {
     ip: string,
     response: Response,
   ) {
-    const account = await this.getAccount(email);
+    const account = await this.getAccountForAuth(email);
 
     try {
       if (!account.password)
@@ -146,7 +166,7 @@ export class AuthService {
           sessionFromAccountId.id,
           getIp(ip),
         );
-        response.cookie('sessionId', session.id);
+        response.cookie('sessionId', session.id, { httpOnly: true });
         return response.status(HttpStatus.OK).json({
           data: {
             sessionId: session.id,
@@ -154,6 +174,7 @@ export class AuthService {
               role: account.role,
               email: account.email,
               id: account.id,
+              permissions: account.permissions,
             },
           },
           message: 'successfully',
@@ -166,7 +187,7 @@ export class AuthService {
         role: account.role,
         ip: getIp(ip),
       });
-      response.cookie('sessionId', session.id);
+      response.cookie('sessionId', session.id, { httpOnly: true });
       response.status(HttpStatus.OK).json({
         data: {
           sessionId: session.id,
@@ -174,6 +195,7 @@ export class AuthService {
             role: account.role,
             email: account.email,
             id: account.id,
+            permission: account.permissions,
           },
         },
         message: 'successfully',
