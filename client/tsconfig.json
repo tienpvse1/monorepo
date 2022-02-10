@@ -33,7 +33,8 @@
       "@modules/*": ["./src/modules/*"],
       "@pages/*": ["./src/pages/*"],
       "@routes/*": ["./src/routes/*"],
-      "@util/*": ["./src/util/*"]
+      "@util/*": ["./src/util/*"],
+      "@db/*": ["./src/db/*"]
     }
   },
   "include": ["./src", "@casl/react/contextAPIPatch.d.ts"]

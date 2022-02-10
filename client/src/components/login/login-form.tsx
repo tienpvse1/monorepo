@@ -1,5 +1,6 @@
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { setCookie } from '@cookies';
+import { savePermissions } from '@db/permission.db';
 import { Role } from '@interfaces/type-roles';
 import { IAuthDto } from '@modules/auth/dto/auth.dto';
 import { authenticateUser } from '@modules/auth/mutation/auth.post';
@@ -8,16 +9,22 @@ import { useMutation } from 'react-query';
 import { Navigate } from 'react-router-dom';
 import { Modal } from './modal';
 export const LoginForm = () => {
-  const { mutate, error, data, reset } = useMutation(authenticateUser, {});
+  const { mutate, error, data, reset, isSuccess } = useMutation(
+    authenticateUser,
+    {
+      onSuccess: (data) => {
+        savePermissions(data.publicData.permissions);
+      },
+    }
+  );
   const handleLogin = async (authDto: IAuthDto) => {
     mutate(authDto);
   };
-  if (data) {
+  if (isSuccess && data) {
     const publicData = JSON.stringify(data.publicData);
     setCookie(PUBLIC_USER_INFO, publicData || '', 7);
 
     if (data.publicData.role == Role.ADMIN) {
-      console.log('this dude is admin');
       return <Navigate to={'/administration'} replace />;
     }
     return <Navigate to={'/'} replace />;

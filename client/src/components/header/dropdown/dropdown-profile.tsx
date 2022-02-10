@@ -1,9 +1,6 @@
-import {
-  LogoutOutlined,
-  SettingOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import { SESSION_ID, PUBLIC_USER_INFO } from '@constance/cookie';
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { PUBLIC_USER_INFO, SESSION_ID } from '@constance/cookie';
+import { clearOutPermissions } from '@db/permission.db';
 import { Menu } from 'antd';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -11,10 +8,11 @@ import { useNavigate } from 'react-router-dom';
 export const MenuProfile = () => {
   const navigate = useNavigate();
   const [_, __, removeCookie] = useCookies();
-  const handleLogout = () => {
+  const handleLogout = async () => {
     removeCookie(SESSION_ID);
     removeCookie(PUBLIC_USER_INFO);
     navigate('/login');
+    await clearOutPermissions();
   };
   const handleNavigateProfile = () => {
     navigate('/account');

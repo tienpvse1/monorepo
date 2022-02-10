@@ -1,14 +1,14 @@
-import { createContext, FC, useEffect } from 'react';
-import { createContextualCan } from '@casl/react';
 import { AnyMongoAbility, defineAbility } from '@casl/ability';
-import { db } from '../db/db';
+import { createContextualCan } from '@casl/react';
+import { loadAllPermissions } from '@db/permission.db';
+import { createContext, FC, useEffect } from 'react';
 
 // initial empty permission
 export const ability = defineAbility((can) => can([]));
 
 // this function will handle loading permission from database
 const getInitialPermission = async () => {
-  const permissionsFromDB = await db.permission.toArray();
+  const permissionsFromDB = await loadAllPermissions();
 
   const permissions = permissionsFromDB.map((permission) => ({
     action: permission.action,

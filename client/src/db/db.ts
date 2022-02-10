@@ -5,7 +5,6 @@ export interface IPermission {
   id: string;
   action: string;
   subject: string;
-  permissionGroup: string;
 }
 
 class Db extends Dexie {
