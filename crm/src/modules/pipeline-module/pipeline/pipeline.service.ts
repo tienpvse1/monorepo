@@ -1,14 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CRUDService } from 'src/base/base.service';
+import { BaseService } from 'src/base/nestjsx.service';
+import { Repository } from 'typeorm';
 import { Pipeline } from './entities/pipeline.entity';
-import { PipelineRepository } from './pipeline.repository';
 
 @Injectable()
-export class PipelineService extends CRUDService<Pipeline, PipelineRepository> {
-  constructor(
-    @InjectRepository(PipelineRepository) repository: PipelineRepository,
-  ) {
+export class PipelineService extends BaseService<Pipeline> {
+  constructor(@InjectRepository(Pipeline) repository: Repository<Pipeline>) {
     super(repository);
+  }
+  async findOwnOnePipeline(userId: string) {
+    const pipeline = await this.findOneItem({
+      where: {
+        account: { id: userId },
+      },
+      relations: ['pipelineColumns', 'pipelineColumns.pipelineItems'],
+    });
+    return pipeline;
   }
 }

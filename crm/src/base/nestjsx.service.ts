@@ -1,4 +1,5 @@
-import { BadRequestException } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { DeepPartial, FindOneOptions, Repository } from 'typeorm';
 import { BaseRepository } from './base.repository';
@@ -18,6 +19,16 @@ export class BaseService<Entity> extends TypeOrmCrudService<Entity> {
       return createdItem;
     } catch (error) {
       throw new BadRequestException(error.message);
+    }
+  }
+
+  async findOneItem(filter: FindOneOptions<Entity>) {
+    try {
+      const item = await this.findOne(filter);
+      if (!item) throw new NotFoundException('item with condition not found');
+      return item;
+    } catch (error) {
+      throw new NotFoundException(error.message);
     }
   }
 

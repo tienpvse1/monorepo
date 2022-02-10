@@ -1,17 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CRUDService } from 'src/base/base.service';
+import { BaseService } from 'src/base/nestjsx.service';
+import { Repository } from 'typeorm';
 import { PipelineItem } from './entities/pipeline-item.entity';
-import { PipelineItemRepository } from './pipeline-item.repository';
 
 @Injectable()
-export class PipelineItemService extends CRUDService<
-  PipelineItem,
-  PipelineItemRepository
-> {
+export class PipelineItemService extends BaseService<PipelineItem> {
   constructor(
-    @InjectRepository(PipelineItemRepository)
-    repository: PipelineItemRepository,
+    @InjectRepository(PipelineItem)
+    repository: Repository<PipelineItem>,
   ) {
     super(repository);
   }
