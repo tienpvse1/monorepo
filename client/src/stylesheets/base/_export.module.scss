@@ -1,6 +1,8 @@
 @import 'variables';
 :export {
     primaryColor: $primary-color;
+    primaryTextColor: $primary-text-color;
+    darkGreyBackgroundColor: $dark-grey-background-color;
     percentColorIncrease: $percent-increase;
     percentColorDecrease: $percent-decrease;
     cardBorder: $card-border;

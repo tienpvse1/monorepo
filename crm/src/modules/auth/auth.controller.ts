@@ -2,13 +2,14 @@ import {
   Body,
   Controller,
   Get,
+  Ip,
   Post,
   Req,
   Res,
   Response,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request, Response as ExpressResponse } from 'express';
 import { Public } from 'src/common/decorators/public.decorator';
 import { AuthService } from './auth.service';
@@ -27,6 +28,7 @@ export class AuthController {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   login() {}
 
+  @ApiOperation({ deprecated: true })
   @Post()
   @Public()
   checkLoginByEmailPassword(
@@ -34,6 +36,16 @@ export class AuthController {
     @Res() response: ExpressResponse,
   ) {
     this.authService.loginByEmailPassword(loginRequest, response);
+  }
+
+  @Post('session')
+  @Public()
+  loginUsingSessionMethod(
+    @Body() loginRequest: LoginRequestDto,
+    @Res() response: ExpressResponse,
+    @Ip() ip: string,
+  ) {
+    this.authService.loginUsingSession(loginRequest, ip, response);
   }
 
   @Get('google/redirect')

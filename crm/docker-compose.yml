@@ -26,7 +26,7 @@ services:
   crm:
     image: crm
     volumes:
-      - /files/:/usr/src/app/files
+      - ./public/files/:/usr/src/app/public/files
     build:
       context: .
       dockerfile: ./Dockerfile

@@ -17,7 +17,7 @@ import { ConfigModule } from '../config/config.module';
         entities: ['dist/modules/**/entities/*.entity{.ts,.js}'],
         logger: 'advanced-console',
         synchronize: true,
-        logging: 'all',
+        logging: false,
       }),
     }),
   ],

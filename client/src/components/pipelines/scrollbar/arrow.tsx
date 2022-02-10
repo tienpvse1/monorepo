@@ -11,13 +11,13 @@ export const Arrow: React.FC<ArrowProps> = ({
   valueScrollLeft,
   styleName,
   elementScrollBar,
-  disable = false,
+  disable = true,
   children }) => {
-  
+
   const refId = useRef<number>();
 
   const scrollLeft = (value: number) => {
-    elementScrollBar!.current!.scrollLeft += value;
+    elementScrollBar.current.scrollLeft += value;
   }
 
   const mouseHover = (scroll: () => void) => {
