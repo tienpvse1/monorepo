@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { LeadService } from './lead.service';
-import { LeadController } from './lead.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LeadRepository } from './lead.repository';
+import { Lead } from './entities/lead.entity';
+import { LeadController } from './lead.controller';
+import { LeadService } from './lead.service';
 
 @Module({
   controllers: [LeadController],
   providers: [LeadService],
-  imports: [TypeOrmModule.forFeature([LeadRepository])],
+  imports: [TypeOrmModule.forFeature([Lead])],
 })
 export class LeadModule {}

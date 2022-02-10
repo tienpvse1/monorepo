@@ -1,8 +1,8 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { initializeSwagger } from './configurations/doc/swagger.doc';
-import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = app.get(ConfigService);
@@ -15,6 +15,7 @@ async function bootstrap() {
     origin: ['http://localhost:3000'],
     credentials: true,
   });
+
   initializeSwagger(app, config);
 
   await app.listen(config.get<number>('app.port'));

@@ -57,7 +57,15 @@ export class BaseController<
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  softDelete(@Param('id') id: string) {
     return this.service.delete(id);
+  }
+
+  /**
+   * Permanent delete
+   */
+  @Delete('permanent/:id')
+  permanentDelete(@Param('id') id: string) {
+    return this.permanentDelete(id);
   }
 }

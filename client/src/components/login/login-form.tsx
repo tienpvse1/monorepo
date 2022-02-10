@@ -1,5 +1,6 @@
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { setCookie } from '@cookies';
+import { savePermissions } from '@db/permission.db';
 import { Role } from '@interfaces/type-roles';
 import { IAuthDto } from '@modules/auth/dto/auth.dto';
 import { authenticateUser } from '@modules/auth/mutation/auth.post';
@@ -8,19 +9,25 @@ import { useMutation } from 'react-query';
 import { Navigate } from 'react-router-dom';
 import { Modal } from './modal';
 export const LoginForm = () => {
-  const { mutate, error, data, reset } = useMutation(authenticateUser, {});
+  const { mutate, error, data, reset, isSuccess } = useMutation(
+    authenticateUser,
+    {
+      onSuccess: (data) => {
+        savePermissions(data.publicData.permissions);
+      },
+    }
+  );
   const handleLogin = async (authDto: IAuthDto) => {
     mutate(authDto);
   };
-  if (data) {
+  if (isSuccess && data) {
     const publicData = JSON.stringify(data.publicData);
     setCookie(PUBLIC_USER_INFO, publicData || '', 7);
 
-    if (data.publicData.role == Role.ADMIN)
-      return <Navigate to={'/admin'} replace />;
-
+    if (data.publicData.role == Role.ADMIN) {
+      return <Navigate to={'/administration'} replace />;
+    }
     return <Navigate to={'/'} replace />;
-
   }
 
   return (
@@ -35,7 +42,11 @@ export const LoginForm = () => {
         <Form.Item
           name='email'
           rules={[
-            { required: true, type: 'email', message: 'Please input your E-mail!' },
+            {
+              required: true,
+              type: 'email',
+              message: 'Please input your E-mail!',
+            },
           ]}
         >
           <Input placeholder='Email' />
@@ -48,7 +59,9 @@ export const LoginForm = () => {
         </Form.Item>
         <Form.Item style={{ marginTop: '-15px' }}>
           <Form.Item name='remember' valuePropName='checked' noStyle>
-            <Checkbox className='checkbox-login-form-forgot'>Remember me</Checkbox>
+            <Checkbox className='checkbox-login-form-forgot'>
+              Remember me
+            </Checkbox>
           </Form.Item>
 
           <a className='login-form-forgot' href=''>
@@ -56,11 +69,7 @@ export const LoginForm = () => {
           </a>
         </Form.Item>
 
-        <Button
-          type='primary'
-          htmlType='submit'
-          className='login-form-button'
-        >
+        <Button type='primary' htmlType='submit' className='login-form-button'>
           Log in
         </Button>
       </Form>

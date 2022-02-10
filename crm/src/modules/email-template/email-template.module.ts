@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { EmailTemplateService } from './email-template.service';
-import { EmailTemplateController } from './email-template.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EmailTemplateRepository } from './email-template.repository';
+import { EmailTemplateController } from './email-template.controller';
+import { EmailTemplateService } from './email-template.service';
+import { EmailTemplate } from './entities/email-template.entity';
 
 @Module({
   controllers: [EmailTemplateController],
   providers: [EmailTemplateService],
-  imports: [TypeOrmModule.forFeature([EmailTemplateRepository])],
+  imports: [TypeOrmModule.forFeature([EmailTemplate])],
 })
 export class EmailTemplateModule {}

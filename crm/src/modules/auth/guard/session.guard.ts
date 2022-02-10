@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { IS_PUBLIC_KEY } from 'src/constance';
+import { AccountRepository } from 'src/modules/account/account.repository';
 import { SessionRepository } from 'src/modules/session/session.repository';
 import { getIp } from 'src/util/ip';
 import { getCustomRepository } from 'typeorm';
@@ -20,21 +21,24 @@ export class SessionGuard implements CanActivate {
       return true;
     }
     const repository = getCustomRepository(SessionRepository);
+    const accountRepository = getCustomRepository(AccountRepository);
     const session = await repository.findOne({
       where: {
         id: sessionId,
         ip: getIp(request.ip),
       },
     });
+    if (!session) return false;
     if (new Date(session.expiredAt) < new Date()) {
       return false;
     }
-    if (session) {
-      request.user = {
-        id: session.accountId,
-      };
-      return true;
-    }
-    return false;
+    const account = await accountRepository.findOneItem({
+      where: { id: session.accountId },
+    });
+    request.user = {
+      id: session.accountId,
+      role: account.role,
+    };
+    return true;
   }
 }
