@@ -6,21 +6,21 @@ import { authenticateUser } from '@modules/auth/mutation/auth.post';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { useMutation } from 'react-query';
 import { Navigate } from 'react-router-dom';
+import { Can } from '../../context/permission.context';
 import { Modal } from './modal';
 export const LoginForm = () => {
   const { mutate, error, data, reset } = useMutation(authenticateUser, {});
   const handleLogin = async (authDto: IAuthDto) => {
     mutate(authDto);
   };
-  if (data) {    
+  if (data) {
     const publicData = JSON.stringify(data.publicData);
     setCookie(PUBLIC_USER_INFO, publicData || '', 7);
 
-    if(data.publicData.role == Role.ADMIN)
+    if (data.publicData.role == Role.ADMIN)
       return <Navigate to={'/admin'} replace />;
 
     return <Navigate to={'/'} replace />;
-
   }
 
   return (

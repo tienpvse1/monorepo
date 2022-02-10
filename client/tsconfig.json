@@ -29,11 +29,12 @@
       "@env/*": ["./src/env/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@interfaces/*": ["./src/interfaces/*"],
+      "@context/*": ["./src/context/*"],
       "@modules/*": ["./src/modules/*"],
       "@pages/*": ["./src/pages/*"],
       "@routes/*": ["./src/routes/*"],
       "@util/*": ["./src/util/*"]
     }
   },
-  "include": ["./src"]
+  "include": ["./src", "@casl/react/contextAPIPatch.d.ts"]
 }
