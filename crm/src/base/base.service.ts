@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { BadRequestException } from '@nestjs/common';
 import { paginate } from 'nestjs-typeorm-paginate';
 import {

@@ -8,6 +8,9 @@ export class PipelineColumn extends BaseEntity {
   @Column()
   name: string;
 
+  @Column({ default: 1 })
+  index: number;
+
   @ManyToOne(() => Pipeline, (pipeline) => pipeline.pipelineColumns)
   @JoinColumn({ name: 'pipeline_id' })
   pipeline: Pipeline;
