@@ -22,7 +22,7 @@ export const ArrowRight: React.FC<ArrowRightProps> = ({ elementScrollBar }) => {
     elementScrollBar.current.addEventListener("scroll", handleScroll)
 
     return () => {
-      elementScrollBar.current.removeEventListener("scroll", handleScroll);
+      elementScrollBar.current?.removeEventListener("scroll", handleScroll);
     }
   }, [])
 

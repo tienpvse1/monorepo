@@ -3,6 +3,9 @@ import { IPipelineItem } from "@modules/pipeline-items/entity/pipeline-items.ent
 import { useDeletePipelineItems } from "@modules/pipeline-items/mutation/pipeline-items.delete";
 import { Avatar, Button, Card, Divider, Tag } from "antd"
 import { PopoverAction } from "../../popover/popover-action";
+import { DrawerDetails } from "../../drawer";
+import { useToggle } from "@hooks/useToggle";
+import { OpportunityDetails } from "../opportunity/opportunity-details";
 const { Meta } = Card;
 
 interface PipelineCardItemProps {
@@ -10,18 +13,20 @@ interface PipelineCardItemProps {
 }
 
 export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ dataCardPipeline }) => {
-
+  const [showDrawer, setShowDrawer] = useToggle();
   const { removePipelineItems } = useDeletePipelineItems();
   const onDeletePipeLineItem = () => removePipelineItems(dataCardPipeline.id);
-  
+  const onViewDetailsPipeLineItem = () => setShowDrawer();
+
   return (
     <>
       <Card
         extra={
           <PopoverAction
-            itemName1="Edit details"
+            itemName1="View details"
             itemName2="Delete"
             callbackMethodDelete={onDeletePipeLineItem}
+            callbackMethodUpdate={onViewDetailsPipeLineItem}
           >
             <Button
               icon={<MoreOutlined />}
@@ -71,6 +76,15 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ dataCardPipe
           }
         />
       </Card>
+      <DrawerDetails
+        visible={showDrawer}
+        onClose={setShowDrawer}
+        title="Opportunity"
+        placement="right"
+        width={'850px'}
+      >
+        <OpportunityDetails dataCardPipeline={dataCardPipeline} />
+      </DrawerDetails>
     </>
   )
 }

@@ -27,6 +27,7 @@ export const PopoverAction: React.FC<PopoverActionProps> = ({
 
   const handleEdit = () => {
     callbackMethodUpdate();
+    setVisible();
   }
 
   return (
