@@ -1,6 +1,5 @@
 import {
   LogoutOutlined,
-  SettingOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { TOKEN, PUBLIC_USER_INFO } from '@constance/cookie';
@@ -20,7 +19,7 @@ export const MenuProfile = () => {
     navigate('/account')
   }
   return (
-    <Menu style={{ marginTop: '20px', borderRadius: '10px' }}>
+    <Menu className="items-dropdown-profile">
       <Menu.Item key='profile' onClick={handleNavigateProfile}>
         <>
           <UserOutlined style={{ color: 'rgba(0,0,0,0.8)' }} />
