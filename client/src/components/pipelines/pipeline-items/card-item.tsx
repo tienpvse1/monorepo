@@ -66,11 +66,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ dataCardPipe
                   </span>
 
                 </div>
-                <Avatar.Group maxCount={2} maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}>
                   <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
-                  <Avatar style={{ backgroundColor: '#BBDEFB' }}>I</Avatar>
-                  <Avatar style={{ backgroundColor: '#f56a00' }}>C</Avatar>
-                </Avatar.Group>
               </div>
             </>
           }
