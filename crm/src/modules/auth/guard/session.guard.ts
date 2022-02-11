@@ -27,16 +27,20 @@ export class SessionGuard implements CanActivate {
         id: sessionId,
         ip: getIp(request.ip),
       },
+      relations: ['account'],
     });
     if (!session) return false;
     if (new Date(session.expiredAt) < new Date()) {
+      repository.delete(sessionId);
       return false;
     }
+
     const account = await accountRepository.findOneItem({
-      where: { id: session.accountId },
+      where: { id: session.account.id },
+      relations: ['role'],
     });
     request.user = {
-      id: session.accountId,
+      id: session.account,
       role: account.role,
     };
     return true;

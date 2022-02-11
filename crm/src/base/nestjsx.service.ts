@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { DeepPartial, FindOneOptions, Repository } from 'typeorm';
+import { DeepPartial, FindOneOptions, In, Repository } from 'typeorm';
 import { BaseRepository } from './base.repository';
 import { BaseEntity } from './entity.base';
 
@@ -57,6 +57,29 @@ export class BaseService<Entity> extends TypeOrmCrudService<Entity> {
       relateItem[field].push(createdItem);
       const savedResult = await relateItem.save();
       return savedResult;
+    } catch (error) {
+      throw new BadRequestException('unable to create this item');
+    }
+  }
+
+  async addManyWithRelation<RelationEntity extends BaseEntity>(
+    item: DeepPartial<Entity>,
+    relationEntityIds: string[],
+    relateRepository: Repository<RelationEntity>,
+    thisField: keyof Entity,
+  ) {
+    try {
+      const relateItems = await relateRepository.find({
+        where: {
+          id: In(relationEntityIds),
+        },
+      });
+
+      const newItem = this.repository.create(item);
+
+      // @ts-ignore
+      newItem[thisField] = relateItems;
+      return await this.repository.save(newItem);
     } catch (error) {
       throw new BadRequestException('unable to create this item');
     }

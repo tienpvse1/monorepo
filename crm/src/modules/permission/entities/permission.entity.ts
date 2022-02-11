@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/base/entity.base';
+import { Roles } from 'src/constance';
+import { Role } from 'src/modules/role/entities/role.entity';
 import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
-import { Account } from 'src/modules/account/entities/account.entity';
 @Entity()
 export class Permission extends BaseEntity {
   @Column()
@@ -10,11 +11,11 @@ export class Permission extends BaseEntity {
   @Column()
   permissionGroup: string;
 
-  @ManyToMany(() => Account, (account) => account.permissions)
+  @ManyToMany(() => Role, (role) => role.permissions)
   @JoinTable({
-    name: 'account_permission',
+    name: 'role_permission',
     joinColumn: { name: 'permission_id' },
-    inverseJoinColumn: { name: 'account_id' },
+    inverseJoinColumn: { name: 'role_id' },
   })
-  accounts: Account[];
+  roles: Roles[];
 }

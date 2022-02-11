@@ -1,4 +1,4 @@
-import { Roles } from 'src/constance';
+import { Role } from 'src/modules/role/entities/role.entity';
 
 export interface IToken {
   subject: string;
@@ -12,5 +12,5 @@ export interface ITokenPayload {
   firstName: string;
   lastName: string;
   email: string;
-  role: Roles;
+  role: Role;
 }
