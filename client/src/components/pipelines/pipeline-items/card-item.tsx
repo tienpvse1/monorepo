@@ -66,7 +66,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ dataCardPipe
                   </span>
 
                 </div>
-                  <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
+                <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
               </div>
             </>
           }
