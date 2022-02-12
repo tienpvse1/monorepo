@@ -28,6 +28,7 @@ import { ScheduleModule } from './modules/schedule/schedule.module';
 import { SessionModule } from './modules/session/session.module';
 import { PermissionModule } from './modules/permission/permission.module';
 import { RoleModule } from './modules/role/role.module';
+import { HistoryModule } from './modules/history/history.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { RoleModule } from './modules/role/role.module';
     ScheduleModule,
     PermissionModule,
     RoleModule,
+    HistoryModule,
   ],
   providers: [GlobalModule],
 })

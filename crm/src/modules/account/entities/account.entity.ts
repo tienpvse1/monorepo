@@ -4,6 +4,7 @@ import { IsEmail, Length } from 'class-validator';
 import { BaseEntity } from 'src/base/entity.base';
 import { EmailTemplate } from 'src/modules/email-template/entities/email-template.entity';
 import { File } from 'src/modules/file/entities/file.entity';
+import { History } from 'src/modules/history/entities/history.entity';
 import { Lead } from 'src/modules/lead/entities/lead.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
 import { Pipeline } from 'src/modules/pipeline-module/pipeline/entities/pipeline.entity';
@@ -64,6 +65,9 @@ export class Account extends BaseEntity {
 
   @OneToMany(() => Lead, (lead) => lead.account)
   leads: Lead[];
+
+  @OneToMany(() => History, (history) => history.account)
+  histories: History[];
 
   @OneToMany(() => Schedule, (schedule) => schedule.account)
   schedules: Schedule[];
