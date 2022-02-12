@@ -2,9 +2,10 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { DeepPartial, FindOneOptions, In, Repository } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { BaseRepository } from './base.repository';
 import { BaseEntity } from './entity.base';
-
+import { merge } from 'lodash';
 export class BaseService<Entity> extends TypeOrmCrudService<Entity> {
   repository: Repository<Entity>;
   constructor(modal: Repository<Entity>) {
@@ -20,6 +21,13 @@ export class BaseService<Entity> extends TypeOrmCrudService<Entity> {
     } catch (error) {
       throw new BadRequestException(error.message);
     }
+  }
+
+  async safeUpdate(id: string, item: QueryDeepPartialEntity<Entity>) {
+    const foundItem = await this.repository.findOne(id);
+    if (!foundItem) throw new NotFoundException(`${this.dbName} not found`);
+    merge(foundItem, item);
+    return this.repository.save(foundItem);
   }
 
   async softDelete(id: string, condition?: FindOneOptions<Entity>) {
