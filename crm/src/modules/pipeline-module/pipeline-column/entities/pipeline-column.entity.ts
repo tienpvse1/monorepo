@@ -11,14 +11,16 @@ export class PipelineColumn extends BaseEntity {
   @Column({ default: 1, name: 'index_position' })
   index: number;
 
-  @ManyToOne(() => Pipeline, (pipeline) => pipeline.pipelineColumns)
+  @ManyToOne(() => Pipeline, (pipeline) => pipeline.pipelineColumns, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'pipeline_id' })
   pipeline: Pipeline;
 
   @OneToMany(
     () => PipelineItem,
     (pipelineItem) => pipelineItem.pipelineColumn,
-    { eager: true },
+    { eager: true, cascade: true },
   )
   pipelineItems: PipelineItem[];
 }

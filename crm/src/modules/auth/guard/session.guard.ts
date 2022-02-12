@@ -40,7 +40,7 @@ export class SessionGuard implements CanActivate {
       relations: ['role'],
     });
     request.user = {
-      id: session.account,
+      id: session.account.id,
       role: account.role,
     };
     return true;

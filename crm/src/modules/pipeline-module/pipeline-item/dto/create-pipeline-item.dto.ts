@@ -6,7 +6,4 @@ export class CreatePipelineItemDto {
   @IsNumber()
   @Min(1)
   index: number;
-
-  @Length(5)
-  pipelineColumnId: string;
 }

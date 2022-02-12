@@ -12,6 +12,9 @@ export class PipelineItem extends BaseEntity {
   @ManyToOne(
     () => PipelineColumn,
     (pipelineColumn) => pipelineColumn.pipelineItems,
+    {
+      onDelete: 'CASCADE',
+    },
   )
   @JoinColumn({
     name: 'pipeline_column_id',

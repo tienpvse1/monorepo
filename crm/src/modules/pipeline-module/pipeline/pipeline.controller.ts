@@ -19,6 +19,21 @@ import { PipelineService } from './pipeline.service';
     create: CreatePipelineDto,
     update: UpdatePipelineDto,
   },
+  params: {
+    id: {
+      type: 'uuid',
+      field: 'id',
+      primary: true,
+    },
+  },
+  query: {
+    join: {
+      pipelineColumns: {},
+      'pipelineColumns.pipelineItems': {
+        alias: 'columnItems',
+      },
+    },
+  },
 })
 export class PipelineController {
   constructor(public service: PipelineService) {}
