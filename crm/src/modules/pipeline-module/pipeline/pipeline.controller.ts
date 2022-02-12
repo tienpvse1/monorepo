@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Delete, Get, Param } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { User } from 'src/common/decorators/user.decorator';
@@ -44,5 +44,10 @@ export class PipelineController {
   @Get('own')
   getOwnPipeline(@User('id') userId: string) {
     return this.service.findOwnOnePipeline(userId);
+  }
+
+  @Delete('soft/:id')
+  softDelete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 }

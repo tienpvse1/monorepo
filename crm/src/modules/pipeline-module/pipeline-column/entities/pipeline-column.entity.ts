@@ -13,6 +13,7 @@ export class PipelineColumn extends BaseEntity {
 
   @ManyToOne(() => Pipeline, (pipeline) => pipeline.pipelineColumns, {
     onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   @JoinColumn({ name: 'pipeline_id' })
   pipeline: Pipeline;

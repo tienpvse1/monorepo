@@ -14,6 +14,7 @@ export class PipelineItem extends BaseEntity {
     (pipelineColumn) => pipelineColumn.pipelineItems,
     {
       onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     },
   )
   @JoinColumn({

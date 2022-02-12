@@ -22,6 +22,11 @@ export class BaseService<Entity> extends TypeOrmCrudService<Entity> {
     }
   }
 
+  async softDelete(id: string, condition?: FindOneOptions<Entity>) {
+    const item = await this.findOne(id, condition);
+    return this.repository.softRemove(item);
+  }
+
   async findOneItem(filter: FindOneOptions<Entity>) {
     try {
       const item = await this.findOne(filter);
