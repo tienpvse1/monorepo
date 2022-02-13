@@ -18,6 +18,13 @@ import { PipelineItemService } from './pipeline-item.service';
     create: CreatePipelineItemDto,
     update: UpdatePipelineItemDto,
   },
+  params: {
+    id: {
+      type: 'uuid',
+      field: 'id',
+      primary: true,
+    },
+  },
 })
 export class PipelineItemController {
   constructor(public service: PipelineItemService) {}

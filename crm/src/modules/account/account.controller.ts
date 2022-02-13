@@ -33,6 +33,13 @@ import { Account } from './entities/account.entity';
       decorators: [HasRoles(Roles.ADMIN)],
     },
   },
+  params: {
+    id: {
+      type: 'uuid',
+      field: 'id',
+      primary: true,
+    },
+  },
 })
 export class AccountController {
   constructor(public service: AccountService) {}

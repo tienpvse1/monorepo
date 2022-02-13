@@ -20,6 +20,13 @@ import { RoleService } from './role.service';
     create: CreateRoleDto,
     update: UpdateRoleDto,
   },
+  params: {
+    id: {
+      type: 'uuid',
+      field: 'id',
+      primary: true,
+    },
+  },
 })
 export class RoleController {
   constructor(public service: RoleService) {}

@@ -18,6 +18,13 @@ import { LeadService } from './lead.service';
     create: CreateLeadDto,
     update: UpdateLeadDto,
   },
+  params: {
+    id: {
+      type: 'uuid',
+      field: 'id',
+      primary: true,
+    },
+  },
 })
 export class LeadController {
   constructor(public service: LeadService) {}

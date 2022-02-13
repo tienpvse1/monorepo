@@ -16,6 +16,13 @@ import { HistoryService } from './history.service';
     create: CreateHistoryDto,
     update: UpdateHistoryDto,
   },
+  params: {
+    id: {
+      type: 'uuid',
+      field: 'id',
+      primary: true,
+    },
+  },
 })
 export class HistoryController {
   constructor(public readonly service: HistoryService) {}

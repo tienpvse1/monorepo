@@ -18,6 +18,13 @@ import { PipelineColumnService } from './pipeline-column.service';
     create: CreatePipelineColumnDto,
     update: UpdatePipelineColumnDto,
   },
+  params: {
+    id: {
+      type: 'uuid',
+      field: 'id',
+      primary: true,
+    },
+  },
 })
 export class PipelineColumnController {
   constructor(public service: PipelineColumnService) {}
