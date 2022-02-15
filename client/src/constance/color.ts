@@ -3,6 +3,8 @@ import style from '../stylesheets/base/_export.module.scss';
 
 export const ThemeColor = {
   primaryColor: style.primaryColor,
+  primaryTextColor: style.primaryTextColor,
+  darkGreyBackgroundColor: style.darkGreyBackgroundColor,
   percentColorIncrease: style.percentColorIncrease,
   percentColorDecrease: style.percentColorDecrease,
   cardBorder: style.cardBorder,

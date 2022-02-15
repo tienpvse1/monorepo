@@ -2,9 +2,12 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { IS_PUBLIC_KEY } from 'src/constance';
+import { AccountRepository } from 'src/modules/account/account.repository';
+import { History } from 'src/modules/history/entities/history.entity';
 import { SessionRepository } from 'src/modules/session/session.repository';
+import { getHistory } from 'src/util/history';
 import { getIp } from 'src/util/ip';
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, getRepository } from 'typeorm';
 
 @Injectable()
 export class SessionGuard implements CanActivate {
@@ -20,21 +23,41 @@ export class SessionGuard implements CanActivate {
       return true;
     }
     const repository = getCustomRepository(SessionRepository);
+    const accountRepository = getCustomRepository(AccountRepository);
     const session = await repository.findOne({
       where: {
         id: sessionId,
         ip: getIp(request.ip),
       },
+      relations: ['account'],
     });
+    if (!session) return false;
     if (new Date(session.expiredAt) < new Date()) {
+      repository.delete(sessionId);
       return false;
     }
-    if (session) {
-      request.user = {
-        id: session.accountId,
-      };
-      return true;
+
+    const account = await accountRepository.findOneItem({
+      where: { id: session.account.id },
+      relations: ['role'],
+    });
+    request.user = {
+      id: session.account.id,
+      role: account.role,
+    };
+
+    // save action to history
+    const historyRepository = getRepository(History);
+    if (request.method.toUpperCase() !== 'GET') {
+      historyRepository.save({
+        account: account,
+        ip: getIp(request.ip),
+        url: request.url,
+        name: getHistory(request.url, request.method.toUpperCase()),
+        method: request.method,
+      });
     }
-    return false;
+
+    return true;
   }
 }

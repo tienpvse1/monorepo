@@ -10,7 +10,6 @@ import { LayoutAdmin } from '@common/admin-layout';
 import { AdminPage } from '@pages/admin';
 import { LayoutUser } from '@common/user-layout';
 
-
 export const route: RouteObject[] = [
   {
     path: '/login',
@@ -35,7 +34,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'pipeline',
-        element: <Pipeline />
+        element: <Pipeline />,
       },
       {
         path: 'email',
@@ -48,14 +47,14 @@ export const route: RouteObject[] = [
     ],
   },
   {
-    path: '/admin',
+    path: '/administration',
     element: <LayoutAdmin />,
     children: [
       {
         index: true,
-        element: <AdminPage />
-      }
-    ]
+        element: <AdminPage />,
+      },
+    ],
   },
   {
     path: '/*',

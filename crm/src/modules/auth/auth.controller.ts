@@ -9,7 +9,7 @@ import {
   Response,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request, Response as ExpressResponse } from 'express';
 import { Public } from 'src/common/decorators/public.decorator';
 import { AuthService } from './auth.service';
@@ -28,6 +28,7 @@ export class AuthController {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   login() {}
 
+  @ApiOperation({ deprecated: true })
   @Post()
   @Public()
   checkLoginByEmailPassword(

@@ -1,7 +1,13 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AdminModule } from './admin/admin.module';
+import { LoggingMiddleware } from './middleware/logging.middleware';
 import { AccountModule } from './modules/account/account.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from './modules/config/config.module';
@@ -20,6 +26,9 @@ import { PipelineItemModule } from './modules/pipeline-module/pipeline-item/pipe
 import { PipelineModule } from './modules/pipeline-module/pipeline/pipeline.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
 import { SessionModule } from './modules/session/session.module';
+import { PermissionModule } from './modules/permission/permission.module';
+import { RoleModule } from './modules/role/role.module';
+import { HistoryModule } from './modules/history/history.module';
 
 @Module({
   imports: [
@@ -45,7 +54,17 @@ import { SessionModule } from './modules/session/session.module';
     SessionModule,
     LeadModule,
     ScheduleModule,
+    PermissionModule,
+    RoleModule,
+    HistoryModule,
   ],
   providers: [GlobalModule],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggingMiddleware).forRoutes({
+      path: '*',
+      method: RequestMethod.ALL,
+    });
+  }
+}

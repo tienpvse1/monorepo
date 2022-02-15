@@ -1,5 +1,4 @@
 import { Divider } from 'antd';
-import { Link } from 'react-router-dom';
 import { LoginForm } from '../components/login/login-form';
 import GoogleButton from 'react-google-button';
 import { controllers } from '../constance/controllers';
@@ -24,16 +23,12 @@ export const LoginPage = () => {
         className='wrapper-login-form'
       >
         <div className='header-form'>
-          <h1>Đăng Nhập</h1>
-          <span>
-            Không có tài khoản?
-            <Link to='/signup'> Đăng Ký</Link>
-          </span>
+          <h1>Log In</h1>
         </div>
         <div className='content-login-form'>
           <LoginForm />
         </div>
-        <Divider>HOẶC</Divider>
+        <Divider>OR</Divider>
         <div className='footer-login-from'>
           <div
             style={{
@@ -44,7 +39,7 @@ export const LoginPage = () => {
             <GoogleButton onClick={handleGoogleClick} />
           </div>
         </div>
-        <a href=''>Chính sách bảo mật</a>
+        <a href=''>Privacy policy</a>
       </motion.div>
     </div>
   );
