@@ -1,12 +1,19 @@
 import { Avatar, Dropdown } from 'antd';
+import { useLiveQuery } from 'dexie-react-hooks';
 import { MenuProfile } from './dropdown/dropdown-profile';
+import { useCookies } from 'react-cookie';
+import { PUBLIC_USER_INFO } from '@constance/cookie';
 
 export const DropdownProfile = () => {
+  const [cookies] = useCookies([PUBLIC_USER_INFO]);
+
+  const publicInfo = cookies.public_user_info;
+
   return (
     <Dropdown overlay={<MenuProfile />} trigger={['click']}>
       <div className='ant-dropdown-link'>
         <Avatar
-          src='https://joeschmoe.io/api/v1/random'
+          src={publicInfo.photo}
           size={30}
           style={{ marginBottom: '8px' }}
         />
@@ -18,7 +25,7 @@ export const DropdownProfile = () => {
             fontWeight: 600,
           }}
         >
-          Tokuda
+          {publicInfo.firstName}
         </span>
       </div>
     </Dropdown>
