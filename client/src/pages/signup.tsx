@@ -1,13 +1,10 @@
 import { Link } from 'react-router-dom';
-import { LottieBackGround } from '../components/background';
 import { SignUpForm } from '../components/signup/signup-form';
 import { motion } from 'framer-motion'
-import lottieFile from '../animation/background-login.json';
 
 export const SignUpPage = () => {
   return (
     <div className='wrapper-background'>
-      <LottieBackGround data={lottieFile} />
       <motion.div
         initial={{ y: '-100vw' }}
         animate={{ y: -5 }}
