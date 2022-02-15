@@ -8,9 +8,9 @@ import { LayoutApp } from './layout';
 export const LayoutUser = () => {
   const [cookies] = useCookies([PUBLIC_USER_INFO]);
 
-  // const { role } = cookies.public_user_info;
+  const { role } = cookies.public_user_info;
 
-  // if (!role) return <Navigate to={'/admin'} />;
+  if (!role) return <Navigate to={'/admin'} />;
   if (cookies.public_user_info?.role === Role.ADMIN)
     return <Navigate to={'/admin'} />;
 
