@@ -1,4 +1,13 @@
-import { IsNumber, Length, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsNumber,
+  IsOptional,
+  Length,
+  Min,
+  ValidateNested,
+} from 'class-validator';
+import { CreatePipelineItemDto } from '../../pipeline-item/dto/create-pipeline-item.dto';
 
 export class CreatePipelineColumnDto {
   @Length(1)
@@ -6,5 +15,10 @@ export class CreatePipelineColumnDto {
   @IsNumber()
   @Min(1)
   index: number;
-  pipelineId: string;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @IsOptional()
+  @Type(() => CreatePipelineItemDto)
+  pipelineItems: CreatePipelineItemDto[];
 }

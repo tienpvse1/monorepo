@@ -1,8 +1,8 @@
 import { nanoid } from 'nanoid';
 import { BaseEntity } from 'src/base/entity.base';
-import { Roles } from 'src/constance';
+import { Account } from 'src/modules/account/entities/account.entity';
 import { generateExpireDate } from 'src/util/check-expire';
-import { BeforeInsert, Column, Entity } from 'typeorm';
+import { BeforeInsert, Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity({ name: 'session' })
 export class Session extends BaseEntity {
@@ -12,11 +12,9 @@ export class Session extends BaseEntity {
   @Column({ name: 'expired_at' })
   expiredAt: Date;
 
-  @Column()
-  role: Roles;
-
-  @Column()
-  accountId: string;
+  @OneToOne(() => Account, (account) => account.session)
+  @JoinColumn({ name: 'account_id' })
+  account: Account;
 
   @BeforeInsert()
   init() {

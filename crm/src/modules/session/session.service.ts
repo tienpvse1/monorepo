@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CRUDService } from 'src/base/base.service';
-import { generateExpireDate } from 'src/util/check-expire';
-import { MoreThan } from 'typeorm';
+import { generateExpireDate, isExpired } from 'src/util/check-expire';
 import { Session } from './entities/session.entity';
 import { SessionRepository } from './session.repository';
 
@@ -17,10 +16,14 @@ export class SessionService extends CRUDService<Session, SessionRepository> {
   async getSessionByAccountId(accountId: string) {
     const session = await this.findOneWithoutError({
       where: {
-        accountId: accountId,
-        expiredAt: MoreThan(new Date()),
+        account: { id: accountId },
       },
     });
+    if (!session) return null;
+    if (isExpired(session.expiredAt)) {
+      await this.permanentDelete(session.id);
+      return null;
+    }
     return session;
   }
 

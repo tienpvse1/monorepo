@@ -18,6 +18,13 @@ import { ScheduleService } from './schedule.service';
     create: CreateScheduleDto,
     update: UpdateScheduleDto,
   },
+  params: {
+    id: {
+      type: 'uuid',
+      field: 'id',
+      primary: true,
+    },
+  },
 })
 export class ScheduleController {
   constructor(public readonly service: ScheduleService) {}

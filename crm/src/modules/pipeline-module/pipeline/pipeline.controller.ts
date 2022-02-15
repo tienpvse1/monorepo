@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Crud } from '@nestjsx/crud';
+import { Crud, Override } from '@nestjsx/crud';
 import { User } from 'src/common/decorators/user.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
 import { CreatePipelineDto } from './dto/create-pipeline.dto';
@@ -18,6 +18,22 @@ import { PipelineService } from './pipeline.service';
   dto: {
     create: CreatePipelineDto,
     update: UpdatePipelineDto,
+    replace: UpdatePipelineDto,
+  },
+  params: {
+    id: {
+      type: 'uuid',
+      field: 'id',
+      primary: true,
+    },
+  },
+  query: {
+    join: {
+      pipelineColumns: {},
+      'pipelineColumns.pipelineItems': {
+        alias: 'columnItems',
+      },
+    },
   },
 })
 export class PipelineController {
@@ -29,5 +45,18 @@ export class PipelineController {
   @Get('own')
   getOwnPipeline(@User('id') userId: string) {
     return this.service.findOwnOnePipeline(userId);
+  }
+
+  @Delete('soft/:id')
+  softDelete(@Param('id') id: string) {
+    return this.service.softDelete(id);
+  }
+
+  @Override('replaceOneBase')
+  replacePipeline(
+    @Param('id') id: string,
+    @Body() pipeline: UpdatePipelineDto,
+  ) {
+    return this.service.safeUpdate(id, pipeline);
   }
 }

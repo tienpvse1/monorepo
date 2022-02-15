@@ -12,7 +12,7 @@ async function bootstrap() {
   app.use(cookieParser());
   // enable cross sharing origin
   app.enableCors({
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000', 'http://localhost'],
     credentials: true,
   });
 
