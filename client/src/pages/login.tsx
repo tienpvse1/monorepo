@@ -2,7 +2,7 @@ import { LoginForm } from '../components/login/login-form';
 import { LottieFile } from '../components/background';
 import { motion } from 'framer-motion';
 import lottieBackgroundLogin from '../animation/background-login.json';
-import lottieIconPlane from '../animation/plane5.json';
+import lottieIconPlane from '../animation/plane.json';
 
 export const LoginPage = () => {
 
@@ -16,7 +16,7 @@ export const LoginPage = () => {
         className='wrapper-login-form'
       >
         <div className='icon-login-form'>
-          <LottieFile data={lottieIconPlane} height={90} width={90} />
+          <LottieFile style={{borderRadius: '45px'}} data={lottieIconPlane} height={90} width={88} />
         </div>
         <div className='logo-login-from'>
           <img
