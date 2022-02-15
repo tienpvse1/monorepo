@@ -61,8 +61,8 @@ export const Pipeline: FC = () => {
     }
   ]
 
-  const totalColumn = data?.[0].pipelineColumns.length;
-  const widthOfItem = 333;
+  const totalColumn = data?.[0]?.pipelineColumns.length || 1;
+  const widthOfItem = 333;  
 
   const {
     pipeline,
@@ -122,11 +122,11 @@ export const Pipeline: FC = () => {
                   {...providedColumns.droppableProps}
                   ref={providedColumns.innerRef}
                 >
-                  {data?.[0].pipelineColumns.map((pipelineColumn: IPipelineColumn, index: number) =>
+                  {data?.[0]?.pipelineColumns.map((pipelineColumn: IPipelineColumn, index: number) =>
                     <PipeLineColumn index={index} key={pipelineColumn.id} pipelineColumn={pipelineColumn} />)
                   }
                   {providedColumns.placeholder}
-                  <ShadowColumnCreate pipelineId={data?.[0].id}/>
+                  <ShadowColumnCreate pipelineId={data?.[0]?.id}/>
                 </div>
               </>
             )}
