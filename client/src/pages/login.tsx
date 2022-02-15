@@ -7,7 +7,7 @@ import { LottieBackGround } from '../components/background';
 import { motion } from 'framer-motion';
 import lottieFile from '../animation/background-login.json';
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const { AUTH } = controllers;
   const handleGoogleClick = () => {
     window.location.href = `${envVars.VITE_BE_BASE_URL}${AUTH}/google`;
@@ -44,3 +44,5 @@ export const LoginPage = () => {
     </div>
   );
 };
+
+export default LoginPage;
