@@ -7,7 +7,7 @@ import { authenticateUser } from '@modules/auth/mutation/auth.post';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { useMutation } from 'react-query';
 import { Navigate } from 'react-router-dom';
-import { Modal } from './modal';
+import Modal from './modal';
 export const LoginForm = () => {
   const { mutate, error, data, reset, isSuccess } = useMutation(
     authenticateUser,

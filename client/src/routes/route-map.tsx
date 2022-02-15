@@ -1,14 +1,16 @@
-import { Pipeline } from '@pages/pipeline';
-import { Contact } from '@pages/contact';
-import { EmailCompose } from '@pages/email-compose';
-import { SettingPage } from '@pages/setting';
+import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
-import { HomePage } from '../pages/home';
-import { LoginPage } from '../pages/login';
-import { SignUpPage } from '../pages/signup';
-import { LayoutAdmin } from '@common/admin-layout';
-import { AdminPage } from '@pages/admin';
-import { LayoutUser } from '@common/user-layout';
+
+const Pipeline = lazy(() => import('@pages/pipeline'));
+const AdminPage = lazy(() => import('@pages/admin'));
+const Contact = lazy(() => import('@pages/contact'));
+const EmailCompose = lazy(() => import('@pages/email-compose'));
+const SettingPage = lazy(() => import('@pages/setting'));
+const HomePage = lazy(() => import('@pages/home'));
+const LoginPage = lazy(() => import('@pages/login'));
+const SignUpPage = lazy(() => import('@pages/signup'));
+const LayoutAdmin = lazy(() => import('@pages/admin'));
+const LayoutUser = lazy(() => import('@common/user-layout'));
 
 export const route: RouteObject[] = [
   {
