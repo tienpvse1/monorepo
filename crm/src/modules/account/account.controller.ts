@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
+import { IsPassthrough } from 'src/common/decorators/passthrough.decorator';
 import { HasRoles } from 'src/common/decorators/role/decorator';
 import { Roles } from 'src/constance';
 import { AUTHORIZATION } from 'src/constance/swagger';
@@ -41,6 +42,7 @@ import { Account } from './entities/account.entity';
     },
   },
 })
+@IsPassthrough()
 export class AccountController {
   constructor(public service: AccountService) {}
 }

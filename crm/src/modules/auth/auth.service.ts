@@ -144,8 +144,10 @@ export class AuthService {
     response: Response,
   ) {
     const account = await this.getAccountForAuth(email);
-
     try {
+      if (!account) {
+        throw new UnauthorizedException("account doesn't exist");
+      }
       if (!account.password)
         throw new UnauthorizedException(
           'account already registered with google login method',
