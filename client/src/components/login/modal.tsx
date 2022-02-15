@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import { Modal as Dialog } from 'antd';
 interface ModalProps {
   reset: () => void;
 }
 
-export const Modal: React.FC<ModalProps> = ({ reset }) => {
+const Modal: React.FC<ModalProps> = ({ reset }) => {
   return (
     <>
       <Dialog
@@ -17,3 +18,5 @@ export const Modal: React.FC<ModalProps> = ({ reset }) => {
     </>
   );
 };
+
+export default Modal;

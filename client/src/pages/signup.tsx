@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import { LottieBackGround } from '../components/background';
 import { SignUpForm } from '../components/signup/signup-form';
-import { motion } from 'framer-motion'
+import { motion } from 'framer-motion';
 import lottieFile from '../animation/background-login.json';
 
-export const SignUpPage = () => {
+const SignUpPage = () => {
   return (
     <div className='wrapper-background'>
       <LottieBackGround data={lottieFile} />
@@ -32,3 +32,5 @@ export const SignUpPage = () => {
     </div>
   );
 };
+
+export default SignUpPage;
