@@ -26,3 +26,5 @@ export class Axios {
     );
   }
 }
+
+export const { instance } = new Axios();
