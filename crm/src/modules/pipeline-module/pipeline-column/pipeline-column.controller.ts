@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Param, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { AUTHORIZATION } from 'src/constance/swagger';
@@ -24,8 +24,21 @@ import { PipelineColumnService } from './pipeline-column.service';
       field: 'id',
       primary: true,
     },
+    pipelineId: {
+      type: 'uuid',
+      field: 'pipelineId',
+      primary: false,
+    },
   },
 })
 export class PipelineColumnController {
   constructor(public service: PipelineColumnService) {}
+
+  @Post('relation/:pipelineId')
+  addColumn(
+    @Body() createColumnDto: CreatePipelineColumnDto,
+    @Param('pipelineId') pipelineId: string,
+  ) {
+    return this.service.addColumn(pipelineId, createColumnDto);
+  }
 }
