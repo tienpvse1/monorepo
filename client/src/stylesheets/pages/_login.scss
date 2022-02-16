@@ -15,27 +15,15 @@
     text-align: center;
     margin-right: 100px;
     width: 365px;
-    height: 520px;
-    background-color: rgba(255, 255, 255, 0.88);
+    height: 500px;
+    background-color: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(10px);
     border-radius: 5px;
     box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.3);
 }
 
-.header-form {
-    font-size: 14px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    h1 {
-        margin-top: 40px;
-        font-size: 30px;
-    }
-    span {
-        color: black;
-        margin-top: -10px;
-    }
+.icon-login-form {
+    margin-top: 30px;
 }
 
 .login-form {
@@ -65,8 +53,9 @@
     align-items: center;
 }
 
-.footer-login-from {
-    padding-bottom: 15px;
+.logo-login-from {
+    margin-left: 30px;
+    padding-top: 15px;
 }
 
 .wrapper-background a {

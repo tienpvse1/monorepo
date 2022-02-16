@@ -1,16 +1,16 @@
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-const Pipeline = lazy(() => import('@pages/pipeline'));
-const AdminPage = lazy(() => import('@pages/admin'));
 const Contact = lazy(() => import('@pages/contact'));
-const EmailCompose = lazy(() => import('@pages/email-compose'));
-const SettingPage = lazy(() => import('@pages/setting'));
 const HomePage = lazy(() => import('@pages/home'));
+const Pipeline = lazy(() => import('@pages/pipeline'));
 const LoginPage = lazy(() => import('@pages/login'));
+const AdminPage = lazy(() => import('@pages/admin'));
 const SignUpPage = lazy(() => import('@pages/signup'));
-const LayoutAdmin = lazy(() => import('@pages/admin'));
 const LayoutUser = lazy(() => import('@common/user-layout'));
+const SettingPage = lazy(() => import('@pages/setting'));
+const LayoutAdmin = lazy(() => import('@pages/admin'));
+const EmailCompose = lazy(() => import('@pages/email-compose'));
 
 export const route: RouteObject[] = [
   {
