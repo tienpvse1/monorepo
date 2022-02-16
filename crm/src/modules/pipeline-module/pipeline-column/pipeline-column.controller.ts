@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, Param, ParseUUIDPipe, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { AUTHORIZATION } from 'src/constance/swagger';
@@ -37,7 +37,7 @@ export class PipelineColumnController {
   @Post('relation/:pipelineId')
   addColumn(
     @Body() createColumnDto: CreatePipelineColumnDto,
-    @Param('pipelineId') pipelineId: string,
+    @Param('pipelineId', new ParseUUIDPipe()) pipelineId: string,
   ) {
     return this.service.addColumn(pipelineId, createColumnDto);
   }
