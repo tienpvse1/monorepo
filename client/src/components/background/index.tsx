@@ -1,11 +1,15 @@
 import { motion } from 'framer-motion';
 import Lottie, { Options } from 'react-lottie';
 
-interface ILottieBackGround {
+interface ILottieFile {
   data: any;
+  height: string | number;
+  width: string | number;
+  style?: React.CSSProperties;
+  classNameWrapper?: string;
 }
 
-export const LottieBackGround: React.FC<ILottieBackGround> = ({ data }) => {
+export const LottieFile: React.FC<ILottieFile> = ({ data, height, width, style, classNameWrapper }) => {
   const defaultOptions: Options = {
     loop: true,
     autoplay: true,
@@ -16,13 +20,12 @@ export const LottieBackGround: React.FC<ILottieBackGround> = ({ data }) => {
   };
   return (
     <motion.div
-      
-      className='lottie-bg'
+      className={classNameWrapper}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.5, duration: 1 }}
     >
-      <Lottie options={defaultOptions} height={550} width={750} />
+      <Lottie style={style} options={defaultOptions} height={height} width={width} />
     </motion.div>
   );
 };
