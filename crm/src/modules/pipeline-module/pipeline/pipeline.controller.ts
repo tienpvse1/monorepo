@@ -1,18 +1,8 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Crud, Override } from '@nestjsx/crud';
 import { User } from 'src/common/decorators/user.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
-import { FindManyOptions, getCustomRepository } from 'typeorm';
-import { AccountRepository } from '../../account/account.repository';
-import { Account } from '../../account/entities/account.entity';
 import { CreatePipelineDto } from './dto/create-pipeline.dto';
 import { UpdatePipelineDto } from './dto/update-pipeline.dto';
 import { Pipeline } from './entities/pipeline.entity';
@@ -21,43 +11,52 @@ import { PipelineService } from './pipeline.service';
 @Controller('pipeline')
 @ApiBearerAuth(AUTHORIZATION)
 @ApiTags('pipeline')
+@Crud({
+  model: {
+    type: Pipeline,
+  },
+  dto: {
+    create: CreatePipelineDto,
+    update: UpdatePipelineDto,
+    replace: UpdatePipelineDto,
+  },
+  params: {
+    id: {
+      type: 'uuid',
+      field: 'id',
+      primary: true,
+    },
+  },
+  query: {
+    join: {
+      pipelineColumns: {},
+      'pipelineColumns.pipelineItems': {
+        alias: 'columnItems',
+      },
+    },
+  },
+})
 export class PipelineController {
-  constructor(private readonly pipelineService: PipelineService) {}
-
-  @Post()
-  async create(
-    @Body() { name }: CreatePipelineDto,
-    @User('id') accountId: string,
-  ) {
-    const accountRepository = getCustomRepository(AccountRepository);
-    return this.pipelineService.addWithOneToOneRelation<Account>(
-      { name },
-      accountId,
-      accountRepository,
-      'pipeline',
-    );
+  constructor(public service: PipelineService) {}
+  // @Override('getOneBase')
+  // getOneItem(@User('id') userId: string) {
+  //   return this.service.findOwnOnePipeline(userId);
+  // }
+  @Get('own')
+  getOwnPipeline(@User('id') userId: string) {
+    return this.service.findOwnOnePipeline(userId);
   }
 
-  @Get()
-  findAll(@Body() filter: FindManyOptions<Pipeline>) {
-    return this.pipelineService.findMany(filter);
+  @Delete('soft/:id')
+  softDelete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 
-  @Get('/my-pipeline')
-  findOne(@User('id') id: string) {
-    return this.pipelineService.findOne({ where: { account: { id } } });
-  }
-
-  @Patch(':id')
-  update(
+  @Override('replaceOneBase')
+  replacePipeline(
     @Param('id') id: string,
-    @Body() updatePipelineDto: UpdatePipelineDto,
+    @Body() pipeline: UpdatePipelineDto,
   ) {
-    return this.pipelineService.update(id, updatePipelineDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.pipelineService.delete(id);
+    return this.service.safeUpdate(id, pipeline);
   }
 }

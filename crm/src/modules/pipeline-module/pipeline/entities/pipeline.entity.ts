@@ -15,7 +15,7 @@ export class Pipeline extends BaseEntity {
   @OneToMany(
     () => PipelineColumn,
     (pipelineColumn) => pipelineColumn.pipeline,
-    { eager: true },
+    { eager: true, cascade: true },
   )
   pipelineColumns: PipelineColumn[];
 }

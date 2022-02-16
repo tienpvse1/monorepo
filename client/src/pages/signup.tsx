@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { SignUpForm } from '../components/signup/signup-form';
-import { motion } from 'framer-motion'
+import { motion } from 'framer-motion';
 
-export const SignUpPage = () => {
+const SignUpPage = () => {
   return (
     <div className='wrapper-background'>
       <motion.div
@@ -29,3 +29,5 @@ export const SignUpPage = () => {
     </div>
   );
 };
+
+export default SignUpPage;

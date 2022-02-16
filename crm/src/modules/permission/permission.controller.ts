@@ -18,6 +18,13 @@ import { PermissionService } from './permission.service';
     create: CreatePermissionDto,
     update: UpdatePermissionDto,
   },
+  params: {
+    id: {
+      type: 'uuid',
+      field: 'id',
+      primary: true,
+    },
+  },
 })
 export class PermissionController {
   constructor(public service: PermissionService) {}

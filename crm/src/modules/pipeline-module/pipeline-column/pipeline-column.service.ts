@@ -1,17 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CRUDService } from 'src/base/base.service';
+import { BaseService } from 'src/base/nestjsx.service';
+import { Repository } from 'typeorm';
 import { PipelineColumn } from './entities/pipeline-column.entity';
-import { PipelineColumnRepository } from './pipeline-column.repository';
 
 @Injectable()
-export class PipelineColumnService extends CRUDService<
-  PipelineColumn,
-  PipelineColumnRepository
-> {
+export class PipelineColumnService extends BaseService<PipelineColumn> {
   constructor(
-    @InjectRepository(PipelineColumnRepository)
-    repository: PipelineColumnRepository,
+    @InjectRepository(PipelineColumn)
+    repository: Repository<PipelineColumn>,
   ) {
     super(repository);
   }
