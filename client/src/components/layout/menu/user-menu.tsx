@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   BranchesOutlined,
   CalendarOutlined,
@@ -8,6 +9,7 @@ import {
   UserOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
+import { envVars } from '@env/var.env';
 import { Menu } from 'antd';
 const { SubMenu } = Menu;
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -96,7 +98,7 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
         >
           <Menu.Item key='slack' style={style}>
             <img
-              src={'/slack.png'}
+              src={`${envVars.VITE_BE_DOMAIN}/files/slack.png`}
               height={20}
               width={20}
               style={{
@@ -108,7 +110,7 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
 
           <Menu.Item key='notion' style={style}>
             <img
-              src={'/notion.png'}
+              src={`${envVars.VITE_BE_DOMAIN}/files/notion.png`}
               height={20}
               width={20}
               style={{
@@ -119,7 +121,7 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
           </Menu.Item>
           <Menu.Item key='googleDrive' style={style}>
             <img
-              src={'/google-drive.png'}
+              src={`${envVars.VITE_BE_DOMAIN}/files/google-drive.png`}
               height={20}
               width={20}
               style={{
@@ -153,7 +155,6 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
             Add plugin
           </Menu.Item>
         </SubMenu>
-
       </Menu>
     </>
   );
