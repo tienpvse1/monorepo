@@ -16,7 +16,7 @@ export const ShadowColumnCreate: FC<ShadowColumnCreateProps> = ({ pipelineId, cu
   const { createPipelineColumn } = usePostPipelineColumn();
 
   const onCreate = (values: ICreatePipelineColumnDto) => {
-    createPipelineColumn({ ...values, index: currentIndexColumn, pipelineId: pipelineId });
+    createPipelineColumn({ ...values, index: currentIndexColumn, pipelineId: pipelineId });    
     setVisible();
   };
 
