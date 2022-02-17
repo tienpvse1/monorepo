@@ -1,6 +1,5 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
 import { Loading } from '@components/loading/loading';
-import { Contact } from '@modules/contact/entity/contact.entity';
 import { useContacts } from '@modules/contact/query/contact.get';
 import { Button, Space, Table, Tag } from 'antd';
 import Column from 'antd/lib/table/Column';
@@ -18,7 +17,6 @@ export const ContactData = () => {
   const { data, isLoading, error } = useContacts();
   const title = () => <ContactHeader />;
   if (isLoading) return <Loading />;
-  if (error) console.log(error);
 
   return (
     <>

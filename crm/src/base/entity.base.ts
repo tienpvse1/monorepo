@@ -1,13 +1,15 @@
+import { nanoid } from 'nanoid';
 import {
   BaseEntity as RootBaseEntity,
+  BeforeInsert,
   CreateDateColumn,
   DeleteDateColumn,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 export class BaseEntity extends RootBaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn({ length: 10 })
   id: string;
 
   @CreateDateColumn({ name: 'created_at' })
@@ -16,4 +18,11 @@ export class BaseEntity extends RootBaseEntity {
   updatedAt: Date;
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
+
+  @BeforeInsert()
+  generateID() {
+    if (this.id == null) {
+      this.id = nanoid(10);
+    }
+  }
 }
