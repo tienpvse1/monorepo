@@ -4,6 +4,6 @@ export class CreatePipelineItemDto {
   @Length(1)
   name: string;
   @IsNumber()
-  @Min(1)
+  @Min(0)
   index: number;
 }
