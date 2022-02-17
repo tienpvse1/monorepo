@@ -12,7 +12,7 @@ export const useHandleDnD = (data: IPipeline) => {
       ...data,
       pipelineColumns: newColumn
     }
-    
+
     updatePipeline(newState);
   }
 
@@ -25,15 +25,15 @@ export const useHandleDnD = (data: IPipeline) => {
     //lấy mảng pipelineColumns ra
     const pipelineNewColumns = Array.from(data.pipelineColumns);
 
-    reassign(pipelineNewColumns, startIndex, {...pipelineNewColumns[startIndex], index: finishIndex })
-    reassign(pipelineNewColumns, finishIndex, {...pipelineNewColumns[finishIndex], index: startIndex })
+    reassign(pipelineNewColumns, startIndex, { ...pipelineNewColumns[startIndex], index: finishIndex })
+    reassign(pipelineNewColumns, finishIndex, { ...pipelineNewColumns[finishIndex], index: startIndex })
 
 
     // lấy ra dữ liệu column đang được nắm kéo
-    const [newItemColumn] = pipelineNewColumns.splice(startIndex, 1);
+    // const [newItemColumn] = pipelineNewColumns.splice(startIndex, 1);
 
     // thêm dữ liệu column vừa đc lấy ra bỏ vào vị trí điểm đến finishIndex
-    pipelineNewColumns.splice(finishIndex, 0, newItemColumn);
+    // pipelineNewColumns.splice(finishIndex, 0, newItemColumn);
 
     //set lại column mới vô state
     setNewPipeline(pipelineNewColumns);
