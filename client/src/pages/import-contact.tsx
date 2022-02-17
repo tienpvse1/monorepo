@@ -1,12 +1,22 @@
+import { FC, lazy, Suspense, useState } from 'react';
 import Upload from '@common/upload';
-import React from 'react';
+import { Loading } from '@components/loading/loading';
+const PreviewContactTable = lazy(
+  () => import('@components/import-contact/preview-contact-table')
+);
+import { CreateContactDto } from '@modules/contact/dto/create-contact.dto';
 
-interface AddContactProps {}
-
-const ImportContact: React.FC<AddContactProps> = ({}) => {
+const ImportContact: FC = () => {
+  const [contacts, setContacts] = useState<CreateContactDto[]>([]);
   return (
     <div>
-      <Upload />
+      {contacts.length <= 0 ? (
+        <Upload setContacts={setContacts} />
+      ) : (
+        <Suspense fallback={<Loading />}>
+          <PreviewContactTable contacts={contacts} setContacts={setContacts} />
+        </Suspense>
+      )}
     </div>
   );
 };

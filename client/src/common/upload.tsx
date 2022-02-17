@@ -1,14 +1,17 @@
 import { InboxOutlined } from '@ant-design/icons';
+import { CreateContactDto } from '@modules/contact/dto/create-contact.dto';
 import { readExcel } from '@util/excel';
 import { UploadChangeParam } from 'antd/lib/upload';
 import Dragger from 'antd/lib/upload/Dragger';
-import React from 'react';
-interface UploadProps {}
+import React, { Dispatch, SetStateAction } from 'react';
+interface UploadProps {
+  setContacts: Dispatch<SetStateAction<CreateContactDto[]>>;
+}
 
-const Upload: React.FC<UploadProps> = ({}) => {
+const Upload: React.FC<UploadProps> = ({ setContacts }) => {
   const handleChange = async (info: UploadChangeParam<any>) => {
     const data = await readExcel(info.file);
-    console.log(data);
+    setContacts(data);
   };
 
   return (

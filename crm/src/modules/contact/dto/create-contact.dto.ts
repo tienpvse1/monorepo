@@ -1,12 +1,19 @@
-import { IsArray, IsPhoneNumber, MinLength } from 'class-validator';
+import {
+  IsOptional,
+  IsPhoneNumber,
+  IsString,
+  MinLength,
+} from 'class-validator';
 
 export class CreateContactDto {
   @MinLength(2)
   name: string;
-  @MinLength(20)
+  @MinLength(5)
+  @IsOptional()
   address?: string;
   @IsPhoneNumber('VN')
+  @IsOptional()
   phone?: string;
-  @IsArray()
-  type?: string[];
+  @IsString()
+  type?: string;
 }
