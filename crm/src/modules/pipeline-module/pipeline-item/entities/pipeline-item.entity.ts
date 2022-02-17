@@ -1,8 +1,9 @@
 import { BaseEntity } from 'src/base/entity.base';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, Unique } from 'typeorm';
 import { PipelineColumn } from '../../pipeline-column/entities/pipeline-column.entity';
 
 @Entity({ name: 'pipeline_item' })
+@Unique(['index', 'pipelineColumn.id'])
 export class PipelineItem extends BaseEntity {
   @Column()
   name: string;
