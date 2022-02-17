@@ -1,8 +1,9 @@
-import { FileAddOutlined } from '@ant-design/icons';
+import { FileAddOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { CreateContactDto } from '@modules/contact/dto/create-contact.dto';
 import { useBulkInsertContact } from '@modules/contact/mutation/contact.post';
-import { removeDuplicate } from '@util/array';
-import { Button, Radio, Table, Tag } from 'antd';
+import { contactSchema } from '@modules/contact/schema/contact.schema';
+import { removeDuplicate, removeMissingProps } from '@util/array';
+import { Button, Popover, Radio, Table, Tag } from 'antd';
 import Column from 'antd/lib/table/Column';
 import { nanoid } from 'nanoid';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
@@ -36,12 +37,17 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
     return <Navigate to={'/contact'} />;
   }
 
-  const handleChange = (value: Types) => {
+  const handleChange = async (value: Types) => {
     if (value === Types.ALL) {
       setPreviewData(initialData);
     } else if (value === Types.CLEANED) {
-      setContacts(removeDuplicate<CreateContactDto>(initialData, 'phone'));
+      setPreviewData(removeDuplicate<CreateContactDto>(initialData, 'phone'));
     } else {
+      const filteredData = await removeMissingProps<CreateContactDto>(
+        initialData,
+        contactSchema
+      );
+      setPreviewData(filteredData);
     }
   };
 
@@ -74,6 +80,28 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
             },
           ]}
         />
+        <Popover
+          placement='right'
+          content={
+            <div style={{ padding: '0 20px' }}>
+              <p>All: all data will be displayed</p>
+              <p>
+                Cleaned: contact with duplicated email, phone number will be
+                removed
+              </p>
+              <p>
+                Full-filled: contact with missing information will be removed
+              </p>
+            </div>
+          }
+          title='HINT'
+        >
+          <span>
+            <QuestionCircleOutlined
+              style={{ marginLeft: 10, fontSize: 20, color: 'rgba(0,0,0,0.4)' }}
+            />
+          </span>
+        </Popover>
       </div>
       <Table dataSource={previewData} rowKey={() => nanoid(3)}>
         <Column title='Name' dataIndex='name' key='name' />
