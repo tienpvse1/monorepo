@@ -11,7 +11,7 @@ interface SaveModalProps {
   rawContacts: CreateContactDto[];
 }
 
-export const SaveModal: React.FC<SaveModalProps> = ({
+const SaveModal: React.FC<SaveModalProps> = ({
   setShowModal,
   handleSave,
   rawContacts,
@@ -56,3 +56,5 @@ export const SaveModal: React.FC<SaveModalProps> = ({
     </>
   );
 };
+
+export default SaveModal;

@@ -6,9 +6,9 @@ import { removeDuplicate, removeMissingProps } from '@util/array';
 import { Button, Popover, Radio, Table, Tag } from 'antd';
 import Column from 'antd/lib/table/Column';
 import { nanoid } from 'nanoid';
-import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { Dispatch, FC, lazy, SetStateAction, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { SaveModal } from './save-modal';
+const SaveModal = lazy(() => import('./save-modal'));
 
 interface PreviewContactTableProps {
   contacts: CreateContactDto[];
