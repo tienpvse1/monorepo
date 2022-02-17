@@ -8,13 +8,14 @@ import Column from 'antd/lib/table/Column';
 import { nanoid } from 'nanoid';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import { SaveModal } from './save-modal';
 
 interface PreviewContactTableProps {
   contacts: CreateContactDto[];
   setContacts: Dispatch<SetStateAction<CreateContactDto[]>>;
 }
 
-enum Types {
+export enum Types {
   ALL = 'all',
   CLEANED = 'cleaned',
   FULL_FILLED = 'full-filled',
@@ -25,10 +26,11 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
   setContacts,
 }) => {
   const initialData = contacts.slice(0);
+  const [showModal, setShowModal] = useState(false);
   const { mutate, isSuccess } = useBulkInsertContact();
   const [previewData, setPreviewData] = useState(initialData);
-  const handleSaveData = () => {
-    const data = { bulk: contacts };
+  const handleSaveData = (contactData: CreateContactDto[]) => {
+    const data = { bulk: contactData };
     console.log(data);
     mutate(data);
   };
@@ -53,10 +55,17 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
 
   return (
     <>
+      {showModal && (
+        <SaveModal
+          setShowModal={setShowModal}
+          handleSave={handleSaveData}
+          rawContacts={initialData}
+        />
+      )}
       <Button
         style={{ margin: '20px 0px' }}
         type='primary'
-        onClick={handleSaveData}
+        onClick={() => setShowModal(true)}
       >
         save data
       </Button>
@@ -107,7 +116,7 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
         <Column title='Name' dataIndex='name' key='name' />
         <Column title='Address' dataIndex='address' key='address' />
         <Column title='Birth' dataIndex='birth' key='birth' />
-        <Column title='Address' dataIndex='address' key='address' />
+        <Column title='Phone' dataIndex='phone' key='phone' />
         <Column
           title='Type'
           dataIndex='type'
