@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Put,
+  UsePipes,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { User } from 'src/common/decorators/user.decorator';
@@ -6,6 +14,7 @@ import { AUTHORIZATION } from 'src/constance/swagger';
 import { CreatePipelineDto } from './dto/create-pipeline.dto';
 import { UpdatePipelineDto } from './dto/update-pipeline.dto';
 import { Pipeline } from './entities/pipeline.entity';
+import { ValidationPipe } from './pipe/validation.pipe';
 import { PipelineService } from './pipeline.service';
 
 @Controller('pipeline')
@@ -53,6 +62,7 @@ export class PipelineController {
   }
 
   @Put('/replace/:id')
+  @UsePipes(new ValidationPipe())
   replacePipeline(
     @Param('id') id: string,
     @Body() updatePipelineDto: UpdatePipelineDto,
