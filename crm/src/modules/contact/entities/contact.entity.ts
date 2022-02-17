@@ -11,6 +11,6 @@ export class Contact extends BaseEntity {
   address: string;
   @Column({ nullable: true })
   phone: string;
-  @Column({ nullable: true, type: 'simple-array' })
-  type: string[];
+  @Column({ nullable: true })
+  type: string;
 }
