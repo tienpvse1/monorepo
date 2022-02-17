@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Param } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Crud, Override } from '@nestjsx/crud';
+import { Crud } from '@nestjsx/crud';
 import { User } from 'src/common/decorators/user.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
 import { CreatePipelineDto } from './dto/create-pipeline.dto';
@@ -52,11 +52,11 @@ export class PipelineController {
     return this.service.softDelete(id);
   }
 
-  @Override('replaceOneBase')
+  @Put('/replace/:id')
   replacePipeline(
     @Param('id') id: string,
-    @Body() pipeline: UpdatePipelineDto,
+    @Body() updatePipelineDto: UpdatePipelineDto,
   ) {
-    return this.service.safeUpdate(id, pipeline);
+    return this.service.updatePipeline(id, updatePipelineDto);
   }
 }
