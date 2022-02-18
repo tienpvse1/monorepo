@@ -4,12 +4,13 @@ import { useCookies } from 'react-cookie';
 import { MenuProfile } from './dropdown/dropdown-profile';
 
 export const DropdownProfile = () => {
+  
   const [cookies] = useCookies([PUBLIC_USER_INFO]);
 
   const publicInfo = cookies.public_user_info;
 
   return (
-    <Dropdown overlay={<MenuProfile />} trigger={['click']}>
+    <Dropdown overlay={<MenuProfile />} trigger={['hover']} >
       <div className='ant-dropdown-link'>
         <Avatar
           src={
