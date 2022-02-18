@@ -13,7 +13,7 @@ import { openNotification } from '@util/notification';
 import { Button, Input, Modal } from 'antd';
 import { useRef, useState } from 'react';
 import EmailEditor, { Design } from 'react-email-editor';
-export const EmailCompose: React.FC = () => {
+const EmailCompose: React.FC = () => {
   // necessary state
   const emailEditorRef = useRef<EmailEditor>(null);
   const [templates, setTemplates] = useState<IEmailTemplate[]>([]);
@@ -143,3 +143,5 @@ export const EmailCompose: React.FC = () => {
     </>
   );
 };
+
+export default EmailCompose;

@@ -6,9 +6,16 @@ import { PipelineColumn } from '../../pipeline-column/entities/pipeline-column.e
 export class PipelineItem extends BaseEntity {
   @Column()
   name: string;
+
+  @Column({ default: 1, name: 'index_position' })
+  index: number;
   @ManyToOne(
     () => PipelineColumn,
     (pipelineColumn) => pipelineColumn.pipelineItems,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
   )
   @JoinColumn({
     name: 'pipeline_column_id',

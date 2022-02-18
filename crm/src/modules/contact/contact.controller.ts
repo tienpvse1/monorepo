@@ -16,6 +16,13 @@ import { Contact } from './entities/contact.entity';
     create: CreateContactDto,
     update: UpdateContactDto,
   },
+  params: {
+    id: {
+      type: 'uuid',
+      field: 'id',
+      primary: true,
+    },
+  },
 })
 export class ContactController {
   constructor(public readonly service: ContactService) {}

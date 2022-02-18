@@ -42,23 +42,21 @@ export class AuthService {
   };
 
   getAccountForAuth = async (email: string) => {
-    try {
-      const account = await this.accountService.findOne({
-        where: { email },
-        select: [
-          'email',
-          'password',
-          'id',
-          'role',
-          'firstName',
-          'lastName',
-          'isSocialAccount',
-          'permissions',
-        ],
-        relations: ['permissions'],
-      });
-      return account;
-    } catch (error) {}
+    const account = await this.accountService.findOne({
+      where: { email },
+      select: [
+        'email',
+        'password',
+        'id',
+        'role',
+        'firstName',
+        'lastName',
+        'isSocialAccount',
+        'photo',
+      ],
+      relations: ['role', 'role.permissions'],
+    });
+    return account;
   };
 
   generateJWTToken(account: Account) {
@@ -147,8 +145,10 @@ export class AuthService {
     response: Response,
   ) {
     const account = await this.getAccountForAuth(email);
-
     try {
+      if (!account) {
+        throw new UnauthorizedException("account doesn't exist");
+      }
       if (!account.password)
         throw new UnauthorizedException(
           'account already registered with google login method',
@@ -174,7 +174,9 @@ export class AuthService {
               role: account.role,
               email: account.email,
               id: account.id,
-              permissions: account.permissions,
+              photo: account.photo,
+              firstName: account.firstName,
+              lastName: account.lastName,
             },
           },
           message: 'successfully',
@@ -183,10 +185,13 @@ export class AuthService {
       }
 
       const session = await this.sessionService.create({
-        accountId: account.id,
-        role: account.role,
+        account: account,
         ip: getIp(ip),
       });
+      // saving session to account
+      account.session = session;
+      account.password = password;
+      await account.save();
       response.cookie('sessionId', session.id, { httpOnly: true });
       response.status(HttpStatus.OK).json({
         data: {
@@ -195,7 +200,9 @@ export class AuthService {
             role: account.role,
             email: account.email,
             id: account.id,
-            permission: account.permissions,
+            photo: account.photo,
+            firstName: account.firstName,
+            lastName: account.lastName,
           },
         },
         message: 'successfully',

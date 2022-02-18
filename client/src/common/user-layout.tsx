@@ -5,9 +5,9 @@ import { useCookies } from 'react-cookie';
 import { Navigate, Outlet } from 'react-router-dom';
 import { LayoutApp } from './layout';
 
-export const LayoutUser = () => {
+const LayoutUser = () => {
   const [cookies] = useCookies([PUBLIC_USER_INFO]);
-
+  if (!cookies.public_user_info) return <Navigate to={'/login'} />;
   const { role } = cookies.public_user_info;
 
   if (!role) return <Navigate to={'/admin'} />;
@@ -21,3 +21,4 @@ export const LayoutUser = () => {
     />
   );
 };
+export default LayoutUser;

@@ -6,10 +6,10 @@ import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { useGetPipeLineUser } from '@modules/pipeline/query/pipeline.get';
 import { FC } from 'react';
-import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { PipeLineColumn } from '../components/pipelines/column';
 
-export const Pipeline: FC = () => {
+const Pipeline: FC = () => {
   const { data } = useGetPipeLineUser();
 
   const pipeLineDataApi: IPipeline[] = [
@@ -18,7 +18,7 @@ export const Pipeline: FC = () => {
       createdAt: null!,
       deletedAt: null!,
       updatedAt: null!,
-      name: "Pipeline Default",
+      name: 'Pipeline Default',
       account: null!,
       pipelineColumns: [
         {
@@ -26,49 +26,50 @@ export const Pipeline: FC = () => {
           createdAt: null!,
           deletedAt: null!,
           updatedAt: null!,
-          name: "todo",
-          pipeline: "string",
+          name: 'todo',
+          pipeline: 'string',
           pipelineItems: [
             {
-              id: "t1",
-              name: "my todo 1",
+              id: 't1',
+              name: 'my todo 1',
               createdAt: null!,
               deletedAt: null!,
               updatedAt: null!,
-              pipelineColumn: null!
-            }
-          ]
+              pipelineColumn: null!,
+            },
+          ],
         },
         {
           id: '',
           createdAt: null!,
           deletedAt: null!,
           updatedAt: null!,
-          name: "inProgress",
-          pipeline: "string",
-          pipelineItems: []
+          name: 'inProgress',
+          pipeline: 'string',
+          pipelineItems: [],
         },
         {
           id: '',
           createdAt: null!,
           deletedAt: null!,
           updatedAt: null!,
-          name: "report",
-          pipeline: "string",
-          pipelineItems: []
-        }
-      ]
-    }
-  ]
+          name: 'report',
+          pipeline: 'string',
+          pipelineItems: [],
+        },
+      ],
+    },
+  ];
 
-  const totalColumn = data?.[0].pipelineColumns.length;
+  const totalColumn = data?.[0]?.pipelineColumns.length || 1;
   const widthOfItem = 333;
 
   const {
     pipeline,
     handleMoveColumn,
     handleMoveItemColumn,
-    handleMoveItemsBetweenColumns } = useHandleDnD(pipeLineDataApi)
+    handleMoveItemsBetweenColumns,
+  } = useHandleDnD(pipeLineDataApi);
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -81,10 +82,8 @@ export const Pipeline: FC = () => {
     const finishColumnName = destination.droppableId;
 
     //nếu kéo thả ở 1 vị trí -> return tránh xử lý code bên dưới
-    if (
-      finishColumnName === startColumnName &&
-      finishIndex === startIndex
-    ) return;
+    if (finishColumnName === startColumnName && finishIndex === startIndex)
+      return;
 
     //Xử lý cho kéo thả cột
     if (result.type == 'column') {
@@ -100,9 +99,14 @@ export const Pipeline: FC = () => {
       }
 
       //di chuyển các item qua lại nhiều cột
-      handleMoveItemsBetweenColumns(startIndex, finishIndex, startColumnName, finishColumnName);
+      handleMoveItemsBetweenColumns(
+        startIndex,
+        finishIndex,
+        startColumnName,
+        finishColumnName
+      );
     }
-  }
+  };
 
   return (
     <>
@@ -110,9 +114,9 @@ export const Pipeline: FC = () => {
       <ScrollBarHorizontal>
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable
-            droppableId="all-columns"
-            direction="horizontal"
-            type="column"
+            droppableId='all-columns'
+            direction='horizontal'
+            type='column'
           >
             {(providedColumns) => (
               <>
@@ -122,11 +126,17 @@ export const Pipeline: FC = () => {
                   {...providedColumns.droppableProps}
                   ref={providedColumns.innerRef}
                 >
-                  {data?.[0].pipelineColumns.map((pipelineColumn: IPipelineColumn, index: number) =>
-                    <PipeLineColumn index={index} key={pipelineColumn.id} pipelineColumn={pipelineColumn} />)
-                  }
+                  {data?.[0]?.pipelineColumns.map(
+                    (pipelineColumn: IPipelineColumn, index: number) => (
+                      <PipeLineColumn
+                        index={index}
+                        key={pipelineColumn.id}
+                        pipelineColumn={pipelineColumn}
+                      />
+                    )
+                  )}
                   {providedColumns.placeholder}
-                  <ShadowColumnCreate pipelineId={data?.[0].id}/>
+                  <ShadowColumnCreate pipelineId={data?.[0]?.id} />
                 </div>
               </>
             )}
@@ -134,5 +144,7 @@ export const Pipeline: FC = () => {
         </DragDropContext>
       </ScrollBarHorizontal>
     </>
-  )
-}
+  );
+};
+
+export default Pipeline;

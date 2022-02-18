@@ -2,7 +2,7 @@ import { BaseEntity } from 'src/base/entity.base';
 import { Account } from 'src/modules/account/entities/account.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 
-@Entity({ name: 'lead' })
+@Entity({ name: 'lead_resource' })
 export class Lead extends BaseEntity {
   @Column()
   name: string;

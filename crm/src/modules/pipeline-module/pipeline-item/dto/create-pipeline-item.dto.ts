@@ -1,4 +1,9 @@
+import { IsNumber, Length, Min } from 'class-validator';
+
 export class CreatePipelineItemDto {
+  @Length(1)
   name: string;
-  pipelineColumnId: string;
+  @IsNumber()
+  @Min(1)
+  index: number;
 }

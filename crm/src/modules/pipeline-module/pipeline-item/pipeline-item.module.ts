@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { PipelineItemService } from './pipeline-item.service';
-import { PipelineItemController } from './pipeline-item.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PipelineItemRepository } from './pipeline-item.repository';
+import { PipelineItem } from './entities/pipeline-item.entity';
+import { PipelineItemController } from './pipeline-item.controller';
+import { PipelineItemService } from './pipeline-item.service';
 
 @Module({
   controllers: [PipelineItemController],
   providers: [PipelineItemService],
-  imports: [TypeOrmModule.forFeature([PipelineItemRepository])],
+  imports: [TypeOrmModule.forFeature([PipelineItem])],
 })
 export class PipelineItemModule {}

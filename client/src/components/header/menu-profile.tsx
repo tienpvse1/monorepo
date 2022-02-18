@@ -1,13 +1,23 @@
+import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { Avatar, Dropdown } from 'antd';
+import { useCookies } from 'react-cookie';
 import { MenuProfile } from './dropdown/dropdown-profile';
 
 export const DropdownProfile = () => {
   
+  const [cookies] = useCookies([PUBLIC_USER_INFO]);
+
+  const publicInfo = cookies.public_user_info;
+
   return (
     <Dropdown overlay={<MenuProfile />} trigger={['hover']} >
       <div className='ant-dropdown-link'>
         <Avatar
-          src='https://joeschmoe.io/api/v1/random'
+          src={
+            publicInfo.photo
+              ? publicInfo.photo
+              : 'https://buildyourspechere.com/wp-content/uploads/2020/10/placeholder-image-person-jpg-340x281.jpg'
+          }
           size={30}
           style={{ marginBottom: '8px' }}
         />
@@ -19,7 +29,7 @@ export const DropdownProfile = () => {
             fontWeight: 600,
           }}
         >
-          Tokuda
+          {publicInfo.firstName}
         </span>
       </div>
     </Dropdown>
