@@ -50,12 +50,17 @@ export const ContactData: FC = () => {
     });
   };
 
-  const handleSave = (record: Contact) => {
-    toggleEditing();
-    mutate({
-      id: record.id,
-      ...form.getFieldsValue(),
-    });
+  const handleSave = async (id: string) => {
+    try {
+      const record = await form.validateFields();
+      toggleEditing();
+      mutate({
+        id,
+        ...record,
+      });
+    } catch (error) {
+      return;
+    }
   };
   return (
     <>
@@ -84,6 +89,12 @@ export const ContactData: FC = () => {
                   recordIndex={record.id}
                   title='Name'
                   record={record}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Name is required',
+                    },
+                  ]}
                 />
               )}
             />
@@ -97,8 +108,14 @@ export const ContactData: FC = () => {
                   editing={isEditing}
                   editingIndex={editingIndex}
                   recordIndex={record.id}
-                  title='Name'
+                  title='Address'
                   record={record}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Address is required',
+                    },
+                  ]}
                 />
               )}
             />
@@ -114,6 +131,16 @@ export const ContactData: FC = () => {
                   recordIndex={record.id}
                   title='Name'
                   record={record}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'name is required',
+                    },
+                    {
+                      pattern: /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
+                      message: 'must be phone number',
+                    },
+                  ]}
                 />
               )}
             />
@@ -129,6 +156,16 @@ export const ContactData: FC = () => {
                   recordIndex={record.id}
                   title='Name'
                   record={record}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Address is required',
+                    },
+                    {
+                      type: 'email',
+                      message: 'must be email',
+                    },
+                  ]}
                 />
               )}
             />
@@ -152,7 +189,7 @@ export const ContactData: FC = () => {
                 <Space size='small' style={{ width: '100%' }}>
                   {isEditing && record.id === editingIndex ? (
                     <>
-                      <Button type='link' onClick={() => handleSave(record)}>
+                      <Button type='link' onClick={() => handleSave(record.id)}>
                         Save
                       </Button>
                       <Popconfirm

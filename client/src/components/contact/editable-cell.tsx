@@ -1,5 +1,6 @@
 import { Contact } from '@modules/contact/entity/contact.entity';
 import { Form, Input, InputNumber } from 'antd';
+import { Rule } from 'antd/lib/form';
 import { HTMLAttributes } from 'react';
 
 interface EditableCellProps extends HTMLAttributes<HTMLElement> {
@@ -10,6 +11,7 @@ interface EditableCellProps extends HTMLAttributes<HTMLElement> {
   recordIndex: string;
   editingIndex: string;
   record: Contact;
+  rules?: Rule[];
 }
 
 export const EditableCell: React.FC<EditableCellProps> = ({
@@ -21,21 +23,13 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   children,
   editingIndex,
   record,
+  rules = [],
 }) => {
   const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
   return (
     <>
       {editing && recordIndex === editingIndex ? (
-        <Form.Item
-          name={dataIndex}
-          style={{ margin: 0 }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`,
-            },
-          ]}
-        >
+        <Form.Item name={dataIndex} style={{ margin: 0 }} rules={rules}>
           {inputNode}
         </Form.Item>
       ) : (
