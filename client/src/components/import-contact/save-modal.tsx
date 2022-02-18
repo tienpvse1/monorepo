@@ -18,19 +18,25 @@ const SaveModal: React.FC<SaveModalProps> = ({
 }) => {
   const [type, setType] = useState<Types>(Types.ALL);
   const onOk = async (event: any) => {
+    console.log('children called');
     if (type === Types.ALL) {
       handleSave(rawContacts);
+      setShowModal(false);
+      return;
     }
     if (type === Types.CLEANED) {
       handleSave(removeDuplicate<CreateContactDto>(rawContacts, 'phone'));
+      setShowModal(false);
+      return;
     } else {
       const filteredData = await removeMissingProps<CreateContactDto>(
         rawContacts,
         contactSchema
       );
       handleSave(filteredData);
+      setShowModal(false);
+      return;
     }
-    setShowModal(false);
   };
 
   return (
