@@ -7,4 +7,5 @@ export const contactSchema: SchemaOf<CreateContactDto> = object().shape({
   name: string().required(),
   phone: string().required(),
   type: string().required(),
+  email: string().required(),
 });

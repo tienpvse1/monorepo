@@ -115,8 +115,10 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
       <Table dataSource={previewData} rowKey={() => nanoid(3)}>
         <Column title='Name' dataIndex='name' key='name' />
         <Column title='Address' dataIndex='address' key='address' />
-        <Column title='Birth' dataIndex='birth' key='birth' />
         <Column title='Phone' dataIndex='phone' key='phone' />
+        <Column title='Birth' dataIndex='birth' key='birth' />
+        <Column title='Email' dataIndex='email' key='email' />
+        <Column title='Birth' dataIndex='birth' key='birth' />
         <Column
           title='Type'
           dataIndex='type'

@@ -4,4 +4,5 @@ export interface CreateContactDto {
   address: string;
   type: string;
   birth: string;
+  email: string;
 }
