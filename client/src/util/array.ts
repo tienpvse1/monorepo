@@ -5,7 +5,6 @@ export const removeDuplicate = <T>(array: T[], field: keyof T) => {
     (value, index, self) =>
       index === self.findIndex((t) => t[field] === value[field])
   );
-  console.log(array);
 
   return items;
 };

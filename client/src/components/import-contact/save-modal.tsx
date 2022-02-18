@@ -17,7 +17,7 @@ const SaveModal: React.FC<SaveModalProps> = ({
   rawContacts,
 }) => {
   const [type, setType] = useState<Types>(Types.ALL);
-  const onOk = async (type: any) => {
+  const onOk = async (event: any) => {
     if (type === Types.ALL) {
       handleSave(rawContacts);
     }
