@@ -5,5 +5,6 @@ export interface Contact extends IBase {
   phone: string;
   address: string;
   type: string;
-  birth: Date;
+  birth: string;
+  email: string;
 }
