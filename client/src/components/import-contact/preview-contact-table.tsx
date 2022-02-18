@@ -5,6 +5,7 @@ import { contactSchema } from '@modules/contact/schema/contact.schema';
 import { removeDuplicate, removeMissingProps } from '@util/array';
 import { Button, Popover, Radio, Table, Tag } from 'antd';
 import Column from 'antd/lib/table/Column';
+import { clone } from 'lodash';
 import { nanoid } from 'nanoid';
 import { Dispatch, FC, lazy, SetStateAction, useState } from 'react';
 import { Navigate } from 'react-router-dom';
@@ -25,10 +26,11 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
   contacts,
   setContacts,
 }) => {
-  const initialData = contacts.slice(0);
+  const initialData = clone(contacts);
   const [showModal, setShowModal] = useState(false);
   const { mutate, isSuccess } = useBulkInsertContact();
   const [previewData, setPreviewData] = useState(initialData);
+
   const handleSaveData = (contactData: CreateContactDto[]) => {
     const data = { bulk: contactData };
     mutate(data);
