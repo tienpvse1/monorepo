@@ -5,19 +5,26 @@ import { useHandleDnD } from '@hooks/useHandleDnD';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import { useGetPipeLineUser } from '@modules/pipeline/query/pipeline.get';
 import { sortPipeline } from '@util/sort';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { PipeLineColumn } from '../components/pipelines/column';
 
 const Pipeline: FC = () => {
   const { data } = useGetPipeLineUser();
   const {
+    newPipeLine,
+    isError,
+    setPipeLine,
     handleMoveColumn,
     handleMoveItemColumn,
     handleMoveItemsBetweenColumns
   } = useHandleDnD(data);
 
-  if (data !== undefined) {sortPipeline(data)};
+  useEffect(() => {    
+    setPipeLine(data);
+  }, [data, isError])
+
+  if (data !== undefined) { sortPipeline(data) };
 
   const totalColumn = data?.pipelineColumns.length || 1;
   const widthOfItem = 333;
@@ -77,7 +84,7 @@ const Pipeline: FC = () => {
                   {...providedColumns.droppableProps}
                   ref={providedColumns.innerRef}
                 >
-                  {data?.pipelineColumns.map(
+                  {newPipeLine?.pipelineColumns.map(
                     (pipelineColumn: IPipelineColumn) => (
                       <PipeLineColumn
                         index={pipelineColumn.index}

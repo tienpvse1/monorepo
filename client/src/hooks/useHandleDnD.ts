@@ -1,19 +1,22 @@
 import { IPipelineColumn } from "@modules/pipeline-column/entity/pipeline-column.entity";
 import { IPipeline } from "@modules/pipeline/entity/pipeline.entity";
 import { useUpdatePipeline } from "@modules/pipeline/mutation/pipeline.update";
+import { useState } from "react";
 
 export const useHandleDnD = (data: IPipeline) => {
 
-  const { updatePipeline } = useUpdatePipeline();
+  const [newPipeLine, setPipeLine] = useState<IPipeline>();
+  const { updatePipeline, isError } = useUpdatePipeline();
 
   const setNewPipeline = (newColumn: IPipelineColumn[]) => {
+
     const newState =
     {
       ...data,
       pipelineColumns: newColumn
     }
-
-    updatePipeline(newState);
+    setPipeLine(newState);
+    updatePipeline(newState); 
   }
 
   const reassign = (array: Array<IPipelineColumn>, index: number, newValue: IPipelineColumn) => {
@@ -30,10 +33,10 @@ export const useHandleDnD = (data: IPipeline) => {
 
 
     // lấy ra dữ liệu column đang được nắm kéo
-    // const [newItemColumn] = pipelineNewColumns.splice(startIndex, 1);
+    const [newItemColumn] = pipelineNewColumns.splice(startIndex, 1);
 
     // thêm dữ liệu column vừa đc lấy ra bỏ vào vị trí điểm đến finishIndex
-    // pipelineNewColumns.splice(finishIndex, 0, newItemColumn);
+    pipelineNewColumns.splice(finishIndex, 0, newItemColumn);
 
     //set lại column mới vô state
     setNewPipeline(pipelineNewColumns);
@@ -100,6 +103,9 @@ export const useHandleDnD = (data: IPipeline) => {
   }
 
   return {
+    newPipeLine,
+    setPipeLine,
+    isError,
     handleMoveColumn,
     handleMoveItemColumn,
     handleMoveItemsBetweenColumns

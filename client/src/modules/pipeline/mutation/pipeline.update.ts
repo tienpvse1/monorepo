@@ -8,17 +8,21 @@ const { PIPELINE } = controllers;
 
 export const actionPutPipeline = async ({ id, ...rest }: IPipeline) => {
   const { instance } = new Axios();
-  const { data } = await instance.put(`${PIPELINE}/${id}`, { ...rest });
+  const { data } = await instance.put(`${PIPELINE}/replace/${id}`, { ...rest });
 
   return data;
 }
 
 export const useUpdatePipeline = () => {
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation(actionPutPipeline,
+  const { mutate, isLoading, isError } = useMutation(actionPutPipeline,
     {
-      onSuccess: () => { queryClient.invalidateQueries(PIPELINE) },
-      onError: () => { message.error('update pipeline failed!') }
+      onSuccess: () => {
+        queryClient.invalidateQueries(PIPELINE);
+      },
+      onError: () => {
+        message.error('Oops something went wrong!');
+      }
     }
   );
 
@@ -26,5 +30,5 @@ export const useUpdatePipeline = () => {
     mutate(pipeline);
   }
 
-  return { updatePipeline, isLoading };
+  return { updatePipeline, isLoading, isError };
 }

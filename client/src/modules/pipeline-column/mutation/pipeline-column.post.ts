@@ -6,9 +6,9 @@ import { ICreatePipelineColumnDto } from "../dto/create-pipeline-column.dto"
 
 const { PIPELINE_COLUMN, PIPELINE } = controllers;
 
-export const postPipelineColumn = async (pipelineColumn: ICreatePipelineColumnDto) => {
+export const postPipelineColumn = async ({pipelineId, ...value}: ICreatePipelineColumnDto) => {
   const { instance } = new Axios();
-  const { data } = await instance.post(`${PIPELINE_COLUMN}/relation/${pipelineColumn.pipelineId}`, { ...pipelineColumn });
+  const { data } = await instance.post(`${PIPELINE_COLUMN}/relation/${pipelineId}`, { ...value });
 
   return data;
 }
