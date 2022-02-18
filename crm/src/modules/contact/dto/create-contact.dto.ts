@@ -1,4 +1,5 @@
 import {
+  IsEmail,
   IsOptional,
   IsPhoneNumber,
   IsString,
@@ -15,5 +16,9 @@ export class CreateContactDto {
   @IsOptional()
   phone?: string;
   @IsString()
+  @IsOptional()
   type?: string;
+  @IsEmail()
+  @IsOptional()
+  email?: string;
 }

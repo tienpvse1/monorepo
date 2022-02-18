@@ -13,4 +13,7 @@ export class Contact extends BaseEntity {
   phone: string;
   @Column({ nullable: true })
   type: string;
+
+  @Column({ nullable: true })
+  email: string;
 }
