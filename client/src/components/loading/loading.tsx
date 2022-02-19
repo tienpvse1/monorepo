@@ -1,18 +1,35 @@
 import { FC } from 'react';
 import LoadingComponent from 'react-loading';
 
-export const Loading: FC = () => {
+interface LoadingProps {
+  coverHeight?: string | number;
+  coverWidth?: string | number;
+  loadingHeight?: number | string;
+  loadingWidth?: number | string;
+}
+
+export const Loading: FC<LoadingProps> = ({
+  coverHeight = '100vh',
+  coverWidth = '100vw',
+  loadingHeight = 75,
+  loadingWidth = 75,
+}) => {
   return (
     <div
       style={{
-        height: '100vh',
-        width: '100vw',
+        height: coverHeight,
+        width: coverWidth,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
       }}
     >
-      <LoadingComponent type='spin' color='red' height={75} width={75} />
+      <LoadingComponent
+        type='spin'
+        color='red'
+        height={loadingHeight}
+        width={loadingWidth}
+      />
     </div>
   );
 };
