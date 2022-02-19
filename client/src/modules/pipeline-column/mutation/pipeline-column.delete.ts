@@ -1,5 +1,6 @@
 import { Axios } from "@axios";
 import { controllers } from "@constance/controllers";
+import { message } from "antd";
 import { useMutation, useQueryClient } from "react-query";
 const { PIPELINE_COLUMN, PIPELINE } = controllers;
 
@@ -15,7 +16,7 @@ export const useDeletePipelineColumn = () => {
   const { mutate, isLoading } = useMutation(actionDeletePipelineColumn,
     {
       onSuccess: () => { queryClient.invalidateQueries(PIPELINE) },
-      onError: () => console.log('delete pipeline column failed!')
+      onError: () => { message.error('delete pipeline column failed!') }
     }
   );
 

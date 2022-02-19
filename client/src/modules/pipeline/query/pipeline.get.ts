@@ -7,7 +7,7 @@ const { PIPELINE } = controllers;
 export const getPipelineUser = async () => {
   const { instance } = new Axios();
   const { data } = await instance.get<IPipeline>(`${PIPELINE}/own`);
-  return [data];
+  return data;
 };
 
 export const useGetPipeLineUser = () => {

@@ -3,73 +3,31 @@ import { ShadowColumnCreate } from '@components/pipelines/pipeline-column/shadow
 import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-horizontal';
 import { useHandleDnD } from '@hooks/useHandleDnD';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { useGetPipeLineUser } from '@modules/pipeline/query/pipeline.get';
-import { FC } from 'react';
+import { sortPipeline } from '@util/sort';
+import { FC, useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { PipeLineColumn } from '../components/pipelines/column';
 
 const Pipeline: FC = () => {
   const { data } = useGetPipeLineUser();
-
-  const pipeLineDataApi: IPipeline[] = [
-    {
-      id: '',
-      createdAt: null!,
-      deletedAt: null!,
-      updatedAt: null!,
-      name: 'Pipeline Default',
-      account: null!,
-      pipelineColumns: [
-        {
-          id: '',
-          createdAt: null!,
-          deletedAt: null!,
-          updatedAt: null!,
-          name: 'todo',
-          pipeline: 'string',
-          pipelineItems: [
-            {
-              id: 't1',
-              name: 'my todo 1',
-              createdAt: null!,
-              deletedAt: null!,
-              updatedAt: null!,
-              pipelineColumn: null!,
-            },
-          ],
-        },
-        {
-          id: '',
-          createdAt: null!,
-          deletedAt: null!,
-          updatedAt: null!,
-          name: 'inProgress',
-          pipeline: 'string',
-          pipelineItems: [],
-        },
-        {
-          id: '',
-          createdAt: null!,
-          deletedAt: null!,
-          updatedAt: null!,
-          name: 'report',
-          pipeline: 'string',
-          pipelineItems: [],
-        },
-      ],
-    },
-  ];
-
-  const totalColumn = data?.[0]?.pipelineColumns.length || 1;
-  const widthOfItem = 333;
-
   const {
-    pipeline,
+    newPipeLine,
+    isError,
+    setPipeLine,
     handleMoveColumn,
     handleMoveItemColumn,
-    handleMoveItemsBetweenColumns,
-  } = useHandleDnD(pipeLineDataApi);
+    handleMoveItemsBetweenColumns
+  } = useHandleDnD(data);
+
+  useEffect(() => {    
+    setPipeLine(data);
+  }, [data, isError])
+
+  if (data !== undefined) { sortPipeline(data) };
+
+  const totalColumn = data?.pipelineColumns.length || 1;
+  const widthOfItem = 333;
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -126,17 +84,17 @@ const Pipeline: FC = () => {
                   {...providedColumns.droppableProps}
                   ref={providedColumns.innerRef}
                 >
-                  {data?.[0]?.pipelineColumns.map(
-                    (pipelineColumn: IPipelineColumn, index: number) => (
+                  {newPipeLine?.pipelineColumns.map(
+                    (pipelineColumn: IPipelineColumn) => (
                       <PipeLineColumn
-                        index={index}
+                        index={pipelineColumn.index}
                         key={pipelineColumn.id}
                         pipelineColumn={pipelineColumn}
                       />
                     )
                   )}
                   {providedColumns.placeholder}
-                  <ShadowColumnCreate pipelineId={data?.[0]?.id} />
+                  <ShadowColumnCreate pipelineId={data?.id} currentIndexColumn={data?.pipelineColumns.length} />
                 </div>
               </>
             )}
