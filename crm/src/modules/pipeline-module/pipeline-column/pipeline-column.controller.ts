@@ -30,6 +30,9 @@ import { PipelineColumnService } from './pipeline-column.service';
       primary: false,
     },
   },
+  routes: {
+    exclude: ['createOneBase', 'createManyBase'],
+  },
 })
 export class PipelineColumnController {
   constructor(public service: PipelineColumnService) {}
