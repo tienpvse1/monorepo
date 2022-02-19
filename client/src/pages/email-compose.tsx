@@ -5,10 +5,7 @@ import {
 import { MyModal } from '@components/email-compose/templates-model';
 import { Loading } from '@components/loading/loading';
 import { useDebounce } from '@hooks/debounce';
-import {
-  getContactsEmailLike,
-  useContactsWithEmailLike,
-} from '@modules/contact/query/contact.get';
+import { getContactsEmailLike } from '@modules/contact/query/contact.get';
 import { IEmailTemplate } from '@modules/email-temlate/entity/email-template.entity';
 import {
   findAllTemplates,

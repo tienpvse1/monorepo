@@ -1,5 +1,6 @@
 import { Axios } from "@axios";
 import { controllers } from "@constance/controllers";
+import { message } from "antd";
 import { useMutation, useQueryClient } from "react-query";
 import { ICreatePipelineColumnDto } from "../dto/create-pipeline-column.dto"
 const { PIPELINE_COLUMN, PIPELINE } = controllers;
@@ -17,7 +18,7 @@ export const useUpdatePipelineColumn = () => {
   const { mutate, isLoading } = useMutation(actionPatchPipelineColumn,
     {
       onSuccess: () => { queryClient.invalidateQueries(PIPELINE) },
-      onError: () => console.log('update pipeline column name failed!')
+      onError: () => { message.error('update pipeline column name failed!') }
     }
   );
 

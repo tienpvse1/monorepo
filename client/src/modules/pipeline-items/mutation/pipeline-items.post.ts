@@ -1,5 +1,6 @@
 import { Axios } from "@axios";
 import { controllers } from "@constance/controllers";
+import { message } from "antd";
 import { useMutation, useQueryClient } from "react-query";
 import { ICreatePipelineItemsDto } from "../dto/create-pipeline-items.dto";
 
@@ -19,7 +20,7 @@ export const usePostPipelineItems = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(PIPELINE);
       },
-      onError: () => console.log('add pipeline items failed!')
+      onError: () => { message.error('add pipeline items failed!') }
     }
   );
 
