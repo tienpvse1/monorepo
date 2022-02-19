@@ -3,6 +3,12 @@ import {
   warningProps,
 } from '@components/email-compose/confirm-modal';
 import { MyModal } from '@components/email-compose/templates-model';
+import { Loading } from '@components/loading/loading';
+import { useDebounce } from '@hooks/debounce';
+import {
+  getContactsEmailLike,
+  useContactsWithEmailLike,
+} from '@modules/contact/query/contact.get';
 import { IEmailTemplate } from '@modules/email-temlate/entity/email-template.entity';
 import {
   findAllTemplates,
@@ -10,11 +16,23 @@ import {
 } from '@modules/email-temlate/query/email-template.get';
 import { useSendEmail } from '@modules/email/mutate/email.post';
 import { openNotification } from '@util/notification';
-import { Button, Input, Modal } from 'antd';
+import { AutoComplete, Button, Input, Modal } from 'antd';
 import { useRef, useState } from 'react';
 import EmailEditor, { Design } from 'react-email-editor';
+import { useQuery } from 'react-query';
 const EmailCompose: React.FC = () => {
   // necessary state
+  const [searchKey, setSearchKey] = useState(undefined);
+
+  const debouncedFilter = useDebounce(searchKey, 500);
+
+  const { data: dataSource } = useQuery(
+    ['query-contact-like-email', debouncedFilter],
+    () => getContactsEmailLike(debouncedFilter),
+    {
+      enabled: Boolean(debouncedFilter),
+    }
+  );
   const emailEditorRef = useRef<EmailEditor>(null);
   const [templates, setTemplates] = useState<IEmailTemplate[]>([]);
   const [to, setTo] = useState('');
@@ -84,8 +102,25 @@ const EmailCompose: React.FC = () => {
         setModal={setCurrentModal}
         design={design!}
       />
+      <AutoComplete
+        style={{ width: '100%' }}
+        onChange={(e) => {
+          setSearchKey(e);
+          setTo(e);
+        }}
+        placeholder={'To'}
+        notFoundContent={
+          <Loading
+            coverWidth={'100%'}
+            coverHeight={180}
+            loadingHeight={40}
+            loadingWidth={40}
+          />
+        }
+        dataSource={dataSource}
+        filterOption={() => true}
+      />
 
-      <Input placeholder='to' onChange={(e) => setTo(e.target.value)} />
       <Input
         placeholder='Email subject'
         onChange={(e) => setSubject(e.target.value)}

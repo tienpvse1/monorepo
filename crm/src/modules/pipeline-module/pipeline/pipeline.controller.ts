@@ -44,6 +44,9 @@ import { PipelineService } from './pipeline.service';
       },
     },
   },
+  routes: {
+    exclude: ['replaceOneBase', 'createManyBase'],
+  },
 })
 export class PipelineController {
   constructor(public service: PipelineService) {}
