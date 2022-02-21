@@ -45,15 +45,12 @@ import { PipelineService } from './pipeline.service';
     },
   },
   routes: {
-    exclude: ['replaceOneBase', 'createManyBase'],
+    exclude: ['replaceOneBase', 'createManyBase', 'getOneBase'],
   },
 })
 export class PipelineController {
   constructor(public service: PipelineService) {}
-  // @Override('getOneBase')
-  // getOneItem(@User('id') userId: string) {
-  //   return this.service.findOwnOnePipeline(userId);
-  // }
+
   @Get('own')
   getOwnPipeline(@User('id') userId: string) {
     return this.service.findOwnOnePipeline(userId);
