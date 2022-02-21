@@ -9,16 +9,11 @@ interface LayoutAppProps {
 }
 
 export const LayoutApp = ({ content, menuSider }: LayoutAppProps) => {
-
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <SiderApp>
-        {menuSider}
-      </SiderApp>
+      <SiderApp>{menuSider}</SiderApp>
 
-      <ContentApp>
-        {content}
-      </ContentApp>
+      <ContentApp>{content}</ContentApp>
     </Layout>
   );
 };
