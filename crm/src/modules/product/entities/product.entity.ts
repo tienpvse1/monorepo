@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/base/entity.base';
 import { Pipeline } from 'src/modules/pipeline-module/pipeline/entities/pipeline.entity';
-import { Column, Entity, OneToOne } from 'typeorm';
+import { ProductAccount } from 'src/modules/product-account/entities/product-account.entity';
+import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
 
 @Entity()
 export class Product extends BaseEntity {
@@ -18,4 +19,7 @@ export class Product extends BaseEntity {
 
   @OneToOne(() => Pipeline, (pipeline) => pipeline.product)
   pipeline: Pipeline;
+
+  @OneToMany(() => ProductAccount, (account) => account.product)
+  accounts: ProductAccount[];
 }

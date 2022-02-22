@@ -5,6 +5,7 @@ export const appConfig = () => ({
     secretToken: process.env.APP_SECRET_TOKEN || 'secretToken',
     dbHost: process.env.MYSQL_HOST || 'localhost',
     version: process.env.APP_VERSION || 'localhost',
+    idLength: process.env.ID_LENGTH || 10,
   },
   database: {
     password: process.env.MYSQL_ROOT_PASSWORD || '123456',

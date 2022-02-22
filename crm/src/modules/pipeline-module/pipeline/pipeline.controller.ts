@@ -7,7 +7,7 @@ import {
   Put,
   UsePipes,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { User } from 'src/common/decorators/user.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
@@ -63,6 +63,22 @@ export class PipelineController {
 
   @Put('/replace/:id')
   @UsePipes(new ValidationPipe())
+  @ApiOperation({
+    deprecated: true,
+    summary: 'DEPRECATED please use PUT api/v1/:id instead',
+  })
+  deprecatedReplacePipeline(
+    @Param('id') id: string,
+    @Body() updatePipelineDto: UpdatePipelineDto,
+  ) {
+    return this.service.updatePipeline(id, updatePipelineDto);
+  }
+  @Put('/:id')
+  @UsePipes(new ValidationPipe())
+  @ApiOperation({
+    description: "replace one pipeline by it's id",
+    summary: 'replace a single pipeline',
+  })
   replacePipeline(
     @Param('id') id: string,
     @Body() updatePipelineDto: UpdatePipelineDto,

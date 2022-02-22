@@ -45,7 +45,8 @@ export class AuthController {
     @Res() response: ExpressResponse,
     @Ip() ip: string,
   ) {
-    this.authService.loginUsingSession(loginRequest, ip, response);
+    const now = Date.now();
+    this.authService.loginUsingSession(loginRequest, ip, response, now);
   }
 
   @Get('google/redirect')
