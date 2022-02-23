@@ -21,10 +21,12 @@ export class TransformInterceptor<T>
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<ResponseObject<T>> {
+    const now = Date.now();
     return next.handle().pipe(
       map((data) => {
         const response: Response = context.switchToHttp().getResponse();
         return {
+          responseTime: `${Date.now() - now} ms`,
           message: response.statusMessage || 'success',
           statusCode: response.statusCode,
           data,

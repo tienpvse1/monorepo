@@ -1,25 +1,36 @@
 import { IPipelineColumn } from "@modules/pipeline-column/entity/pipeline-column.entity";
 import { IPipeline } from "@modules/pipeline/entity/pipeline.entity";
+import { useUpdatePipeline } from "@modules/pipeline/mutation/pipeline.update";
 import { useState } from "react";
 
-export const useHandleDnD = (data: IPipeline[]) => {
+export const useHandleDnD = (data: IPipeline) => {
 
-  const [pipeline, setPipeline] = useState(data);
+  const [newPipeLine, setPipeLine] = useState<IPipeline>();
+  const { updatePipeline, isError } = useUpdatePipeline();
 
   const setNewPipeline = (newColumn: IPipelineColumn[]) => {
-    const newState = [
-      {
-        ...pipeline[0],
-        pipelineColumns: newColumn
-      }
-    ]
 
-    setPipeline(newState);
+    const newState =
+    {
+      ...data,
+      pipelineColumns: newColumn
+    }
+    setPipeLine(newState);
+    updatePipeline(newState); 
+  }
+
+  const reassign = (array: Array<IPipelineColumn>, index: number, newValue: IPipelineColumn) => {
+    array[index] = newValue;
+    return array;
   }
 
   const handleMoveColumn = (startIndex: number, finishIndex: number) => {
     //lấy mảng pipelineColumns ra
-    const pipelineNewColumns = Array.from(pipeline[0].pipelineColumns);
+    const pipelineNewColumns = Array.from(data.pipelineColumns);
+
+    reassign(pipelineNewColumns, startIndex, { ...pipelineNewColumns[startIndex], index: finishIndex })
+    reassign(pipelineNewColumns, finishIndex, { ...pipelineNewColumns[finishIndex], index: startIndex })
+
 
     // lấy ra dữ liệu column đang được nắm kéo
     const [newItemColumn] = pipelineNewColumns.splice(startIndex, 1);
@@ -33,7 +44,7 @@ export const useHandleDnD = (data: IPipeline[]) => {
 
   const handleMoveItemColumn = (startIndex: number, finishIndex: number, columnName: string) => {
     // tìm column theo name và trả về giá trị column tìm đc
-    const column = pipeline[0].pipelineColumns.find(value =>
+    const column = data.pipelineColumns.find(value =>
       value.name == columnName)
 
     // lấy items của column vừa tìm được bỏ vào pipelineNewColumns
@@ -46,7 +57,7 @@ export const useHandleDnD = (data: IPipeline[]) => {
     pipelineNewItems.splice(finishIndex, 0, newItemColumn);
 
     //update lại pipeline mới sau khi đổi chỗ card
-    const newColumn = pipeline[0].pipelineColumns.map((item) => {
+    const newColumn = data.pipelineColumns.map((item) => {
       if (item.name == columnName)
         return { ...item, pipelineItems: pipelineNewItems };
       else
@@ -64,14 +75,14 @@ export const useHandleDnD = (data: IPipeline[]) => {
 
     //------------------------------------------------------------
     //lấy item đó ra khỏi column start
-    const column1 = pipeline[0].pipelineColumns.find(value =>
+    const column1 = data.pipelineColumns.find(value =>
       value.name == startColumnName)
 
     const NewItems1 = Array.from(column1!.pipelineItems);
     const [newItemColumn] = NewItems1.splice(startIndex, 1);
     //------------------------------------------------------------
     //bỏ item vừa lấy ra từ column start cho vào column finish
-    const column2 = pipeline[0].pipelineColumns.find(value =>
+    const column2 = data.pipelineColumns.find(value =>
       value.name == finishColumnName)
 
     const NewItems2 = Array.from(column2!.pipelineItems);
@@ -79,7 +90,7 @@ export const useHandleDnD = (data: IPipeline[]) => {
     //------------------------------------------------------------
 
     // update lại state mới sau khi đổi chỗ 
-    const newColumn = pipeline[0].pipelineColumns.map((item) => {
+    const newColumn = data.pipelineColumns.map((item) => {
       if (item.name == startColumnName)
         return { ...item, pipelineItems: NewItems1 };
       else if (item.name == finishColumnName)
@@ -92,9 +103,11 @@ export const useHandleDnD = (data: IPipeline[]) => {
   }
 
   return {
+    newPipeLine,
+    setPipeLine,
+    isError,
     handleMoveColumn,
     handleMoveItemColumn,
-    handleMoveItemsBetweenColumns,
-    pipeline
+    handleMoveItemsBetweenColumns
   };
 }

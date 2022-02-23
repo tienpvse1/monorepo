@@ -7,15 +7,16 @@ import { ModalFormCreateColumn } from './modal-form-create';
 
 interface ShadowColumnCreateProps {
   pipelineId: string;
+  currentIndexColumn: number
 }
 
-export const ShadowColumnCreate: FC<ShadowColumnCreateProps> = ({ pipelineId }) => {
+export const ShadowColumnCreate: FC<ShadowColumnCreateProps> = ({ pipelineId, currentIndexColumn }) => {
 
   const [visible, setVisible] = useToggle();
   const { createPipelineColumn } = usePostPipelineColumn();
 
   const onCreate = (values: ICreatePipelineColumnDto) => {
-    createPipelineColumn({ ...values, pipelineId: pipelineId });
+    createPipelineColumn({ ...values, index: currentIndexColumn, pipelineId: pipelineId });    
     setVisible();
   };
 

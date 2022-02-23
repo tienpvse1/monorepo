@@ -1,28 +1,48 @@
+import axios from 'axios';
 import { motion } from 'framer-motion';
-import Lottie, { Options } from 'react-lottie';
-
-interface ILottieBackGround {
-  data: any;
+import Lottie from 'react-lottie';
+import { useQuery } from 'react-query';
+interface ILottieFile {
+  dataURL: any;
+  height: string | number;
+  width: string | number;
+  style?: React.CSSProperties;
+  classNameWrapper?: string;
 }
 
-export const LottieBackGround: React.FC<ILottieBackGround> = ({ data }) => {
-  const defaultOptions: Options = {
-    loop: true,
-    autoplay: true,
-    animationData: data,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice',
-    },
+export const LottieFile: React.FC<ILottieFile> = ({
+  dataURL,
+  height,
+  width,
+  style,
+  classNameWrapper,
+}) => {
+  const getLottie = async () => {
+    const { data } = await axios.get(dataURL);
+    return data;
   };
+
+  const { data } = useQuery(dataURL, getLottie, { suspense: true });
   return (
     <motion.div
-      
-      className='lottie-bg'
+      className={classNameWrapper}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.5, duration: 1 }}
     >
-      <Lottie options={defaultOptions} height={550} width={750} />
+      <Lottie
+        style={style}
+        options={{
+          loop: true,
+          autoplay: true,
+          animationData: data,
+          rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice',
+          },
+        }}
+        height={height}
+        width={width}
+      />
     </motion.div>
   );
 };

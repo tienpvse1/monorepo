@@ -18,7 +18,7 @@ import { Contact } from './entities/contact.entity';
   },
   params: {
     id: {
-      type: 'uuid',
+      type: 'string',
       field: 'id',
       primary: true,
     },

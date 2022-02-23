@@ -5,6 +5,7 @@ import { db } from './db';
 
 export const savePermissions = async (permission: Permission[]) => {
   // first transform the permission so that casl can read an understand rules we provided
+  if (!permission || permission.length === 0) return;
   const transformedPermission = permission.map((item) => ({
     action: item.action,
     subject: item.subject,
@@ -16,8 +17,6 @@ export const savePermissions = async (permission: Permission[]) => {
   const transformedPermissionWithId = transformedPermission.map((item) =>
     Object.assign(item, { id: nanoid(5) })
   );
-
-  console.log(transformedPermissionWithId);
 
   const savedPermissions = await db.permission.bulkAdd(
     transformedPermissionWithId

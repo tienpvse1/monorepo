@@ -18,7 +18,7 @@ export class Session extends BaseEntity {
 
   @BeforeInsert()
   init() {
-    this.id = nanoid();
+    this.id = nanoid(10);
     this.expiredAt = generateExpireDate();
   }
 }

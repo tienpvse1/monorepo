@@ -5,4 +5,5 @@ export interface IPipelineColumn extends IBase {
   name: string;
   pipeline: string;
   pipelineItems: IPipelineItem[];
+  index: number;
 }

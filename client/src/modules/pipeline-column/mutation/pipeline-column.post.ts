@@ -1,13 +1,14 @@
 import { Axios } from "@axios";
 import { controllers } from "@constance/controllers";
+import { message } from "antd";
 import { useMutation, useQueryClient } from "react-query";
 import { ICreatePipelineColumnDto } from "../dto/create-pipeline-column.dto"
 
 const { PIPELINE_COLUMN, PIPELINE } = controllers;
 
-export const postPipelineColumn = async (pipelineColumn: ICreatePipelineColumnDto) => {
+export const postPipelineColumn = async ({pipelineId, ...value}: ICreatePipelineColumnDto) => {
   const { instance } = new Axios();
-  const { data } = await instance.post(PIPELINE_COLUMN, { ...pipelineColumn });
+  const { data } = await instance.post(`${PIPELINE_COLUMN}/relation/${pipelineId}`, { ...value });
 
   return data;
 }
@@ -17,7 +18,7 @@ export const usePostPipelineColumn = () => {
   const { mutate, isLoading } = useMutation(postPipelineColumn,
     {
       onSuccess: () => { queryClient.invalidateQueries(PIPELINE); },
-      onError: () => console.log('add pipeline column failed!')
+      onError: () => { message.error('add pipeline column failed!') }
     }
   );
 

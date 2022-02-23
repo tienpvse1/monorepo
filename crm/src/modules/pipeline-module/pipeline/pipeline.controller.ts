@@ -1,11 +1,20 @@
-import { Body, Controller, Delete, Get, Param } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Crud, Override } from '@nestjsx/crud';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Put,
+  UsePipes,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Crud } from '@nestjsx/crud';
 import { User } from 'src/common/decorators/user.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
 import { CreatePipelineDto } from './dto/create-pipeline.dto';
 import { UpdatePipelineDto } from './dto/update-pipeline.dto';
 import { Pipeline } from './entities/pipeline.entity';
+import { ValidationPipe } from './pipe/validation.pipe';
 import { PipelineService } from './pipeline.service';
 
 @Controller('pipeline')
@@ -35,13 +44,13 @@ import { PipelineService } from './pipeline.service';
       },
     },
   },
+  routes: {
+    exclude: ['replaceOneBase', 'createManyBase', 'getOneBase'],
+  },
 })
 export class PipelineController {
   constructor(public service: PipelineService) {}
-  // @Override('getOneBase')
-  // getOneItem(@User('id') userId: string) {
-  //   return this.service.findOwnOnePipeline(userId);
-  // }
+
   @Get('own')
   getOwnPipeline(@User('id') userId: string) {
     return this.service.findOwnOnePipeline(userId);
@@ -52,11 +61,28 @@ export class PipelineController {
     return this.service.softDelete(id);
   }
 
-  @Override('replaceOneBase')
+  @Put('/replace/:id')
+  @UsePipes(new ValidationPipe())
+  @ApiOperation({
+    deprecated: true,
+    summary: 'DEPRECATED please use PUT api/v1/:id instead',
+  })
+  deprecatedReplacePipeline(
+    @Param('id') id: string,
+    @Body() updatePipelineDto: UpdatePipelineDto,
+  ) {
+    return this.service.updatePipeline(id, updatePipelineDto);
+  }
+  @Put('/:id')
+  @UsePipes(new ValidationPipe())
+  @ApiOperation({
+    description: "replace one pipeline by it's id",
+    summary: 'replace a single pipeline',
+  })
   replacePipeline(
     @Param('id') id: string,
-    @Body() pipeline: UpdatePipelineDto,
+    @Body() updatePipelineDto: UpdatePipelineDto,
   ) {
-    return this.service.safeUpdate(id, pipeline);
+    return this.service.updatePipeline(id, updatePipelineDto);
   }
 }

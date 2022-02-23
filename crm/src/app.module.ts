@@ -29,6 +29,8 @@ import { SessionModule } from './modules/session/session.module';
 import { PermissionModule } from './modules/permission/permission.module';
 import { RoleModule } from './modules/role/role.module';
 import { HistoryModule } from './modules/history/history.module';
+import { ProductModule } from './modules/product/product.module';
+import { ProductAccountModule } from './modules/product-account/product-account.module';
 
 @Module({
   imports: [
@@ -57,6 +59,8 @@ import { HistoryModule } from './modules/history/history.module';
     PermissionModule,
     RoleModule,
     HistoryModule,
+    ProductModule,
+    ProductAccountModule,
   ],
   providers: [GlobalModule],
 })

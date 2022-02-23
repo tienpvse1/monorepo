@@ -5,7 +5,6 @@ import { DeepPartial, FindOneOptions, In, Repository } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { BaseRepository } from './base.repository';
 import { BaseEntity } from './entity.base';
-import { merge } from 'lodash';
 export class BaseService<Entity> extends TypeOrmCrudService<Entity> {
   repository: Repository<Entity>;
   constructor(modal: Repository<Entity>) {
@@ -22,11 +21,27 @@ export class BaseService<Entity> extends TypeOrmCrudService<Entity> {
       throw new BadRequestException(error.message);
     }
   }
+  async createManyItem(item: DeepPartial<Entity>[]) {
+    try {
+      const newItem = this.repository.create(item);
+      const createdItem = await this.repository.save(newItem);
+      return createdItem;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
 
-  async safeUpdate(id: string, item: QueryDeepPartialEntity<Entity>) {
+  async safeUpdate(
+    id: string,
+    item: QueryDeepPartialEntity<Entity>,
+    field: keyof Awaited<Entity> | keyof QueryDeepPartialEntity<Entity>,
+  ) {
     const foundItem = await this.repository.findOne(id);
     if (!foundItem) throw new NotFoundException(`${this.dbName} not found`);
-    merge(foundItem, item);
+
+    // @ts-ignore
+    foundItem[field] = item[field];
+
     return this.repository.save(foundItem);
   }
 
