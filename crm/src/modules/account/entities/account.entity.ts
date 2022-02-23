@@ -49,14 +49,23 @@ export class Account extends BaseEntity {
   @Column({ default: false, name: 'is_social_account' })
   isSocialAccount: boolean;
 
+  @Column({ nullable: true })
+  city?: string;
+  @Column({ nullable: true, name: 'postal_code' })
+  postalCode?: string;
+  @Column({ nullable: true })
+  state?: string;
+  @Column({ nullable: true })
+  country?: string;
+
   @OneToOne(() => Session, (session) => session.account)
   session: Session;
 
   @OneToOne(() => Pipeline, (pipeline) => pipeline.account)
   pipeline: Pipeline;
 
-  @OneToOne(() => File, (pipeline) => pipeline.account)
-  file: File;
+  @OneToMany(() => File, (pipeline) => pipeline.account)
+  files: File[];
 
   @OneToMany(() => EmailTemplate, (emailTemplates) => emailTemplates.account)
   emailTemplates: EmailTemplate[];
@@ -91,7 +100,7 @@ export class Account extends BaseEntity {
   @BeforeUpdate()
   hashPasswordBeforeUpdate() {
     if (this.password) {
-      this.password = hashSync(this.password, 10);
+      // this.password = hashSync(this.password, 10);
     }
   }
 }

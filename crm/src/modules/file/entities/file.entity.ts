@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/base/entity.base';
 import { Account } from 'src/modules/account/entities/account.entity';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class File extends BaseEntity {
@@ -9,7 +9,7 @@ export class File extends BaseEntity {
   @Column()
   name: string;
 
-  @OneToOne(() => Account, (account) => account.file)
+  @ManyToOne(() => Account, (account) => account.files)
   @JoinColumn({ name: 'account_id' })
   account: Account;
 }

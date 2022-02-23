@@ -2,6 +2,7 @@ import {
   ClassSerializerInterceptor,
   Controller,
   UseInterceptors,
+  UsePipes,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
@@ -13,6 +14,7 @@ import { AccountService } from './account.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { Account } from './entities/account.entity';
+import { ExcludePasswordPipe } from './exclude-password.pipe';
 
 @Controller('account')
 @ApiTags('account')
@@ -33,10 +35,13 @@ import { Account } from './entities/account.entity';
     createManyBase: {
       decorators: [HasRoles(Roles.ADMIN)],
     },
+    updateOneBase: {
+      decorators: [UsePipes(ExcludePasswordPipe)],
+    },
   },
   params: {
     id: {
-      type: 'uuid',
+      type: 'string',
       field: 'id',
       primary: true,
     },

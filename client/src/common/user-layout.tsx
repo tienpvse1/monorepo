@@ -10,9 +10,9 @@ const LayoutUser = () => {
   if (!cookies.public_user_info) return <Navigate to={'/login'} />;
   const { role } = cookies.public_user_info;
 
-  if (!role) return <Navigate to={'/admin'} />;
-  if (cookies.public_user_info?.role === Role.ADMIN)
-    return <Navigate to={'/admin'} />;
+  if (!role) return <Navigate to={'/login'} />;
+  if (cookies.public_user_info?.role === `${Role.ADMIN}1`)
+    return <Navigate to={'/administrator'} />;
 
   return (
     <LayoutApp
