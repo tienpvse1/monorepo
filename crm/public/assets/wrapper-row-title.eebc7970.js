@@ -1,1 +1,0 @@
-import{j as a,F as i,i as t,h as l,k as o}from"./vendor.1ad7f0a1.js";const p=({children:s,title:e,titleSize:r,className:n})=>a(i,{children:a(t,{children:l(o,{className:n,span:24,children:[a("span",{style:{fontSize:`${r}`},className:"title-admin-page",children:e}),s]})})});export{p as W};
