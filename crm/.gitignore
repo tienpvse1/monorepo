@@ -3,6 +3,8 @@
 /node_modules
 /documentation
 /data
+/public/assets/*.js
+/public/assets/*.css
 # Logs
 logs
 *.log
