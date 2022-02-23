@@ -21,5 +21,5 @@ export class Product extends BaseEntity {
   pipeline: Pipeline;
 
   @OneToMany(() => ProductAccount, (account) => account.product)
-  accounts: ProductAccount[];
+  productAccounts: ProductAccount[];
 }

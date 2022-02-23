@@ -7,7 +7,7 @@ export class History extends BaseEntity {
   @Column()
   ip: string;
 
-  @Column()
+  @Column({ nullable: true })
   name: string;
 
   @Column()
@@ -15,6 +15,9 @@ export class History extends BaseEntity {
 
   @Column()
   method: string;
+
+  @Column({ type: 'json', nullable: true })
+  payload: any;
 
   @ManyToOne(() => Account, (account) => account.histories)
   @JoinColumn({ name: 'account_id' })
