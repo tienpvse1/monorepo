@@ -3,6 +3,7 @@
 /node_modules
 /documentation
 /data
+
 # Logs
 logs
 *.log
