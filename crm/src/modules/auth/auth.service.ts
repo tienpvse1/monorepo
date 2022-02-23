@@ -143,6 +143,7 @@ export class AuthService {
     { email, password }: LoginRequestDto,
     ip: string,
     response: Response,
+    now: number,
   ) {
     const account = await this.getAccountForAuth(email);
     try {
@@ -179,6 +180,7 @@ export class AuthService {
               lastName: account.lastName,
             },
           },
+          responseTime: `${Date.now() - now} ms`,
           message: 'successfully',
           statusCode: HttpStatus.OK,
         });
@@ -205,6 +207,7 @@ export class AuthService {
             lastName: account.lastName,
           },
         },
+        responseTime: `${Date.now() - now} ms`,
         message: 'successfully',
         statusCode: HttpStatus.OK,
       });

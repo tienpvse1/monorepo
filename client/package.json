@@ -16,9 +16,11 @@
     "@vitejs/plugin-react": "^1.0.7",
     "antd": "^4.18.3",
     "axios": "^0.24.0",
+    "boom": "^7.3.0",
     "dexie": "^3.2.0",
     "dexie-react-hooks": "^1.1.1",
     "framer-motion": "^5.5.6",
+    "http-status-codes": "^2.2.0",
     "lodash": "^4.17.21",
     "nanoid": "^3.2.0",
     "react": "^17.0.2",
@@ -41,6 +43,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@types/boom": "^7.3.1",
     "@types/lodash": "^4.14.178",
     "@types/react": "^17.0.33",
     "@types/react-beautiful-dnd": "^13.1.2",

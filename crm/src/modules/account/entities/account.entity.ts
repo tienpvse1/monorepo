@@ -8,6 +8,7 @@ import { History } from 'src/modules/history/entities/history.entity';
 import { Lead } from 'src/modules/lead/entities/lead.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
 import { Pipeline } from 'src/modules/pipeline-module/pipeline/entities/pipeline.entity';
+import { ProductAccount } from 'src/modules/product-account/entities/product-account.entity';
 import { Role } from 'src/modules/role/entities/role.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
 import { Session } from 'src/modules/session/entities/session.entity';
@@ -75,6 +76,9 @@ export class Account extends BaseEntity {
   @ManyToOne(() => Role, (role) => role.accounts)
   @JoinColumn({ name: 'role_id' })
   role: Role;
+
+  @OneToMany(() => ProductAccount, (product) => product.account)
+  products: ProductAccount[];
 
   // hash the password before save or update it in database
   @BeforeInsert()

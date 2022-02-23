@@ -36,6 +36,7 @@ export const useContactsWithEmailLike = (queryKey: string) =>
     () => getContactsEmailLike(queryKey),
     {
       enabled: Boolean(queryKey),
+      useErrorBoundary: true,
     }
   );
 
