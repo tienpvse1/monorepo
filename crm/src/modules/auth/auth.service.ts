@@ -2,7 +2,7 @@ import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync } from 'bcryptjs';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { getIp } from 'src/util/ip';
 import { AccountService } from '../account/account.service';
 import { Account } from '../account/entities/account.entity';
@@ -142,7 +142,7 @@ export class AuthService {
   async loginUsingSession(
     { email, password }: LoginRequestDto,
     ip: string,
-    response: Response,
+    req: Request,
   ) {
     const account = await this.getAccountForAuth(email);
     try {
@@ -166,22 +166,18 @@ export class AuthService {
           sessionFromAccountId.id,
           getIp(ip),
         );
-        response.cookie('sessionId', session.id, { httpOnly: true });
-        return response.status(HttpStatus.OK).json({
-          data: {
-            sessionId: session.id,
-            publicData: {
-              role: account.role,
-              email: account.email,
-              id: account.id,
-              photo: account.photo,
-              firstName: account.firstName,
-              lastName: account.lastName,
-            },
+        req.res.cookie('sessionId', session.id, { httpOnly: true });
+        return {
+          sessionId: session.id,
+          publicData: {
+            role: account.role,
+            email: account.email,
+            id: account.id,
+            photo: account.photo,
+            firstName: account.firstName,
+            lastName: account.lastName,
           },
-          message: 'successfully',
-          statusCode: HttpStatus.OK,
-        });
+        };
       }
 
       const session = await this.sessionService.create({
@@ -192,28 +188,20 @@ export class AuthService {
       account.session = session;
       account.password = password;
       await account.save();
-      response.cookie('sessionId', session.id, { httpOnly: true });
-      response.status(HttpStatus.OK).json({
-        data: {
-          sessionId: session.id,
-          publicData: {
-            role: account.role,
-            email: account.email,
-            id: account.id,
-            photo: account.photo,
-            firstName: account.firstName,
-            lastName: account.lastName,
-          },
+      req.res.cookie('sessionId', session.id, { httpOnly: true });
+      return {
+        sessionId: session.id,
+        publicData: {
+          role: account.role,
+          email: account.email,
+          id: account.id,
+          photo: account.photo,
+          firstName: account.firstName,
+          lastName: account.lastName,
         },
-        message: 'successfully',
-        statusCode: HttpStatus.OK,
-      });
+      };
     } catch (error) {
-      response.status(HttpStatus.UNAUTHORIZED).json({
-        message: error.message,
-        statusCode: HttpStatus.UNAUTHORIZED,
-        timestamp: new Date().toISOString(),
-      });
+      throw new UnauthorizedException(error.message);
     }
   }
 }

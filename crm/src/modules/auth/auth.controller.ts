@@ -42,10 +42,10 @@ export class AuthController {
   @Public()
   loginUsingSessionMethod(
     @Body() loginRequest: LoginRequestDto,
-    @Res() response: ExpressResponse,
+    @Req() req: Request,
     @Ip() ip: string,
   ) {
-    this.authService.loginUsingSession(loginRequest, ip, response);
+    return this.authService.loginUsingSession(loginRequest, ip, req);
   }
 
   @Get('google/redirect')
