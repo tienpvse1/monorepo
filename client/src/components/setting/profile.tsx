@@ -5,7 +5,7 @@ import { useCookies } from 'react-cookie';
 import { Inplace } from './inplace';
 import { Image } from 'primereact/image';
 import { useUpdateAccount } from '@modules/account/mutation/account.patch';
-import { uploadFiles } from '@util/file';
+import { compressImage, uploadFiles } from '@util/file';
 import { envVars } from '@env/var.env';
 import { Toast } from 'primereact/toast';
 import { setCookie } from '@cookies';
@@ -37,7 +37,8 @@ export const Profile: React.FC<ProfileProps> = ({}) => {
   };
 
   const handleSubmit = async (photo: File) => {
-    const data = await uploadFiles([photo]);
+    const compressedPhoto = await compressImage(photo, 0.1);
+    const data = await uploadFiles([compressedPhoto]);
     const imageUrl = `${envVars.VITE_BE_DOMAIN}/files/${data[0].filename}`;
     mutate(
       {

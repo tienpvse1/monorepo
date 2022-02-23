@@ -1,5 +1,5 @@
 import { instance } from '@axios';
-
+import imageCompression from 'browser-image-compression';
 export interface UploadFileResponse {
   fieldname: string;
   originalname: string;
@@ -26,4 +26,22 @@ export const uploadFiles = async (files: File[]) => {
     }
   );
   return data;
+};
+
+export const compressImage = async (image: File, sizeMB: number) => {
+  const options = {
+    maxSizeMB: sizeMB,
+    maxWidthOrHeight: 1920,
+    useWebWorker: true,
+  };
+  try {
+    const compressedFile = await imageCompression(image, options);
+
+    console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+    return new File([compressedFile], `${compressedFile.name}.png`, {
+      type: 'image/png',
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
