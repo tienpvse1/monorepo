@@ -27,6 +27,7 @@ export const Inplace: React.FC<InplaceProps> = ({
       severity: 'success',
       summary: 'success',
       detail: 'profile has been updated',
+      
     });
   };
   return (

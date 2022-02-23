@@ -49,6 +49,15 @@ export class Account extends BaseEntity {
   @Column({ default: false, name: 'is_social_account' })
   isSocialAccount: boolean;
 
+  @Column({ nullable: true })
+  city?: string;
+  @Column({ nullable: true, name: 'postal_code' })
+  postalCode?: string;
+  @Column({ nullable: true })
+  state?: string;
+  @Column({ nullable: true })
+  country?: string;
+
   @OneToOne(() => Session, (session) => session.account)
   session: Session;
 
