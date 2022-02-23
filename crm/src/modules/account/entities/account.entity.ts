@@ -78,7 +78,7 @@ export class Account extends BaseEntity {
   role: Role;
 
   @OneToMany(() => ProductAccount, (product) => product.account)
-  products: ProductAccount[];
+  productAccounts: ProductAccount[];
 
   // hash the password before save or update it in database
   @BeforeInsert()

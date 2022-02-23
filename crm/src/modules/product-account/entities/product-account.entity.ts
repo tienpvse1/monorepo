@@ -5,13 +5,13 @@ import { Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity('product_account')
 export class ProductAccount extends BaseEntity {
-  @ManyToOne(() => Product, (product) => product.accounts, {
+  @ManyToOne(() => Product, (product) => product.productAccounts, {
     cascade: ['insert'],
   })
   @JoinColumn({ name: 'product_id' })
   product: Product;
 
-  @ManyToOne(() => Account, (account) => account.products, {
+  @ManyToOne(() => Account, (account) => account.productAccounts, {
     cascade: ['insert'],
   })
   @JoinColumn({ name: 'account_id' })
