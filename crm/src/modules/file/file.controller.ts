@@ -54,18 +54,20 @@ export class FileController {
     @UploadedFiles() files: Array<Express.Multer.File>,
     @User('id') id: string,
   ) {
-    if (files.length === 0) return;
-    const accountRepository = getCustomRepository(AccountRepository);
-    const file = files[0];
-    await this.service.addWithOneToOneRelation<Account>(
-      {
-        name: file.filename,
-        url: `http://kienvt.tech/files/${file.filename}`,
-      },
-      id,
-      accountRepository,
-      'file',
-    );
-    return files;
+    try {
+      if (files.length === 0) return;
+      const accountRepository = getCustomRepository(AccountRepository);
+      const file = files[0];
+      await this.service.addWithRelation<Account>(
+        {
+          name: file.filename,
+          url: `http://kienvt.tech/files/${file.filename}`,
+        },
+        id,
+        accountRepository,
+        'files',
+      );
+      return files;
+    } catch (error) {}
   }
 }

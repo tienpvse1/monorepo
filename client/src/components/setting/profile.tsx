@@ -1,18 +1,70 @@
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { Button } from 'primereact/button';
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Inplace } from './inplace';
 import { Image } from 'primereact/image';
+import { useUpdateAccount } from '@modules/account/mutation/account.patch';
+import { uploadFiles } from '@util/file';
+import { envVars } from '@env/var.env';
+import { Toast } from 'primereact/toast';
+import { setCookie } from '@cookies';
+
 interface ProfileProps {}
 
 export const Profile: React.FC<ProfileProps> = ({}) => {
   const [cookies] = useCookies([PUBLIC_USER_INFO]);
-
+  const inputRef = useRef<HTMLInputElement>(null);
+  const toast = useRef<Toast>(null);
   const publicData = cookies.public_user_info;
+  const [imageResource, setImageResource] = useState(publicData.photo);
+  const { mutate } = useUpdateAccount();
+
+  const showToast = (message = 'success' || 'fail') => {
+    if (message === 'fail') {
+      toast.current.show({
+        severity: 'warn',
+        summary: 'update failed',
+        detail: 'cannot update, please try again',
+      });
+    } else {
+      toast.current.show({
+        severity: 'success',
+        summary: 'success',
+        detail: 'profile has been updated',
+      });
+    }
+  };
+
+  const handleSubmit = async (photo: File) => {
+    const data = await uploadFiles([photo]);
+    const imageUrl = `${envVars.VITE_BE_DOMAIN}/files/${data[0].filename}`;
+    mutate(
+      {
+        id: publicData.id,
+        photo: `${imageUrl}`,
+      },
+      {
+        onSuccess: () => {
+          setCookie(
+            PUBLIC_USER_INFO,
+            JSON.stringify({ ...publicData, photo: imageUrl }),
+            0.5
+          );
+          setImageResource(URL.createObjectURL(photo));
+          showToast('success');
+        },
+        onError: () => {
+          showToast('fail');
+        },
+      }
+    );
+  };
 
   return (
     <div style={{ width: '75%', paddingLeft: 10 }}>
+      <Toast ref={toast} />
+
       <h1 style={{ fontSize: '30px', marginLeft: 30 }}>Edit Profile</h1>
       <div
         style={{
@@ -20,6 +72,7 @@ export const Profile: React.FC<ProfileProps> = ({}) => {
           width: 150,
           height: 150,
           marginLeft: 'calc(37.5%)',
+          marginBottom: 30,
         }}
       >
         <div
@@ -33,12 +86,30 @@ export const Profile: React.FC<ProfileProps> = ({}) => {
             alignItems: 'center',
           }}
         >
-          <Image src={publicData.photo} preview height='150' alt='Image Text' />
+          <Image
+            src={
+              imageResource && imageResource.length > 10
+                ? imageResource
+                : 'https://www.mona.uwi.edu/modlang/sites/default/files/modlang/male-avatar-placeholder.png'
+            }
+            preview
+            height='150'
+            alt='Image Text'
+          />
         </div>
+        <input
+          type='file'
+          ref={inputRef}
+          style={{ width: 0, height: 0 }}
+          onChange={(e) => handleSubmit(e.target.files[0])}
+          name=''
+          id=''
+        />
         <Button
           style={{ position: 'absolute', bottom: 0, right: 0 }}
           className='p-button-raised p-button-rounded'
           icon='pi pi-pencil'
+          onClick={() => inputRef?.current.click()}
         />
       </div>
       <div style={{ width: '80%', marginLeft: '3%' }}>
@@ -54,26 +125,32 @@ export const Profile: React.FC<ProfileProps> = ({}) => {
               <Inplace
                 label='First Name'
                 inputStyle={{ width: '300px' }}
-                defaultValue='Tien'
+                defaultValue={publicData.firstName}
+                showToast={showToast}
               />
             </div>
             <div>
               <Inplace
                 label='Last Name'
                 inputStyle={{ width: '300px' }}
-                defaultValue='Phan'
+                defaultValue={publicData.lastName}
+                field='lastName'
+                showToast={showToast}
               />
             </div>
           </div>
           <Inplace
-            defaultValue='tienpvse@gmail.com'
+            defaultValue={publicData.email}
             label='Email'
             inputStyle={{ width: '100%' }}
+            field='email'
+            showToast={showToast}
           />
           <Inplace
             defaultValue='+84 779 799 555'
-            label='Contact number'
+            label={publicData.phone}
             inputStyle={{ width: '100%' }}
+            showToast={showToast}
           />
           <div
             style={{
@@ -86,23 +163,29 @@ export const Profile: React.FC<ProfileProps> = ({}) => {
               <Inplace
                 label='City'
                 inputStyle={{ width: 300 }}
-                defaultValue='Ho Chi Minh'
+                defaultValue={publicData?.city}
+                field='city'
+                showToast={showToast}
               />
             </div>
             <div>
               <Inplace
                 label='State'
                 inputStyle={{ width: 300 }}
-                defaultValue='Default'
+                defaultValue={publicData?.state}
+                field='state'
+                showToast={showToast}
               />
             </div>
           </div>
           <div style={{ display: 'flex' }}>
             <div>
               <Inplace
-                label='Zip code'
+                label='Postol code'
                 inputStyle={{ width: 300 }}
-                defaultValue='70000'
+                defaultValue={publicData?.postalCode}
+                field='postalCode'
+                showToast={showToast}
               />
             </div>
             <div>
@@ -110,6 +193,7 @@ export const Profile: React.FC<ProfileProps> = ({}) => {
                 label='Country'
                 inputStyle={{ width: 300 }}
                 defaultValue='Vietnam'
+                showToast={showToast}
               />
             </div>
           </div>
