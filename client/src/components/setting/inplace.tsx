@@ -3,8 +3,9 @@ import {
   InplaceContent,
   InplaceDisplay,
 } from 'primereact/inplace';
+import { Toast } from 'primereact/toast';
 import { InputText } from 'primereact/inputtext';
-import React, { CSSProperties, useState } from 'react';
+import React, { CSSProperties, useRef, useState } from 'react';
 interface InplaceProps {
   defaultValue: string;
   label: string;
@@ -18,7 +19,16 @@ export const Inplace: React.FC<InplaceProps> = ({
   inputStyle,
   labelStyle = { fontSize: 20, paddingLeft: 10 },
 }) => {
+  const toast = useRef<Toast>(null);
   const [active, setActive] = useState(false);
+  const handleEnter = () => {
+    setActive(false);
+    toast.current.show({
+      severity: 'success',
+      summary: 'success',
+      detail: 'profile has been updated',
+    });
+  };
   return (
     <div>
       <label style={labelStyle} htmlFor={label}>
@@ -40,6 +50,9 @@ export const Inplace: React.FC<InplaceProps> = ({
           </InplaceDisplay>
           <InplaceContent>
             <InputText
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleEnter();
+              }}
               style={inputStyle}
               id={label}
               defaultValue={defaultValue}
@@ -47,6 +60,7 @@ export const Inplace: React.FC<InplaceProps> = ({
           </InplaceContent>
         </InplaceComponent>
       </div>
+      <Toast ref={toast} />
     </div>
   );
 };
