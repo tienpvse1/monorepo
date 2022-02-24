@@ -9,7 +9,7 @@ const AdminPage = lazy(() => import('@pages/admin'));
 const AddContact = lazy(() => import('@pages/import-contact'));
 const SignUpPage = lazy(() => import('@pages/signup'));
 const LayoutUser = lazy(() => import('@common/user-layout'));
-const SettingPage = lazy(() => import('@pages/setting'));
+const ProfilePage = lazy(() => import('@pages/profile'));
 const LayoutAdmin = lazy(() => import('@pages/admin'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
 
@@ -44,8 +44,8 @@ export const route: RouteObject[] = [
         element: <EmailCompose />,
       },
       {
-        path: 'account',
-        element: <SettingPage />,
+        path: 'profile',
+        element: <ProfilePage />,
       },
       {
         path: 'import-contact',
