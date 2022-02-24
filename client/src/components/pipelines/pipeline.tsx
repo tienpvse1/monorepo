@@ -1,17 +1,24 @@
 import { EmptyComponent } from '@components/empty';
 import { PageTitlePipeline } from '@components/pipelines/page-title';
-import { ShadowColumnCreate } from '@components/pipelines/pipeline-column/shadow-column-create';
+import { ModalColumnCreate } from '@components/pipelines/pipeline-column/modal-column-create';
 import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-horizontal';
 import { useHandleDnD } from '@hooks/useHandleDnD';
+import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import { useGetPipeLineUser } from '@modules/pipeline/query/pipeline.get';
 import { sortPipeline } from '@util/sort';
 import { Button } from 'antd';
-import { FC, useEffect } from 'react';
+import { useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { PipeLineColumn } from '../components/pipelines/column';
+import { PipeLineColumn } from '../pipelines/column';
 
-const Pipeline: FC = () => {
+interface PipelineProps {
+
+}
+
+export const Pipeline: React.FC<PipelineProps> = ({ }) => {
+  const [visible, setModalCreateStage] = useToggle();
+
   const { data } = useGetPipeLineUser();
   const {
     newPipeLine,
@@ -38,11 +45,11 @@ const Pipeline: FC = () => {
 
     const startIndex = source.index;
     const finishIndex = destination.index;
-    const startColumnName = source.droppableId;
-    const finishColumnName = destination.droppableId;
+    const startColumn = source.droppableId;
+    const finishColumn = destination.droppableId;
 
     //nếu kéo thả ở 1 vị trí -> return tránh xử lý code bên dưới
-    if (finishColumnName === startColumnName && finishIndex === startIndex)
+    if (finishColumn === startColumn && finishIndex === startIndex)
       return;
 
     //Xử lý cho kéo thả cột
@@ -53,25 +60,28 @@ const Pipeline: FC = () => {
     //Xử lý cho kéo thả item
     if (result.type == 'task') {
       //di chuyển các card item trong 1 column
-      if (startColumnName === finishColumnName) {
-        handleMoveItemColumn(startIndex, finishIndex, startColumnName);
+      if (startColumn === finishColumn) {
+        handleMoveItemColumn(startIndex, finishIndex, startColumn);
         return;
       }
 
       //di chuyển các item qua lại nhiều cột
-      handleMoveItemsBetweenColumns(
-        startIndex,
-        finishIndex,
-        startColumnName,
-        finishColumnName
-      );
+      handleMoveItemsBetweenColumns(startIndex, finishIndex, startColumn, finishColumn);
     }
   };
 
   return (
     <>
-      <PageTitlePipeline />
-      {data ?
+      <PageTitlePipeline setModalCreateStage={setModalCreateStage} />
+      {data?.pipelineColumns.length == 0 ?
+        <EmptyComponent
+          imageStyle={{ height: 200 }}
+          description={
+            <span>
+              Stages have not been created.
+            </span>}
+        >
+        </EmptyComponent> :
         <ScrollBarHorizontal>
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
@@ -97,26 +107,28 @@ const Pipeline: FC = () => {
                       )
                     )}
                     {providedColumns.placeholder}
-                    <ShadowColumnCreate pipelineId={data?.id} currentIndexColumn={data?.pipelineColumns.length} />
+                    <div className="shadow-column-create">
+                      <Button
+                        onClick={setModalCreateStage}
+                        style={{ width: '300px', height: '80px', fontSize: '15px' }}
+                        type="dashed"
+                      >
+                        Add a stage column
+                      </Button>
+                    </div>
                   </div>
                 </>
               )}
             </Droppable>
           </DragDropContext>
-        </ScrollBarHorizontal> :
-        <EmptyComponent
-          imageStyle={{ height: 60 }}
-          description={
-            <span>
-              Customize <a href="#API">Description</a>
-            </span>}
-        >
-          <Button type="primary">Create Now</Button>
-        </EmptyComponent>
+        </ScrollBarHorizontal>
       }
-
+      <ModalColumnCreate
+        setVisible={setModalCreateStage}
+        visible={visible}
+        pipelineId={data?.id}
+        currentIndexColumn={data?.pipelineColumns.length}
+      />
     </>
-  );
-};
-
-export default Pipeline;
+  )
+}

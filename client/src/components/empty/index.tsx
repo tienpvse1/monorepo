@@ -12,7 +12,6 @@ export const EmptyComponent: React.FC<EmptyComponentProps> = ({
 }) => {
   return (
     <Empty
-      image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
       imageStyle={imageStyle}
       description={description}
     >
