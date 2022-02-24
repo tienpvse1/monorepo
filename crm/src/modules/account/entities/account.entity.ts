@@ -7,6 +7,7 @@ import { File } from 'src/modules/file/entities/file.entity';
 import { History } from 'src/modules/history/entities/history.entity';
 import { Lead } from 'src/modules/lead/entities/lead.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
+import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
 import { Pipeline } from 'src/modules/pipeline-module/pipeline/entities/pipeline.entity';
 import { ProductAccount } from 'src/modules/product-account/entities/product-account.entity';
 import { Role } from 'src/modules/role/entities/role.entity';
@@ -63,6 +64,9 @@ export class Account extends BaseEntity {
 
   @OneToOne(() => Pipeline, (pipeline) => pipeline.account)
   pipeline: Pipeline;
+
+  @OneToMany(() => PipelineItem, (pipeline) => pipeline.account)
+  pipelineItems: PipelineItem[];
 
   @OneToMany(() => File, (pipeline) => pipeline.account)
   files: File[];
