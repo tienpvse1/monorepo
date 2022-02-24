@@ -24,6 +24,9 @@ export class PipelineItem extends BaseEntity {
   expectedRevenue: number;
 
   @Column({ nullable: true })
+  photo: string;
+
+  @Column({ nullable: true })
   email: string;
 
   @Column({ nullable: true })
