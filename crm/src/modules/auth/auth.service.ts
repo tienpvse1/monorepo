@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { compareSync } from 'bcryptjs';
+import { compareSync, hashSync } from 'bcryptjs';
 import { Request, Response } from 'express';
 import { getIp } from 'src/util/ip';
 import { AccountService } from '../account/account.service';
@@ -186,7 +186,7 @@ export class AuthService {
       });
       // saving session to account
       account.session = session;
-      account.password = password;
+      account.password = hashSync(password, 10);
       await account.save();
       req.res.cookie('sessionId', session.id, { httpOnly: true });
       return {
