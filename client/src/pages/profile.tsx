@@ -1,45 +1,30 @@
-import { ProfileAvatar } from '@components/profile/profile-avatar';
-import { ProfileFormItemsLeft } from '@components/profile/profile-form-items-left';
-import { ProfileFormItemsRight } from '@components/profile/profile-form-items-right';
-import { Button, Col, Divider, Form, Row } from 'antd';
+import { Profile as ProfileComponent } from '@components/setting/profile';
+import { Menu } from 'primereact/menu';
 
-export const ProfilePage = () => {
+const Profile = () => {
   return (
-    <div className='profile-container'>
-      <div className='header-profile'>
-        <h3>Your Profile Picture</h3>
-      </div>
-      <Form
-        name='register'
-        style={{ padding: '0 20px' }}
-        initialValues={{
-          prefix: '86',
+    <div
+      className='setting-container'
+      style={{
+        display: 'flex',
+        paddingBottom: 90,
+      }}
+    >
+      <Menu
+        model={[
+          { label: 'Edit profile', icon: 'pi pi-fw pi-plus' },
+          { label: 'Notification', icon: 'pi pi-bell' },
+          { label: 'Analysis', icon: 'pi pi-chart-line' },
+          { label: 'Password and security', icon: 'pi pi-unlock' },
+        ]}
+        style={{
+          minHeight: '80vh',
+          width: '25%',
         }}
-      >
-        <ProfileAvatar />
-        <Divider />
-        <h3>Your Profile Information</h3>
-        <Row gutter={[32, 8]}>
-          <Col span={12}>
-            <ProfileFormItemsLeft />
-          </Col>
-          <Col span={12}>
-            <ProfileFormItemsRight />
-          </Col>
-          <Col style={{ textAlign: 'center' }} span={24}>
-            <Form.Item>
-              <Button
-                shape='round'
-                type='primary'
-                htmlType='submit'
-                className='signup-form-button'
-              >
-                Update profile
-              </Button>
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
+      />
+      <ProfileComponent />
     </div>
-  )
-}
+  );
+};
+
+export default Profile;

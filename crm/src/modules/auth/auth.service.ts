@@ -1,4 +1,9 @@
-import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync, hashSync } from 'bcryptjs';
@@ -203,5 +208,18 @@ export class AuthService {
     } catch (error) {
       throw new UnauthorizedException(error.message);
     }
+  }
+
+  async logout(rawIp: string, req: Request) {
+    const sessionId = req.cookies['sessionId'];
+    const ip = getIp(rawIp);
+    const session = await this.sessionService.findOne({
+      where: { id: sessionId, ip: ip },
+    });
+    if (!session) throw new BadRequestException('cannot logout');
+    await this.sessionService.permanentDelete(sessionId);
+    req.res.clearCookie('public_user_info');
+    req.res.clearCookie('sessionId');
+    return { message: 'logged out successfully' };
   }
 }
