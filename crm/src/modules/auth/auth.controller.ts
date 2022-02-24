@@ -47,6 +47,10 @@ export class AuthController {
   ) {
     return this.authService.loginUsingSession(loginRequest, ip, req);
   }
+  @Post('logout')
+  logout(@Req() req: Request, @Ip() ip: string) {
+    return this.authService.logout(ip, req);
+  }
 
   @Get('google/redirect')
   @ApiBearerAuth('')
