@@ -40,6 +40,6 @@ export class ScheduleController {
   @ApiBody({ type: CreateScheduleDto })
   @UsePipes(ParseDtoPipe)
   createSchedule(@Body() parsedDto: ParsedCreateScheduleDto) {
-    return parsedDto;
+    return this.service.createItem(parsedDto);
   }
 }
