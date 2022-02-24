@@ -1,6 +1,8 @@
 import { BaseEntity } from 'src/base/entity.base';
 import { Account } from 'src/modules/account/entities/account.entity';
+import { Address } from 'src/modules/address/entities/address.entity';
 import { Contact } from 'src/modules/contact/entities/contact.entity';
+import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
 import { Tag } from 'src/modules/tag/entities/tag.entity';
 import {
@@ -52,6 +54,10 @@ export class PipelineItem extends BaseEntity {
 
   @OneToMany(() => Schedule, (schedule) => schedule.pipelineItem)
   schedules: Schedule[];
+  @OneToMany(() => Address, (address) => address.pipelineItem)
+  addresses: Address[];
+  @OneToMany(() => NoteWorthy, (noteWorthies) => noteWorthies.pipelineItem)
+  noteWorthies: NoteWorthy[];
 
   @Column({ default: 1, name: 'index_position' })
   index: number;

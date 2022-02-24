@@ -1,4 +1,6 @@
 import { BaseEntity } from 'src/base/entity.base';
+import { Address } from 'src/modules/address/entities/address.entity';
+import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
 import { Tag } from 'src/modules/tag/entities/tag.entity';
 import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
@@ -9,8 +11,7 @@ export class Contact extends BaseEntity {
   name: string;
   @Column({ nullable: true })
   birth: Date;
-  @Column({ nullable: true })
-  address: string;
+
   @Column({ nullable: true })
   phone: string;
   @Column({ nullable: true })
@@ -45,4 +46,10 @@ export class Contact extends BaseEntity {
 
   @OneToMany(() => PipelineItem, (pipelineItem) => pipelineItem.contact)
   pipelineItems: PipelineItem[];
+  @OneToMany(() => Address, (address) => address.contact, { cascade: true })
+  addresses: Address[];
+  @OneToMany(() => NoteWorthy, (noteWorthy) => noteWorthy.contact, {
+    cascade: true,
+  })
+  noteWorthies: NoteWorthy[];
 }
