@@ -21,7 +21,8 @@ import { PipelineColumn } from '../../pipeline-column/entities/pipeline-column.e
 export class PipelineItem extends BaseEntity {
   @Column()
   name: string;
-
+  @Column({ default: 1, name: 'index_position' })
+  index: number;
   @Column({ type: 'float', name: 'expected_revenue', default: 1000 })
   expectedRevenue: number;
 
@@ -72,13 +73,14 @@ export class PipelineItem extends BaseEntity {
 
   @OneToMany(() => Schedule, (schedule) => schedule.pipelineItem)
   schedules: Schedule[];
-  @OneToMany(() => Address, (address) => address.pipelineItem)
+  @OneToMany(() => Address, (address) => address.pipelineItem, {
+    cascade: true,
+  })
   addresses: Address[];
-  @OneToMany(() => NoteWorthy, (noteWorthies) => noteWorthies.pipelineItem)
+  @OneToMany(() => NoteWorthy, (noteWorthies) => noteWorthies.pipelineItem, {
+    cascade: true,
+  })
   noteWorthies: NoteWorthy[];
-
-  @Column({ default: 1, name: 'index_position' })
-  index: number;
 
   @ManyToOne(
     () => PipelineColumn,

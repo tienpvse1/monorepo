@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsEmail,
   IsNumber,
   IsOptional,
@@ -9,6 +10,8 @@ import {
   Matches,
   Min,
 } from 'class-validator';
+import { CreateAddressDto } from 'src/modules/address/dto/create-address.dto';
+import { CreateNoteWorthyDto } from 'src/modules/note-worthy/dto/create-note-worthy.dto';
 import { PipelineColumn } from '../../pipeline-column/entities/pipeline-column.entity';
 
 export class CreatePipelineItemDto {
@@ -90,6 +93,12 @@ export class CreateSinglePipelineItemDto {
   @IsString()
   @IsOptional()
   internalNotes: string;
+
+  @IsArray()
+  addresses?: CreateAddressDto[];
+  @IsOptional()
+  @IsArray()
+  noteWorthies?: CreateNoteWorthyDto[];
 }
 export class ParsedCreateSinglePipelineItemDto {
   name: string;
@@ -114,4 +123,7 @@ export class ParsedCreateSinglePipelineItemDto {
   website: string;
   title: string;
   internalNotes: string;
+
+  addresses?: CreateAddressDto[];
+  noteWorthies?: CreateNoteWorthyDto[];
 }
