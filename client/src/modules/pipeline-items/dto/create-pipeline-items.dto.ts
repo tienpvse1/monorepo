@@ -3,14 +3,16 @@ export interface IAddress {
   address: string;
   city: string;
   country: string;
+  id: string;
 }
 
 export interface INoteWorthy {
   name: string;
   date: string;
+  id: string;
 }
 
-export interface ICreatePipelineItem {
+export interface ICreatePipelineItemsDto {
   name: string;
   index: number;
   columnId: string;

@@ -1,3 +1,3 @@
-import { ICreatePipelineItem } from './create-pipeline-items.dto';
+import { ICreatePipelineItemsDto } from './create-pipeline-items.dto';
 
-export interface IUpdatePipelineItemDto extends Partial<ICreatePipelineItem> {}
+export interface IUpdatePipelineItemDto extends Partial<ICreatePipelineItemsDto> {}

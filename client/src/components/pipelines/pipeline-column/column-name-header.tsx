@@ -26,10 +26,10 @@ export const ColumnNameHeader: React.FC<ColumnNameHeaderProps> = ({ pipelineColu
         </Text>
       </span>
       <PopoverAction
-        itemName1="Edit stage"
-        itemName2="Delete"
-        callbackMethodDelete={onDeletePipelineColumn}
-        callbackMethodUpdate={setShowInput}
+        option1="Edit stage"
+        option2="Delete"
+        handleOption1={setShowInput}
+        handleOption2={onDeletePipelineColumn}
       >
         <Button
           icon={<MoreOutlined />}

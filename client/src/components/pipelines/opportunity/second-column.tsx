@@ -1,19 +1,35 @@
+import { getPipeline } from '@db/pipeline.db';
+import { useGetStagesByPipelineId } from '@modules/pipeline-column/query/pipeline.get';
+import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
+import { qualifyStage } from '@util/stage';
 import { Alert, Button, Card, Steps, Tabs } from 'antd';
+import { useLiveQuery } from 'dexie-react-hooks';
 import React from 'react';
 import { ContactInfo } from './contact-info';
 
-interface SecondColumnProps {}
+interface SecondColumnProps {
+  data: IPipelineItem;
+}
 const { Step } = Steps;
 const { TabPane } = Tabs;
-export const SecondColumn: React.FC<SecondColumnProps> = ({}) => {
+export const SecondColumn: React.FC<SecondColumnProps> = ({ data }) => {
+  const pipeline = useLiveQuery(getPipeline);
+  const { data: pipelineColumns } = useGetStagesByPipelineId(pipeline?.id);
   return (
     <div>
       <Card style={{ width: '55vw' }} title='Stages'>
-        <Steps type='navigation' current={1} className='site-navigation-steps'>
-          <Step status='wait' title='Qualified' />
-          <Step status='process' title='Opportunity' />
-          <Step status='finish' title='Proposal' />
-          <Step status='wait' title='Win' />
+        <Steps
+          type='navigation'
+          current={data.pipelineColumn.index}
+          className='site-navigation-steps'
+        >
+          {pipelineColumns?.map((column, index) => (
+            <Step
+              key={column.id}
+              status={qualifyStage(index, data.pipelineColumn.index)}
+              title={column.name}
+            />
+          ))}
         </Steps>
       </Card>
       <Card>
@@ -26,7 +42,7 @@ export const SecondColumn: React.FC<SecondColumnProps> = ({}) => {
               overflowY: 'scroll',
             }}
           >
-            <ContactInfo />
+            <ContactInfo data={data} />
           </TabPane>
           <TabPane tab='TASK' key='2'>
             <Alert
