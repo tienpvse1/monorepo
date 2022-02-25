@@ -25,13 +25,13 @@ export const PipelineList = () => {
         dataSource={data}
       >
         <Column title='Name' dataIndex='name' key='name'
-          render={(a) => <span> {a} </span>}
+         
         />
         <Column title='Description' dataIndex='description' key='description'
-          render={(b) => <span> {b} </span>}
+          
         />
         <Column title='Status' dataIndex='status' key='status'
-          render={(c) => <span> {c} </span>}
+          
         />
       </Table>
     </>

@@ -1,0 +1,1 @@
+import{j as s,F as l,k as t,h as i,l as o}from"./vendor.99654bca.js";const p=({children:a,title:e,titleSize:r,className:n})=>s(l,{children:s(t,{children:i(o,{className:n,span:24,children:[s("span",{style:{fontSize:`${r}`},className:"title-admin-page",children:e}),a]})})});export{p as W};
