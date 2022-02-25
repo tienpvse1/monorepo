@@ -34,6 +34,9 @@ export class PipelineItem extends BaseEntity {
   @Column({ nullable: true })
   phone: string;
 
+  @Column({ nullable: true })
+  mobile: string;
+
   @Column({ type: 'int', default: '0' })
   priority: number;
 
@@ -42,6 +45,21 @@ export class PipelineItem extends BaseEntity {
 
   @Column({ type: 'longtext', name: 'internal_description', nullable: true })
   internalDescription: string;
+
+  @Column({ nullable: true })
+  state: string;
+  @Column({ nullable: true })
+  postalCode: string;
+  @Column({ nullable: true })
+  taxId: string;
+  @Column({ nullable: true })
+  jobPosition: string;
+  @Column({ nullable: true })
+  website: string;
+  @Column({ nullable: true })
+  title: string;
+  @Column({ nullable: true, name: 'internal_note' })
+  internalNotes: string;
 
   @ManyToOne(() => Account, (account) => account.pipelineItems)
   account: Account;

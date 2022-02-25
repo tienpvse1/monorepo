@@ -20,13 +20,9 @@ export class Contact extends BaseEntity {
   type: string;
   @Column({ nullable: true })
   email: string;
+  @Column({ nullable: true })
+  photo: string;
 
-  @Column({ nullable: true })
-  street: string;
-  @Column({ nullable: true })
-  street2: string;
-  @Column({ nullable: true })
-  city: string;
   @Column({ nullable: true })
   state: string;
   @Column({ nullable: true })
@@ -41,7 +37,7 @@ export class Contact extends BaseEntity {
   title: string;
   @Column({ nullable: true, name: 'internal_note' })
   internalNotes: string;
-  @ManyToMany(() => Tag, (tag) => tag.contacts)
+  @ManyToMany(() => Tag, (tag) => tag.contacts, { cascade: true })
   tags: Tag[];
 
   @OneToMany(() => PipelineItem, (pipelineItem) => pipelineItem.contact)

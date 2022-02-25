@@ -57,6 +57,39 @@ export class CreateSinglePipelineItemDto {
   @IsString()
   @IsOptional()
   internalDescription?: string;
+
+  @IsString()
+  @IsOptional()
+  type?: string;
+
+  @IsString()
+  @IsOptional()
+  birth: Date;
+  @IsOptional()
+  @IsPhoneNumber('VN')
+  mobile: string;
+
+  @IsString()
+  @IsOptional()
+  state: string;
+  @IsString()
+  @IsOptional()
+  postalCode: string;
+  @IsString()
+  @IsOptional()
+  taxId: string;
+  @IsString()
+  @IsOptional()
+  jobPosition: string;
+  @IsUrl()
+  @IsOptional()
+  website: string;
+  @IsString()
+  @IsOptional()
+  title: string;
+  @IsString()
+  @IsOptional()
+  internalNotes: string;
 }
 export class ParsedCreateSinglePipelineItemDto {
   name: string;
@@ -70,4 +103,15 @@ export class ParsedCreateSinglePipelineItemDto {
   priority?: number;
   expectedClosing?: Date;
   internalDescription?: string;
+  type?: string;
+
+  birth: Date;
+  mobile: string;
+  state: string;
+  postalCode: string;
+  taxId: string;
+  jobPosition: string;
+  website: string;
+  title: string;
+  internalNotes: string;
 }
