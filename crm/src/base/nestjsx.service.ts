@@ -44,6 +44,12 @@ export class BaseService<Entity> extends TypeOrmCrudService<Entity> {
 
     return this.repository.save(foundItem);
   }
+  async update(id: string, item: QueryDeepPartialEntity<Entity>) {
+    const foundItem = await this.repository.findOne(id);
+    if (!foundItem) throw new NotFoundException(`${this.dbName} not found`);
+    Object.assign(foundItem, item);
+    return this.repository.save(foundItem);
+  }
 
   async softDelete(id: string, condition?: FindOneOptions<Entity>) {
     const item = await this.findOne(id, condition);
