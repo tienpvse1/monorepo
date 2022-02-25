@@ -1,4 +1,4 @@
-import { showDeleteConfirm } from '@components/modal-cofirm/delete-confirm';
+import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { useToggle } from '@hooks/useToggle';
 import { Col, Popover, Row } from 'antd';
 import React from 'react';

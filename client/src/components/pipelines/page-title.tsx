@@ -4,11 +4,14 @@ import { SearchBar } from '@components/search-bar';
 import { Button, Col, Row, Select } from 'antd';
 const { Option } = Select;
 
-const handleChange = (value: any) => {
-  console.log(`selected ${value}`);
+interface PageTitlePipelineProps {
+  setModalCreateStage: () => void;
 }
 
-export const PageTitlePipeline = () => {
+export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({ setModalCreateStage }) => {
+  const handleChange = (value: any) => {
+    console.log(`selected ${value}`);
+  }
   return (
     <>
       <WrapperRowTitle
@@ -19,7 +22,14 @@ export const PageTitlePipeline = () => {
       />
       <Row>
         <Col className="wrapper-title-page-2" span={24} >
-          <Button className="button-create-task-pipeline" icon={<PlusOutlined />} type='primary'>Create Task</Button>
+          <Button
+            onClick={setModalCreateStage}
+            className="button-create-task-pipeline"
+            icon={<PlusOutlined />}
+            type='primary'
+          >
+            Create Stage
+          </Button>
           <div style={{ display: 'flex' }}>
             <Select placeholder="Group by" style={{ width: 120, marginRight: '10px' }} onChange={handleChange}>
               <Option value="salesPerson">Sales Person</Option>
