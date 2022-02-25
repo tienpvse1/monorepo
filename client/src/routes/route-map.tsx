@@ -1,3 +1,4 @@
+import { Product } from '@pages/product';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
@@ -51,6 +52,10 @@ export const route: RouteObject[] = [
         path: 'import-contact',
         element: <AddContact />,
       },
+      {
+        path: 'product',
+        element: <Product />
+      }
     ],
   },
   {

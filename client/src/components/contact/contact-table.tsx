@@ -12,10 +12,12 @@ import Column from 'antd/lib/table/Column';
 import { FC, useState } from 'react';
 import { client } from '../../App';
 import { ContactHeader } from './contact-header';
-import { EditableCell } from './editable-cell';
+import { EditableCell } from '../table/editable-cell';
+import { useToggle } from '@hooks/useToggle';
+import { showDeleteConfirm } from '@components/modal-cofirm/delete-confirm';
 
 const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {},
+  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
   getCheckboxProps: (record: any) => ({
     disabled: record.name === 'Disabled User',
     name: record.name,
@@ -32,10 +34,9 @@ export const ContactData: FC = () => {
   );
   const title = () => <ContactHeader />;
   const [form] = Form.useForm<Contact>();
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingIndex, setEditingIndex] = useState('');
+  const [isEditing, toggleEditing] = useToggle();
 
-  const toggleEditing = () => setIsEditing(!isEditing);
+  const [editingIndex, setEditingIndex] = useState('');
 
   if (isLoading) return <Loading />;
   const handleEditClick = (record: Contact) => {
@@ -193,8 +194,10 @@ export const ContactData: FC = () => {
                         Save
                       </Button>
                       <Popconfirm
-                        title='Are you sure cancel this task?'
+                        title='Sure to cancel?'
                         onConfirm={toggleEditing}
+                        okText="Yes"
+                        cancelText="No"
                       >
                         <span style={{ cursor: 'pointer' }}>Cancel</span>
                       </Popconfirm>
@@ -211,7 +214,7 @@ export const ContactData: FC = () => {
 
                       <Button
                         type='default'
-                        onClick={() => deleteContact(record.id)}
+                        onClick={() => showDeleteConfirm(() => deleteContact(record.id))}
                         shape='round'
                         danger
                       >

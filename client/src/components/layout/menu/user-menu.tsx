@@ -59,11 +59,12 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
           Pipeline
         </Menu.Item>
         <Menu.Item
-          key='payment'
+          key='product'
+          onClick={() => navigate('/product')}
           style={style}
           icon={<WalletOutlined style={style} />}
         >
-          Payment
+          Product
         </Menu.Item>
         <Menu.Item
           key='customer'
