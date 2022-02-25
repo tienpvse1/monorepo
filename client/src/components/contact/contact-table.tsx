@@ -1,6 +1,6 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
 import { Loading } from '@components/loading/loading';
-import { Contact } from '@modules/contact/entity/contact.entity';
+import { IContact } from '@modules/contact/entity/contact.entity';
 import { useDeleteContact } from '@modules/contact/mutation/contact.delete';
 import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
 import {
@@ -31,14 +31,14 @@ export const ContactData: FC = () => {
     client.invalidateQueries(QUERY_CONTACTS)
   );
   const title = () => <ContactHeader />;
-  const [form] = Form.useForm<Contact>();
+  const [form] = Form.useForm<IContact>();
   const [isEditing, setIsEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState('');
 
   const toggleEditing = () => setIsEditing(!isEditing);
 
   if (isLoading) return <Loading />;
-  const handleEditClick = (record: Contact) => {
+  const handleEditClick = (record: IContact) => {
     toggleEditing();
     setEditingIndex(record.id);
     const { name, address, phone, email } = record;
@@ -81,7 +81,7 @@ export const ContactData: FC = () => {
               title='Name'
               dataIndex='name'
               key='name'
-              render={(_, record: Contact) => (
+              render={(_, record: IContact) => (
                 <EditableCell
                   dataIndex='name'
                   editing={isEditing}
@@ -102,7 +102,7 @@ export const ContactData: FC = () => {
               title='Address'
               dataIndex='address'
               key='address'
-              render={(_, record: Contact) => (
+              render={(_, record: IContact) => (
                 <EditableCell
                   dataIndex='address'
                   editing={isEditing}
@@ -123,7 +123,7 @@ export const ContactData: FC = () => {
               title='Phone Number'
               dataIndex='phone'
               key='phone'
-              render={(_, record: Contact) => (
+              render={(_, record: IContact) => (
                 <EditableCell
                   dataIndex='phone'
                   editing={isEditing}
@@ -148,7 +148,7 @@ export const ContactData: FC = () => {
               title='Email'
               dataIndex='email'
               key='email'
-              render={(_, record: Contact) => (
+              render={(_, record: IContact) => (
                 <EditableCell
                   dataIndex='email'
                   editing={isEditing}
@@ -185,7 +185,7 @@ export const ContactData: FC = () => {
               title='Action'
               dataIndex='action'
               key='action'
-              render={(_, record: Contact) => (
+              render={(_, record: IContact) => (
                 <Space size='small' style={{ width: '100%' }}>
                   {isEditing && record.id === editingIndex ? (
                     <>

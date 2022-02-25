@@ -1,7 +1,16 @@
-import { Body, Controller, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { AUTHORIZATION } from 'src/constance/swagger';
+import { getCustomRepository } from 'typeorm';
+import { PipelineRepository } from '../pipeline/pipeline.repository';
 import { CreatePipelineColumnDto } from './dto/create-pipeline-column.dto';
 import { UpdatePipelineColumnDto } from './dto/update-pipeline-column.dto';
 import { PipelineColumn } from './entities/pipeline-column.entity';
@@ -20,18 +29,18 @@ import { PipelineColumnService } from './pipeline-column.service';
   },
   params: {
     id: {
-      type: 'uuid',
+      type: 'string',
       field: 'id',
       primary: true,
     },
     pipelineId: {
-      type: 'uuid',
+      type: 'string',
       field: 'pipelineId',
       primary: false,
     },
   },
   routes: {
-    exclude: ['createOneBase', 'createManyBase'],
+    exclude: ['createOneBase', 'createManyBase', 'getManyBase'],
   },
 })
 export class PipelineColumnController {
@@ -43,5 +52,15 @@ export class PipelineColumnController {
     @Param('pipelineId', new ParseUUIDPipe()) pipelineId: string,
   ) {
     return this.service.addColumn(pipelineId, createColumnDto);
+  }
+
+  @Get('/many/:pipelineId')
+  async getByPipelineID(@Param('pipelineId') pipelineId: string) {
+    const pipelineRepository = getCustomRepository(PipelineRepository);
+    const pipeline = await pipelineRepository.findOneItem({
+      where: { id: pipelineId },
+      relations: ['pipelineColumns'],
+    });
+    return pipeline.pipelineColumns;
   }
 }

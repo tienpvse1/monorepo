@@ -3,28 +3,36 @@ import {
   EllipsisOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { Card, Divider, Tag } from 'antd';
+import { Loading } from '@components/loading/loading';
+import { imagePlaceHolderUrl } from '@constance/image';
+import { usePipelineItem } from '@modules/pipeline-items/query/pipeline-item.get';
+import { handleUndefinedString } from '@util/undefined';
+import { Card, Divider, Image, Tag } from 'antd';
 import Meta from 'antd/lib/card/Meta';
+import { Suspense } from 'react';
 import { SecondColumn } from './second-column';
 import { ThirdColumn } from './third-column';
 
 interface OpportunityDetailsProps {
-  dataCardPipeline: IPipelineItem;
+  pipelineItemId: string;
 }
 
 export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({
-  dataCardPipeline,
+  pipelineItemId,
 }) => {
+  const { data } = usePipelineItem(pipelineItemId);
+  console.log(data);
   return (
     <div style={{ display: 'flex' }}>
       <Card
         style={{ width: 300 }}
         cover={
-          <img
-            alt='example'
-            src='https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png'
-          />
+          <div style={{ padding: 20 }}>
+            <Image
+              alt='example'
+              src={data.photo ? data.photo : imagePlaceHolderUrl}
+            />
+          </div>
         }
         actions={[
           <SettingOutlined key='setting' />,
@@ -36,23 +44,33 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({
           title='Summary'
           description={
             <>
-              <span>Phan Văn Tiến</span>
+              <span
+                style={{
+                  color: 'rgba(0,0,0,0.9)',
+                  fontSize: 16,
+                }}
+              >
+                {handleUndefinedString(data.title)}
+              </span>
               <br />
-              <span>CEO</span>
+              <span>{handleUndefinedString(data.jobPosition)}</span>
               <br />
               Email:{' '}
               <i style={{ textDecoration: 'underline', color: 'blue' }}>
-                tienpvse@gmail.com
+                {handleUndefinedString(data.email)}
               </i>
             </>
           }
         />
         <Divider />
         <div>
+          {/* //!TODO this field is still hard coded */}
           <Tag color={'error'}>Private</Tag>
         </div>
       </Card>
-      <SecondColumn />
+      <Suspense fallback={<Loading />}>
+        <SecondColumn data={data} />
+      </Suspense>
       <ThirdColumn />
     </div>
   );
