@@ -1,31 +1,19 @@
-import { Axios } from "@axios";
-import { controllers } from "@constance/controllers";
-import { useMutation, useQueryClient } from "react-query";
-import { IUpdatePipelineItemDto } from "../dto/update-pipeline-items.dto";
+import { instance } from '@axios';
+import { controllers } from '@constance/controllers';
+import { useMutation } from 'react-query';
+import { IUpdatePipelineItemDto } from '../dto/update-pipeline-items.dto';
 
-const {PIPELINE_ITEM, PIPELINE} = controllers;
+const { PIPELINE_ITEM } = controllers;
 
-export const patchPipelineItemsName = async (pipelineItems: IUpdatePipelineItemDto) => {
-  const { instance } = new Axios();
-  const { data } = await instance.patch(`${PIPELINE_ITEM}/${pipelineItems.id}`, { ...pipelineItems });
-
+const updatePipelineItem = async (
+  id: string,
+  updateDto: IUpdatePipelineItemDto
+) => {
+  const { data } = await instance.patch(`${PIPELINE_ITEM}/${id}`, updateDto);
   return data;
-}
+};
 
-export const useUpdatePipelineItems = () => {
-  const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation(patchPipelineItemsName,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(PIPELINE);
-      },
-      onError: () => console.log('update pipeline items failed!')
-    }
+export const useUpdatePipelineItem = () =>
+  useMutation(({ id, ...rest }: IUpdatePipelineItemDto & { id: string }) =>
+    updatePipelineItem(id, rest)
   );
-
-  const updatePipelineItemsName = (pipelineItems: IUpdatePipelineItemDto) => {
-    mutate(pipelineItems);
-  }
-
-  return { updatePipelineItemsName, isLoading };
-}

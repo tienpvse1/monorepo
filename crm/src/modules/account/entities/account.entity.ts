@@ -7,7 +7,9 @@ import { File } from 'src/modules/file/entities/file.entity';
 import { History } from 'src/modules/history/entities/history.entity';
 import { Lead } from 'src/modules/lead/entities/lead.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
+import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
 import { Pipeline } from 'src/modules/pipeline-module/pipeline/entities/pipeline.entity';
+import { ProductAccount } from 'src/modules/product-account/entities/product-account.entity';
 import { Role } from 'src/modules/role/entities/role.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
 import { Session } from 'src/modules/session/entities/session.entity';
@@ -48,14 +50,26 @@ export class Account extends BaseEntity {
   @Column({ default: false, name: 'is_social_account' })
   isSocialAccount: boolean;
 
+  @Column({ nullable: true })
+  city?: string;
+  @Column({ nullable: true, name: 'postal_code' })
+  postalCode?: string;
+  @Column({ nullable: true })
+  state?: string;
+  @Column({ nullable: true })
+  country?: string;
+
   @OneToOne(() => Session, (session) => session.account)
   session: Session;
 
   @OneToOne(() => Pipeline, (pipeline) => pipeline.account)
   pipeline: Pipeline;
 
-  @OneToOne(() => File, (pipeline) => pipeline.account)
-  file: File;
+  @OneToMany(() => PipelineItem, (pipeline) => pipeline.account)
+  pipelineItems: PipelineItem[];
+
+  @OneToMany(() => File, (pipeline) => pipeline.account)
+  files: File[];
 
   @OneToMany(() => EmailTemplate, (emailTemplates) => emailTemplates.account)
   emailTemplates: EmailTemplate[];
@@ -76,6 +90,9 @@ export class Account extends BaseEntity {
   @JoinColumn({ name: 'role_id' })
   role: Role;
 
+  @OneToMany(() => ProductAccount, (product) => product.account)
+  productAccounts: ProductAccount[];
+
   // hash the password before save or update it in database
   @BeforeInsert()
   hashPassword() {
@@ -87,7 +104,7 @@ export class Account extends BaseEntity {
   @BeforeUpdate()
   hashPasswordBeforeUpdate() {
     if (this.password) {
-      this.password = hashSync(this.password, 10);
+      // this.password = hashSync(this.password, 10);
     }
   }
 }

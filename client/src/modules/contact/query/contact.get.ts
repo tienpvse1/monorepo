@@ -2,7 +2,7 @@ import { Axios, instance } from '@axios';
 import { controllers } from '@constance/controllers';
 import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { useQuery } from 'react-query';
-import { Contact } from '../entity/contact.entity';
+import { IContact } from '../entity/contact.entity';
 
 const { CONTACT } = controllers;
 
@@ -10,7 +10,7 @@ export const QUERY_CONTACTS = 'query-contacts';
 export const QUERY_CONTACTS_LIKE_EMAIL = 'query-contacts';
 const getContacts = async () => {
   const { instance } = new Axios();
-  const { data } = await instance.get<Contact[]>(`${CONTACT}`);
+  const { data } = await instance.get<IContact[]>(`${CONTACT}`);
   console.log(data);
 
   return data;
@@ -36,6 +36,7 @@ export const useContactsWithEmailLike = (queryKey: string) =>
     () => getContactsEmailLike(queryKey),
     {
       enabled: Boolean(queryKey),
+      useErrorBoundary: true,
     }
   );
 

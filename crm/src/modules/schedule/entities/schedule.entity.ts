@@ -1,5 +1,6 @@
 import { BaseEntity } from 'src/base/entity.base';
 import { Account } from 'src/modules/account/entities/account.entity';
+import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 export enum ActivityType {
@@ -22,6 +23,13 @@ export class Schedule extends BaseEntity {
   @Column({ type: 'longtext', nullable: true })
   note: string;
 
-  @ManyToOne(() => Account, (account) => account.schedules)
+  @ManyToOne(() => Account, (account) => account.schedules, {
+    cascade: ['insert'],
+  })
   account: Account;
+
+  @ManyToOne(() => PipelineItem, (pipelineItem) => pipelineItem.schedules, {
+    cascade: ['insert'],
+  })
+  pipelineItem: PipelineItem[];
 }

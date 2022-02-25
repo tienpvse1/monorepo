@@ -3,10 +3,15 @@ import { Account } from 'src/modules/account/entities/account.entity';
 import { Permission } from 'src/modules/permission/entities/permission.entity';
 import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 
+export enum RoleType {
+  ADMIN = 'admin',
+  SALE = 'sale',
+  SALE_MANAGE = 'sale_manager',
+}
 @Entity()
 export class Role extends BaseEntity {
-  @Column()
-  name: string;
+  @Column({ type: 'enum', enum: RoleType, default: RoleType.SALE })
+  name: RoleType;
 
   // many to many relation
   @ManyToMany(() => Permission, (permissions) => permissions.roles, {

@@ -1,7 +1,3 @@
-import { IBase } from "@interfaces/base";
-import { IPipelineColumn } from "@modules/pipeline-column/entity/pipeline-column.entity";
+import { ICreatePipelineItemsDto } from './create-pipeline-items.dto';
 
-export interface IUpdatePipelineItemDto extends IBase{
-  name: string;
-  pipelineColumn: IPipelineColumn;
-}
+export interface IUpdatePipelineItemDto extends Partial<ICreatePipelineItemsDto> {}

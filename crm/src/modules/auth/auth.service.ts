@@ -1,8 +1,13 @@
-import { HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { compareSync } from 'bcryptjs';
-import { Response } from 'express';
+import { compareSync, hashSync } from 'bcryptjs';
+import { Request, Response } from 'express';
 import { getIp } from 'src/util/ip';
 import { AccountService } from '../account/account.service';
 import { Account } from '../account/entities/account.entity';
@@ -142,7 +147,7 @@ export class AuthService {
   async loginUsingSession(
     { email, password }: LoginRequestDto,
     ip: string,
-    response: Response,
+    req: Request,
   ) {
     const account = await this.getAccountForAuth(email);
     try {
@@ -166,35 +171,8 @@ export class AuthService {
           sessionFromAccountId.id,
           getIp(ip),
         );
-        response.cookie('sessionId', session.id, { httpOnly: true });
-        return response.status(HttpStatus.OK).json({
-          data: {
-            sessionId: session.id,
-            publicData: {
-              role: account.role,
-              email: account.email,
-              id: account.id,
-              photo: account.photo,
-              firstName: account.firstName,
-              lastName: account.lastName,
-            },
-          },
-          message: 'successfully',
-          statusCode: HttpStatus.OK,
-        });
-      }
-
-      const session = await this.sessionService.create({
-        account: account,
-        ip: getIp(ip),
-      });
-      // saving session to account
-      account.session = session;
-      account.password = password;
-      await account.save();
-      response.cookie('sessionId', session.id, { httpOnly: true });
-      response.status(HttpStatus.OK).json({
-        data: {
+        req.res.cookie('sessionId', session.id, { httpOnly: true });
+        return {
           sessionId: session.id,
           publicData: {
             role: account.role,
@@ -204,16 +182,44 @@ export class AuthService {
             firstName: account.firstName,
             lastName: account.lastName,
           },
+        };
+      }
+
+      const session = await this.sessionService.create({
+        account: account,
+        ip: getIp(ip),
+      });
+      // saving session to account
+      account.session = session;
+      account.password = hashSync(password, 10);
+      await account.save();
+      req.res.cookie('sessionId', session.id, { httpOnly: true });
+      return {
+        sessionId: session.id,
+        publicData: {
+          role: account.role,
+          email: account.email,
+          id: account.id,
+          photo: account.photo,
+          firstName: account.firstName,
+          lastName: account.lastName,
         },
-        message: 'successfully',
-        statusCode: HttpStatus.OK,
-      });
+      };
     } catch (error) {
-      response.status(HttpStatus.UNAUTHORIZED).json({
-        message: error.message,
-        statusCode: HttpStatus.UNAUTHORIZED,
-        timestamp: new Date().toISOString(),
-      });
+      throw new UnauthorizedException(error.message);
     }
+  }
+
+  async logout(rawIp: string, req: Request) {
+    const sessionId = req.cookies['sessionId'];
+    const ip = getIp(rawIp);
+    const session = await this.sessionService.findOne({
+      where: { id: sessionId, ip: ip },
+    });
+    if (!session) throw new BadRequestException('cannot logout');
+    await this.sessionService.permanentDelete(sessionId);
+    req.res.clearCookie('public_user_info');
+    req.res.clearCookie('sessionId');
+    return { message: 'logged out successfully' };
   }
 }

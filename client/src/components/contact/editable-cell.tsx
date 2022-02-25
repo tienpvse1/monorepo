@@ -1,16 +1,16 @@
-import { Contact } from '@modules/contact/entity/contact.entity';
+import { IContact } from '@modules/contact/entity/contact.entity';
 import { Form, Input, InputNumber } from 'antd';
 import { Rule } from 'antd/lib/form';
 import { HTMLAttributes } from 'react';
 
 interface EditableCellProps extends HTMLAttributes<HTMLElement> {
   editing: boolean;
-  dataIndex: keyof Contact;
+  dataIndex: keyof IContact;
   title: string;
   inputType?: 'number' | 'text';
   recordIndex: string;
   editingIndex: string;
-  record: Contact;
+  record: IContact;
   rules?: Rule[];
 }
 
