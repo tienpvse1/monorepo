@@ -1,0 +1,1 @@
+import{j as e,F as i,l,i as t,n as o}from"./vendor.ea6bcc4e.js";const p=({children:s,title:a,titleSize:n,className:r})=>e(i,{children:e(l,{children:t(o,{className:r,span:24,children:[e("span",{style:{fontSize:`${n}`},className:"title-admin-page",children:a}),s]})})});export{p as W};

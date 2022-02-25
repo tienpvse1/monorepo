@@ -23,7 +23,7 @@ export const Inplace: FC<InplaceProps> = ({
   defaultValue,
   label,
   inputStyle,
-  labelStyle = { fontSize: 20, paddingLeft: 10 },
+  labelStyle = { fontSize: 16, paddingLeft: 10 },
   field = 'firstName',
   showToast,
 }) => {

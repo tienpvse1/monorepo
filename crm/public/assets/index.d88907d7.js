@@ -1,0 +1,1 @@
+import{j as e,o as r,B as t,x as a}from"./vendor.99654bca.js";const i=({placeholder:s})=>e("div",{style:{width:"100%"},children:e(r,{size:"small",placeholder:s,style:{borderRadius:"10px"},suffix:e(t,{shape:"circle",icon:e(a,{}),style:{borderStyle:"none"}})})});export{i as S};

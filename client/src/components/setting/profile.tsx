@@ -9,6 +9,7 @@ import { compressImage, uploadFiles } from '@util/file';
 import { envVars } from '@env/var.env';
 import { Toast } from 'primereact/toast';
 import { setCookie } from '@cookies';
+import { imagePlaceHolderUrl } from '@constance/image';
 
 interface ProfileProps {}
 
@@ -91,7 +92,7 @@ export const Profile: React.FC<ProfileProps> = ({}) => {
             src={
               imageResource && imageResource.length > 10
                 ? imageResource
-                : 'https://www.mona.uwi.edu/modlang/sites/default/files/modlang/male-avatar-placeholder.png'
+                : imagePlaceHolderUrl
             }
             preview
             height='150'

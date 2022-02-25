@@ -1,9 +1,4 @@
-import {
-  ArgumentMetadata,
-  BadRequestException,
-  Injectable,
-  PipeTransform,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 import { isString } from 'class-validator';
 import {
   AssignAccountDto,
@@ -11,7 +6,7 @@ import {
 } from '../dto/assign-account.dto';
 @Injectable()
 export class AssignAccountPipe implements PipeTransform {
-  transform(value: AssignAccountDto, metadata: ArgumentMetadata) {
+  transform(value: AssignAccountDto) {
     if (value.accountIds.length <= 0)
       throw new BadRequestException('account ids cannot be empty array');
     if (value.productId.length < 10)

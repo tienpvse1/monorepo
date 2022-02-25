@@ -16,21 +16,16 @@ export const useHandleDnD = (data: IPipeline) => {
       pipelineColumns: newColumn
     }
     setPipeLine(newState);
-    updatePipeline(newState); 
+    updatePipeline(newState);
   }
 
-  const reassign = (array: Array<IPipelineColumn>, index: number, newValue: IPipelineColumn) => {
-    array[index] = newValue;
-    return array;
+  const reassignIndex = <T>(array: Array<T>) => {
+    return array.map((value, index) => ({ ...value, index: index }))
   }
 
   const handleMoveColumn = (startIndex: number, finishIndex: number) => {
     //lấy mảng pipelineColumns ra
-    const pipelineNewColumns = Array.from(data.pipelineColumns);
-
-    reassign(pipelineNewColumns, startIndex, { ...pipelineNewColumns[startIndex], index: finishIndex })
-    reassign(pipelineNewColumns, finishIndex, { ...pipelineNewColumns[finishIndex], index: startIndex })
-
+    const pipelineNewColumns = Array.from(data?.pipelineColumns);
 
     // lấy ra dữ liệu column đang được nắm kéo
     const [newItemColumn] = pipelineNewColumns.splice(startIndex, 1);
@@ -39,16 +34,16 @@ export const useHandleDnD = (data: IPipeline) => {
     pipelineNewColumns.splice(finishIndex, 0, newItemColumn);
 
     //set lại column mới vô state
-    setNewPipeline(pipelineNewColumns);
+    setNewPipeline(reassignIndex(pipelineNewColumns));
   }
 
-  const handleMoveItemColumn = (startIndex: number, finishIndex: number, columnName: string) => {
+  const handleMoveItemColumn = (startIndex: number, finishIndex: number, columnID: string) => {
     // tìm column theo name và trả về giá trị column tìm đc
     const column = data.pipelineColumns.find(value =>
-      value.name == columnName)
+      value.id == columnID)
 
     // lấy items của column vừa tìm được bỏ vào pipelineNewColumns
-    const pipelineNewItems = Array.from(column!.pipelineItems);
+    const pipelineNewItems = Array.from(column?.pipelineItems);
 
     // lấy ra dữ liệu card đang được nắm kéo
     const [newItemColumn] = pipelineNewItems.splice(startIndex, 1);
@@ -56,50 +51,56 @@ export const useHandleDnD = (data: IPipeline) => {
     // thêm dữ liệu card vừa đc lấy ra bỏ vào vị trí điểm đến finishIndex
     pipelineNewItems.splice(finishIndex, 0, newItemColumn);
 
+    //update index  
+    const result = reassignIndex(pipelineNewItems);
+
     //update lại pipeline mới sau khi đổi chỗ card
     const newColumn = data.pipelineColumns.map((item) => {
-      if (item.name == columnName)
-        return { ...item, pipelineItems: pipelineNewItems };
+      if (item.id == columnID)
+        return { ...item, pipelineItems: result };
       else
         return item;
     })
     setNewPipeline(newColumn);
-
   }
 
   const handleMoveItemsBetweenColumns = (
     startIndex: number,
     finishIndex: number,
-    startColumnName: string,
-    finishColumnName: string) => {
+    startColumn: string,
+    finishColumn: string) => {
 
     //------------------------------------------------------------
-    //lấy item đó ra khỏi column start
+    //tìm item theo column start xong lấy nó ra
     const column1 = data.pipelineColumns.find(value =>
-      value.name == startColumnName)
+      value.id == startColumn)
 
-    const NewItems1 = Array.from(column1!.pipelineItems);
-    const [newItemColumn] = NewItems1.splice(startIndex, 1);
+    const items1 = Array.from(column1?.pipelineItems);
+    const [newItemColumn] = items1.splice(startIndex, 1);
+    //update item index column start
+    const newItems1 = reassignIndex(items1);
     //------------------------------------------------------------
     //bỏ item vừa lấy ra từ column start cho vào column finish
     const column2 = data.pipelineColumns.find(value =>
-      value.name == finishColumnName)
+      value.id == finishColumn)
 
-    const NewItems2 = Array.from(column2!.pipelineItems);
-    NewItems2.splice(finishIndex, 0, newItemColumn);
+    const items2 = Array.from(column2?.pipelineItems);
+    items2.splice(finishIndex, 0, newItemColumn);
+    //update item index column finish
+    const newItems2 = reassignIndex(items2);
+
     //------------------------------------------------------------
 
     // update lại state mới sau khi đổi chỗ 
     const newColumn = data.pipelineColumns.map((item) => {
-      if (item.name == startColumnName)
-        return { ...item, pipelineItems: NewItems1 };
-      else if (item.name == finishColumnName)
-        return { ...item, pipelineItems: NewItems2 };
+      if (item.id == startColumn)
+        return { ...item, pipelineItems: newItems1 };
+      else if (item.id == finishColumn)
+        return { ...item, pipelineItems: newItems2 };
       else
         return item;
     })
     setNewPipeline(newColumn);
-
   }
 
   return {

@@ -1,76 +1,77 @@
-import { IPipelineItem } from "@modules/pipeline-items/entity/pipeline-items.entity";
-import { Button, Col, Form, Input, Row, Space } from "antd";
-import { DescriptionItem } from "./description-item";
-import { TimeLineLog } from "../../timeline";
-import { EditOutlined, SaveOutlined } from "@ant-design/icons";
-import { useToggle } from "@hooks/useToggle";
-import { useUpdatePipelineItems } from "@modules/pipeline-items/mutation/pipeline-items.update";
+import {
+  EditOutlined,
+  EllipsisOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
+import { Loading } from '@components/loading/loading';
+import { imagePlaceHolderUrl } from '@constance/image';
+import { usePipelineItem } from '@modules/pipeline-items/query/pipeline-item.get';
+import { handleUndefinedString } from '@util/undefined';
+import { Card, Divider, Image, Tag } from 'antd';
+import Meta from 'antd/lib/card/Meta';
+import { Suspense } from 'react';
+import { SecondColumn } from './second-column';
+import { ThirdColumn } from './third-column';
 
 interface OpportunityDetailsProps {
-  dataCardPipeline: IPipelineItem;
+  pipelineItemId: string;
 }
 
-export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ dataCardPipeline }) => {
-
-  const [showFormEdit, setShowFormEdit] = useToggle();
-
-  const { updatePipelineItemsName } = useUpdatePipelineItems();
-
-  const handleSavePipelineItemsName = (value: IPipelineItem) => {
-    updatePipelineItemsName({...value, id: dataCardPipeline.id})
-    setShowFormEdit();
-  }
-
+export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({
+  pipelineItemId,
+}) => {
+  const { data } = usePipelineItem(pipelineItemId);
+  console.log(data);
   return (
-    <>
-      <Space>
-        {
-          showFormEdit ?
-            <Form
-              initialValues={{ ["name"]: dataCardPipeline.name }}
-              onFinish={(value) => handleSavePipelineItemsName(value)}
-            >
-              <Form.Item style={{ borderBottom: '1px solid' }} name="name">
-                <Input
-                  onBlur={setShowFormEdit}
-                  autoFocus
-                  suffix={
-                    <Button onMouseDown={(e) => e.preventDefault()} type="text" htmlType="submit">
-                      <SaveOutlined />
-                    </Button>
-                  }
-                  className="opportunity-name"
-                  bordered={false} />
-              </Form.Item>
-            </Form> :
-            <>
-              <h2>{dataCardPipeline.name}</h2>
-              <EditOutlined onClick={setShowFormEdit} className="edit-title-opportunity-icon" />
-            </>
+    <div style={{ display: 'flex' }}>
+      <Card
+        style={{ width: 300 }}
+        cover={
+          <div style={{ padding: 20 }}>
+            <Image
+              alt='example'
+              src={data.photo ? data.photo : imagePlaceHolderUrl}
+            />
+          </div>
         }
-      </Space>
-      <Row gutter={[8, 16]}>
-        <Col span={12}>
-          <>
-            <DescriptionItem title="Customer" content={<p> Mirinda</p>} />
-            <DescriptionItem title="Email" content={<p> nghuuchuong@gmail.com</p>} />
-            <DescriptionItem title="Phone" content={<p> 0123456789</p>} />
-            <DescriptionItem title="Salesperson" content={<p> Mirinda</p>} />
-            <DescriptionItem title="Sales Team" content={<p> FPT team</p>} />
-          </>
-          <Row>
-            <Col span={24}>
-              {/* <div style={{ backgroundColor: '#0092ff' }}>
-                123
-              </div> */}
-            </Col>
-          </Row>
-        </Col>
-
-        <Col span={12}>
-          <TimeLineLog />
-        </Col>
-      </Row>
-    </>
+        actions={[
+          <SettingOutlined key='setting' />,
+          <EditOutlined key='edit' />,
+          <EllipsisOutlined key='ellipsis' />,
+        ]}
+      >
+        <Meta
+          title='Summary'
+          description={
+            <>
+              <span
+                style={{
+                  color: 'rgba(0,0,0,0.9)',
+                  fontSize: 16,
+                }}
+              >
+                {handleUndefinedString(data.title)}
+              </span>
+              <br />
+              <span>{handleUndefinedString(data.jobPosition)}</span>
+              <br />
+              Email:{' '}
+              <i style={{ textDecoration: 'underline', color: 'blue' }}>
+                {handleUndefinedString(data.email)}
+              </i>
+            </>
+          }
+        />
+        <Divider />
+        <div>
+          {/* //!TODO this field is still hard coded */}
+          <Tag color={'error'}>Private</Tag>
+        </div>
+      </Card>
+      <Suspense fallback={<Loading />}>
+        <SecondColumn data={data} />
+      </Suspense>
+      <ThirdColumn />
+    </div>
   );
 };
