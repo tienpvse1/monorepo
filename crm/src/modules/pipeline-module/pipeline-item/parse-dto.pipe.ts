@@ -21,8 +21,7 @@ export class ParseDtoPipe implements PipeTransform {
     });
 
     const newItem = pipelineItemRepository.create({
-      name: rest.name,
-      index: rest.index,
+      ...rest,
     });
     const savedItem = await pipelineItemRepository.save(newItem);
     if (!column.pipelineItems) column.pipelineItems = [];

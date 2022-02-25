@@ -19,7 +19,7 @@ export const DrawerDetails: React.FC<DrawerDetailsProps> = ({
         destroyOnClose
         title={title}
         placement={placement}
-        width={width}
+        width={"100vw"}
         onClose={onClose}
         visible={visible}
         extra={
