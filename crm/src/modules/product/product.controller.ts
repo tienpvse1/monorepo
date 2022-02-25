@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, UsePipes } from '@nestjs/common';
+import { Body, Controller, Param, Patch, UsePipes } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Crud, Override } from '@nestjsx/crud';
 import {
@@ -8,7 +8,7 @@ import {
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
-import { AssignAccountPipe } from './pipe/asssign-validator.pipe';
+import { AssignAccountPipe } from './pipe/assign-validator.pipe';
 import { DateValidatorPipe } from './pipe/date-validator.pipe';
 import { ProductService } from './product.service';
 
@@ -23,11 +23,19 @@ import { ProductService } from './product.service';
     replace: UpdateProductDto,
     update: UpdateProductDto,
   },
+  params: {
+    id: {
+      field: 'id',
+      type: 'string',
+      primary: true,
+    },
+  },
   routes: {
     createOneBase: {
       decorators: [UsePipes(DateValidatorPipe)],
     },
-    exclude: ['createManyBase'],
+
+    exclude: ['createManyBase', 'updateOneBase'],
   },
 })
 export class ProductController {
@@ -49,5 +57,10 @@ export class ProductController {
   @ApiBody({ type: AssignAccountDto })
   async assignAccount(@Body() body: ParsedAssignAccountDto[]) {
     return this.service.assignAccounts(body);
+  }
+  @Patch(':id')
+  async updateProduct(@Param('id') id: string, @Body() dto: UpdateProductDto) {
+    const validatedData = await this.service.validateUpdateData(id, dto);
+    return this.service.update(id, validatedData);
   }
 }
