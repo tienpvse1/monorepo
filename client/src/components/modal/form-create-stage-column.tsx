@@ -2,13 +2,13 @@ import { FC } from 'react';
 import { Modal, Form, Input } from 'antd';
 
 
-interface ModalFormCreateColumn {
+interface ModalFormCreateStageColumnProps {
   visible: boolean;
   onCreate: (values) => void;
   onCancel: () => void;
 }
 
-export const ModalFormCreateColumn: FC<ModalFormCreateColumn> = ({
+export const ModalFormCreateStageColumn: FC<ModalFormCreateStageColumnProps> = ({
   visible,
   onCreate,
   onCancel,

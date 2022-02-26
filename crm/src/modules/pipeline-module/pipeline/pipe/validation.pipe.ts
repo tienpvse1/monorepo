@@ -1,9 +1,4 @@
-import {
-  ArgumentMetadata,
-  BadRequestException,
-  Injectable,
-  PipeTransform,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 import { checkDuplicate } from 'src/util/array';
 import { PipelineColumn } from '../../pipeline-column/entities/pipeline-column.entity';
 import { PipelineItem } from '../../pipeline-item/entities/pipeline-item.entity';
@@ -11,7 +6,7 @@ import { UpdatePipelineDto } from '../dto/update-pipeline.dto';
 
 @Injectable()
 export class ValidationPipe implements PipeTransform {
-  transform(value: UpdatePipelineDto, metadata: ArgumentMetadata) {
+  transform(value: UpdatePipelineDto) {
     if (!value.pipelineColumns) return value;
     const isDuplicate = checkDuplicate<PipelineColumn>(
       value.pipelineColumns,

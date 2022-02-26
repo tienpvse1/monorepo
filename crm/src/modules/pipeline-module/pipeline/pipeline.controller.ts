@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Post,
   Put,
   UsePipes,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { AUTHORIZATION } from 'src/constance/swagger';
 import { CreatePipelineDto } from './dto/create-pipeline.dto';
 import { UpdatePipelineDto } from './dto/update-pipeline.dto';
 import { Pipeline } from './entities/pipeline.entity';
+import { CreatePipePipe } from './pipe/create-pipe.pipe';
 import { ValidationPipe } from './pipe/validation.pipe';
 import { PipelineService } from './pipeline.service';
 
@@ -45,7 +47,12 @@ import { PipelineService } from './pipeline.service';
     },
   },
   routes: {
-    exclude: ['replaceOneBase', 'createManyBase', 'getOneBase'],
+    exclude: [
+      'replaceOneBase',
+      'createManyBase',
+      'getOneBase',
+      'createOneBase',
+    ],
   },
 })
 export class PipelineController {
@@ -54,6 +61,11 @@ export class PipelineController {
   @Get('own')
   getOwnPipeline(@User('id') userId: string) {
     return this.service.findOwnOnePipeline(userId);
+  }
+  @Post()
+  @UsePipes(CreatePipePipe)
+  createPipeline(@Body() value: CreatePipelineDto) {
+    return this.service.createItem(value);
   }
 
   @Delete('soft/:id')

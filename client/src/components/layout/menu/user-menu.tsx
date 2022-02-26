@@ -51,8 +51,8 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
           Contact
         </Menu.Item>
         <Menu.Item
-          key='pipeline'
-          onClick={() => navigate('/pipeline')}
+          key='pipelines'
+          onClick={() => navigate('/pipelines')}
           style={style}
           icon={<BranchesOutlined style={style} />}
         >

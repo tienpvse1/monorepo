@@ -10,6 +10,7 @@ async function bootstrap() {
   //set the global prefix for app. eg: http://crm.com/api/v1
   app.setGlobalPrefix(config.get<string>('app.prefix'));
   app.use(cookieParser());
+  // app.use(compression());
   // enable cross sharing origin
   app.enableCors({
     origin: ['http://localhost:3000', 'http://localhost'],
