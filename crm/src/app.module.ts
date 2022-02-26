@@ -31,6 +31,9 @@ import { RoleModule } from './modules/role/role.module';
 import { HistoryModule } from './modules/history/history.module';
 import { ProductModule } from './modules/product/product.module';
 import { ProductAccountModule } from './modules/product-account/product-account.module';
+import { TagModule } from './modules/tag/tag.module';
+import { NoteWorthyModule } from './modules/note-worthy/note-worthy.module';
+import { AddressModule } from './modules/address/address.module';
 
 @Module({
   imports: [
@@ -61,6 +64,9 @@ import { ProductAccountModule } from './modules/product-account/product-account.
     HistoryModule,
     ProductModule,
     ProductAccountModule,
+    TagModule,
+    NoteWorthyModule,
+    AddressModule,
   ],
   providers: [GlobalModule],
 })

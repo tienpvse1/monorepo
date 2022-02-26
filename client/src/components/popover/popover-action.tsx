@@ -1,34 +1,33 @@
-import { showDeleteConfirm } from '@components/modal-cofirm/delete-confirm';
+import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { useToggle } from '@hooks/useToggle';
 import { Col, Popover, Row } from 'antd';
 import React from 'react';
 
 interface PopoverActionProps {
-  itemName1: string;
-  itemName2: string;
-  callbackMethodDelete?: () => void;
-  callbackMethodUpdate?: () => void;
+  option1: string;
+  option2: string;
+  handleOption1?: () => void;
+  handleOption2?: () => void;
 }
 
 export const PopoverAction: React.FC<PopoverActionProps> = ({
   children,
-  itemName1,
-  itemName2,
-  callbackMethodDelete,
-  callbackMethodUpdate
+  option1: itemName1,
+  option2: itemName2,
+  handleOption2,
+  handleOption1,
 }) => {
-
   const [visible, setVisible] = useToggle();
 
   const handleDelete = () => {
-    showDeleteConfirm(callbackMethodDelete);
+    showDeleteConfirm(handleOption2);
     setVisible();
-  }
+  };
 
   const handleEdit = () => {
-    callbackMethodUpdate();
+    handleOption1();
     setVisible();
-  }
+  };
 
   return (
     <Popover

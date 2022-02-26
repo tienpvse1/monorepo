@@ -1,4 +1,5 @@
-import { IsArray, Length } from 'class-validator';
+import { IsArray, IsEnum, Length } from 'class-validator';
+import { RoleType } from '../entities/role.entity';
 
 export class CreateRoleDto {
   @Length(1)
@@ -14,8 +15,8 @@ export class AssignRoleDto {
 }
 
 export class AddPermissionDto {
-  @Length(1)
-  name: string;
+  @IsEnum(RoleType)
+  name: RoleType;
 
   @IsArray()
   permissionIds: string[];

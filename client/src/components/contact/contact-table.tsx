@@ -1,6 +1,5 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
-import { Loading } from '@components/loading/loading';
-import { Contact } from '@modules/contact/entity/contact.entity';
+import { IContact } from '@modules/contact/entity/contact.entity';
 import { useDeleteContact } from '@modules/contact/mutation/contact.delete';
 import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
 import {
@@ -14,7 +13,9 @@ import { client } from '../../App';
 import { ContactHeader } from './contact-header';
 import { EditableCell } from '../table/editable-cell';
 import { useToggle } from '@hooks/useToggle';
-import { showDeleteConfirm } from '@components/modal-cofirm/delete-confirm';
+import { showDeleteConfirm } from '@components/modal/delete-confirm';
+import { ModalCreate } from '@components/modal/modal-create';
+import { FormCreateContact } from './form-create-contact';
 
 const rowSelection = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
@@ -32,22 +33,21 @@ export const ContactData: FC = () => {
   const { mutate: deleteContact } = useDeleteContact(() =>
     client.invalidateQueries(QUERY_CONTACTS)
   );
-  const title = () => <ContactHeader />;
-  const [form] = Form.useForm<Contact>();
+  const [form] = Form.useForm<IContact>();
   const [isEditing, toggleEditing] = useToggle();
+  const [isOpenModal, toggleModalCreate] = useToggle();
 
   const [editingIndex, setEditingIndex] = useState('');
 
-  if (isLoading) return <Loading />;
-  const handleEditClick = (record: Contact) => {
+  const handleEditClick = (record: IContact) => {
     toggleEditing();
     setEditingIndex(record.id);
-    const { name, address, phone, email } = record;
+    const { name, internalNotes, phone, email } = record;
     form.setFieldsValue({
       phone,
       name,
       email,
-      address,
+      internalNotes,
     });
   };
 
@@ -63,26 +63,32 @@ export const ContactData: FC = () => {
       return;
     }
   };
+
+  console.log(data?.map((value) => ({ ...value, key: value.name })));
+  
   return (
     <>
       <Form form={form}>
         {data && (
           <Table
+            loading={isLoading}
             tableLayout='fixed'
             rowSelection={{
               type: 'checkbox',
               ...rowSelection,
             }}
-            title={title}
+            title={() =>
+              <ContactHeader toggleModalCreate={toggleModalCreate} />
+            }
             pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
-            dataSource={data}
+            dataSource={data?.map((value) => ({ ...value, key: value.name }))}
             size={'large'}
           >
             <Column
               title='Name'
               dataIndex='name'
               key='name'
-              render={(_, record: Contact) => (
+              render={(_, record: IContact) => (
                 <EditableCell
                   dataIndex='name'
                   editing={isEditing}
@@ -100,62 +106,16 @@ export const ContactData: FC = () => {
               )}
             />
             <Column
-              title='Address'
-              dataIndex='address'
-              key='address'
-              render={(_, record: Contact) => (
-                <EditableCell
-                  dataIndex='address'
-                  editing={isEditing}
-                  editingIndex={editingIndex}
-                  recordIndex={record.id}
-                  title='Address'
-                  record={record}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Address is required',
-                    },
-                  ]}
-                />
-              )}
-            />
-            <Column
-              title='Phone Number'
-              dataIndex='phone'
-              key='phone'
-              render={(_, record: Contact) => (
-                <EditableCell
-                  dataIndex='phone'
-                  editing={isEditing}
-                  editingIndex={editingIndex}
-                  recordIndex={record.id}
-                  title='Name'
-                  record={record}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'name is required',
-                    },
-                    {
-                      pattern: /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
-                      message: 'must be phone number',
-                    },
-                  ]}
-                />
-              )}
-            />
-            <Column
               title='Email'
               dataIndex='email'
               key='email'
-              render={(_, record: Contact) => (
+              render={(_, record: IContact) => (
                 <EditableCell
                   dataIndex='email'
                   editing={isEditing}
                   editingIndex={editingIndex}
                   recordIndex={record.id}
-                  title='Name'
+                  title='Email'
                   record={record}
                   rules={[
                     {
@@ -171,13 +131,60 @@ export const ContactData: FC = () => {
               )}
             />
             <Column
+              title='Phone Number'
+              dataIndex='phone'
+              key='phone'
+              render={(_, record: IContact) => (
+                <EditableCell
+                  dataIndex='phone'
+                  editing={isEditing}
+                  editingIndex={editingIndex}
+                  recordIndex={record.id}
+                  title='Phone Number'
+                  record={record}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'phone is required',
+                    },
+                    {
+                      pattern: /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
+                      message: 'must be phone number',
+                    },
+                  ]}
+                />
+              )}
+            />
+            <Column
+              title='Notes'
+              dataIndex='internalNotes'
+              key='internalNotes'
+              render={(_, record: IContact) => (
+                <EditableCell
+                  dataIndex='internalNotes'
+                  editing={isEditing}
+                  editingIndex={editingIndex}
+                  recordIndex={record.id}
+                  title='Notes'
+                  record={record}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Notes is required',
+                    },
+                  ]}
+                />
+              )}
+            />
+            <Column
               title='Type'
               dataIndex='type'
               key='type'
+              width={120}
               render={(text) => (
                 <span>
-                  <Tag color={'volcano'} key={text.type}>
-                    {text.toUpperCase()}
+                  <Tag color={'gold'} key={text.type}>
+                    {text ? text.toUpperCase() : 'empty'}
                   </Tag>
                 </span>
               )}
@@ -186,7 +193,7 @@ export const ContactData: FC = () => {
               title='Action'
               dataIndex='action'
               key='action'
-              render={(_, record: Contact) => (
+              render={(_, record: IContact) => (
                 <Space size='small' style={{ width: '100%' }}>
                   {isEditing && record.id === editingIndex ? (
                     <>
@@ -228,6 +235,12 @@ export const ContactData: FC = () => {
           </Table>
         )}
       </Form>
+      <ModalCreate
+        isOpenModal={isOpenModal}
+        toggleModalCreate={toggleModalCreate}
+      >
+        <FormCreateContact />
+      </ModalCreate>
     </>
   );
 };

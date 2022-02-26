@@ -1,10 +1,14 @@
-import { Controller } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, UsePipes } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { AUTHORIZATION } from 'src/constance/swagger';
-import { CreateScheduleDto } from './dto/create-schedule.dto';
+import {
+  CreateScheduleDto,
+  ParsedCreateScheduleDto,
+} from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { Schedule } from './entities/schedule.entity';
+import { ParseDtoPipe } from './parse-dto.pipe';
 import { ScheduleService } from './schedule.service';
 
 @Controller('schedule')
@@ -25,7 +29,17 @@ import { ScheduleService } from './schedule.service';
       primary: true,
     },
   },
+  routes: {
+    exclude: ['createOneBase'],
+  },
 })
 export class ScheduleController {
   constructor(public readonly service: ScheduleService) {}
+
+  @Post()
+  @ApiBody({ type: CreateScheduleDto })
+  @UsePipes(ParseDtoPipe)
+  createSchedule(@Body() parsedDto: ParsedCreateScheduleDto) {
+    return parsedDto;
+  }
 }
