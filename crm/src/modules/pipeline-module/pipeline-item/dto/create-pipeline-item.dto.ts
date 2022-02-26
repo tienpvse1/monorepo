@@ -24,9 +24,7 @@ export class CreatePipelineItemDto {
 export class CreateSinglePipelineItemDto {
   @Length(1)
   name: string;
-  @IsNumber()
-  @Min(0)
-  index: number;
+
   @Length(10)
   columnId: string;
 

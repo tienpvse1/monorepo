@@ -1,9 +1,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/base/nestjsx.service';
-import { getRepository, Repository } from 'typeorm';
+import { getCustomRepository, getRepository, Repository } from 'typeorm';
 import { Pipeline } from '../pipeline/entities/pipeline.entity';
-import { CreatePipelineColumnDto } from './dto/create-pipeline-column.dto';
+import { PipelineRepository } from '../pipeline/pipeline.repository';
+import {
+  CreatePipelineColumnDto,
+  CreateSinglePipelineColumnDto,
+} from './dto/create-pipeline-column.dto';
 import { PipelineColumn } from './entities/pipeline-column.entity';
 
 @Injectable()
@@ -29,6 +33,27 @@ export class PipelineColumnService extends BaseService<PipelineColumn> {
       return createResult;
     } catch (error) {
       throw new BadRequestException('cannot create');
+    }
+  }
+
+  async addSingleColumn({ name, pipelineId }: CreateSinglePipelineColumnDto) {
+    const pipelineRepository = getCustomRepository(PipelineRepository);
+    const pipeline = await pipelineRepository.findOneItem({
+      where: { id: pipelineId },
+      relations: ['pipelineColumns'],
+    });
+    const newPipelineIndex = pipeline.pipelineColumns.length;
+
+    try {
+      const insertResult = await this.createItem({
+        index: newPipelineIndex,
+        name,
+      });
+      pipeline.pipelineColumns.push(insertResult);
+      pipeline.save();
+      return insertResult;
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
   }
 }
