@@ -9,11 +9,8 @@ export class CreatePipePipe implements PipeTransform {
     // TODO: first is to deeply sort the whole array, so that they can follow the order the client first want
     const sortedDto = sortPipeline(value);
     // TODO: after deeply sort the array, re-indexing them so they will start increasingly from 0,1,2,3...
-    const reIndexed = reIndexPipeline(sortedDto);
-    console.log(
-      '🚀 ~ file: validation.pipe.ts ~ line 21 ~ ValidationPipe ~ transform ~ reIndexed',
-      reIndexed,
-    );
+    reIndexPipeline(sortedDto);
+
     return value;
   }
 }

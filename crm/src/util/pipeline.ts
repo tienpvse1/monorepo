@@ -34,4 +34,5 @@ export const reIndexPipeline = (
       } as PipelineColumn;
     },
   );
+  return pipeline;
 };
