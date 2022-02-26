@@ -39,12 +39,12 @@
     align-items: center;
 }
 
-#scroll-menu {
+#scroll-menu-pipeline {
     overflow-x: auto;
     white-space: nowrap;
 }
 
-.scroll-menu2 {
+.scroll-menu-pipeline-2 {
     overflow-y: auto;
     white-space: nowrap;
     &::-webkit-scrollbar {

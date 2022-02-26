@@ -5,7 +5,11 @@ const { Option } = Select;
 import { useNavigate } from 'react-router-dom';
 import { ButtonFilter } from './button-filter';
 
-export const ContactHeader = () => {
+interface ContactHeaderProps {
+  toggleModalCreate: () => void;
+}
+
+export const ContactHeader: React.FC<ContactHeaderProps> = ({ toggleModalCreate }) => {
   const navigate = useNavigate();
   const handleImportClick = () => {
     navigate('/import-contact');
@@ -15,7 +19,7 @@ export const ContactHeader = () => {
     <div style={{ padding: '10px' }}>
       <Row style={{ alignItems: 'center' }}>
         <Col span={12}>
-          <div style={{display: 'flex', alignItems: 'center'}}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <img
               src='/contact.png'
               width={47}
@@ -36,19 +40,22 @@ export const ContactHeader = () => {
         <Col span={12}>
           <Space style={{ float: 'right' }}>
             <Button
+              icon={<PlusOutlined />}
               className='button-ant-custom-style'
               type='primary'
               size='middle'
+              onClick={toggleModalCreate}
             >
-              <PlusOutlined /> New Contact
+              New Contact
             </Button>
             <Button
+              icon={<ImportOutlined />}
               className='button-ant-custom-style'
               type='primary'
               size='middle'
               onClick={handleImportClick}
             >
-              <ImportOutlined /> Import
+              Import
             </Button>
           </Space>
         </Col>

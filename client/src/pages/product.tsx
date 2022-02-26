@@ -8,10 +8,10 @@ import Column from "antd/lib/table/Column"
 import moment from "moment";
 import { useState } from "react";
 import { useToggle } from "@hooks/useToggle";
-import { showDeleteConfirm } from '@components/modal-cofirm/delete-confirm';
+import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { useUpdateProduct } from "@modules/product/mutation/product.update";
 
-export const Product = () => {
+const Product = () => {
   const dateFormat = 'YYYY-MM-DD';
 
   const { data, isLoading } = useQueryProducts();
@@ -192,3 +192,4 @@ export const Product = () => {
     </div>
   )
 }
+export default Product;

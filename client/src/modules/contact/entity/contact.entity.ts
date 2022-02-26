@@ -7,4 +7,5 @@ export interface IContact extends IBase {
   type: string;
   birth: string;
   email: string;
+  internalNotes: string;
 }

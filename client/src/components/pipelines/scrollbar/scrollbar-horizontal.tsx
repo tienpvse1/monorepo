@@ -9,7 +9,7 @@ export const ScrollBarHorizontal: React.FC = ({ children }) => {
       <ArrowLeft elementScrollBar={elementScrollBar} />
       <ArrowRight elementScrollBar={elementScrollBar} />
 
-      <div id='scroll-menu' ref={elementScrollBar} >
+      <div id='scroll-menu-pipeline' ref={elementScrollBar} >
         {children}
       </div>
     </>
