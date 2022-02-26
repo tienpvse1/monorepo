@@ -175,9 +175,11 @@ export const ContactData: FC = () => {
               key='type'
               render={(text) => (
                 <span>
-                  <Tag color={'volcano'} key={text.type}>
-                    {text.toUpperCase()}
-                  </Tag>
+                  {text && (
+                    <Tag color={'volcano'} key={text.type}>
+                      {text.toUpperCase()}
+                    </Tag>
+                  )}
                 </span>
               )}
             />
