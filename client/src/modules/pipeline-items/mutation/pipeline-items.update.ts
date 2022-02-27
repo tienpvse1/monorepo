@@ -13,6 +13,7 @@ const updatePipelineItem = async (
   id: string,
   updateDto: IUpdatePipelineItemDto
 ) => {
+  console.log('🚀 ~ file: pipeline-items.update.ts ~ line 16 ~ id', id);
   const { data } = await instance.patch(`${PIPELINE_ITEM}/${id}`, updateDto);
   return data;
 };
@@ -21,8 +22,9 @@ const changeOpportunityStage = async (
   id: string,
   changeStageDto: IChangeStageDto
 ) => {
+  alert(`🚀 ~ file: pipeline-items.update.ts ~ line 25 ~ id ${id}`);
   const { data } = await instance.patch<IPipelineColumn>(
-    `${PIPELINE_ITEM}/${id}}`,
+    `${PIPELINE_ITEM}/change-stage/${id}`,
     changeStageDto
   );
   return data;

@@ -15,7 +15,14 @@ const { TabPane } = Tabs;
 export const SecondColumn: React.FC<SecondColumnProps> = ({ data }) => {
   const pipeline = useLiveQuery(getPipeline);
   const { data: pipelineColumns } = useGetStagesByPipelineId(pipeline?.id);
-  const {} = useChangeStage()
+  const { mutate } = useChangeStage();
+  const handleUpdateStage = (currentStageId: string, newStageId: string) => {
+    mutate({
+      id: data.id,
+      newStageId,
+      oldStageId: currentStageId,
+    });
+  };
   return (
     <div>
       <Card style={{ width: '55vw' }} title='Stages'>
@@ -29,6 +36,12 @@ export const SecondColumn: React.FC<SecondColumnProps> = ({ data }) => {
               key={column.id}
               status={qualifyStage(index, data.pipelineColumn.index)}
               title={column.name}
+              onStepClick={(step) => {
+                const { id: currentId, index: currentIndex } =
+                  data.pipelineColumn;
+                if (step !== currentIndex)
+                  handleUpdateStage(currentId, pipelineColumns[step].id);
+              }}
             />
           ))}
         </Steps>
@@ -45,6 +58,7 @@ export const SecondColumn: React.FC<SecondColumnProps> = ({ data }) => {
           >
             <ContactInfo data={data} />
           </TabPane>
+          {/* //TODO: these tab is still hard coded */}
           <TabPane tab='TASK' key='2'>
             <Alert
               message='Meeting with John'
