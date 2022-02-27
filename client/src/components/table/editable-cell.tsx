@@ -1,16 +1,15 @@
-import { IContact } from '@modules/contact/entity/contact.entity';
-import { Form, Input, InputNumber } from 'antd';
+import { DatePicker, Form, Input, InputNumber } from 'antd';
 import { Rule } from 'antd/lib/form';
 import { HTMLAttributes } from 'react';
 
 interface EditableCellProps extends HTMLAttributes<HTMLElement> {
   editing: boolean;
-  dataIndex: keyof IContact;
+  dataIndex: any;
   title: string;
-  inputType?: 'number' | 'text';
+  inputType?: 'number' | 'text' | 'datePicker';
   recordIndex: string;
   editingIndex: string;
-  record: IContact;
+  record: any;
   rules?: Rule[];
 }
 
@@ -25,7 +24,17 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   record,
   rules = [],
 }) => {
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
+
+  let inputNode = <Input style={{ height: '40px' }} />;
+  switch (inputType) {
+    case 'number':
+      inputNode = <InputNumber />;
+      break;
+    case 'datePicker':
+      inputNode = <DatePicker style={{ height: '40px' }} />;
+      break;
+  }
+
   return (
     <>
       {editing && recordIndex === editingIndex ? (
@@ -33,7 +42,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
           {inputNode}
         </Form.Item>
       ) : (
-        <p>{record[dataIndex]}</p>
+        <span>{record[dataIndex]}</span>
       )}
     </>
   );

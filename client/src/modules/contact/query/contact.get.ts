@@ -11,8 +11,6 @@ export const QUERY_CONTACTS_LIKE_EMAIL = 'query-contacts';
 const getContacts = async () => {
   const { instance } = new Axios();
   const { data } = await instance.get<IContact[]>(`${CONTACT}`);
-  console.log(data);
-
   return data;
 };
 

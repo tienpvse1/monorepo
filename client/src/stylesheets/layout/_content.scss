@@ -7,3 +7,12 @@
 .site-layout {
     background-color: $light-background-color !important;
 }
+
+.container-page {
+    padding: 20px;
+    border-radius: 10px;
+    -webkit-box-shadow: $card-dashboard-shadow;
+    box-shadow: $card-dashboard-shadow;
+    border: $card-border;
+    margin: 10px 20px;
+}

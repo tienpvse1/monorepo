@@ -1,0 +1,23 @@
+@import "../base/variables";
+.product-container {
+    @extend .container-page;
+}
+
+.scroll-menu-modal-create {
+    overflow-y: auto;
+    white-space: nowrap;
+    height: 450px;
+    margin-left: 0px;
+}
+
+.title-modal-create-content {
+    background-color: $dark-grey-background-color;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 1.17em;
+    padding: 5px 10px;
+}
+
+.modal-create-content {
+    padding: 7px 20px;
+}

@@ -1,5 +1,4 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
-import { Loading } from '@components/loading/loading';
 import { IContact } from '@modules/contact/entity/contact.entity';
 import { useDeleteContact } from '@modules/contact/mutation/contact.delete';
 import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
@@ -12,10 +11,14 @@ import Column from 'antd/lib/table/Column';
 import { FC, useState } from 'react';
 import { client } from '../../App';
 import { ContactHeader } from './contact-header';
-import { EditableCell } from './editable-cell';
+import { EditableCell } from '../table/editable-cell';
+import { useToggle } from '@hooks/useToggle';
+import { showDeleteConfirm } from '@components/modal/delete-confirm';
+import { ModalCreate } from '@components/modal/modal-create';
+import { FormCreateContact } from './form-create-contact';
 
 const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {},
+  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
   getCheckboxProps: (record: any) => ({
     disabled: record.name === 'Disabled User',
     name: record.name,
@@ -30,23 +33,21 @@ export const ContactData: FC = () => {
   const { mutate: deleteContact } = useDeleteContact(() =>
     client.invalidateQueries(QUERY_CONTACTS)
   );
-  const title = () => <ContactHeader />;
   const [form] = Form.useForm<IContact>();
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, toggleEditing] = useToggle();
+  const [isOpenModal, toggleModalCreate] = useToggle();
+
   const [editingIndex, setEditingIndex] = useState('');
 
-  const toggleEditing = () => setIsEditing(!isEditing);
-
-  if (isLoading) return <Loading />;
   const handleEditClick = (record: IContact) => {
     toggleEditing();
     setEditingIndex(record.id);
-    const { name, address, phone, email } = record;
+    const { name, internalNotes, phone, email } = record;
     form.setFieldsValue({
       phone,
       name,
       email,
-      address,
+      internalNotes,
     });
   };
 
@@ -62,171 +63,180 @@ export const ContactData: FC = () => {
       return;
     }
   };
+
   return (
     <>
       <Form form={form}>
-        {data && (
-          <Table
-            tableLayout='fixed'
-            rowSelection={{
-              type: 'checkbox',
-              ...rowSelection,
-            }}
-            title={title}
-            pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
-            dataSource={data}
-            size={'large'}
-          >
-            <Column
-              title='Name'
-              dataIndex='name'
-              key='name'
-              render={(_, record: IContact) => (
-                <EditableCell
-                  dataIndex='name'
-                  editing={isEditing}
-                  editingIndex={editingIndex}
-                  recordIndex={record.id}
-                  title='Name'
-                  record={record}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Name is required',
-                    },
-                  ]}
-                />
-              )}
-            />
-            <Column
-              title='Address'
-              dataIndex='address'
-              key='address'
-              render={(_, record: IContact) => (
-                <EditableCell
-                  dataIndex='address'
-                  editing={isEditing}
-                  editingIndex={editingIndex}
-                  recordIndex={record.id}
-                  title='Address'
-                  record={record}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Address is required',
-                    },
-                  ]}
-                />
-              )}
-            />
-            <Column
-              title='Phone Number'
-              dataIndex='phone'
-              key='phone'
-              render={(_, record: IContact) => (
-                <EditableCell
-                  dataIndex='phone'
-                  editing={isEditing}
-                  editingIndex={editingIndex}
-                  recordIndex={record.id}
-                  title='Name'
-                  record={record}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'name is required',
-                    },
-                    {
-                      pattern: /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
-                      message: 'must be phone number',
-                    },
-                  ]}
-                />
-              )}
-            />
-            <Column
-              title='Email'
-              dataIndex='email'
-              key='email'
-              render={(_, record: IContact) => (
-                <EditableCell
-                  dataIndex='email'
-                  editing={isEditing}
-                  editingIndex={editingIndex}
-                  recordIndex={record.id}
-                  title='Name'
-                  record={record}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Address is required',
-                    },
-                    {
-                      type: 'email',
-                      message: 'must be email',
-                    },
-                  ]}
-                />
-              )}
-            />
-            <Column
-              title='Type'
-              dataIndex='type'
-              key='type'
-              render={(text) => (
-                <span>
-                  {text && (
-                    <Tag color={'volcano'} key={text.type}>
-                      {text.toUpperCase()}
-                    </Tag>
-                  )}
-                </span>
-              )}
-            />
-            <Column
-              title='Action'
-              dataIndex='action'
-              key='action'
-              render={(_, record: IContact) => (
-                <Space size='small' style={{ width: '100%' }}>
-                  {isEditing && record.id === editingIndex ? (
-                    <>
-                      <Button type='link' onClick={() => handleSave(record.id)}>
-                        Save
-                      </Button>
-                      <Popconfirm
-                        title='Are you sure cancel this task?'
-                        onConfirm={toggleEditing}
-                      >
-                        <span style={{ cursor: 'pointer' }}>Cancel</span>
-                      </Popconfirm>
-                    </>
-                  ) : (
-                    <>
-                      <Button
-                        type='ghost'
-                        shape='round'
-                        onClick={() => handleEditClick(record)}
-                      >
-                        <FormOutlined />
-                      </Button>
+        <Table
+          loading={isLoading}
+          tableLayout='fixed'
+          rowSelection={{
+            type: 'checkbox',
+            ...rowSelection,
+          }}
+          title={() =>
+            <ContactHeader toggleModalCreate={toggleModalCreate} />
+          }
+          pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
+          dataSource={data?.map((value) => ({ ...value, key: value.name }))}
+          size={'large'}
+        >
+          <Column
+            title='Name'
+            dataIndex='name'
+            key='name'
+            render={(_, record: IContact) => (
+              <EditableCell
+                dataIndex='name'
+                editing={isEditing}
+                editingIndex={editingIndex}
+                recordIndex={record.id}
+                title='Name'
+                record={record}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Name is required',
+                  },
+                ]}
+              />
+            )}
+          />
+          <Column
+            title='Email'
+            dataIndex='email'
+            key='email'
+            render={(_, record: IContact) => (
+              <EditableCell
+                dataIndex='email'
+                editing={isEditing}
+                editingIndex={editingIndex}
+                recordIndex={record.id}
+                title='Email'
+                record={record}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Address is required',
+                  },
+                  {
+                    type: 'email',
+                    message: 'must be email',
+                  },
+                ]}
+              />
+            )}
+          />
+          <Column
+            title='Phone Number'
+            dataIndex='phone'
+            key='phone'
+            render={(_, record: IContact) => (
+              <EditableCell
+                dataIndex='phone'
+                editing={isEditing}
+                editingIndex={editingIndex}
+                recordIndex={record.id}
+                title='Phone Number'
+                record={record}
+                rules={[
+                  {
+                    required: true,
+                    message: 'phone is required',
+                  },
+                  {
+                    pattern: /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
+                    message: 'must be phone number',
+                  },
+                ]}
+              />
+            )}
+          />
+          <Column
+            title='Notes'
+            dataIndex='internalNotes'
+            key='internalNotes'
+            render={(_, record: IContact) => (
+              <EditableCell
+                dataIndex='internalNotes'
+                editing={isEditing}
+                editingIndex={editingIndex}
+                recordIndex={record.id}
+                title='Notes'
+                record={record}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Notes is required',
+                  },
+                ]}
+              />
+            )}
+          />
+          <Column
+            title='Type'
+            dataIndex='type'
+            key='type'
+            width={120}
+            render={(text) => (
+              <span>
+                <Tag color={'gold'} key={text.type}>
+                  {text ? text.toUpperCase() : 'NULL'}
+                </Tag>
+              </span>
+            )}
+          />
+          <Column
+            title='Action'
+            dataIndex='action'
+            key='action'
+            render={(_, record: IContact) => (
+              <Space size='small' style={{ width: '100%' }}>
+                {isEditing && record.id === editingIndex ? (
+                  <>
+                    <Button type='link' onClick={() => handleSave(record.id)}>
+                      Save
+                    </Button>
+                    <Popconfirm
+                      title='Sure to cancel?'
+                      onConfirm={toggleEditing}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <span style={{ cursor: 'pointer' }}>Cancel</span>
+                    </Popconfirm>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      type='ghost'
+                      shape='round'
+                      onClick={() => handleEditClick(record)}
+                    >
+                      <FormOutlined />
+                    </Button>
 
-                      <Button
-                        type='default'
-                        onClick={() => deleteContact(record.id)}
-                        shape='round'
-                        danger
-                      >
-                        <DeleteOutlined />
-                      </Button>
-                    </>
-                  )}
-                </Space>
-              )}
-            />
-          </Table>
-        )}
+                    <Button
+                      type='default'
+                      onClick={() => showDeleteConfirm(() => deleteContact(record.id))}
+                      shape='round'
+                      danger
+                    >
+                      <DeleteOutlined />
+                    </Button>
+                  </>
+                )}
+              </Space>
+            )}
+          />
+        </Table>
       </Form>
+      <ModalCreate
+        isOpenModal={isOpenModal}
+        toggleModalCreate={toggleModalCreate}
+      >
+        <FormCreateContact />
+      </ModalCreate>
     </>
   );
 };

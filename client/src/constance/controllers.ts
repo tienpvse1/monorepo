@@ -10,6 +10,7 @@ export enum controllers {
   CONTACT_FORM_FIELD = 'contact-form-field',
   MAILER = 'mailer',
   EMAIL_TEMPLATE = 'email-template',
+  PRODUCT = 'product',
   //size, space, offset of cards
   SIZE_CARD = 6,
   SIZE_OFFSET = 0,

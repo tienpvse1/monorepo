@@ -1,5 +1,5 @@
-import { IPipeline } from "@interfaces/pipeline";
 import { Role } from "@interfaces/type-roles";
+import { IPipeline } from "@modules/pipeline/entity/pipeline.entity";
 
 export interface IAccount {
   avatar: string;
