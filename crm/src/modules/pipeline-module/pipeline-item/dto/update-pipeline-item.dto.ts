@@ -8,4 +8,5 @@ export class UpdatePipelineItemDto extends PartialType(
 export class ChangeStageDto {
   oldStageId: string;
   newStageId: string;
+  index?: number;
 }

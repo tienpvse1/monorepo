@@ -61,6 +61,6 @@ export class PipelineItemController {
 
   @Patch('change-stage/:id')
   changeStage(@Param('id') id: string, @Body() dto: ChangeStageDto) {
-    
+    return this.service.changeStage(id, dto);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/base/nestjsx.service';
 import { getCustomRepository, Repository } from 'typeorm';
@@ -31,13 +31,29 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     const itemToChange = oldPipelineColumn.pipelineItems.filter(
       (item) => item.id === id,
     )[0];
+    if (!itemToChange)
+      throw new BadRequestException(
+        'item with this id does not exist in provided old column ',
+      );
 
-    const popedOldColumn = oldPipelineColumn.pipelineItems.filter(
+    oldPipelineColumn.pipelineItems = oldPipelineColumn.pipelineItems.filter(
       (item) => item.id !== id,
     );
+    oldPipelineColumn.save();
 
-    const newIndex = newPipelineColumn.pipelineItems.length;
-    popedOldColumn
-    
+    if (dto.index != undefined) {
+      newPipelineColumn.pipelineItems.splice(dto.index, 0, itemToChange);
+      newPipelineColumn.pipelineItems = newPipelineColumn.pipelineItems.map(
+        (item, index) =>
+          ({
+            ...item,
+            index,
+          } as PipelineItem),
+      );
+    } else {
+      newPipelineColumn.pipelineItems.push(itemToChange);
+    }
+    // return newPipelineColumn.save();
+    return newPipelineColumn.save();
   }
 }
