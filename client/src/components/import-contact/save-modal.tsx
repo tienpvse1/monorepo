@@ -2,7 +2,7 @@ import { CreateContactDto } from '@modules/contact/dto/create-contact.dto';
 import { contactSchema } from '@modules/contact/schema/contact.schema';
 import { removeDuplicate, removeMissingProps } from '@util/array';
 import { Modal, Radio } from 'antd';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Types } from './preview-contact-table';
 
 interface SaveModalProps {

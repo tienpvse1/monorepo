@@ -1,5 +1,5 @@
 import { Alert, Drawer, Switch } from 'antd';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 interface HeaderDrawerProps {
   visible: boolean;

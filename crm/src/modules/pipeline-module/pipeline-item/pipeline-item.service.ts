@@ -40,9 +40,9 @@ export class PipelineItemService extends BaseService<PipelineItem> {
       (item) => item.id !== id,
     );
     oldPipelineColumn.save();
-
     if (dto.index != undefined) {
       newPipelineColumn.pipelineItems.splice(dto.index, 0, itemToChange);
+
       newPipelineColumn.pipelineItems = newPipelineColumn.pipelineItems.map(
         (item, index) =>
           ({
@@ -51,7 +51,10 @@ export class PipelineItemService extends BaseService<PipelineItem> {
           } as PipelineItem),
       );
     } else {
-      newPipelineColumn.pipelineItems.push(itemToChange);
+      newPipelineColumn.pipelineItems.push({
+        ...itemToChange,
+        index: newPipelineColumn.pipelineItems.length,
+      } as PipelineItem);
     }
     // return newPipelineColumn.save();
     return newPipelineColumn.save();

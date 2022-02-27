@@ -10,7 +10,7 @@ export const getStagesByPipelineId = async (pipelineId: string) => {
     `${PIPELINE_COLUMN}/many/${pipelineId}`
   );
 
-  return data.sort((b,a) => a.index - b.index);
+  return data.sort((a, b) => a.index - b.index);
 };
 
 export const useGetStagesByPipelineId = (id: string) =>

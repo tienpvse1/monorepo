@@ -3,12 +3,7 @@ import { useUpdateEmailTemplate } from '@modules/email-temlate/mutation/email-te
 import { usePostEmailTemplate } from '@modules/email-temlate/mutation/email-template.post';
 import { useGetAllTemplates } from '@modules/email-temlate/query/email-template.get';
 import { Button, Input } from 'antd';
-import React, {
-  Dispatch,
-  KeyboardEvent,
-  SetStateAction,
-  useState,
-} from 'react';
+import { KeyboardEvent, useState } from 'react';
 import { Design } from 'react-email-editor';
 import LoadingComponent from 'react-loading';
 interface TemplateSelectionProps {
