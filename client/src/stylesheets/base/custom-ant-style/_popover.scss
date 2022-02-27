@@ -1,9 +1,9 @@
 @import "../variables";
-.ant-popover-inner-content {
+.my-popover .ant-popover-inner-content {
     padding: 9px 0px !important;
 }
 
-.popover-content {
+.my-popover-content {
     .ant-col {
         cursor: pointer;
         &:hover {
