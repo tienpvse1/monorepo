@@ -1,5 +1,4 @@
 import { MoreOutlined, PlusOutlined } from '@ant-design/icons';
-import React from 'react';
 
 interface InfoWrapperProps {
   title?: string;

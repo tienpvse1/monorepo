@@ -1,7 +1,4 @@
-import { Button, Modal, ModalFuncProps } from 'antd';
-import { FC } from 'react';
-import { Design } from 'react-email-editor';
-import { TemplateSelection } from './templates-selection';
+import { Modal, ModalFuncProps } from 'antd';
 
 const commonModalProps: ModalFuncProps = {
   okText: 'Agree',

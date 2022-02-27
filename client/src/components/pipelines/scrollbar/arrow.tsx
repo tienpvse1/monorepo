@@ -1,4 +1,4 @@
-import React, { RefObject, useRef } from 'react';
+import { RefObject, useRef } from 'react';
 
 interface ArrowProps {
   elementScrollBar: RefObject<HTMLDivElement> | null;
@@ -12,21 +12,21 @@ export const Arrow: React.FC<ArrowProps> = ({
   styleName,
   elementScrollBar,
   disable = true,
-  children }) => {
-
+  children,
+}) => {
   const refId = useRef<number>();
 
   const scrollLeft = (value: number) => {
     elementScrollBar.current.scrollLeft += value;
-  }
+  };
 
   const mouseHover = (scroll: () => void) => {
     refId.current = setInterval(scroll, 10);
-  }
+  };
 
   const mouseOut = () => {
     clearInterval(refId.current);
-  }
+  };
 
   return (
     <>

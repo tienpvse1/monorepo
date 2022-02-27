@@ -1,10 +1,10 @@
 import { getPipeline } from '@db/pipeline.db';
 import { useGetStagesByPipelineId } from '@modules/pipeline-column/query/pipeline.get';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
+import { useChangeStage } from '@modules/pipeline-items/mutation/pipeline-items.update';
 import { qualifyStage } from '@util/stage';
 import { Alert, Button, Card, Steps, Tabs } from 'antd';
 import { useLiveQuery } from 'dexie-react-hooks';
-import React from 'react';
 import { ContactInfo } from './contact-info';
 
 interface SecondColumnProps {
@@ -15,6 +15,7 @@ const { TabPane } = Tabs;
 export const SecondColumn: React.FC<SecondColumnProps> = ({ data }) => {
   const pipeline = useLiveQuery(getPipeline);
   const { data: pipelineColumns } = useGetStagesByPipelineId(pipeline?.id);
+  const {} = useChangeStage()
   return (
     <div>
       <Card style={{ width: '55vw' }} title='Stages'>

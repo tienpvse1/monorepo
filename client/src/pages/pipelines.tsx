@@ -1,9 +1,6 @@
 import { Pipeline } from '@components/pipelines/pipeline';
-import { PipelineList } from '@components/pipelines/pipeline-list';
-import { FC } from 'react';
 
-const Pipelines: FC = () => {
-
+const Pipelines: React.FC = () => {
   return (
     <>
       <Pipeline />

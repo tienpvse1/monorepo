@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import LoadingComponent from 'react-loading';
 
 interface LoadingProps {
@@ -8,7 +7,7 @@ interface LoadingProps {
   loadingWidth?: number | string;
 }
 
-export const Loading: FC<LoadingProps> = ({
+export const Loading: React.FC<LoadingProps> = ({
   coverHeight = '100vh',
   coverWidth = '100vw',
   loadingHeight = 75,
