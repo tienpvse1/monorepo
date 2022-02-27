@@ -4,6 +4,7 @@ import { Col, Row, Button, Space, Select } from 'antd';
 const { Option } = Select;
 import { useNavigate } from 'react-router-dom';
 import { ButtonFilter } from './button-filter';
+import { envVars } from '@env/var.env';
 
 interface ContactHeaderProps {
   toggleModalCreate: () => void;
@@ -21,7 +22,7 @@ export const ContactHeader: React.FC<ContactHeaderProps> = ({ toggleModalCreate 
         <Col span={12}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <img
-              src='/contact.png'
+              src={`${envVars.VITE_BE_DOMAIN}/files/contact.png`}
               width={47}
               height={47}
             />

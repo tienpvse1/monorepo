@@ -3,6 +3,7 @@ import { ButtonFilter } from '@components/contact/button-filter';
 import { SearchBar } from '@components/search-bar'
 import { Button, Col, Row, Select, Space } from 'antd'
 const { Option } = Select;
+import { envVars } from '@env/var.env';
 
 export const ProductTitleTable = () => {
   return (
@@ -12,7 +13,7 @@ export const ProductTitleTable = () => {
           <Col span={12}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <img
-                src='/box.png'
+                src={`${envVars.VITE_BE_DOMAIN}/files/box.png`}
                 width={47}
                 height={47}
               />
