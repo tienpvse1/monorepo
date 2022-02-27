@@ -22,7 +22,6 @@ const changeOpportunityStage = async (
   id: string,
   changeStageDto: IChangeStageDto
 ) => {
-  alert(`🚀 ~ file: pipeline-items.update.ts ~ line 25 ~ id ${id}`);
   const { data } = await instance.patch<IPipelineColumn>(
     `${PIPELINE_ITEM}/change-stage/${id}`,
     changeStageDto
