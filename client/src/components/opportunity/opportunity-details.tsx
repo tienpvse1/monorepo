@@ -21,7 +21,6 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({
   pipelineItemId,
 }) => {
   const { data } = usePipelineItem(pipelineItemId);
-  console.log(data);
   return (
     <div style={{ display: 'flex' }}>
       <Card

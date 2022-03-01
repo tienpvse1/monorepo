@@ -2,14 +2,13 @@ import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.ent
 import { handleUndefinedString } from '@util/undefined';
 import { Descriptions, Table } from 'antd';
 import Column from 'antd/lib/table/Column';
-import { FC } from 'react';
 import { InfoWrapper } from './info-wrapper';
 
 interface ContactInfoProps {
   data: IPipelineItem;
 }
 
-export const ContactInfo: FC<ContactInfoProps> = ({ data }) => {
+export const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
   return (
     <div>
       <span style={{ fontSize: '17px' }}>
