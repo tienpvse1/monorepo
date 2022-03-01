@@ -15,7 +15,7 @@ export const ModalColumnCreate: FC<ModalColumnCreateProps> = ({ pipelineId, curr
   const { createPipelineColumn } = usePostPipelineColumn();
 
   const onCreate = (values: ICreatePipelineColumnDto) => {
-    createPipelineColumn({ ...values, index: currentIndexColumn, pipelineId: pipelineId });
+    createPipelineColumn({ ...values, pipelineId: pipelineId });    
     setVisible();
   };
 

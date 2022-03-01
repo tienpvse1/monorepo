@@ -7,10 +7,10 @@ import { ButtonFilter } from './button-filter';
 import { envVars } from '@env/var.env';
 
 interface ContactHeaderProps {
-  toggleModalCreate: () => void;
+  toggleCreateModal: () => void;
 }
 
-export const ContactHeader: React.FC<ContactHeaderProps> = ({ toggleModalCreate }) => {
+export const ContactHeader: React.FC<ContactHeaderProps> = ({ toggleCreateModal }) => {
   const navigate = useNavigate();
   const handleImportClick = () => {
     navigate('/import-contact');
@@ -45,7 +45,7 @@ export const ContactHeader: React.FC<ContactHeaderProps> = ({ toggleModalCreate 
               className='button-ant-custom-style'
               type='primary'
               size='middle'
-              onClick={toggleModalCreate}
+              onClick={toggleCreateModal}
             >
               New Contact
             </Button>

@@ -4,8 +4,10 @@ import {
   CalendarOutlined,
   CodeSandboxOutlined,
   ContactsOutlined,
+  CrownOutlined,
   FundOutlined,
   PlusOutlined,
+  SolutionOutlined,
   UserOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
@@ -43,6 +45,24 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
         </Menu.Item>
 
         <Menu.Item
+          key='pipeline'
+          onClick={() => navigate('/pipeline')}
+          style={style}
+          icon={<BranchesOutlined style={style} />}
+        >
+          Pipeline
+        </Menu.Item>
+
+        <Menu.Item
+          key='leads'
+          onClick={() => navigate('/leads')}
+          style={style}
+          icon={<SolutionOutlined style={style} />}
+        >
+          Leads
+        </Menu.Item>
+
+        <Menu.Item
           key='contact'
           onClick={() => navigate('/contact')}
           style={style}
@@ -50,14 +70,16 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
         >
           Contact
         </Menu.Item>
+
         <Menu.Item
-          key='pipelines'
-          onClick={() => navigate('/pipelines')}
+          key='opportunities'
+          onClick={() => navigate('/opportunities')}
           style={style}
-          icon={<BranchesOutlined style={style} />}
+          icon={<CrownOutlined style={style} />}
         >
-          Pipeline
+          Opportunities
         </Menu.Item>
+
         <Menu.Item
           key='product'
           onClick={() => navigate('/product')}

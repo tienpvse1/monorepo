@@ -3,7 +3,7 @@ import { RouteObject } from 'react-router-dom';
 
 const Contact = lazy(() => import('@pages/contact'));
 const HomePage = lazy(() => import('@pages/home'));
-const Pipelines = lazy(() => import('@pages/pipelines'));
+const Pipeline = lazy(() => import('@pages/pipeline'));
 const LoginPage = lazy(() => import('@pages/login'));
 const AdminPage = lazy(() => import('@pages/admin'));
 const AddContact = lazy(() => import('@pages/import-contact'));
@@ -13,6 +13,8 @@ const ProfilePage = lazy(() => import('@pages/profile'));
 const LayoutAdmin = lazy(() => import('@pages/admin'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Product = lazy(() => import('@pages/product'));
+const Opportunities = lazy(() => import('@pages/opportunities'));
+const Leads = lazy(() => import('@pages/leads'));
 
 export const route: RouteObject[] = [
   {
@@ -37,8 +39,8 @@ export const route: RouteObject[] = [
         element: <Contact />,
       },
       {
-        path: 'pipelines',
-        element: <Pipelines />
+        path: 'pipeline',
+        element: <Pipeline />
       },
       {
         path: 'email',
@@ -55,6 +57,14 @@ export const route: RouteObject[] = [
       {
         path: 'product',
         element: <Product />
+      },
+      {
+        path: 'opportunities',
+        element: <Opportunities />
+      },
+      {
+        path: 'leads',
+        element: <Leads />
       }
     ],
   },

@@ -14,8 +14,8 @@ import { ContactHeader } from './contact-header';
 import { EditableCell } from '../table/editable-cell';
 import { useToggle } from '@hooks/useToggle';
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
-import { ModalCreate } from '@components/modal/modal-create';
-import { FormCreateContact } from './form-create-contact';
+import { CreateModal } from '@components/modal/modal-create';
+import { CreateContactForm } from './create-contact-form';
 
 const rowSelection = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
@@ -35,7 +35,7 @@ export const ContactData: FC = () => {
   );
   const [form] = Form.useForm<IContact>();
   const [isEditing, toggleEditing] = useToggle();
-  const [isOpenModal, toggleModalCreate] = useToggle();
+  const [isOpenModal, toggleCreateModal] = useToggle();
 
   const [editingIndex, setEditingIndex] = useState('');
 
@@ -75,7 +75,7 @@ export const ContactData: FC = () => {
             ...rowSelection,
           }}
           title={() =>
-            <ContactHeader toggleModalCreate={toggleModalCreate} />
+            <ContactHeader toggleCreateModal={toggleCreateModal} />
           }
           pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
           dataSource={data?.map((value) => ({ ...value, key: value.name }))}
@@ -231,12 +231,12 @@ export const ContactData: FC = () => {
           />
         </Table>
       </Form>
-      <ModalCreate
+      <CreateModal
         isOpenModal={isOpenModal}
-        toggleModalCreate={toggleModalCreate}
+        toggleCreateModal={toggleCreateModal}
       >
-        <FormCreateContact />
-      </ModalCreate>
+        <CreateContactForm />
+      </CreateModal>
     </>
   );
 };
