@@ -16,7 +16,8 @@ function App() {
 
   const openNotification = (data: IPipeline) => {
     const key = `open${Date.now()}`;
-    const btn = (
+    const btn = ( 
+      
       <Button
         type='primary'
         size='small'
