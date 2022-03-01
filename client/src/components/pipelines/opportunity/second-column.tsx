@@ -1,10 +1,13 @@
 import { getPipeline } from '@db/pipeline.db';
 import { useGetStagesByPipelineId } from '@modules/pipeline-column/query/pipeline.get';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
+import { useChangeStage } from '@modules/pipeline-items/mutation/pipeline-items.update';
+import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-item.get';
+import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { qualifyStage } from '@util/stage';
 import { Alert, Button, Card, Steps, Tabs } from 'antd';
 import { useLiveQuery } from 'dexie-react-hooks';
-import React from 'react';
+import { client } from '../../../App';
 import { ContactInfo } from './contact-info';
 
 interface SecondColumnProps {
@@ -15,6 +18,22 @@ const { TabPane } = Tabs;
 export const SecondColumn: React.FC<SecondColumnProps> = ({ data }) => {
   const pipeline = useLiveQuery(getPipeline);
   const { data: pipelineColumns } = useGetStagesByPipelineId(pipeline?.id);
+  const { mutate } = useChangeStage();
+  const handleUpdateStage = (currentStageId: string, newStageId: string) => {
+    mutate(
+      {
+        id: data.id,
+        newStageId,
+        oldStageId: currentStageId,
+      },
+      {
+        onSuccess: () => {
+          client.refetchQueries(GET_PIPELINE_ITEM_BY_ID);
+          client.refetchQueries(GET_PIPELINE_DESIGN);
+        },
+      }
+    );
+  };
   return (
     <div>
       <Card style={{ width: '55vw' }} title='Stages'>
@@ -28,6 +47,12 @@ export const SecondColumn: React.FC<SecondColumnProps> = ({ data }) => {
               key={column.id}
               status={qualifyStage(index, data.pipelineColumn.index)}
               title={column.name}
+              onStepClick={(step) => {
+                const { id: currentId, index: currentIndex } =
+                  data.pipelineColumn;
+                if (step !== currentIndex)
+                  handleUpdateStage(currentId, pipelineColumns[step].id);
+              }}
             />
           ))}
         </Steps>
@@ -44,6 +69,7 @@ export const SecondColumn: React.FC<SecondColumnProps> = ({ data }) => {
           >
             <ContactInfo data={data} />
           </TabPane>
+          {/* //TODO: these tab is still hard coded */}
           <TabPane tab='TASK' key='2'>
             <Alert
               message='Meeting with John'

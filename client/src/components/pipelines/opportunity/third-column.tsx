@@ -1,6 +1,5 @@
 import { ClockCircleTwoTone } from '@ant-design/icons';
 import { Card, Divider, Timeline, Tooltip } from 'antd';
-import React from 'react';
 
 interface ThirdColumnProps {}
 

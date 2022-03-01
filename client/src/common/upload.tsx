@@ -3,7 +3,7 @@ import { CreateContactDto } from '@modules/contact/dto/create-contact.dto';
 import { readExcel } from '@util/excel';
 import { UploadChangeParam } from 'antd/lib/upload';
 import Dragger from 'antd/lib/upload/Dragger';
-import React, { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 interface UploadProps {
   setContacts: Dispatch<SetStateAction<CreateContactDto[]>>;
 }

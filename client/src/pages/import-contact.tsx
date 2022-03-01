@@ -1,4 +1,4 @@
-import { FC, lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import Upload from '@common/upload';
 import { Loading } from '@components/loading/loading';
 const PreviewContactTable = lazy(
@@ -6,7 +6,7 @@ const PreviewContactTable = lazy(
 );
 import { CreateContactDto } from '@modules/contact/dto/create-contact.dto';
 
-const ImportContact: FC = () => {
+const ImportContact: React.FC = () => {
   const [contacts, setContacts] = useState<CreateContactDto[]>([]);
   return (
     <div>

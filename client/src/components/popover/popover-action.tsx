@@ -1,7 +1,6 @@
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { useToggle } from '@hooks/useToggle';
 import { Col, Popover, Row } from 'antd';
-import React from 'react';
 
 interface PopoverActionProps {
   option1: string;
@@ -30,25 +29,24 @@ export const PopoverAction: React.FC<PopoverActionProps> = ({
   };
 
   return (
-    <>
-      <Popover
-        placement='bottomLeft'
-        content={
-          <Row className='popover-content' gutter={[0, 4]}>
-            <Col span={24}>
-              <span onClick={handleEdit}>{itemName1}</span>
-            </Col>
-            <Col span={24}>
-              <span onClick={handleDelete}>{itemName2}</span>
-            </Col>
-          </Row>
-        }
-        trigger='click'
-        visible={visible}
-        onVisibleChange={setVisible}
-      >
-        {children}
-      </Popover>
-    </>
+    <Popover
+      overlayClassName='my-popover'
+      placement='bottomLeft'
+      content={
+        <Row className='my-popover-content' gutter={[0, 4]}>
+          <Col span={24}>
+            <span onClick={handleEdit}>{itemName1}</span>
+          </Col>
+          <Col span={24}>
+            <span onClick={handleDelete}>{itemName2}</span>
+          </Col>
+        </Row>
+      }
+      trigger='click'
+      visible={visible}
+      onVisibleChange={setVisible}
+    >
+      {children}
+    </Popover>
   );
 };

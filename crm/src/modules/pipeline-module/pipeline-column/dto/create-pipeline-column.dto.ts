@@ -22,3 +22,11 @@ export class CreatePipelineColumnDto {
   @Type(() => CreatePipelineItemDto)
   pipelineItems: CreatePipelineItemDto[];
 }
+
+export class CreateSinglePipelineColumnDto {
+  @Length(1)
+  name: string;
+
+  @Length(10)
+  pipelineId: string;
+}

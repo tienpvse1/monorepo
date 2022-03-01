@@ -12,6 +12,7 @@ const LayoutUser = lazy(() => import('@common/user-layout'));
 const ProfilePage = lazy(() => import('@pages/profile'));
 const LayoutAdmin = lazy(() => import('@pages/admin'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
+const Product = lazy(() => import('@pages/product'));
 
 export const route: RouteObject[] = [
   {
@@ -51,6 +52,10 @@ export const route: RouteObject[] = [
         path: 'import-contact',
         element: <AddContact />,
       },
+      {
+        path: 'product',
+        element: <Product />
+      }
     ],
   },
   {

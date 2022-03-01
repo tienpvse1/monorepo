@@ -1,6 +1,6 @@
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { Button } from 'primereact/button';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Inplace } from './inplace';
 import { Image } from 'primereact/image';
