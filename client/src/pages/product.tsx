@@ -1,15 +1,15 @@
-import { DeleteOutlined, FormOutlined } from "@ant-design/icons";
-import { ProductTitleTable } from "@components/product/product-title-table";
-import { EditableCell } from "@components/table/editable-cell";
-import { IProduct } from "@modules/product/enity/product.enity";
-import { useQueryProducts } from "@modules/product/query/products.get";
-import { Button, Form, Popconfirm, Space, Table } from "antd"
-import Column from "antd/lib/table/Column"
-import moment from "moment";
-import { useState } from "react";
-import { useToggle } from "@hooks/useToggle";
+import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
+import { ProductTitleTable } from '@components/product/product-title-table';
+import { EditableCell } from '@components/table/editable-cell';
+import { IProduct } from '@modules/product/enity/product.enity';
+import { useQueryProducts } from '@modules/product/query/products.get';
+import { Button, Form, Popconfirm, Space, Table } from 'antd';
+import Column from 'antd/lib/table/Column';
+import moment from 'moment';
+import { useState } from 'react';
+import { useToggle } from '@hooks/useToggle';
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
-import { useUpdateProduct } from "@modules/product/mutation/product.update";
+import { useUpdateProduct } from '@modules/product/mutation/product.update';
 
 const Product = () => {
   const dateFormat = 'YYYY-MM-DD';
@@ -30,7 +30,7 @@ const Product = () => {
       name,
       startDate: moment(startDate),
       endDate: moment(endDate),
-      price
+      price,
     });
   };
 
@@ -43,14 +43,14 @@ const Product = () => {
         ...record,
         startDate: record.startDate.format(dateFormat),
         endDate: record.endDate.format(dateFormat),
-      })
+      });
     } catch (error) {
       return;
     }
   };
 
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {},
     getCheckboxProps: (record: any) => ({
       disabled: record.name === 'Disabled User',
       name: record.name,
@@ -58,7 +58,7 @@ const Product = () => {
   };
 
   return (
-    <div className="product-container">
+    <div className='product-container'>
       <Form form={form}>
         <Table
           loading={isLoading}
@@ -72,7 +72,10 @@ const Product = () => {
           pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
           size={'large'}
         >
-          <Column title="Name" dataIndex="name" key="name"
+          <Column
+            title='Name'
+            dataIndex='name'
+            key='name'
             render={(_, record: IProduct) => (
               <EditableCell
                 dataIndex='name'
@@ -85,15 +88,18 @@ const Product = () => {
                   {
                     required: true,
                     message: 'Name is required',
-                  }
+                  },
                 ]}
               />
             )}
           />
-          <Column title="Start Date" dataIndex="startDate" key="startDate"
+          <Column
+            title='Start Date'
+            dataIndex='startDate'
+            key='startDate'
             render={(_, record: IProduct) => (
               <EditableCell
-                inputType="datePicker"
+                inputType='datePicker'
                 dataIndex='startDate'
                 editing={isEditing}
                 editingIndex={editingIndex}
@@ -104,15 +110,18 @@ const Product = () => {
                   {
                     required: true,
                     message: 'Start date is required',
-                  }
+                  },
                 ]}
               />
             )}
           />
-          <Column title="End Date" dataIndex="endDate" key="endDate"
+          <Column
+            title='End Date'
+            dataIndex='endDate'
+            key='endDate'
             render={(_, record: IProduct) => (
               <EditableCell
-                inputType="datePicker"
+                inputType='datePicker'
                 dataIndex='endDate'
                 editing={isEditing}
                 editingIndex={editingIndex}
@@ -123,12 +132,15 @@ const Product = () => {
                   {
                     required: true,
                     message: 'End date is required',
-                  }
+                  },
                 ]}
               />
             )}
           />
-          <Column title="Price" dataIndex="price" key="price"
+          <Column
+            title='Price'
+            dataIndex='price'
+            key='price'
             render={(_, record: IProduct) => (
               <EditableCell
                 dataIndex='price'
@@ -141,13 +153,17 @@ const Product = () => {
                   {
                     required: true,
                     message: 'price is required',
-                  }
+                  },
                 ]}
               />
             )}
           />
 
-          <Column title="Actions" dataIndex="name" key="name" width={150}
+          <Column
+            title='Actions'
+            dataIndex='name'
+            key='name'
+            width={150}
             render={(_, record: IProduct) => (
               <Space size='small' style={{ width: '100%' }}>
                 {isEditing && record.id === editingIndex ? (
@@ -158,8 +174,8 @@ const Product = () => {
                     <Popconfirm
                       title='Sure to cancel?'
                       onConfirm={toggleEditing}
-                      okText="Yes"
-                      cancelText="No"
+                      okText='Yes'
+                      cancelText='No'
                     >
                       <span style={{ cursor: 'pointer' }}>Cancel</span>
                     </Popconfirm>
@@ -176,7 +192,7 @@ const Product = () => {
 
                     <Button
                       type='default'
-                      onClick={() => showDeleteConfirm(() => { })}
+                      onClick={() => showDeleteConfirm(() => {})}
                       shape='round'
                       danger
                     >
@@ -190,6 +206,6 @@ const Product = () => {
         </Table>
       </Form>
     </div>
-  )
-}
+  );
+};
 export default Product;
