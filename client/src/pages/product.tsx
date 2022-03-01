@@ -159,11 +159,7 @@ const Product = () => {
             )}
           />
 
-          <Column
-            title='Actions'
-            dataIndex='name'
-            key='name'
-            width={150}
+          <Column title="Actions" dataIndex="actions" key="actions" width={150}
             render={(_, record: IProduct) => (
               <Space size='small' style={{ width: '100%' }}>
                 {isEditing && record.id === editingIndex ? (

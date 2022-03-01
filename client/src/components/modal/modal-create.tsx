@@ -1,13 +1,13 @@
 import { Form, Modal } from 'antd'
 
-interface ModalCreateProps {
+interface CreateModalProps {
   isOpenModal: boolean;
-  toggleModalCreate: () => void;
+  toggleCreateModal: () => void;
 }
 
-export const ModalCreate: React.FC<ModalCreateProps> = ({
+export const CreateModal: React.FC<CreateModalProps> = ({
   isOpenModal,
-  toggleModalCreate,
+  toggleCreateModal,
   children
 }) => {
   const [form] = Form.useForm<any>();
@@ -24,7 +24,7 @@ export const ModalCreate: React.FC<ModalCreateProps> = ({
       centered
       visible={isOpenModal}
       onOk={handleSubmit}
-      onCancel={toggleModalCreate}
+      onCancel={toggleCreateModal}
       width={1000}
     >
       <div className="scroll-menu-modal-create">

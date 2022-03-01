@@ -1,8 +1,9 @@
 import { Col, DatePicker, Form, Input, Row, Select } from 'antd'
 import { WrapperModalForm } from '@components/modal/wrapper-modal-form'
 import { SelectBoxPrefix } from "@components/signup/select-box-prefix-phone";
+import { isEmail, isPhoneNumber, isRequired } from '@constance/rules-of-input-antd';
 
-export const FormCreateContact = () => {
+export const CreateContactForm = () => {
 
   return (
     <>
@@ -14,28 +15,14 @@ export const FormCreateContact = () => {
               name="name"
               label="Name"
               required
-              rules={[
-                {
-                  required: true,
-                  message: 'Name is required',
-                }
-              ]}>
+              rules={[isRequired('Name is required')]}>
               <Input />
             </Form.Item>
             <Form.Item
               name="email"
               label="Email"
               required
-              rules={[
-                {
-                  required: true,
-                  message: 'Email is required',
-                },
-                {
-                  type: 'email',
-                  message: 'The input is not valid E-mail!',
-                }
-              ]}>
+              rules={[isRequired('Email is required'), isEmail]}>
               <Input />
             </Form.Item>
             <Form.Item
@@ -62,16 +49,7 @@ export const FormCreateContact = () => {
               name="mobile"
               label="Mobile"
               required
-              rules={[
-                {
-                  required: true,
-                  message: 'Mobile is required',
-                },
-                {
-                  pattern: /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
-                  message: 'Must be phone number',
-                }
-              ]}
+              rules={[isRequired('Mobile is required'), isPhoneNumber]}
             >
               <Input addonBefore={<SelectBoxPrefix />} />
             </Form.Item>
