@@ -100,6 +100,7 @@ export const useHandleDnD = (data: IPipeline) => {
       else
         return item;
     })
+    
     setNewPipeline(newColumn);
   }
 

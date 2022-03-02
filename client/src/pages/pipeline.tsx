@@ -127,7 +127,6 @@ const Pipeline: React.FC<PipelineProps> = ({ }) => {
         setVisible={setModalCreateStage}
         visible={visible}
         pipelineId={data?.id}
-        currentIndexColumn={data?.pipelineColumns.length}
       />
     </>
   )

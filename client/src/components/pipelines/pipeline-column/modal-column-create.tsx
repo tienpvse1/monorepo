@@ -4,12 +4,11 @@ import { ModalFormCreateStageColumn } from '../../modal/form-create-stage-column
 
 interface ModalColumnCreateProps {
   pipelineId: string;
-  currentIndexColumn: number;
   visible: boolean;
   setVisible: () => void;
 }
 
-export const ModalColumnCreate: React.FC<ModalColumnCreateProps> = ({ pipelineId, currentIndexColumn, setVisible, visible }) => {
+export const ModalColumnCreate: React.FC<ModalColumnCreateProps> = ({ pipelineId, setVisible, visible }) => {
 
   const { createPipelineColumn } = usePostPipelineColumn();
 
