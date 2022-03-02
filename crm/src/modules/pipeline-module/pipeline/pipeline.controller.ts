@@ -52,6 +52,7 @@ import { PipelineService } from './pipeline.service';
       'createManyBase',
       'getOneBase',
       'createOneBase',
+      'getManyBase',
     ],
   },
 })
@@ -59,10 +60,32 @@ export class PipelineController {
   constructor(public service: PipelineService) {}
 
   @Get('own')
+  @ApiOperation({
+    deprecated: true,
+    summary:
+      'no relationship between account and pipeline anymore, please use GET api/v1/pipeline',
+  })
   getOwnPipeline(@User('id') userId: string) {
     return this.service.findOwnOnePipeline(userId);
   }
+
+  @Get()
+  @ApiOperation({
+    summary: 'Retrieve ONLY one pipeline that exist in the system',
+  })
+  getOnePipeline() {
+    return this.service.findOneItem({
+      relations: ['pipelineColumns', 'pipelineColumns.pipelineItems'],
+    });
+  }
+
   @Post()
+  @ApiOperation({
+    deprecated: true,
+    summary: 'no relation between account and pipeline anymore',
+    description:
+      'please do not use this api, this will soon be removed in future',
+  })
   @UsePipes(CreatePipePipe)
   createPipeline(@Body() value: CreatePipelineDto) {
     return this.service.createItem(value);

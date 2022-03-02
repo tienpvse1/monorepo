@@ -1,6 +1,5 @@
 import { nanoid } from 'nanoid';
 import { BaseEntity } from 'src/base/entity.base';
-import { Account } from 'src/modules/account/entities/account.entity';
 import { Product } from 'src/modules/product/entities/product.entity';
 import {
   BeforeInsert,
@@ -18,9 +17,10 @@ export class Pipeline extends BaseEntity {
   @Column()
   name: string;
 
-  @OneToOne(() => Account, (account) => account.pipeline)
-  @JoinColumn({ name: 'account_id' })
-  account: Account;
+  // !remove relation between account and pipeline, a pipeline should be existed only one in the system
+  // @OneToOne(() => Account, (account) => account.pipeline)
+  // @JoinColumn({ name: 'account_id' })
+  // account: Account;
 
   @OneToOne(() => Product, (product) => product.pipeline)
   @JoinColumn({ name: 'product_id' })

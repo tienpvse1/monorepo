@@ -8,7 +8,6 @@ import { History } from 'src/modules/history/entities/history.entity';
 import { Lead } from 'src/modules/lead/entities/lead.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
-import { Pipeline } from 'src/modules/pipeline-module/pipeline/entities/pipeline.entity';
 import { ProductAccount } from 'src/modules/product-account/entities/product-account.entity';
 import { Role } from 'src/modules/role/entities/role.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
@@ -62,18 +61,23 @@ export class Account extends BaseEntity {
   @OneToOne(() => Session, (session) => session.account)
   session: Session;
 
-  @OneToOne(() => Pipeline, (pipeline) => pipeline.account)
-  pipeline: Pipeline;
+  // !updated: account will no longer own any pipeline anymore
+  // @OneToOne(() => Pipeline, (pipeline) => pipeline.account)
+  // pipeline: Pipeline;
 
+  // account can be assign to sell product to any opportunity by sale manager
   @OneToMany(() => PipelineItem, (pipeline) => pipeline.account)
   pipelineItems: PipelineItem[];
 
+  // an account can upload multiple files
   @OneToMany(() => File, (pipeline) => pipeline.account)
   files: File[];
 
+  // an account can have many email template
   @OneToMany(() => EmailTemplate, (emailTemplates) => emailTemplates.account)
   emailTemplates: EmailTemplate[];
 
+  // an account here act as the sender of an email
   @OneToMany(() => Email, (email) => email.account)
   emails: Email[];
 
