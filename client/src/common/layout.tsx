@@ -8,7 +8,7 @@ interface LayoutAppProps {
   menuSider: ReactNode;
 }
 
-export const LayoutApp = ({ content, menuSider }: LayoutAppProps) => {
+export const AppLayout = ({ content, menuSider }: LayoutAppProps) => {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <SiderApp>{menuSider}</SiderApp>

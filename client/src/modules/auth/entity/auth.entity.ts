@@ -4,7 +4,13 @@ import { Permission } from '@modules/permission/entity/permission.entity';
 export interface IAuth {
   sessionId: string;
   publicData: {
-    role: Role;
+    role: {
+      name: Role;
+      createdAt: Date;
+      updatedAt: Date;
+      deletedAt: Date;
+      id: string;
+    };
     email: string;
     id: string;
     permissions: Permission[];
