@@ -25,7 +25,7 @@ export const useHandleDnD = (data: IPipeline) => {
 
   const handleMoveColumn = (startIndex: number, finishIndex: number) => {
     //lấy mảng pipelineColumns ra
-    const pipelineNewColumns = Array.from(data?.pipelineColumns);
+    const pipelineNewColumns = Array.from(data.pipelineColumns);
 
     // lấy ra dữ liệu column đang được nắm kéo
     const [newItemColumn] = pipelineNewColumns.splice(startIndex, 1);
@@ -43,7 +43,7 @@ export const useHandleDnD = (data: IPipeline) => {
       value.id == columnID)
 
     // lấy items của column vừa tìm được bỏ vào pipelineNewColumns
-    const pipelineNewItems = Array.from(column?.pipelineItems);
+    const pipelineNewItems = Array.from(column.pipelineItems);
 
     // lấy ra dữ liệu card đang được nắm kéo
     const [newItemColumn] = pipelineNewItems.splice(startIndex, 1);
@@ -75,7 +75,7 @@ export const useHandleDnD = (data: IPipeline) => {
     const column1 = data.pipelineColumns.find(value =>
       value.id == startColumn)
 
-    const items1 = Array.from(column1?.pipelineItems);
+    const items1 = Array.from(column1.pipelineItems);
     const [newItemColumn] = items1.splice(startIndex, 1);
     //update item index column start
     const newItems1 = reassignIndex(items1);
@@ -84,7 +84,7 @@ export const useHandleDnD = (data: IPipeline) => {
     const column2 = data.pipelineColumns.find(value =>
       value.id == finishColumn)
 
-    const items2 = Array.from(column2?.pipelineItems);
+    const items2 = Array.from(column2.pipelineItems);
     items2.splice(finishIndex, 0, newItemColumn);
     //update item index column finish
     const newItems2 = reassignIndex(items2);
@@ -100,6 +100,7 @@ export const useHandleDnD = (data: IPipeline) => {
       else
         return item;
     })
+    console.log(newColumn);
     
     setNewPipeline(newColumn);
   }
