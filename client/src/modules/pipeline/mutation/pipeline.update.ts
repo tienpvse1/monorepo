@@ -3,6 +3,7 @@ import { controllers } from "@constance/controllers";
 import { useMutation, useQueryClient } from "react-query";
 import { IPipeline } from "../entity/pipeline.entity";
 import { message } from "antd"
+import { GET_PIPELINE_DESIGN } from "../query/pipeline.get";
 const { PIPELINE } = controllers;
 
 
@@ -18,7 +19,7 @@ export const useUpdatePipeline = () => {
   const { mutate, isLoading, isError } = useMutation(actionPutPipeline,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(PIPELINE);
+        queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
       },
       onError: () => {
         message.error('Oops something went wrong!');

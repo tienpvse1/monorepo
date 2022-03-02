@@ -1,9 +1,10 @@
+import { controllers } from '@constance/controllers';
 import { getPipeline } from '@db/pipeline.db';
 import { useGetStagesByPipelineId } from '@modules/pipeline-column/query/pipeline.get';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useChangeStage } from '@modules/pipeline-items/mutation/pipeline-items.update';
 import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-item.get';
-import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
+const { PIPELINE } = controllers;
 import { qualifyStage } from '@util/stage';
 import { Alert, Button, Card, Steps, Tabs } from 'antd';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -29,7 +30,7 @@ export const SecondColumn: React.FC<SecondColumnProps> = ({ data }) => {
       {
         onSuccess: () => {
           client.refetchQueries(GET_PIPELINE_ITEM_BY_ID);
-          client.refetchQueries(GET_PIPELINE_DESIGN);
+          client.refetchQueries(PIPELINE);
         },
       }
     );
