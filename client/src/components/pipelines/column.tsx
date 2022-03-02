@@ -43,6 +43,10 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
               />
             )}
           </div>
+          {/* //TODO: this price total is still hard-coded */}
+          <div className="price-total">
+            <span>15.000.000 đ</span>
+          </div>
           <Button
             onClick={setShowCreateItemForm}
             style={{ marginTop: '10px', width: '100%', border: 'none' }}

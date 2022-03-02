@@ -1,7 +1,7 @@
 import {
   ClockCircleOutlined,
   FlagOutlined,
-  MessageOutlined,
+  MailOutlined,
   MoreOutlined,
 } from '@ant-design/icons';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
@@ -78,7 +78,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
               >
                 <div>
                   <span>
-                    <MessageOutlined style={{ fontSize: 18 }} /> 2{' '}
+                    <MailOutlined style={{ fontSize: 18 }} /> 2{' '}
                   </span>
                   <span>
                     <ClockCircleOutlined style={{ fontSize: 18 }} /> 2h{' '}

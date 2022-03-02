@@ -63,9 +63,11 @@ export class PipelineItem extends BaseEntity {
   internalNotes: string;
 
   @ManyToOne(() => Account, (account) => account.pipelineItems)
+  @JoinColumn({ name: 'account_id' })
   account: Account;
 
   @ManyToOne(() => Contact, (contact) => contact.pipelineItems)
+  @JoinColumn({ name: 'contact_id' })
   contact: Contact;
 
   @ManyToMany(() => Tag, (tag) => tag.pipelineItems)

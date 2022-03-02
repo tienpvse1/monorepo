@@ -5,8 +5,8 @@ import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { Suspense, useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { OpportunityDetails } from './opportunity/opportunity-details';
-import { CardCreateItem } from './pipeline-items/card-create';
+import { OpportunityDetails } from '../opportunity/opportunity-details';
+import { CreateCardItem } from './pipeline-items/create-card';
 import { PipelineCardItem } from './pipeline-items/card-item';
 
 interface PipelineItemsProps {
@@ -35,12 +35,12 @@ export const PipelineItems: React.FC<PipelineItemsProps> = ({
       <Droppable droppableId={pipelineColumn.id} type='task'>
         {(provided) => (
           <div
-            className='pipeline-column .scroll-menu-pipeline-2'
+            className='pipeline-column scroll-menu-pipeline-2'
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
             {showCreateItemForm && (
-              <CardCreateItem
+              <CreateCardItem
                 pipelineColumnID={pipelineColumn.id}
                 toggleClose={setShowCreateItemForm}
               />

@@ -6,6 +6,7 @@ specifiers:
   '@ant-design/plots': ^1.0.9
   '@casl/ability': ^5.4.3
   '@casl/react': ^2.3.0
+  '@mantine/hooks': ^3.6.12
   '@nestjsx/crud-request': ^5.0.0-alpha.3
   '@types/boom': ^7.3.1
   '@types/lodash': ^4.14.178
@@ -49,6 +50,7 @@ specifiers:
   react-query: ^3.34.7
   react-router-dom: ^6.2.1
   react-transition-group: ^4.4.2
+  rxjs: ^7.5.4
   sass: ^1.48.0
   socket.io-client: ^4.4.1
   to-fast-properties: ^4.0.0
@@ -64,6 +66,7 @@ dependencies:
   '@ant-design/plots': 1.0.9_react-dom@17.0.2+react@17.0.2
   '@casl/ability': 5.4.3
   '@casl/react': 2.3.0_@casl+ability@5.4.3+react@17.0.2
+  '@mantine/hooks': 3.6.12_react@17.0.2
   '@nestjsx/crud-request': 5.0.0-alpha.3
   '@vitejs/plugin-react': 1.2.0
   antd: 4.18.9_react-dom@17.0.2+react@17.0.2
@@ -93,6 +96,7 @@ dependencies:
   react-query: 3.34.16_react-dom@17.0.2+react@17.0.2
   react-router-dom: 6.2.2_react-dom@17.0.2+react@17.0.2
   react-transition-group: 4.4.2_react-dom@17.0.2+react@17.0.2
+  rxjs: 7.5.4
   sass: 1.49.9
   socket.io-client: 4.4.1
   to-fast-properties: 4.0.0
@@ -1250,6 +1254,14 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.0.5
       '@jridgewell/sourcemap-codec': 1.4.11
+    dev: false
+
+  /@mantine/hooks/3.6.12_react@17.0.2:
+    resolution: {integrity: sha512-sgLyg8cQS8bFcKRPDf0gJmWcQozS+6djWP9d81NLwpnhOZF7+QydaHA1xnfq1D3mO2jFdIhHWC/OehwqBFeEYQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 17.0.2
     dev: false
 
   /@mapbox/geojson-area/0.2.2:
@@ -5060,6 +5072,12 @@ packages:
     engines: {npm: '>=2.0.0'}
     dependencies:
       tslib: 1.14.1
+    dev: false
+
+  /rxjs/7.5.4:
+    resolution: {integrity: sha512-h5M3Hk78r6wAheJF0a5YahB1yRQKCsZ4MsGdZ5O9ETbVtjPcScGfrMmoOq7EBsCRzd4BDkvDJ7ogP8Sz5tTFiQ==}
+    dependencies:
+      tslib: 2.3.1
     dev: false
 
   /safe-buffer/5.1.2:

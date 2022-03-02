@@ -16,7 +16,7 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({ setModalCr
     <>
       <WrapperRowTitle
         className="wrapper-title-page-2"
-        title="Agreements"
+        title="Pipeline"
         titleSize="27px"
         children={<SearchBar placeholder="Search for id, name or phone number" />}
       />

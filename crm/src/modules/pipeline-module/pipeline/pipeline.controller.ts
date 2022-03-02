@@ -52,6 +52,7 @@ import { PipelineService } from './pipeline.service';
       'createManyBase',
       'getOneBase',
       'createOneBase',
+      'getManyBase',
     ],
   },
 })
@@ -59,10 +60,32 @@ export class PipelineController {
   constructor(public service: PipelineService) {}
 
   @Get('own')
+  @ApiOperation({
+    deprecated: true,
+    summary:
+      'no relationship between account and pipeline anymore, please use GET api/v1/pipeline',
+  })
   getOwnPipeline(@User('id') userId: string) {
     return this.service.findOwnOnePipeline(userId);
   }
+
+  @Get()
+  @ApiOperation({
+    summary: 'Retrieve ONLY one pipeline that exist in the system',
+  })
+  getOnePipeline() {
+    return this.service.findOneItem({
+      relations: ['pipelineColumns', 'pipelineColumns.pipelineItems'],
+    });
+  }
+
   @Post()
+  @ApiOperation({
+    deprecated: true,
+    summary: 'System should not let user to create pipeline',
+    description:
+      'please do not use this api, because system should only have one pipeline by default, should not let user to do this manually',
+  })
   @UsePipes(CreatePipePipe)
   createPipeline(@Body() value: CreatePipelineDto) {
     return this.service.createItem(value);
@@ -73,18 +96,6 @@ export class PipelineController {
     return this.service.softDelete(id);
   }
 
-  @Put('/replace/:id')
-  @UsePipes(new ValidationPipe())
-  @ApiOperation({
-    deprecated: true,
-    summary: 'DEPRECATED please use PUT api/v1/:id instead',
-  })
-  deprecatedReplacePipeline(
-    @Param('id') id: string,
-    @Body() updatePipelineDto: UpdatePipelineDto,
-  ) {
-    return this.service.updatePipeline(id, updatePipelineDto);
-  }
   @Put('/:id')
   @UsePipes(new ValidationPipe())
   @ApiOperation({

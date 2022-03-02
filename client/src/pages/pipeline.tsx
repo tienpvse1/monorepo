@@ -10,13 +10,13 @@ import { sortPipeline } from '@util/sort';
 import { Button } from 'antd';
 import { useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { PipeLineColumn } from '../pipelines/column';
+import { PipeLineColumn } from '../components/pipelines/column';
 
 interface PipelineProps {
 
 }
 
-export const Pipeline: React.FC<PipelineProps> = ({ }) => {
+const Pipeline: React.FC<PipelineProps> = ({ }) => {
   const [visible, setModalCreateStage] = useToggle();
 
   const { data } = useGetPipeLineUser();
@@ -33,7 +33,7 @@ export const Pipeline: React.FC<PipelineProps> = ({ }) => {
     setPipeLine(data);
   }, [data, isError])
 
-  if (data !== undefined) { sortPipeline(data) };
+  if (data !== undefined) { sortPipeline(data) };  
 
   const totalColumn = data?.pipelineColumns.length || 1;
   const widthOfItem = 333;
@@ -127,8 +127,9 @@ export const Pipeline: React.FC<PipelineProps> = ({ }) => {
         setVisible={setModalCreateStage}
         visible={visible}
         pipelineId={data?.id}
-        currentIndexColumn={data?.pipelineColumns.length}
       />
     </>
   )
-}
+};
+
+export default Pipeline;
