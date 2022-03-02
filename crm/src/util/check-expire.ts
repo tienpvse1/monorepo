@@ -3,5 +3,5 @@ export const isExpired = (date: Date): boolean => {
 };
 
 export const generateExpireDate = () => {
-  return new Date(Date.now() + 1000 * 60 * 30);
+  return new Date(Date.now() + 1000 * 60 * 60 * 7);
 };

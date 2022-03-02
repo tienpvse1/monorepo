@@ -1,4 +1,3 @@
-import {} from 'axios';
 import { db } from './db';
 
 export const getPipeline = async () => {
