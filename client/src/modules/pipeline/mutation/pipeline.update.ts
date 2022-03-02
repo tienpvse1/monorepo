@@ -8,7 +8,7 @@ const { PIPELINE } = controllers;
 
 export const actionPutPipeline = async ({ id, ...rest }: IPipeline) => {
   const { instance } = new Axios();
-  const { data } = await instance.put(`${PIPELINE}/replace/${id}`, { ...rest });
+  const { data } = await instance.put(`${PIPELINE}/${id}`, { ...rest });
 
   return data;
 }
