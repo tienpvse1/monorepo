@@ -82,9 +82,9 @@ export class PipelineController {
   @Post()
   @ApiOperation({
     deprecated: true,
-    summary: 'no relation between account and pipeline anymore',
+    summary: 'System should not let user to create pipeline',
     description:
-      'please do not use this api, this will soon be removed in future',
+      'please do not use this api, because system should only have one pipeline by default, should not let user to do this manually',
   })
   @UsePipes(CreatePipePipe)
   createPipeline(@Body() value: CreatePipelineDto) {
@@ -96,18 +96,6 @@ export class PipelineController {
     return this.service.softDelete(id);
   }
 
-  @Put('/replace/:id')
-  @UsePipes(new ValidationPipe())
-  @ApiOperation({
-    deprecated: true,
-    summary: 'DEPRECATED please use PUT api/v1/:id instead',
-  })
-  deprecatedReplacePipeline(
-    @Param('id') id: string,
-    @Body() updatePipelineDto: UpdatePipelineDto,
-  ) {
-    return this.service.updatePipeline(id, updatePipelineDto);
-  }
   @Put('/:id')
   @UsePipes(new ValidationPipe())
   @ApiOperation({
