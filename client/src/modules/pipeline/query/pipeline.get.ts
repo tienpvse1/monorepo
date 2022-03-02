@@ -8,6 +8,7 @@ export const GET_PIPELINE_DESIGN = 'get-pipeline-design';
 export const getPipelineUser = async () => {
   const { instance } = new Axios();
   const { data } = await instance.get<IPipeline>(`${PIPELINE}`);
+  await db.pipeline.clear();
   db.pipeline.add({
     id: data.id,
     name: data.name,
