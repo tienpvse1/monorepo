@@ -10,7 +10,7 @@ const AddContact = lazy(() => import('@pages/import-contact'));
 const SignUpPage = lazy(() => import('@pages/signup'));
 const LayoutUser = lazy(() => import('@common/user-layout'));
 const ProfilePage = lazy(() => import('@pages/profile'));
-const LayoutAdmin = lazy(() => import('@pages/admin'));
+const AdminLayout = lazy(() => import('@common/admin-layout'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Product = lazy(() => import('@pages/product'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
@@ -40,7 +40,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'pipeline',
-        element: <Pipeline />
+        element: <Pipeline />,
       },
       {
         path: 'email',
@@ -56,21 +56,21 @@ export const route: RouteObject[] = [
       },
       {
         path: 'product',
-        element: <Product />
+        element: <Product />,
       },
       {
         path: 'opportunities',
-        element: <Opportunities />
+        element: <Opportunities />,
       },
       {
         path: 'leads',
-        element: <Leads />
-      }
+        element: <Leads />,
+      },
     ],
   },
   {
     path: '/administration',
-    element: <LayoutAdmin />,
+    element: <AdminLayout />,
     children: [
       {
         index: true,

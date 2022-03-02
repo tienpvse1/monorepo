@@ -24,7 +24,7 @@ export const LoginForm = () => {
     const publicData = JSON.stringify(data.publicData);
     setCookie(PUBLIC_USER_INFO, publicData || '', 0.5);
 
-    if (data.publicData.role == `${Role.ADMIN}1`) {
+    if (data.publicData.role.name == `${Role.ADMIN}`) {
       return <Navigate to={'/administration'} replace />;
     }
     return <Navigate to={'/'} replace />;
