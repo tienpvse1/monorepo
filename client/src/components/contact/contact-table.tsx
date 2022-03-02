@@ -76,8 +76,9 @@ export const ContactData: FC = () => {
           }}
           title={() => <ContactHeader toggleCreateModal={toggleCreateModal} />}
           pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
-          dataSource={data?.map((value) => ({ ...value, key: value.name }))}
+          dataSource={data}
           size={'large'}
+          rowKey={(record) => record.id}
         >
           <Column
             title='Name'
