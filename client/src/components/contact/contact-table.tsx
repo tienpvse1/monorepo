@@ -18,7 +18,7 @@ import { CreateModal } from '@components/modal/modal-create';
 import { CreateContactForm } from './create-contact-form';
 
 const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
+  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {},
   getCheckboxProps: (record: any) => ({
     disabled: record.name === 'Disabled User',
     name: record.name,
@@ -74,9 +74,7 @@ export const ContactData: FC = () => {
             type: 'checkbox',
             ...rowSelection,
           }}
-          title={() =>
-            <ContactHeader toggleCreateModal={toggleCreateModal} />
-          }
+          title={() => <ContactHeader toggleCreateModal={toggleCreateModal} />}
           pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
           dataSource={data?.map((value) => ({ ...value, key: value.name }))}
           size={'large'}
@@ -180,9 +178,7 @@ export const ContactData: FC = () => {
             width={120}
             render={(text) => (
               <span>
-                <Tag color={'gold'} key={text.type}>
-                  {text ? text.toUpperCase() : 'NULL'}
-                </Tag>
+                <Tag color={'gold'}>{text ? text.toUpperCase() : 'NULL'}</Tag>
               </span>
             )}
           />
@@ -200,8 +196,8 @@ export const ContactData: FC = () => {
                     <Popconfirm
                       title='Sure to cancel?'
                       onConfirm={toggleEditing}
-                      okText="Yes"
-                      cancelText="No"
+                      okText='Yes'
+                      cancelText='No'
                     >
                       <span style={{ cursor: 'pointer' }}>Cancel</span>
                     </Popconfirm>
@@ -218,7 +214,9 @@ export const ContactData: FC = () => {
 
                     <Button
                       type='default'
-                      onClick={() => showDeleteConfirm(() => deleteContact(record.id))}
+                      onClick={() =>
+                        showDeleteConfirm(() => deleteContact(record.id))
+                      }
                       shape='round'
                       danger
                     >
