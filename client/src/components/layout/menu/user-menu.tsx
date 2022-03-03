@@ -13,6 +13,9 @@ import {
 } from '@ant-design/icons';
 import { envVars } from '@env/var.env';
 import { Menu } from 'antd';
+import { Reorder } from 'framer-motion';
+import { ReorderGroup } from 'framer-motion/types/components/Reorder/Group';
+import { ReactNode, useState } from 'react';
 const { SubMenu } = Menu;
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -20,9 +23,68 @@ interface MenuSiderUserProps {
   style: object;
 }
 
+interface MenuProp {
+  key: string;
+  style: object;
+  onClick: () => any;
+  icon: ReactNode;
+}
+
 export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const menuItems: MenuProp[] = [
+    {
+      key: 'home',
+      style,
+      onClick: () => navigate('/'),
+      icon: <FundOutlined style={style} />,
+    },
+    {
+      key: 'pipeline',
+      style,
+      onClick: () => navigate('/pipeline'),
+      icon: <BranchesOutlined style={style} />,
+    },
+    {
+      key: 'leads',
+      style,
+      onClick: () => navigate('/leads'),
+      icon: <SolutionOutlined style={style} />,
+    },
+    {
+      key: 'contact',
+      style,
+      onClick: () => navigate('/contact'),
+      icon: <ContactsOutlined style={style} />,
+    },
+    {
+      key: 'opportunities',
+      style,
+      onClick: () => navigate('/opportunities'),
+      icon: <CrownOutlined style={style} />,
+    },
+    {
+      key: 'product',
+      style,
+      onClick: () => navigate('/product'),
+      icon: <WalletOutlined style={style} />,
+    },
+    {
+      key: 'customer',
+      style,
+      onClick: () => navigate('/customer'),
+      icon: <UserOutlined style={style} />,
+    },
+    {
+      key: 'schedule',
+      style,
+      onClick: () => navigate('/schedule'),
+      icon: <CalendarOutlined style={style} />,
+    },
+  ];
+
   return (
     <>
       <Menu
@@ -35,73 +97,9 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
         }
         mode='inline'
       >
-        <Menu.Item
-          key='home'
-          style={style}
-          onClick={() => navigate('/')}
-          icon={<FundOutlined style={style} />}
-        >
-          Dashboard
-        </Menu.Item>
-
-        <Menu.Item
-          key='pipeline'
-          onClick={() => navigate('/pipeline')}
-          style={style}
-          icon={<BranchesOutlined style={style} />}
-        >
-          Pipeline
-        </Menu.Item>
-
-        <Menu.Item
-          key='leads'
-          onClick={() => navigate('/leads')}
-          style={style}
-          icon={<SolutionOutlined style={style} />}
-        >
-          Leads
-        </Menu.Item>
-
-        <Menu.Item
-          key='contact'
-          onClick={() => navigate('/contact')}
-          style={style}
-          icon={<ContactsOutlined style={style} />}
-        >
-          Contact
-        </Menu.Item>
-
-        <Menu.Item
-          key='opportunities'
-          onClick={() => navigate('/opportunities')}
-          style={style}
-          icon={<CrownOutlined style={style} />}
-        >
-          Opportunities
-        </Menu.Item>
-
-        <Menu.Item
-          key='product'
-          onClick={() => navigate('/product')}
-          style={style}
-          icon={<WalletOutlined style={style} />}
-        >
-          Product
-        </Menu.Item>
-        <Menu.Item
-          key='customer'
-          style={style}
-          icon={<UserOutlined style={style} />}
-        >
-          Customer
-        </Menu.Item>
-        <Menu.Item
-          key='schedule'
-          style={style}
-          icon={<CalendarOutlined style={style} />}
-        >
-          Schedule
-        </Menu.Item>
+        {menuItems.map((item) => (
+          <Menu.Item {...item}>{item.key}</Menu.Item>
+        ))}
 
         {/* ----------------------------------------------------------- */}
         <SubMenu
