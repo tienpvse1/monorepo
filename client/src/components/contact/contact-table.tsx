@@ -17,6 +17,8 @@ import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { CreateModal } from '@components/modal/modal-create';
 import { CreateContactForm } from './create-contact-form';
 import { isEmail, isPhoneNumber, isRequired } from '@constance/rules-of-input-antd';
+import { useInsertContact } from '@modules/contact/mutation/contact.post';
+import { message } from 'antd';
 
 const rowSelection = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
@@ -28,12 +30,26 @@ const rowSelection = {
 
 export const ContactData: FC = () => {
   const { data, isLoading } = useContacts();
-  const { mutate } = useUpdateContact(() =>
-    client.invalidateQueries(QUERY_CONTACTS)
+
+  const { mutate: updateContact } = useUpdateContact(() =>
+    {
+      client.invalidateQueries(QUERY_CONTACTS);
+      message.success('Save successfully !')
+    }
   );
   const { mutate: deleteContact } = useDeleteContact(() =>
-    client.invalidateQueries(QUERY_CONTACTS)
+    {
+      client.invalidateQueries(QUERY_CONTACTS);
+      message.success('Delete successfully !')
+    }
   );
+  const { mutate: insertContact } = useInsertContact(() =>
+    {
+      client.invalidateQueries(QUERY_CONTACTS);
+      message.success('Create new successfully !')
+    }
+  );
+
   const [form] = Form.useForm<IContact>();
   const [isEditing, toggleEditing] = useToggle();
   const [isOpenModal, toggleCreateModal] = useToggle();
@@ -56,7 +72,7 @@ export const ContactData: FC = () => {
     try {
       const record = await form.validateFields();
       toggleEditing();
-      mutate({
+      updateContact({
         id,
         ...record,
       });
@@ -64,6 +80,13 @@ export const ContactData: FC = () => {
       return;
     }
   };
+
+  const handleCreateContact = (record: IContact) => {
+    insertContact({
+      ...record,
+      addresses: [{...record.addresses}]
+    })
+  }
 
   return (
     <>
@@ -207,6 +230,7 @@ export const ContactData: FC = () => {
         </Table>
       </Form>
       <CreateModal
+        callback={handleCreateContact}
         isOpenModal={isOpenModal}
         toggleCreateModal={toggleCreateModal}
       >

@@ -1,12 +1,12 @@
 import { FileTextOutlined, SmileOutlined } from "@ant-design/icons";
-import { DetailsContact } from "@components/contact/details-contact";
+import { ContactDetails } from "@components/contact/contact-details";
 import { PageDetailsTitle } from "@components/page-details/page-details-title"
 import { useQueryContactsById } from "@modules/contact/query/contact.get";
 import { Alert, Col, Divider, Row, Tabs, Timeline } from "antd"
 const { TabPane } = Tabs;
 import { useParams } from 'react-router-dom'
 
-const ContactDetails = () => {
+const ViewContactDetails = () => {
   const params = useParams();
   const { data } = useQueryContactsById(params.id);    
 
@@ -20,10 +20,10 @@ const ContactDetails = () => {
               <div className="container-content-details-page">
                 <Tabs size="large" defaultActiveKey="1" >
                   <TabPane tab="Details" key="1">
-                    <DetailsContact contact={data} />
+                    <ContactDetails contact={data} />
                   </TabPane>
                   <TabPane tab="Opportunities" key="2">
-                    Content of Tab Pane 2
+                    This is opportunities of contact will be show in table
                   </TabPane>
                   <TabPane tab="Notes" key="3">
                     <Alert
@@ -81,4 +81,4 @@ const ContactDetails = () => {
   )
 }
 
-export default ContactDetails
+export default ViewContactDetails

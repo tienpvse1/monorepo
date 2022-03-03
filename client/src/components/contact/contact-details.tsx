@@ -15,10 +15,10 @@ import { useQueryClient } from 'react-query';
 import { QUERY_CONTACTS_BY_ID } from '@modules/contact/query/contact.get';
 import { message } from 'antd';
 
-interface DetailsContactProps {
+interface ContactDetailsProps {
   contact: IContact;
 }
-export const DetailsContact: React.FC<DetailsContactProps> = ({ contact }) => {
+export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
 
   const [isEditingForm1, toggleEditForm1] = useToggle();
   const [isEditingForm2, toggleEditForm2] = useToggle();

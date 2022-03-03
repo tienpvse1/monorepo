@@ -3,18 +3,21 @@ import { Form, Modal } from 'antd'
 interface CreateModalProps {
   isOpenModal: boolean;
   toggleCreateModal: () => void;
+  callback: (record) => void;
 }
 
 export const CreateModal: React.FC<CreateModalProps> = ({
   isOpenModal,
   toggleCreateModal,
-  children
+  children,
+  callback
 }) => {
   const [form] = Form.useForm<any>();
 
   const handleSubmit = async () => {
     const record = await form.validateFields();
-    console.log(record);
+    callback(record);
+    toggleCreateModal();
   }
 
   return (
