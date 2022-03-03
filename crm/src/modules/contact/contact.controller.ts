@@ -6,6 +6,7 @@ import { CreateContactPipe } from './create-contact.pipe';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { Contact } from './entities/contact.entity';
+import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
 
 @Controller('contact')
 @ApiTags('contact')
@@ -32,7 +33,7 @@ import { Contact } from './entities/contact.entity';
     },
   },
   routes: {
-    // updateOneBase: { decorators: [UsePipes(UpdateContactPipePipe)] },
+    updateOneBase: { decorators: [UsePipes(UpdateContactPipePipe)] },
     createOneBase: { decorators: [UsePipes(CreateContactPipe)] },
   },
 })
