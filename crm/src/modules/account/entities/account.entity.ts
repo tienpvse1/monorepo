@@ -12,6 +12,7 @@ import { ProductAccount } from 'src/modules/product-account/entities/product-acc
 import { Role } from 'src/modules/role/entities/role.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
 import { Session } from 'src/modules/session/entities/session.entity';
+import { Team } from 'src/modules/team/entities/team.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -93,6 +94,10 @@ export class Account extends BaseEntity {
   @ManyToOne(() => Role, (role) => role.accounts)
   @JoinColumn({ name: 'role_id' })
   role: Role;
+
+  @ManyToOne(() => Team, (team) => team.accounts)
+  @JoinColumn({ name: 'team_id' })
+  team: Team;
 
   @OneToMany(() => ProductAccount, (product) => product.account)
   productAccounts: ProductAccount[];
