@@ -11,8 +11,8 @@ export enum AddressTypes {
 
 @Entity()
 export class Address extends BaseEntity {
-  @Column({ type: 'enum', enum: AddressTypes })
-  type: string;
+  @Column({ type: 'enum', enum: AddressTypes, name: 'address_type' })
+  type: AddressTypes;
 
   @Column()
   address: string;

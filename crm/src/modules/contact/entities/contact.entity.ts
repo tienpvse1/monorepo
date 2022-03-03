@@ -16,7 +16,7 @@ export class Contact extends BaseEntity {
   phone: string;
   @Column({ nullable: true })
   mobile: string;
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'contact_type' })
   type: string;
   @Column({ nullable: true })
   email: string;
