@@ -27,6 +27,9 @@ export class CreateSinglePipelineItemDto {
   name: string;
 
   @Length(10)
+  contactId: string;
+
+  @Length(10)
   columnId: string;
 
   @IsNumber()

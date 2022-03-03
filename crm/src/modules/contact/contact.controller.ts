@@ -28,6 +28,7 @@ import { Contact } from './entities/contact.entity';
     join: {
       addresses: {},
       noteWorthies: {},
+      pipelineItems: {},
     },
   },
   routes: {
