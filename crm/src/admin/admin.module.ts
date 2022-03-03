@@ -12,6 +12,7 @@ import { ProductAccount } from 'src/modules/product-account/entities/product-acc
 import { Product } from 'src/modules/product/entities/product.entity';
 import { Role } from 'src/modules/role/entities/role.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
+import { Team } from 'src/modules/team/entities/team.entity';
 import { Account } from '../modules/account/entities/account.entity';
 import { EmailTemplate } from '../modules/email-template/entities/email-template.entity';
 import { PipelineColumn } from '../modules/pipeline-module/pipeline-column/entities/pipeline-column.entity';
@@ -40,6 +41,7 @@ AdminJS.registerAdapter({ Database, Resource });
           ProductAccount,
           Product,
           Address,
+          Team,
           NoteWorthy,
         ],
         branding: {
