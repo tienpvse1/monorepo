@@ -19,7 +19,8 @@ export const DashboardHeader: React.FC<HeaderProps> = ({ setData, data }) => {
       as='div'
       style={{
         display: 'flex',
-        gap: '2vw',
+        width: '100%',
+        justifyContent: 'space-between'
       }}
     >
       {data.map((item) => (

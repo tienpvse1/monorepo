@@ -22,7 +22,7 @@ export const LoginForm = () => {
   };
   if (isSuccess && data) {
     const publicData = JSON.stringify(data.publicData);
-    setCookie(PUBLIC_USER_INFO, publicData || '', 0.5);
+    setCookie(PUBLIC_USER_INFO, publicData || '', 24 * 7);
 
     if (data.publicData.role.name == `${Role.ADMIN}`) {
       return <Navigate to={'/administration'} replace />;

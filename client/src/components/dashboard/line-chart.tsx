@@ -1,7 +1,9 @@
 import {
+  BarElement,
   CategoryScale,
   Chart as ChartJS,
   ChartData,
+  Filler,
   Legend,
   LinearScale,
   LineElement,
@@ -10,7 +12,7 @@ import {
   Tooltip,
 } from 'chart.js';
 import React, { useEffect, useRef, useState } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -19,27 +21,20 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler,
+  BarElement
 );
 
 export const options = {
   responsive: true,
-  plugins: {
-    legend: {
-      display: false,
-    },
-    title: {
-      display: true,
-      text: 'Chart.js Line Chart',
-    },
-  },
 };
 
 const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
+const stages = ['New', 'Qualified', 'Proposal', 'Won', 'Lose'];
 interface ChartInterface {
-  height: number;
-  width: number;
+  height: number | string;
+  width: number | string;
 }
 export const LineChart: React.FC<ChartInterface> = ({ height, width }) => {
   const [data, setData] = useState<ChartData<'line', number[], string>>({
@@ -50,11 +45,12 @@ export const LineChart: React.FC<ChartInterface> = ({ height, width }) => {
 
   useEffect(() => {
     if (chartRef.current) {
-      const canvas = chartRef.current.canvas;
-      const ctx = canvas.getContext('2d');
-      const gradient = ctx.createLinearGradient(0, 0, 0, height);
-      gradient.addColorStop(0, 'rgba(250,174,50,1)');
-      gradient.addColorStop(1, 'rgba(250,174,50,0)');
+      // @ts-ignore
+      var canvas = chartRef.current.canvas;
+      var ctx = canvas.getContext('2d');
+      var gradient = ctx.createLinearGradient(0, 0, 0, 200);
+      gradient.addColorStop(0, 'rgb(238, 9, 121, 0.8)');
+      gradient.addColorStop(1, 'rgba(255, 106, 0, 0.1)');
 
       setData({
         labels,
@@ -62,7 +58,7 @@ export const LineChart: React.FC<ChartInterface> = ({ height, width }) => {
           {
             fill: 'start',
             backgroundColor: gradient,
-            data: labels.map(() => Math.random() * 1000),
+            data: labels.map(() => Math.random() * 50),
             borderColor: 'rgb(255, 99, 132)',
           },
         ],
@@ -70,8 +66,62 @@ export const LineChart: React.FC<ChartInterface> = ({ height, width }) => {
     }
   }, [chartRef]);
   return (
-    <div style={{ height, width }}>
-      <Line ref={chartRef} options={options} data={data} />
+    <div>
+      <div style={{ height, width, marginTop: 20 }}>
+        <Line
+          ref={chartRef}
+          options={{
+            ...options,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false,
+              },
+              title: {
+                position: 'bottom',
+                display: true,
+                text: 'Chart.js Line Chart',
+              },
+            },
+          }}
+          width={10}
+          height={5}
+          data={data}
+        />
+      </div>
+      <div style={{ height, width, marginTop: 20 }}>
+        <Bar
+          options={{
+            ...options,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false,
+              },
+              title: {
+                display: true,
+                text: 'Chart.js Line Chart',
+                position: 'bottom',
+              },
+            },
+          }}
+          data={{
+            labels: stages,
+            datasets: [
+              {
+                data: [10, 20, 30, 22, 16, 19],
+                backgroundColor: [
+                  'rgba(255, 106, 0, 0.2)',
+                  'rgba(255, 106, 0, 0.25)',
+                  'rgba(255, 106, 0, 0.3)',
+                  'rgba(255, 106, 0, 0.5)',
+                  'rgba(255, 106, 0, 0.4)',
+                ],
+              },
+            ],
+          }}
+        />
+      </div>
     </div>
   );
 };

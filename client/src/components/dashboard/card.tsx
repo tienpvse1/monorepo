@@ -15,13 +15,13 @@ export const Card: React.FC<CardProps> = ({
     <div
       style={{
         display: 'flex',
-        width: '16vw',
+        width: '18vw',
         justifyContent: 'space-between',
         padding: '20px 30px',
         border: '1px solid rgba(0,0,0,0.1)',
         borderRadius: 10,
         paddingRight: 20,
-        background: "white"
+        background: 'white',
       }}
     >
       <div
@@ -47,13 +47,17 @@ export const Card: React.FC<CardProps> = ({
         </span>
       </div>
 
-      <div style={{ position: 'relative', marginRight: 30 }}>
+      <div
+        style={{
+          position: 'relative',
+          marginRight: 10,
+        }}
+      >
         <span
           style={{
-            fontSize: '40px',
+            fontSize: '35px',
             transform: 'translate',
             color: '#ff4d4f',
-            marginLeft: 10,
           }}
         >
           {total}
@@ -61,9 +65,11 @@ export const Card: React.FC<CardProps> = ({
         <span
           style={{
             top: 0,
-            right: -45,
+            right: -25,
             position: 'absolute',
             color: '#52c41a',
+            fontSize: 10,
+            textAlign: 'right',
           }}
         >
           +{variance}%

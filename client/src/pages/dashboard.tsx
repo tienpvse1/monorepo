@@ -1,7 +1,9 @@
 import { cardData, ICardData } from '@components/dashboard/data';
 import { DashboardHeader } from '@components/dashboard/header';
 import { LineChart } from '@components/dashboard/line-chart';
+import Upcoming from '@components/dashboard/upcoming';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
+import { Calendar } from 'antd';
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import '../stylesheets/dashboard.css';
@@ -21,16 +23,60 @@ export const DashBoard: React.FC = () => {
         Hello {firstName} {lastName}
         <div
           style={{
-            marginTop: 20,
+            display: 'flex',
+            justifyContent: 'space-between',
+            paddingRight: '20px',
           }}
         >
-          {/* dashboard's left side */}
-          <DashboardHeader setData={setData} data={data} />
-          <div>
-            <LineChart height={300} width={600} />
+          <div
+            style={{
+              marginTop: 20,
+              width: '55vw',
+            }}
+          >
+            <DashboardHeader setData={setData} data={data} />
+            <LineChart height={230} width={'100%'} />
           </div>
-          {/* dashboard's right side */}
-          <div></div>
+          <div style={{ marginTop: 20 }}>
+            <div
+              style={{
+                border: '1px solid rgba(0,0,0,0.1)',
+                borderRadius: 10,
+                padding: 10,
+              }}
+            >
+              <Calendar
+                style={{
+                  width: '17vw',
+                }}
+                fullscreen={false}
+              />
+            </div>
+            <div
+              style={{
+                border: '1px solid rgba(0,0,0,0.1)',
+                borderRadius: 10,
+                padding: 10,
+                marginTop: 10,
+              }}
+            >
+              <h3>Upcoming events</h3>
+              <div>
+                <Upcoming
+                  by='Tienpvse'
+                  severity='info'
+                  title='Meeting with boss'
+                  time='12h30-2h00pm'
+                />
+                <Upcoming
+                  by='Tienpvse'
+                  severity='info'
+                  title='Meeting with boss'
+                  time='12h30-2h00pm'
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </h1>
     </>
