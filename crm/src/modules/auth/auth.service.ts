@@ -9,9 +9,11 @@ import { JwtService } from '@nestjs/jwt';
 import { compareSync, hashSync } from 'bcryptjs';
 import { Request, Response } from 'express';
 import { getIp } from 'src/util/ip';
+import { getRepository } from 'typeorm';
 import { AccountService } from '../account/account.service';
 import { Account } from '../account/entities/account.entity';
 import { SessionService } from '../session/session.service';
+import { Socket } from '../socket/entities/socket.entity';
 import { LoginRequestDto } from './interfaces/login-request.dto';
 import { IToken } from './interfaces/token.interface';
 import { IGoogleUser } from './interfaces/user.google';
@@ -145,7 +147,7 @@ export class AuthService {
   }
 
   async loginUsingSession(
-    { email, password }: LoginRequestDto,
+    { email, password, socketId }: LoginRequestDto,
     ip: string,
     req: Request,
   ) {
@@ -170,6 +172,7 @@ export class AuthService {
         const session = await this.sessionService.updateSession(
           sessionFromAccountId.id,
           getIp(ip),
+          socketId,
         );
         req.res.cookie('sessionId', session.id, { httpOnly: true });
         return {
@@ -184,10 +187,14 @@ export class AuthService {
           },
         };
       }
-
+      const socketRepository = getRepository(Socket);
+      const createdSocket = await socketRepository
+        .create({ id: socketId })
+        .save();
       const session = await this.sessionService.create({
         account: account,
         ip: getIp(ip),
+        sockets: [createdSocket],
       });
       // saving session to account
       account.session = session;
