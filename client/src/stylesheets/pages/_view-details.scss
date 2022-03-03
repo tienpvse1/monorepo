@@ -1,0 +1,53 @@
+.mini-table-details {
+    th,
+    td {
+        padding: 0px 65px 5px 0px;
+        text-align: left;
+        font-size: 14px;
+        font-weight: 400;
+    }
+}
+
+.container-title-details {
+    @extend .container-page;
+}
+
+.container-content-details-page {
+    padding-top: 5px;
+    @extend .container-page;
+}
+
+.my-form-details {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+}
+
+.my-form-label {
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.my-form-content {
+    height: 30px;
+    font-size: 15px;
+    width: 300px;
+    border-bottom: 1px solid #BDBDBD;
+}
+
+.title-form-content {
+    background-color: $dark-grey-background-color;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 1.17em;
+    padding: 5px 10px;
+    margin: 15px 0px 15px 0px;
+}
+
+.edit-details-form {
+    position: absolute;
+    cursor: pointer;
+    font-size: 18px;
+    right: 40px;
+    z-index: 50;
+}

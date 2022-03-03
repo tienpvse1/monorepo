@@ -1,6 +1,7 @@
 import { DatePicker, Form, Input, InputNumber } from 'antd';
 import { Rule } from 'antd/lib/form';
 import { HTMLAttributes } from 'react';
+import { Link } from 'react-router-dom';
 
 interface EditableCellProps extends HTMLAttributes<HTMLElement> {
   editing: boolean;
@@ -11,6 +12,7 @@ interface EditableCellProps extends HTMLAttributes<HTMLElement> {
   editingIndex: string;
   record: any;
   rules?: Rule[];
+  linkTo: string;
 }
 
 export const EditableCell: React.FC<EditableCellProps> = ({
@@ -23,6 +25,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   editingIndex,
   record,
   rules = [],
+  linkTo
 }) => {
 
   let inputNode = <Input style={{ height: '40px' }} />;
@@ -42,7 +45,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
           {inputNode}
         </Form.Item>
       ) : (
-        <span>{record[dataIndex]}</span>
+        <Link className="my-link" to={linkTo} >{record[dataIndex]}</Link>
       )}
     </>
   );

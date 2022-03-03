@@ -7,7 +7,7 @@ export interface IContact extends IBase {
   phone: string;
   type: string;
   email: string;
-  birth: string;
+  birth: string | any;
   mobile: string;
   photo: string;
   state: string;

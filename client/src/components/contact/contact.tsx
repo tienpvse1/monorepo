@@ -1,9 +1,11 @@
 import { ContactData } from "./contact-table"
 
-export const ContactContainer = () => {
+const ContactContainer = () => {
 	return (
 		<div className="contact-container">
 			<ContactData />
 		</div>
 	)
 }
+
+export default ContactContainer;

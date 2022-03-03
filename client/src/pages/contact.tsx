@@ -1,7 +1,7 @@
-import { ContactContainer } from '@components/contact/contact';
+import { Outlet } from 'react-router-dom';
 
 const Contact = () => {
-  return <ContactContainer />;
+  return <Outlet />;
 };
 
 export default Contact;
