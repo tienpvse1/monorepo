@@ -61,6 +61,7 @@ const Product = () => {
     <div className='product-container'>
       <Form form={form}>
         <Table
+          rowKey={(record) => record.id}
           loading={isLoading}
           dataSource={data}
           tableLayout='fixed'

@@ -5,9 +5,11 @@ import { ContactInfoDetails } from './contact-info-details';
 import { AddressInfoDetails } from './address-info-details';
 import { ContactInfoForm } from './contact-info-form';
 import { useToggle } from '@hooks/useToggle';
-import { AddressInfoForm } from './Address-info-form';
 import { IContact } from '@modules/contact/entity/contact.entity';
 import moment from 'moment';
+import { AddressInfoForm } from './address-info-form';
+import { dateFormat } from '@constance/date-format';
+const { CRUD_AT } = dateFormat;
 
 interface DetailsContactProps {
   contact: IContact;
@@ -81,14 +83,12 @@ export const DetailsContact: React.FC<DetailsContactProps> = ({ contact }) => {
         <Row>
           <Col span={12}>
             <MyForm label="Created At">
-              {/* 2/25/2022, 7:14 AM */}
-              {contact.createdAt}
+              {moment(contact.createdAt).format(CRUD_AT).toString()}
             </MyForm>
           </Col>
           <Col span={12}>
             <MyForm label="Last Modified At">
-              2/25/2022, 7:14 AM
-              {/* {contact.updatedAt} */}
+              {moment(contact.updatedAt).format(CRUD_AT).toString()}
             </MyForm>
           </Col>
         </Row>

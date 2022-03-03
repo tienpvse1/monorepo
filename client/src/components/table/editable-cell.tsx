@@ -12,7 +12,7 @@ interface EditableCellProps extends HTMLAttributes<HTMLElement> {
   editingIndex: string;
   record: any;
   rules?: Rule[];
-  linkTo: string;
+  linkTo?: string;
 }
 
 export const EditableCell: React.FC<EditableCellProps> = ({

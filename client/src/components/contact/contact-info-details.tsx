@@ -1,6 +1,9 @@
 import { MyForm } from '@components/form/my-form'
+import { dateFormat } from '@constance/date-format';
 import { IContact } from '@modules/contact/entity/contact.entity'
 import { Col, Row } from 'antd'
+import moment from 'moment';
+const { BIRTH } = dateFormat;
 
 interface ContactInfoDetailsProps {
   contact: IContact;
@@ -18,7 +21,7 @@ export const ContactInfoDetails: React.FC<ContactInfoDetailsProps> = ({ contact 
             {contact.email}
           </MyForm>
           <MyForm label="Birth">
-            {contact.birth}
+            {moment(contact.birth).format(BIRTH).toString()}
           </MyForm>
           <MyForm label="Title">
             {contact.title}

@@ -39,27 +39,29 @@ export const PageDetailsTitle: React.FC<PageDetailsTitleProps> = ({ contact }) =
               type='primary'
               size='middle'
             >
-              Edit
+              Edit All
             </Button>
           </Space>
         </Col>
       </Row>
       <Row style={{ marginTop: '15px' }}>
         <table className="mini-table-details">
-          <tr>
-            <th>Title</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Contact Owner</th>
-          </tr>
-          <tr>
-            <td>{contact.title}</td>
-            <td>{contact.phone}</td>
-            <td>{contact.email}</td>
-            
-            {/* //TODO this is still hard code */}
-            <td>chuongnguyen</td>
-          </tr>
+          <tbody>
+            <tr>
+              <th>Title</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Contact Owner</th>
+            </tr>
+            <tr>
+              <td>{contact.title}</td>
+              <td>{contact.phone}</td>
+              <td>{contact.email}</td>
+
+              {/* //TODO this is still hard code */}
+              <td>chuongnguyen</td>
+            </tr>
+          </tbody>
         </table>
       </Row>
     </div>

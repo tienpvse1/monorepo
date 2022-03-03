@@ -1,16 +1,15 @@
-import { SmileOutlined } from "@ant-design/icons";
+import { FileTextOutlined, SmileOutlined } from "@ant-design/icons";
 import { DetailsContact } from "@components/contact/details-contact";
 import { PageDetailsTitle } from "@components/page-details/page-details-title"
 import { useQueryContactsById } from "@modules/contact/query/contact.get";
-import { Col, Divider, Row, Tabs, Timeline } from "antd"
+import { Alert, Col, Divider, Row, Tabs, Timeline } from "antd"
 const { TabPane } = Tabs;
 import { useParams } from 'react-router-dom'
 
 const ContactDetails = () => {
   const params = useParams();
   const { data } = useQueryContactsById(params.id);
-  console.log(data);
-  
+
   return (
     <>
       {data ?
@@ -27,7 +26,13 @@ const ContactDetails = () => {
                     Content of Tab Pane 2
                   </TabPane>
                   <TabPane tab="Notes" key="3">
-                    Content of Tab Pane 3
+                    <Alert
+                      message="Internal Notes"
+                      showIcon
+                      icon={<FileTextOutlined />}
+                      description={`${data.internalNotes}`}
+                      type="warning"
+                    />
                   </TabPane>
                 </Tabs>
               </div>
