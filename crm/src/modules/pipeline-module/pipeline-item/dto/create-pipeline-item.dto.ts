@@ -11,6 +11,7 @@ import {
   Min,
 } from 'class-validator';
 import { CreateAddressDto } from 'src/modules/address/dto/create-address.dto';
+import { AddressTypes } from 'src/modules/address/entities/address.entity';
 import { CreateNoteWorthyDto } from 'src/modules/note-worthy/dto/create-note-worthy.dto';
 import { PipelineColumn } from '../../pipeline-column/entities/pipeline-column.entity';
 
@@ -61,7 +62,7 @@ export class CreateSinglePipelineItemDto {
 
   @IsString()
   @IsOptional()
-  type?: string;
+  type?: AddressTypes;
 
   @IsString()
   @IsOptional()
