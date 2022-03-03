@@ -1,33 +1,38 @@
 import { MyForm } from "@components/form/my-form"
+import { IContact } from "@modules/contact/entity/contact.entity"
 import { Col, Row } from "antd"
 
-export const AddressInfoDetails = () => {
+interface AddressInfoDetailsProps {
+  contact: IContact;
+}
+
+export const AddressInfoDetails: React.FC<AddressInfoDetailsProps> = ({ contact }) => {
   return (
     <>
       <Row>
         <Col span={12}>
           <MyForm label="Address">
-            Hẻm 43 đường Trường Chinh, Q.1
+            {contact.addresses[0]?.address}
           </MyForm>
           <MyForm label="City">
-            TPHCM
+            {contact.addresses[0]?.city}
           </MyForm>
-          <MyForm label="Post Code">
-            7777777
+          <MyForm label="Postal Code">
+            {contact.postalCode}
           </MyForm>
           <MyForm label="Country">
-            Viet Nam
+            {contact.addresses[0]?.country}
           </MyForm>
         </Col>
         <Col span={12}>
           <MyForm label="Job Position">
-            Sales manager
+            {contact.jobPosition}
           </MyForm>
           <MyForm label="Website">
-            abc.com
+            {contact.website}
           </MyForm>
           <MyForm label="TaxID">
-            01864321564654
+            {contact.taxId}
           </MyForm>
         </Col>
       </Row>

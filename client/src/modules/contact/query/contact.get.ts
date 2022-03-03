@@ -32,7 +32,7 @@ export const getContactsEmailLike = async (searchKey: string) => {
 
 export const getContactsById = async (contactId: string) => {
   const { instance } = new Axios();
-  const { data } = await instance.get<IContact>(`${CONTACT}/${contactId}`);
+  const { data } = await instance.get<IContact>(`${CONTACT}/${contactId}?join=addresses`);
   return data;
 }
 

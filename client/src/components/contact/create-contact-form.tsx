@@ -1,7 +1,7 @@
 import { Form, Input, Row } from 'antd'
 import { WrapperModalForm } from '@components/modal/wrapper-modal-form'
 import { ContactInfoForm } from './contact-info-form';
-import { AddressInfoForm } from './Address-info-form';
+import { AddressInfoForm } from './address-info-form';
 
 export const CreateContactForm = () => {
 

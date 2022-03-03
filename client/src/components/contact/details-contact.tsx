@@ -9,7 +9,11 @@ import { IContact } from '@modules/contact/entity/contact.entity';
 import moment from 'moment';
 import { AddressInfoForm } from './address-info-form';
 import { dateFormat } from '@constance/date-format';
-const { CRUD_AT } = dateFormat;
+const { CRUD_AT, BIRTH } = dateFormat;
+import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
+import { useQueryClient } from 'react-query';
+import { QUERY_CONTACTS_BY_ID } from '@modules/contact/query/contact.get';
+import { message } from 'antd';
 
 interface DetailsContactProps {
   contact: IContact;
@@ -20,36 +24,89 @@ export const DetailsContact: React.FC<DetailsContactProps> = ({ contact }) => {
   const [isEditingForm2, toggleEditForm2] = useToggle();
   const [form] = Form.useForm<IContact>();
 
+  const queryClient = useQueryClient();
+
+  const onSuccess = () => {
+    queryClient.invalidateQueries(QUERY_CONTACTS_BY_ID);
+    message.success('Save successfully !')
+  }
+  const { mutate } = useUpdateContact(onSuccess);
+
   const handleToggleEditForm1 = () => {
     toggleEditForm1();
     form.setFieldsValue({
       name: contact.name,
       email: contact.email,
-      birth: moment(contact.birth),
+      birth: contact.birth ? moment(contact.birth) : '',
       title: contact.title,
       phone: contact.phone,
-      mobile: contact.mobile
+      mobile: contact.mobile,
+      prefixMobile: '84'
     })
   }
 
   const handleToggleEditForm2 = () => {
     toggleEditForm2();
-
+    form.setFieldsValue({
+      addresses: { ...contact.addresses[0] },
+      postalCode: contact.postalCode,
+      jobPosition: contact.jobPosition,
+      website: contact.website,
+      taxId: contact.taxId
+    })
   }
 
-  const handleSubmit = (value) => {
-    console.log(value);
+  const handleSubmitForm1 = async () => {
+    try {
+      const value = await form.validateFields();
+      mutate({
+        ...value,
+        birth: value.birth.format(BIRTH),
+        id: contact.id
+      });
+
+      console.log({
+        ...value,
+        birth: value.birth.format(BIRTH),
+        id: contact.id
+      });
+      
+      toggleEditForm1();
+    } catch (error) {
+      return;
+    }
+  }
+
+  const handleSubmitForm2 = async () => {
+    try {
+      const value = await form.validateFields();
+      mutate({
+        ...value,
+        addresses: [{ ...value.addresses }],
+        id: contact.id
+      });
+      console.log({
+        ...value,
+        addresses: [{ ...value.addresses }],
+        id: contact.id
+      });
+      
+
+      toggleEditForm2();
+    } catch (error) {
+      return;
+    }
   }
 
   return (
     <>
-      <Form form={form} onFinish={handleSubmit} layout='vertical'>
+      <Form form={form} layout='vertical'>
         {isEditingForm1 ?
           <Row gutter={[24, 0]}>
             <ContactInfoForm />
             <Col style={{ textAlign: 'right' }} span={24}>
               <Space >
-                <Button htmlType='submit' type='primary'>Save</Button>
+                <Button onClick={() => handleSubmitForm1()} type='primary'>Save</Button>
                 <Button onClick={toggleEditForm1}>Cancel</Button>
               </Space>
             </Col>
@@ -67,13 +124,13 @@ export const DetailsContact: React.FC<DetailsContactProps> = ({ contact }) => {
             <AddressInfoForm />
             <Col style={{ textAlign: 'right' }} span={24}>
               <Space >
-                <Button htmlType='submit' type='primary'>Save</Button>
+                <Button onClick={() => handleSubmitForm2()} type='primary'>Save</Button>
                 <Button onClick={toggleEditForm2}>Cancel</Button>
               </Space>
             </Col>
           </Row> :
           <ButtonEditHover toggleEditForm={handleToggleEditForm2}>
-            <AddressInfoDetails />
+            <AddressInfoDetails contact={contact} />
           </ButtonEditHover>
         }
 
@@ -83,12 +140,12 @@ export const DetailsContact: React.FC<DetailsContactProps> = ({ contact }) => {
         <Row>
           <Col span={12}>
             <MyForm label="Created At">
-              {moment(contact.createdAt).format(CRUD_AT).toString()}
+              {moment(contact.createdAt).format(CRUD_AT)}
             </MyForm>
           </Col>
           <Col span={12}>
             <MyForm label="Last Modified At">
-              {moment(contact.updatedAt).format(CRUD_AT).toString()}
+              {moment(contact.updatedAt).format(CRUD_AT)}
             </MyForm>
           </Col>
         </Row>

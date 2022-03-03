@@ -2,7 +2,7 @@ import { IBase } from '@interfaces/base';
 
 export interface IContact extends IBase {
   name: string;
-  addresses: Address[];
+  addresses: Address | Address[];
   noteWorthies: NoteWorthy[];
   phone: string;
   type: string;
@@ -16,9 +16,10 @@ export interface IContact extends IBase {
   jobPosition: string;
   website: string;
   title: string;
+  prefixMobile: string;
   internalNotes: string;
 }
-export interface Address {
+export interface Address extends IBase{
 	type: string;
 	address: string;
 	city: string;

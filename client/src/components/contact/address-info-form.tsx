@@ -18,7 +18,7 @@ export const AddressInfoForm = () => {
         </Form.Item>
         <Input.Group compact>
           <Form.Item
-            name="postCode"
+            name="postalCode"
             label="Post Code"
             style={{ width: 'calc(70% - 10px)', marginRight: '10px' }}
           >

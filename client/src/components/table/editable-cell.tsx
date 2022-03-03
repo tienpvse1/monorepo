@@ -25,7 +25,7 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   editingIndex,
   record,
   rules = [],
-  linkTo
+  linkTo = ''
 }) => {
 
   let inputNode = <Input style={{ height: '40px' }} />;

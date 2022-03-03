@@ -21,7 +21,7 @@ export const ContactInfoDetails: React.FC<ContactInfoDetailsProps> = ({ contact 
             {contact.email}
           </MyForm>
           <MyForm label="Birth">
-            {moment(contact.birth).format(BIRTH).toString()}
+            {contact.birth ? moment(contact.birth).format(BIRTH).toString() : ''}
           </MyForm>
           <MyForm label="Title">
             {contact.title}
