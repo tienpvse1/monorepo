@@ -5,4 +5,6 @@ export class LoginRequestDto {
   email: string;
   @Length(6)
   password: string;
+
+  socketId: string;
 }

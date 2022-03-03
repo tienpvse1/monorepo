@@ -40,9 +40,13 @@ export class Contact extends BaseEntity {
   @ManyToMany(() => Tag, (tag) => tag.contacts, { cascade: true })
   tags: Tag[];
 
-  @OneToMany(() => PipelineItem, (pipelineItem) => pipelineItem.contact)
+  @OneToMany(() => PipelineItem, (pipelineItem) => pipelineItem.contact, {
+    cascade: true,
+  })
   pipelineItems: PipelineItem[];
-  @OneToMany(() => Address, (address) => address.contact, { cascade: true })
+  @OneToMany(() => Address, (address) => address.contact, {
+    cascade: true,
+  })
   addresses: Address[];
   @OneToMany(() => NoteWorthy, (noteWorthy) => noteWorthy.contact, {
     cascade: true,

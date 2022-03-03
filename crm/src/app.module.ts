@@ -37,6 +37,7 @@ import { SessionModule } from './modules/session/session.module';
 import { TagModule } from './modules/tag/tag.module';
 import { TeamModule } from './modules/team/team.module';
 import { TeamGateway } from './modules/team.gateway';
+import { SocketModule } from './modules/socket/socket.module';
 
 @Module({
   imports: [
@@ -72,6 +73,7 @@ import { TeamGateway } from './modules/team.gateway';
     AddressModule,
     EventEmitterModule.forRoot(),
     TeamModule,
+    SocketModule,
   ],
   providers: [GlobalModule, TeamGateway],
 })
