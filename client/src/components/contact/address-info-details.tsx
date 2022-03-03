@@ -9,7 +9,7 @@ interface AddressInfoDetailsProps {
 export const AddressInfoDetails: React.FC<AddressInfoDetailsProps> = ({ contact }) => {
   return (
     <>
-      <Row>
+      <Row >
         <Col span={12}>
           <MyForm label="Address">
             {contact.addresses[0]?.address}
