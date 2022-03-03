@@ -43,3 +43,10 @@ export class CreateAccountDto {
   @Length(1)
   country?: string;
 }
+
+export class JoinTeamDto {
+  @Length(10)
+  teamId: string;
+  @Length(10)
+  accountId: string;
+}

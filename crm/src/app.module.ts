@@ -35,6 +35,8 @@ import { RoleModule } from './modules/role/role.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
 import { SessionModule } from './modules/session/session.module';
 import { TagModule } from './modules/tag/tag.module';
+import { TeamModule } from './modules/team/team.module';
+import { TeamGateway } from './modules/team.gateway';
 
 @Module({
   imports: [
@@ -69,8 +71,9 @@ import { TagModule } from './modules/tag/tag.module';
     NoteWorthyModule,
     AddressModule,
     EventEmitterModule.forRoot(),
+    TeamModule,
   ],
-  providers: [GlobalModule],
+  providers: [GlobalModule, TeamGateway],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
