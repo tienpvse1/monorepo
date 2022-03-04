@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
+import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
 import { getRepository } from 'typeorm';
 import { Permission } from '../permission/entities/permission.entity';
@@ -27,11 +28,15 @@ import { RoleService } from './role.service';
       primary: true,
     },
   },
+  routes: {
+    exclude: ['createOneBase'],
+  },
 })
 export class RoleController {
   constructor(public service: RoleService) {}
 
-  @Post('add-roles')
+  @Post('')
+  @HistoryLog('add a role to the system')
   async addRole(@Body() { name, permissionIds }: AddPermissionDto) {
     const permissionRepository = getRepository(Permission);
     return this.service.addManyWithRelation<Permission>(

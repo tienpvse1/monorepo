@@ -1,6 +1,7 @@
 import { MailerService as RootService } from '@nestjs-modules/mailer';
 import { Body, Controller, Ip, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { User } from 'src/common/decorators/user.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
 import { CreateMailerDto } from './dto/create-mailer.dto';
@@ -16,6 +17,7 @@ export class MailerController {
   ) {}
 
   @Post('send')
+  @HistoryLog('send an email')
   async sendEmail(
     @Body() email: CreateMailerDto,
     @Ip() ip: string,

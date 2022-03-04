@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
+import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { User } from 'src/common/decorators/user.decorator';
 import { getCustomRepository } from 'typeorm';
 import { AccountRepository } from '../account/account.repository';
@@ -25,6 +26,17 @@ import { EmailTemplate } from './entities/email-template.entity';
       field: 'id',
       type: 'string',
       primary: true,
+    },
+  },
+  routes: {
+    createOneBase: {
+      decorators: [HistoryLog('add an drafted email template ')],
+    },
+    updateOneBase: {
+      decorators: [HistoryLog('updated an drafted email template')],
+    },
+    deleteOneBase: {
+      decorators: [HistoryLog('deleted an drafted email template')],
     },
   },
 })

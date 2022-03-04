@@ -6,7 +6,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { InternalServerEvent, SocketSendEvent } from 'src/constance/event';
-import { Account } from './account/entities/account.entity';
+import { Account } from '../account/entities/account.entity';
 
 @WebSocketGateway({ namespace: 'team', cors: true })
 export class TeamGateway {
