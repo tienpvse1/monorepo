@@ -1,14 +1,21 @@
 import { PlusOutlined, FileTextOutlined, CheckOutlined, MailOutlined, CoffeeOutlined } from "@ant-design/icons"
 import { useScheduleContext } from "@context/schedule.context";
 import { Alert, Button } from "antd"
+import { useClickOutside } from '@mantine/hooks';
 
 interface PlannedProps {
   toggleDropdown: () => void;
+  isVisibleDropdown: boolean;
 }
 
-export const Planned: React.FC<PlannedProps> = ({ toggleDropdown }) => {
+export const Planned: React.FC<PlannedProps> = ({ toggleDropdown, isVisibleDropdown }) => {
 
   const { toggleModal } = useScheduleContext();
+
+  const ref = useClickOutside(() => {
+    if (isVisibleDropdown == true)
+      toggleDropdown();
+  });
 
   const handleCreateSchedule = () => {
     toggleDropdown();
@@ -16,7 +23,7 @@ export const Planned: React.FC<PlannedProps> = ({ toggleDropdown }) => {
   }
 
   return (
-    <div className="planned-container">
+    <div ref={ref} className="planned-container">
       <div className="planned-title">
         Planned
       </div>
@@ -31,9 +38,7 @@ export const Planned: React.FC<PlannedProps> = ({ toggleDropdown }) => {
           icon={<FileTextOutlined />}
           closable
           closeIcon={
-            <Button shape="round" size="small" type="ghost">
-              <CheckOutlined />
-            </Button>
+            <CheckOutlined style={{ fontSize: '14px' }} />
           }
         />
         <Alert
@@ -45,9 +50,7 @@ export const Planned: React.FC<PlannedProps> = ({ toggleDropdown }) => {
           icon={<MailOutlined />}
           closable
           closeIcon={
-            <Button shape="round" size="small" type="ghost">
-              <CheckOutlined />
-            </Button>
+            <CheckOutlined style={{ fontSize: '14px' }} />
           }
         />
         <Alert
@@ -59,9 +62,7 @@ export const Planned: React.FC<PlannedProps> = ({ toggleDropdown }) => {
           icon={<CoffeeOutlined />}
           closable
           closeIcon={
-            <Button shape="round" size="small" type="ghost">
-              <CheckOutlined />
-            </Button>
+            <CheckOutlined style={{ fontSize: '14px' }} />
           }
         />
       </div>

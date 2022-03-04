@@ -32,6 +32,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
     setCurrentOpportunityId(dataCardPipeline.id);
     toggleDrawer();
   };
+
   return (
     <>
       <Card
@@ -83,7 +84,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
                 <Space size={'middle'}>
                   <MailOutlined style={{ fontSize: 18 }} />
 
-                  <Dropdown visible={isVisibleDropdown} overlay={<Planned toggleDropdown={toggleDropdown} />} >
+                  <Dropdown visible={isVisibleDropdown} overlay={<Planned isVisibleDropdown={isVisibleDropdown} toggleDropdown={toggleDropdown} />} >
                     <ClockCircleOutlined onClick={toggleDropdown} style={{ fontSize: 18, cursor: 'pointer' }} />
                   </Dropdown>
 
