@@ -7,6 +7,7 @@ export enum InternalServerEvent {
 
 export enum SocketReceiveEvent {
   UPDATE_PIPELINE = 'update-pipeline',
+  JOIN = 'join',
 }
 
 export enum SocketSendEvent {
@@ -14,4 +15,5 @@ export enum SocketSendEvent {
   NEW_MEMBER_JOIN_TEAM = 'new-member-join-team',
   INVITATION_SENT = 'invitation-sent',
   HISTORY_ADDED = 'history-added',
+  JOINED = 'joined',
 }
