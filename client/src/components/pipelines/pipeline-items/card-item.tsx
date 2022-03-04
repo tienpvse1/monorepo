@@ -4,9 +4,11 @@ import {
   MailOutlined,
   MoreOutlined,
 } from '@ant-design/icons';
+import { Planned } from '@components/schedule/planned';
+import { useToggle } from '@hooks/useToggle';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.delete';
-import { Avatar, Button, Card, Divider, Tag } from 'antd';
+import { Avatar, Button, Card, Divider, Dropdown, Space, Tag } from 'antd';
 import { Dispatch, SetStateAction } from 'react';
 import { PopoverAction } from '../../popover/popover-action';
 const { Meta } = Card;
@@ -22,6 +24,8 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
   toggleDrawer,
   setCurrentOpportunityId,
 }) => {
+  const [isVisibleDropdown, toggleDropdown] = useToggle();  
+
   const { removePipelineItems } = useDeletePipelineItems();
   const onDeletePipeLineItem = () => removePipelineItems(dataCardPipeline.id);
   const handleViewDetailClick = () => {
@@ -76,17 +80,15 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
                   justifyContent: 'space-between',
                 }}
               >
-                <div>
-                  <span>
-                    <MailOutlined style={{ fontSize: 18 }} /> 2{' '}
-                  </span>
-                  <span>
-                    <ClockCircleOutlined style={{ fontSize: 18 }} /> 2h{' '}
-                  </span>
-                  <span>
-                    <Tag style={{ marginLeft: 10, borderRadius: 5 }}>2h</Tag>
-                  </span>
-                </div>
+                <Space size={'middle'}>
+                  <MailOutlined style={{ fontSize: 18 }} />
+
+                  <Dropdown visible={isVisibleDropdown} overlay={<Planned toggleDropdown={toggleDropdown} />} >
+                    <ClockCircleOutlined onClick={toggleDropdown} style={{ fontSize: 18, cursor: 'pointer' }} />
+                  </Dropdown>
+
+                  <Tag style={{ marginLeft: 10, borderRadius: 5 }}>Modified 2h ago</Tag>
+                </Space>
                 <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
               </div>
             </>

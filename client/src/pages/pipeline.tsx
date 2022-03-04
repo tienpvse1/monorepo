@@ -1,4 +1,5 @@
 import { EmptyComponent } from '@components/empty';
+import { CreateModal } from '@components/modal/modal-create';
 import { PageTitlePipeline } from '@components/pipelines/page-title';
 import { ModalColumnCreate } from '@components/pipelines/pipeline-column/modal-column-create';
 import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-horizontal';
@@ -11,6 +12,8 @@ import { Button } from 'antd';
 import { useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { PipeLineColumn } from '../components/pipelines/column';
+import { CreateFormSchedule } from '@components/schedule/create-form-schedule';
+import { useScheduleContext } from '@context/schedule.context';
 
 interface PipelineProps {
 
@@ -18,6 +21,7 @@ interface PipelineProps {
 
 const Pipeline: React.FC<PipelineProps> = ({ }) => {
   const [visible, setModalCreateStage] = useToggle();
+  const {isOpenModal, toggleModal} = useScheduleContext();
 
   const { data } = useGetPipeLineUser();
   const {
@@ -33,7 +37,7 @@ const Pipeline: React.FC<PipelineProps> = ({ }) => {
     setPipeLine(data);
   }, [data, isError])
 
-  if (data !== undefined) { sortPipeline(data) };  
+  if (data !== undefined) { sortPipeline(data) };
 
   const totalColumn = data?.pipelineColumns.length || 1;
   const widthOfItem = 333;
@@ -128,6 +132,16 @@ const Pipeline: React.FC<PipelineProps> = ({ }) => {
         visible={visible}
         pipelineId={data?.id}
       />
+
+      <CreateModal
+        width={500}
+        title="Schedule Activity"
+        isOpenModal={isOpenModal}
+        toggleCreateModal={toggleModal}
+        callback={() => { }}
+      >
+        <CreateFormSchedule />
+      </CreateModal>
     </>
   )
 };

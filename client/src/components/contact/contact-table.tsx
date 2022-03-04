@@ -230,6 +230,7 @@ export const ContactData: FC = () => {
         </Table>
       </Form>
       <CreateModal
+        title="New Contact"
         callback={handleCreateContact}
         isOpenModal={isOpenModal}
         toggleCreateModal={toggleCreateModal}

@@ -12,7 +12,9 @@ import './constance/color';
 import { useSocket } from '@hooks/socket';
 import { route } from './routes/route-map';
 import './stylesheets/App.scss';
+import { ScheduleContextProvider } from '@context/schedule.context';
 export const client = new QueryClient();
+
 const socket = io(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 function App() {
   const elements = useRoutes(route);
@@ -54,9 +56,11 @@ function App() {
 
   return (
     <QueryClientProvider client={client}>
-      <Suspense fallback={<Loading />}>
-        <div className='App'>{elements}</div>
-      </Suspense>
+      <ScheduleContextProvider>
+        <Suspense fallback={<Loading />}>
+          <div className='App'>{elements}</div>
+        </Suspense>
+      </ScheduleContextProvider>
     </QueryClientProvider>
   );
 }

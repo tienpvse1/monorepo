@@ -4,13 +4,17 @@ interface CreateModalProps {
   isOpenModal: boolean;
   toggleCreateModal: () => void;
   callback: (record) => void;
+  width?: number;
+  title: string;
 }
 
 export const CreateModal: React.FC<CreateModalProps> = ({
   isOpenModal,
   toggleCreateModal,
   children,
-  callback
+  callback,
+  width = 1000,
+  title
 }) => {
   const [form] = Form.useForm<any>();
 
@@ -23,12 +27,13 @@ export const CreateModal: React.FC<CreateModalProps> = ({
   return (
     <Modal
       className="modal-create"
-      title={<h2 style={{ textAlign: "center" }}>New Contact</h2>}
+      style={{borderRadius: '5px'}}
+      title={<h2 style={{ textAlign: "center" }}>{title}</h2>}
       centered
       visible={isOpenModal}
       onOk={handleSubmit}
       onCancel={toggleCreateModal}
-      width={1000}
+      width={width}
     >
       <div className="scroll-menu-modal-create">
         <Form

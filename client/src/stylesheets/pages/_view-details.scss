@@ -9,6 +9,7 @@
 }
 
 .container-title-details {
+    background: linear-gradient(to top, rgb(255 255 255) 50%, $grey-background-color 50%);
     @extend .container-page;
 }
 
