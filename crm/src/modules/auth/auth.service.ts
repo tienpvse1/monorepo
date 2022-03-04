@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { compare, compareSync, hash, hashSync } from 'bcryptjs';
+import { compare, compareSync, hash } from 'bcryptjs';
 import { Request, Response } from 'express';
 import { getIp } from 'src/util/ip';
 import { getRepository } from 'typeorm';
