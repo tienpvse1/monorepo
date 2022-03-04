@@ -5,6 +5,7 @@ import { BaseEntity } from 'src/base/entity.base';
 import { EmailTemplate } from 'src/modules/email-template/entities/email-template.entity';
 import { File } from 'src/modules/file/entities/file.entity';
 import { History } from 'src/modules/history/entities/history.entity';
+import { Invitation } from 'src/modules/invitation/entities/invitation.entity';
 import { Lead } from 'src/modules/lead/entities/lead.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
@@ -20,6 +21,7 @@ import {
   Entity,
   Index,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -32,7 +34,7 @@ export class Account extends BaseEntity {
   @Column({ name: 'last_name', nullable: true })
   lastName: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'text' })
   photo: string;
 
   @Column()
@@ -58,6 +60,11 @@ export class Account extends BaseEntity {
 
   @OneToOne(() => Session, (session) => session.account)
   session: Session;
+
+  @OneToMany(() => Invitation, (invitation) => invitation.sender)
+  sentInvitations: Invitation[];
+  @ManyToMany(() => Invitation, (invitation) => invitation.receivers)
+  receivedInvitations: Invitation[];
 
   // !updated: account will no longer own any pipeline anymore
   // @OneToOne(() => Pipeline, (pipeline) => pipeline.account)

@@ -38,6 +38,7 @@ import { TagModule } from './modules/tag/tag.module';
 import { TeamModule } from './modules/team/team.module';
 import { TeamGateway } from './modules/team.gateway';
 import { SocketModule } from './modules/socket/socket.module';
+import { InvitationModule } from './modules/invitation/invitation.module';
 
 @Module({
   imports: [
@@ -74,6 +75,7 @@ import { SocketModule } from './modules/socket/socket.module';
     EventEmitterModule.forRoot(),
     TeamModule,
     SocketModule,
+    InvitationModule,
   ],
   providers: [GlobalModule, TeamGateway],
 })
