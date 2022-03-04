@@ -5,12 +5,14 @@ import { useIdle } from '@mantine/hooks';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { Button, notification } from 'antd';
 import { Suspense, useEffect } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { useNavigate, useRoutes } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import './constance/color';
 import { useSocket } from '@hooks/socket';
 import { route } from './routes/route-map';
 import './stylesheets/App.scss';
+export const client = new QueryClient();
 
 const socket = io(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 function App() {
@@ -52,9 +54,11 @@ function App() {
   });
 
   return (
-    <Suspense fallback={<Loading />}>
-      <div className='App'>{elements}</div>
-    </Suspense>
+    <QueryClientProvider client={client}>
+        <Suspense fallback={<Loading />}>
+          <div className='App'>{elements}</div>
+        </Suspense>
+    </QueryClientProvider>
   );
 }
 export default App;
