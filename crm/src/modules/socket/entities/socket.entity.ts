@@ -12,7 +12,9 @@ export class Socket extends BaseEntity {
   @PrimaryColumn()
   id: string;
 
-  @ManyToOne(() => Session, (session) => session.sockets)
+  @ManyToOne(() => Session, (session) => session.sockets, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({
     name: 'session_id',
   })

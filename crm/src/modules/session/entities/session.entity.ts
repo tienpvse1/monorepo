@@ -23,7 +23,7 @@ export class Session extends BaseEntity {
   @OneToOne(() => Account, (account) => account.session)
   @JoinColumn({ name: 'account_id' })
   account: Account;
-  @OneToMany(() => Socket, (socket) => socket.session)
+  @OneToMany(() => Socket, (socket) => socket.session, { cascade: true })
   sockets: Socket[];
 
   @BeforeInsert()
