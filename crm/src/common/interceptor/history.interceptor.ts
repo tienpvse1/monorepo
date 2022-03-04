@@ -4,9 +4,11 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Request } from 'express';
 import { nanoid } from 'nanoid';
 import { Observable } from 'rxjs';
+import { InternalServerEvent } from 'src/constance/event';
 import { AccountRepository } from 'src/modules/account/account.repository';
 import { History } from 'src/modules/history/entities/history.entity';
 import { SessionRepository } from 'src/modules/session/session.repository';
@@ -16,6 +18,7 @@ import { getCustomRepository, getRepository } from 'typeorm';
 
 @Injectable()
 export class HistoryInterceptor implements NestInterceptor {
+  constructor(private eventEmitter: EventEmitter2) {}
   async saveHistory(request: Request) {
     const accountRepository = getCustomRepository(AccountRepository);
     const repository = getCustomRepository(SessionRepository);
@@ -26,12 +29,16 @@ export class HistoryInterceptor implements NestInterceptor {
         id: sessionId,
         ip: getIp(request.ip),
       },
-      relations: ['account'],
+      relations: ['account', 'account.team'],
     });
     if (!session) return;
     const account = await accountRepository.findOneItem({
       where: { id: session.account.id },
       relations: ['role'],
+    });
+    this.eventEmitter.emit(InternalServerEvent.HISTORY_ADDED, {
+      account,
+      message,
     });
     historyRepository.save({
       id: nanoid(10),
@@ -45,8 +52,8 @@ export class HistoryInterceptor implements NestInterceptor {
   }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const request = context.switchToHttp().getRequest();
-    this.saveHistory(request);
+    const request: Request = context.switchToHttp().getRequest();
+    if (request.method !== 'GET') this.saveHistory(request);
     return next.handle();
   }
 }
