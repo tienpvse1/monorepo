@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request, Response as ExpressResponse } from 'express';
+import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { AuthService } from './auth.service';
 import { GoogleAuthGuard } from './guard/google.guard';
@@ -40,6 +41,7 @@ export class AuthController {
 
   @Post('session')
   @Public()
+  @HistoryLog('has login to the system')
   loginUsingSessionMethod(
     @Body() loginRequest: LoginRequestDto,
     @Req() req: Request,
@@ -48,6 +50,7 @@ export class AuthController {
     return this.authService.loginUsingSession(loginRequest, ip, req);
   }
   @Post('logout')
+  @HistoryLog('logout from the system')
   logout(@Req() req: Request, @Ip() ip: string) {
     return this.authService.logout(ip, req);
   }

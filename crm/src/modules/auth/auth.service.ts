@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { compareSync, hashSync } from 'bcryptjs';
+import { compare, compareSync, hash } from 'bcryptjs';
 import { Request, Response } from 'express';
 import { getIp } from 'src/util/ip';
 import { getRepository } from 'typeorm';
@@ -59,9 +59,6 @@ export class AuthService {
     if (!account) {
       throw new UnauthorizedException("account doesn't exist");
     }
-
-    if (!compareSync(password, account.password))
-      throw new UnauthorizedException('Check your password');
 
     return account;
   };
@@ -168,8 +165,12 @@ export class AuthService {
   ) {
     const account = await this.getAccountForAuth(email, password);
     try {
-      const sessionFromAccountId =
-        await this.sessionService.getSessionByAccountId(account.id);
+      const [isPasswordMatch, sessionFromAccountId] = await Promise.all([
+        compare(password, account.password),
+        this.sessionService.getSessionByAccountId(account.id),
+      ]);
+      if (!isPasswordMatch)
+        throw new BadRequestException('check your password');
       // if the session is exist and still valid, update it only
       if (sessionFromAccountId) {
         const session = await this.sessionService.updateSession(
@@ -184,25 +185,30 @@ export class AuthService {
         const createdSocket = await socketRepository
           .create({ id: socketId })
           .save();
-        const session = await this.sessionService.create({
-          account: account,
-          ip: getIp(ip),
-          sockets: [createdSocket],
-        });
+        const [newPassword, session] = await Promise.all([
+          hash(password, 10),
+          this.sessionService.create({
+            account: account,
+            ip: getIp(ip),
+            sockets: [createdSocket],
+          }),
+        ]);
         // saving session to account
         account.session = session;
-        account.password = hashSync(password, 10);
+        account.password = newPassword;
         await account.save();
         return this.sendResult(req, session, account);
       }
-      const session = await this.sessionService.create({
-        account: account,
-        ip: getIp(ip),
-        // sockets: [createdSocket],
-      });
+      const [newPassword, session] = await Promise.all([
+        hash(password, 10),
+        this.sessionService.create({
+          account: account,
+          ip: getIp(ip),
+        }),
+      ]);
       // saving session to account
       account.session = session;
-      account.password = hashSync(password, 10);
+      account.password = newPassword;
       await account.save();
       return this.sendResult(req, session, account);
     } catch (error) {
