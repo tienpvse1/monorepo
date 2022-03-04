@@ -55,7 +55,7 @@ export class PipelineItemController {
   @Post()
   @UsePipes(GenerateNestedIdPipe, ParseDtoPipe)
   @ApiBody({ type: CreateSinglePipelineItemDto })
-  addOpportunity(@Body() item: any) {
+  addOpportunity(@Body() item: PipelineItem & { contactId: string }) {
     return item;
   }
 

@@ -16,7 +16,7 @@ export class Contact extends BaseEntity {
   phone: string;
   @Column({ nullable: true })
   mobile: string;
-  @Column({ nullable: true })
+  @Column({ nullable: true, name: 'contact_type' })
   type: string;
   @Column({ nullable: true })
   email: string;
@@ -40,9 +40,13 @@ export class Contact extends BaseEntity {
   @ManyToMany(() => Tag, (tag) => tag.contacts, { cascade: true })
   tags: Tag[];
 
-  @OneToMany(() => PipelineItem, (pipelineItem) => pipelineItem.contact)
+  @OneToMany(() => PipelineItem, (pipelineItem) => pipelineItem.contact, {
+    cascade: true,
+  })
   pipelineItems: PipelineItem[];
-  @OneToMany(() => Address, (address) => address.contact, { cascade: true })
+  @OneToMany(() => Address, (address) => address.contact, {
+    cascade: true,
+  })
   addresses: Address[];
   @OneToMany(() => NoteWorthy, (noteWorthy) => noteWorthy.contact, {
     cascade: true,

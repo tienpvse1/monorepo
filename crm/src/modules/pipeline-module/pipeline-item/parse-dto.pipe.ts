@@ -1,4 +1,5 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
+import { ContactRepository } from 'src/modules/contact/contact.repository';
 import { getCustomRepository } from 'typeorm';
 import { PipelineColumnRepository } from '../pipeline-column/pipeline-column.repository';
 import { CreateSinglePipelineItemDto } from './dto/create-pipeline-item.dto';
@@ -11,10 +12,15 @@ export class ParseDtoPipe implements PipeTransform {
       PipelineColumnRepository,
     );
     const pipelineItemRepository = getCustomRepository(PipelineItemRepository);
+    const contactRepository = getCustomRepository(ContactRepository);
 
-    const { columnId, ...rest } = value;
+    const { columnId, contactId, ...rest } = value;
     const column = await pipelineColumnRepository.findOneItem({
       where: { id: columnId },
+      relations: ['pipelineItems'],
+    });
+    const contact = await contactRepository.findOneItem({
+      where: { id: contactId },
       relations: ['pipelineItems'],
     });
     const newItemIndex = column.pipelineItems.length;
@@ -24,7 +30,9 @@ export class ParseDtoPipe implements PipeTransform {
     });
     if (!column.pipelineItems) column.pipelineItems = [];
     column.pipelineItems.push(savedItem);
-    const result = await pipelineColumnRepository.save(column);
-    return result;
+    contact.pipelineItems.push(savedItem);
+    pipelineColumnRepository.save(column);
+    contactRepository.save(contact);
+    return savedItem;
   }
 }

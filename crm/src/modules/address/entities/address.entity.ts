@@ -11,8 +11,8 @@ export enum AddressTypes {
 
 @Entity()
 export class Address extends BaseEntity {
-  @Column({ type: 'enum', enum: AddressTypes })
-  type: string;
+  @Column({ type: 'enum', enum: AddressTypes, name: 'address_type' })
+  type: AddressTypes;
 
   @Column()
   address: string;
@@ -23,10 +23,14 @@ export class Address extends BaseEntity {
   @Column()
   country: string;
 
-  @ManyToOne(() => Contact, (contact) => contact.addresses)
+  @ManyToOne(() => Contact, (contact) => contact.addresses, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'contact_id' })
   contact: Contact;
-  @ManyToOne(() => PipelineItem, (pipelineItem) => pipelineItem.addresses)
+  @ManyToOne(() => PipelineItem, (pipelineItem) => pipelineItem.addresses, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'pipeline_item_id' })
   pipelineItem: PipelineItem;
 }

@@ -5,6 +5,11 @@
 /data
 /public/assets/*.js
 /public/assets/*.css
+/public/assets/*.woff
+/public/assets/*.woff2
+/public/assets/*.eot
+/public/assets/*.ttf
+/public/assets/*.svg
 # Logs
 logs
 *.log

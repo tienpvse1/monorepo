@@ -5,6 +5,7 @@ import { BaseEntity } from 'src/base/entity.base';
 import { EmailTemplate } from 'src/modules/email-template/entities/email-template.entity';
 import { File } from 'src/modules/file/entities/file.entity';
 import { History } from 'src/modules/history/entities/history.entity';
+import { Invitation } from 'src/modules/invitation/entities/invitation.entity';
 import { Lead } from 'src/modules/lead/entities/lead.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
@@ -12,6 +13,7 @@ import { ProductAccount } from 'src/modules/product-account/entities/product-acc
 import { Role } from 'src/modules/role/entities/role.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
 import { Session } from 'src/modules/session/entities/session.entity';
+import { Team } from 'src/modules/team/entities/team.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -19,6 +21,7 @@ import {
   Entity,
   Index,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -31,7 +34,7 @@ export class Account extends BaseEntity {
   @Column({ name: 'last_name', nullable: true })
   lastName: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'text' })
   photo: string;
 
   @Column()
@@ -46,9 +49,6 @@ export class Account extends BaseEntity {
   @Exclude({ toPlainOnly: true })
   password: string;
 
-  @Column({ default: false, name: 'is_social_account' })
-  isSocialAccount: boolean;
-
   @Column({ nullable: true })
   city?: string;
   @Column({ nullable: true, name: 'postal_code' })
@@ -60,6 +60,11 @@ export class Account extends BaseEntity {
 
   @OneToOne(() => Session, (session) => session.account)
   session: Session;
+
+  @OneToMany(() => Invitation, (invitation) => invitation.sender)
+  sentInvitations: Invitation[];
+  @ManyToMany(() => Invitation, (invitation) => invitation.receivers)
+  receivedInvitations: Invitation[];
 
   // !updated: account will no longer own any pipeline anymore
   // @OneToOne(() => Pipeline, (pipeline) => pipeline.account)
@@ -93,6 +98,10 @@ export class Account extends BaseEntity {
   @ManyToOne(() => Role, (role) => role.accounts)
   @JoinColumn({ name: 'role_id' })
   role: Role;
+
+  @ManyToOne(() => Team, (team) => team.accounts)
+  @JoinColumn({ name: 'team_id' })
+  team: Team;
 
   @OneToMany(() => ProductAccount, (product) => product.account)
   productAccounts: ProductAccount[];
