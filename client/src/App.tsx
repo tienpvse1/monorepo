@@ -56,11 +56,9 @@ function App() {
 
   return (
     <QueryClientProvider client={client}>
-      <ScheduleContextProvider>
         <Suspense fallback={<Loading />}>
           <div className='App'>{elements}</div>
         </Suspense>
-      </ScheduleContextProvider>
     </QueryClientProvider>
   );
 }
