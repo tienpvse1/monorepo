@@ -1,6 +1,7 @@
 import { Body, Controller, Post, UsePipes } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
+import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { CreateInvitationDto } from './dto/create-invitation.dto';
 import { UpdateInvitationDto } from './dto/update-invitation.dto';
 import { Invitation } from './entities/invitation.entity';
@@ -44,6 +45,7 @@ export class InvitationController {
   constructor(public readonly service: InvitationService) {}
   @Post()
   @UsePipes(ValidationPipe)
+  @HistoryLog('created an invitation to join their team')
   createInvitation(@Body() dto: CreateInvitationDto) {
     return this.service.createInvitation(dto);
   }

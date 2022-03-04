@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
+import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { User } from 'src/common/decorators/user.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
 import { CreatePipelineDto } from './dto/create-pipeline.dto';
@@ -54,6 +55,9 @@ import { PipelineService } from './pipeline.service';
       'createOneBase',
       'getManyBase',
     ],
+    deleteOneBase: {
+      decorators: [HistoryLog('deleted a pipeline')],
+    },
   },
 })
 export class PipelineController {
@@ -102,6 +106,7 @@ export class PipelineController {
     description: "replace one pipeline by it's id",
     summary: 'replace a single pipeline',
   })
+  @HistoryLog('updated the pipeline')
   replacePipeline(
     @Param('id') id: string,
     @Body() updatePipelineDto: UpdatePipelineDto,

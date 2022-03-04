@@ -1,6 +1,7 @@
 import { Controller, UsePipes } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
+import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { ContactService } from './contact.service';
 import { CreateContactPipe } from './create-contact.pipe';
 import { CreateContactDto } from './dto/create-contact.dto';
@@ -33,8 +34,27 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
     },
   },
   routes: {
-    updateOneBase: { decorators: [UsePipes(UpdateContactPipePipe)] },
-    createOneBase: { decorators: [UsePipes(CreateContactPipe)] },
+    updateOneBase: {
+      decorators: [
+        UsePipes(UpdateContactPipePipe),
+        HistoryLog('updated an contact'),
+      ],
+    },
+    createOneBase: {
+      decorators: [
+        UsePipes(CreateContactPipe),
+        HistoryLog('created an contact'),
+      ],
+    },
+    createManyBase: {
+      decorators: [
+        UsePipes(CreateContactPipe),
+        HistoryLog('imported list of contacts to system'),
+      ],
+    },
+    deleteOneBase: {
+      decorators: [HistoryLog('deleted an contact')],
+    },
   },
 })
 export class ContactController {

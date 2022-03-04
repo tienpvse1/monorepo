@@ -28,6 +28,7 @@ import { SessionGuard } from '../auth/guard/session.guard';
       provide: APP_GUARD,
       useClass: RoleGuard,
     },
+
     {
       provide: APP_PIPE,
       useClass: ValidationPipe,
