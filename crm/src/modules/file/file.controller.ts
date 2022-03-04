@@ -8,6 +8,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { User } from 'src/common/decorators/user.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
 import { getCustomRepository } from 'typeorm';
@@ -34,6 +35,7 @@ export class FileController {
     },
   })
   @ApiConsumes('multipart/form-data')
+  @HistoryLog('uploaded a file')
   @UseInterceptors(
     FilesInterceptor('files', 20, {
       storage: diskStorage({

@@ -1,6 +1,7 @@
 import { Body, Controller, Param, Patch, Post, UsePipes } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
+import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
 import {
   CreatePipelineItemDto,
@@ -36,6 +37,7 @@ import { PipelineItemService } from './pipeline-item.service';
   routes: {
     exclude: ['createOneBase'],
     updateOneBase: { decorators: [UsePipes(GenerateNestedIdPipe)] },
+    deleteOneBase: { decorators: [HistoryLog('deleted an opportunity')] },
   },
   query: {
     join: {
@@ -54,12 +56,14 @@ export class PipelineItemController {
 
   @Post()
   @UsePipes(GenerateNestedIdPipe, ParseDtoPipe)
+  @HistoryLog('Add a new opportunity')
   @ApiBody({ type: CreateSinglePipelineItemDto })
   addOpportunity(@Body() item: PipelineItem & { contactId: string }) {
     return item;
   }
 
   @Patch('change-stage/:id')
+  @HistoryLog("change the opportunity's stage")
   changeStage(@Param('id') id: string, @Body() dto: ChangeStageDto) {
     return this.service.changeStage(id, dto);
   }

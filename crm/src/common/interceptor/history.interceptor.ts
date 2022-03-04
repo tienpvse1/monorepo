@@ -4,19 +4,22 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { nanoid } from 'nanoid';
 import { Observable } from 'rxjs';
 import { AccountRepository } from 'src/modules/account/account.repository';
 import { History } from 'src/modules/history/entities/history.entity';
 import { SessionRepository } from 'src/modules/session/session.repository';
-import { getHistory } from 'src/util/history';
 import { getIp } from 'src/util/ip';
 import { getCustomRepository, getRepository } from 'typeorm';
+import { MESSAGE } from '../decorators/message.decorator';
 
 @Injectable()
 export class HistoryInterceptor implements NestInterceptor {
-  async saveHistory(request: Request) {
+  constructor(private reflector: Reflector) {}
+
+  async saveHistory(request: Request, message = '') {
     const accountRepository = getCustomRepository(AccountRepository);
     const repository = getCustomRepository(SessionRepository);
     const historyRepository = getRepository(History);
@@ -38,15 +41,20 @@ export class HistoryInterceptor implements NestInterceptor {
       account: account,
       ip: getIp(request.ip),
       url: request.url,
-      name: getHistory(request.url, request.method.toUpperCase()),
+      name: message,
       method: request.method,
       payload: request.body,
     });
   }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const message = this.reflector.getAll(MESSAGE, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
     const request = context.switchToHttp().getRequest();
-    this.saveHistory(request);
+
+    this.saveHistory(request, message[0]);
     return next.handle();
   }
 }
