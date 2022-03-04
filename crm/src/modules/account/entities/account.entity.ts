@@ -47,9 +47,6 @@ export class Account extends BaseEntity {
   @Exclude({ toPlainOnly: true })
   password: string;
 
-  @Column({ default: false, name: 'is_social_account' })
-  isSocialAccount: boolean;
-
   @Column({ nullable: true })
   city?: string;
   @Column({ nullable: true, name: 'postal_code' })

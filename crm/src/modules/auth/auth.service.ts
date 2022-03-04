@@ -12,6 +12,7 @@ import { getIp } from 'src/util/ip';
 import { getRepository } from 'typeorm';
 import { AccountService } from '../account/account.service';
 import { Account } from '../account/entities/account.entity';
+import { Session } from '../session/entities/session.entity';
 import { SessionService } from '../session/session.service';
 import { Socket } from '../socket/entities/socket.entity';
 import { LoginRequestDto } from './interfaces/login-request.dto';
@@ -35,20 +36,12 @@ export class AuthService {
   getAccount = async (email: string) => {
     const account = await this.accountService.findOne({
       where: { email },
-      select: [
-        'email',
-        'password',
-        'id',
-        'role',
-        'firstName',
-        'lastName',
-        'isSocialAccount',
-      ],
+      select: ['email', 'password', 'id', 'role', 'firstName', 'lastName'],
     });
     return account;
   };
 
-  getAccountForAuth = async (email: string) => {
+  getAccountForAuth = async (email: string, password: string) => {
     const account = await this.accountService.findOne({
       where: { email },
       select: [
@@ -58,11 +51,18 @@ export class AuthService {
         'role',
         'firstName',
         'lastName',
-        'isSocialAccount',
         'photo',
       ],
       relations: ['role', 'role.permissions'],
     });
+    // throw exception if account does not found
+    if (!account) {
+      throw new UnauthorizedException("account doesn't exist");
+    }
+
+    if (!compareSync(password, account.password))
+      throw new UnauthorizedException('Check your password');
+
     return account;
   };
 
@@ -146,72 +146,65 @@ export class AuthService {
     }
   }
 
+  sendResult(req: Request, session: Session, account: Account) {
+    req.res.cookie('sessionId', session.id, { httpOnly: true });
+    return {
+      sessionId: session.id,
+      publicData: {
+        role: account.role,
+        email: account.email,
+        id: account.id,
+        photo: account.photo,
+        firstName: account.firstName,
+        lastName: account.lastName,
+      },
+    };
+  }
+
   async loginUsingSession(
     { email, password, socketId }: LoginRequestDto,
     ip: string,
     req: Request,
   ) {
-    const account = await this.getAccountForAuth(email);
+    const account = await this.getAccountForAuth(email, password);
     try {
-      if (!account) {
-        throw new UnauthorizedException("account doesn't exist");
-      }
-      if (!account.password)
-        throw new UnauthorizedException(
-          'account already registered with google login method',
-        );
-      const checkPasswordResult = compareSync(password, account.password);
-
-      if (!checkPasswordResult)
-        throw new UnauthorizedException('Check your password');
-
       const sessionFromAccountId =
         await this.sessionService.getSessionByAccountId(account.id);
-
+      // if the session is exist and still valid, update it only
       if (sessionFromAccountId) {
         const session = await this.sessionService.updateSession(
           sessionFromAccountId.id,
           getIp(ip),
           socketId,
         );
-        req.res.cookie('sessionId', session.id, { httpOnly: true });
-        return {
-          sessionId: session.id,
-          publicData: {
-            role: account.role,
-            email: account.email,
-            id: account.id,
-            photo: account.photo,
-            firstName: account.firstName,
-            lastName: account.lastName,
-          },
-        };
+        return this.sendResult(req, session, account);
       }
-      const socketRepository = getRepository(Socket);
-      const createdSocket = await socketRepository
-        .create({ id: socketId })
-        .save();
+      if (socketId) {
+        const socketRepository = getRepository(Socket);
+        const createdSocket = await socketRepository
+          .create({ id: socketId })
+          .save();
+        const session = await this.sessionService.create({
+          account: account,
+          ip: getIp(ip),
+          sockets: [createdSocket],
+        });
+        // saving session to account
+        account.session = session;
+        account.password = hashSync(password, 10);
+        await account.save();
+        return this.sendResult(req, session, account);
+      }
       const session = await this.sessionService.create({
         account: account,
         ip: getIp(ip),
-        sockets: [createdSocket],
+        // sockets: [createdSocket],
       });
       // saving session to account
       account.session = session;
       account.password = hashSync(password, 10);
       await account.save();
-      req.res.cookie('sessionId', session.id, { httpOnly: true });
-      return {
-        sessionId: session.id,
-        publicData: {
-          role: account.role,
-          email: account.email,
-          id: account.id,
-          photo: account.photo,
-          firstName: account.firstName,
-          lastName: account.lastName,
-        },
-      };
+      return this.sendResult(req, session, account);
     } catch (error) {
       throw new UnauthorizedException(error.message);
     }
