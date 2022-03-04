@@ -56,18 +56,12 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
     })
   }
 
-  const handleSubmitForm1 = async () => {
+  const handleSubmitForm1 = async () => {    
     try {
       const value = await form.validateFields();
       mutate({
         ...value,
-        birth: value.birth.format(BIRTH),
-        id: contact.id
-      });
-
-      console.log({
-        ...value,
-        birth: value.birth.format(BIRTH),
+        birth: value.birth ? value.birth.format(BIRTH) : '',
         id: contact.id
       });
       
@@ -84,14 +78,7 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
         ...value,
         addresses: [{ ...value.addresses }],
         id: contact.id
-      });
-      console.log({
-        ...value,
-        addresses: [{ ...value.addresses }],
-        id: contact.id
-      });
-      
-
+      });      
       toggleEditForm2();
     } catch (error) {
       return;
