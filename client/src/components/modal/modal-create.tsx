@@ -31,7 +31,10 @@ export const CreateModal: React.FC<CreateModalProps> = ({
       width={1000}
     >
       <div className="scroll-menu-modal-create">
-        <Form form={form} layout="vertical">
+        <Form
+          initialValues={{ ["prefixMobile"]: '84' }}
+          form={form} layout="vertical"
+        >
           {children}
         </Form>
       </div>
