@@ -58,15 +58,19 @@ export class HistoryInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request: Request = context.switchToHttp().getRequest();
-    if (request.method === 'GET') {
-      this.saveHistory(request, null);
-      return next.handle();
-    }
 
     const message = this.reflector.getAll(MESSAGE, [
       context.getHandler(),
       context.getClass(),
     ]);
+    if (
+      request.method === 'GET' ||
+      message[0] == undefined ||
+      message[0].length === 0
+    ) {
+      this.saveHistory(request, null);
+      return next.handle();
+    }
     this.saveHistory(request, message[0]);
     return next.handle();
   }
