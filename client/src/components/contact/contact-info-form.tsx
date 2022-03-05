@@ -16,8 +16,7 @@ export const ContactInfoForm = () => {
         <Form.Item
           name="email"
           label="Email"
-          required
-          rules={[isRequired('Email is required'), isEmail]}>
+          rules={[isEmail]}>
           <Input />
         </Form.Item>
         <Form.Item
@@ -43,8 +42,7 @@ export const ContactInfoForm = () => {
         <Form.Item
           name="mobile"
           label="Mobile"
-          required
-          rules={[isRequired('Mobile is required'), isPhoneNumber]}
+          rules={[isPhoneNumber]}
         >
           <Input addonBefore={<SelectBoxPrefix />} />
         </Form.Item>
