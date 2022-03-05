@@ -2,7 +2,7 @@ import { Axios } from "@axios";
 import { controllers } from "@constance/controllers";
 import { useMutation, useQueryClient } from "react-query";
 import { message } from "antd"
-import { IProduct } from "../enity/product.enity";
+import { IProduct } from "../entity/product.entity";
 const { PRODUCT } = controllers;
 
 

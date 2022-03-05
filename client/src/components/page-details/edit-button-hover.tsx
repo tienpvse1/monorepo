@@ -1,11 +1,11 @@
 import { EditOutlined } from '@ant-design/icons';
 import { useHover } from '@mantine/hooks';
 
-interface ButtonEditHoverProps {
+interface EditButtonHover {
   toggleEditForm: () => void;
 } 
 
-export const ButtonEditHover: React.FC<ButtonEditHoverProps> = ({ toggleEditForm ,children }) => {
+export const EditButtonHover: React.FC<EditButtonHover> = ({ toggleEditForm ,children }) => {
   const { hovered, ref } = useHover();
 
   return (

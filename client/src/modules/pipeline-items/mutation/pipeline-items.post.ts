@@ -1,32 +1,21 @@
-import { Axios } from "@axios";
-import { controllers } from "@constance/controllers";
-import { message } from "antd";
-import { useMutation, useQueryClient } from "react-query";
-import { ICreatePipelineItemsDto } from "../dto/create-pipeline-items.dto";
+import { Axios } from '@axios';
+import { controllers } from '@constance/controllers';
+import { handleMutationResponse } from '@modules/base/base.handler';
+import { useMutation } from 'react-query';
+import { ICreatePipelineItemsDto } from '../dto/create-pipeline-items.dto';
 
-const {PIPELINE_ITEM, PIPELINE} = controllers;
+const { PIPELINE_ITEM } = controllers;
 
-export const postPipelineItems = async (pipelineItems: ICreatePipelineItemsDto) => {
+export const postPipelineItems = async (
+  pipelineItems: ICreatePipelineItemsDto
+) => {
   const { instance } = new Axios();
   const { data } = await instance.post(PIPELINE_ITEM, { ...pipelineItems });
 
   return data;
-}
+};
 
-export const usePostPipelineItems = () => {
-  const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation(postPipelineItems,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(PIPELINE);
-      },
-      onError: () => { message.error('add pipeline items failed!') }
-    }
-  );
-
-  const createPipelineItems = (pipelineItems: ICreatePipelineItemsDto) => {
-    mutate(pipelineItems);
-  }
-
-  return { createPipelineItems, isLoading };
-}
+export const usePostPipelineItems = () =>
+  useMutation(postPipelineItems, {
+    ...handleMutationResponse(),
+  });
