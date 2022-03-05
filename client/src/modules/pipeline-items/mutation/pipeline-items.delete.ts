@@ -3,7 +3,7 @@ import { controllers } from '@constance/controllers';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { message } from 'antd';
 import { useMutation, useQueryClient } from 'react-query';
-const { PIPELINE_ITEM, PIPELINE } = controllers;
+const { PIPELINE_ITEM } = controllers;
 
 export const deletePipelineItems = async (pipelineItemsId: string) => {
   const { instance } = new Axios();
