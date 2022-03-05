@@ -1,14 +1,14 @@
 import { ICreatePipelineColumnDto } from '@modules/pipeline-column/dto/create-pipeline-column.dto';
 import { usePostPipelineColumn } from '@modules/pipeline-column/mutation/pipeline-column.post';
-import { ModalFormCreateStageColumn } from '../../modal/form-create-stage-column';
+import { ModalFormCreateStageColumn } from '../../modal/create-stage-form';
 
-interface ModalColumnCreateProps {
+interface CreateColumnModalProps {
   pipelineId: string;
   visible: boolean;
   setVisible: () => void;
 }
 
-export const ModalColumnCreate: React.FC<ModalColumnCreateProps> = ({ pipelineId, setVisible, visible }) => {
+export const CreateColumnModal: React.FC<CreateColumnModalProps> = ({ pipelineId, setVisible, visible }) => {
 
   const { createPipelineColumn } = usePostPipelineColumn();
 

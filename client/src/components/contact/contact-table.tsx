@@ -14,7 +14,7 @@ import { ContactHeader } from './contact-header';
 import { EditableCell } from '../table/editable-cell';
 import { useToggle } from '@hooks/useToggle';
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
-import { CreateModal } from '@components/modal/modal-create';
+import { CreateModal } from '@components/modal/create-modal';
 import { CreateContactForm } from './create-contact-form';
 import { isEmail, isPhoneNumber, isRequired } from '@constance/rules-of-input-antd';
 import { useInsertContact } from '@modules/contact/mutation/contact.post';

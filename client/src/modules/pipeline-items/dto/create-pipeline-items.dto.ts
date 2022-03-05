@@ -12,27 +12,16 @@ export interface INoteWorthy {
   id: string;
 }
 
+
+
+export interface OpportunityRevenue {
+  productId: string;
+  quantity: number;
+}
+
 export interface ICreatePipelineItemsDto {
   name: string;
-  index: number;
+  contactId: string;
   columnId: string;
-  expectedRevenue?: number;
-  photo?: string;
-  email?: string;
-  phone?: string;
-  priority?: number;
-  expectedClosing?: string;
-  internalDescription?: string;
-  type?: string;
-  birth?: string;
-  mobile?: string;
-  state?: string;
-  postalCode?: string;
-  taxId?: string;
-  jobPosition?: string;
-  website?: string;
-  title?: string;
-  internalNotes?: string;
-  addresses?: IAddress[];
-  noteWorthies?: INoteWorthy[];
+  opportunityRevenue: OpportunityRevenue;
 }

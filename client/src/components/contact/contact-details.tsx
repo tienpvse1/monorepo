@@ -1,6 +1,6 @@
 import { MyForm } from '@components/form/my-form'
 import { Button, Col, Form, Row, Space } from 'antd'
-import { ButtonEditHover } from '@components/page-details/button-edit-hover';
+import { EditButtonHover } from '@components/page-details/edit-button-hover';
 import { ContactInfoDetails } from './contact-info-details';
 import { AddressInfoDetails } from './address-info-details';
 import { ContactInfoForm } from './contact-info-form';
@@ -98,9 +98,9 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
               </Space>
             </Col>
           </Row> :
-          <ButtonEditHover toggleEditForm={handleToggleEditForm1}>
+          <EditButtonHover toggleEditForm={handleToggleEditForm1}>
             <ContactInfoDetails contact={contact} />
-          </ButtonEditHover>
+          </EditButtonHover>
         }
 
         <Row className="title-form-content">
@@ -116,9 +116,9 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
               </Space>
             </Col>
           </Row> :
-          <ButtonEditHover toggleEditForm={handleToggleEditForm2}>
+          <EditButtonHover toggleEditForm={handleToggleEditForm2}>
             <AddressInfoDetails contact={contact} />
-          </ButtonEditHover>
+          </EditButtonHover>
         }
 
         <Row className="title-form-content">
