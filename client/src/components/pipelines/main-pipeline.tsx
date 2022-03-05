@@ -43,7 +43,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
   const widthOfItem = 333;
 
   const onDragEnd = (result: DropResult) => {
-    const { source, destination } = result;
+    const { source, destination, draggableId } = result;
     //nếu ko có vị trí điểm đến -> return
     if (!destination) return;
 
@@ -63,14 +63,15 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
 
     //Xử lý cho kéo thả item
     if (result.type == 'task') {
-      //di chuyển các card item trong 1 column
+      //di chuyển các card item trong 1 column      
       if (startColumn === finishColumn) {
         handleMoveItemColumn(startIndex, finishIndex, startColumn);
         return;
       }
 
       //di chuyển các item qua lại nhiều cột
-      handleMoveItemsBetweenColumns(startIndex, finishIndex, startColumn, finishColumn);
+      handleMoveItemsBetweenColumns(startIndex, finishIndex, startColumn, finishColumn, draggableId);
+
     }
   };
 

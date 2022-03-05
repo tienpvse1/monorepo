@@ -36,5 +36,5 @@ export const useUpdatePipelineItem = () =>
 
 export const useChangeStage = () =>
   useMutation(({ id, ...rest }: IChangeStageDto & { id: string }) =>
-    changeOpportunityStage(id, rest)
+    changeOpportunityStage(id, rest), {}
   );
