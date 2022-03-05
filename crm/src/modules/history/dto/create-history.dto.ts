@@ -1,12 +1,12 @@
-import { IsIP, IsUrl, Length } from 'class-validator';
+import { IsString, Length } from 'class-validator';
 
 export class CreateHistoryDto {
-  @IsUrl()
+  @IsString()
   url: string;
-
-  @IsIP()
-  ip: string;
 
   @Length(1)
   name: string;
+
+  @IsString()
+  method: string;
 }

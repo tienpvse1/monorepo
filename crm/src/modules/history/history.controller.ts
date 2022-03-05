@@ -1,6 +1,7 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Ip, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
+import { User } from 'src/common/decorators/user.decorator';
 import { CreateHistoryDto } from './dto/create-history.dto';
 import { UpdateHistoryDto } from './dto/update-history.dto';
 import { History } from './entities/history.entity';
@@ -28,7 +29,19 @@ import { HistoryService } from './history.service';
       account: {},
     },
   },
+  routes: {
+    exclude: ['createOneBase'],
+  },
 })
 export class HistoryController {
   constructor(public readonly service: HistoryService) {}
+
+  @Post()
+  create(
+    @Body() dto: CreateHistoryDto,
+    @Ip() ipAddress: string,
+    @User('id') userId: string,
+  ) {
+    return this.service.create(dto, ipAddress, userId);
+  }
 }
