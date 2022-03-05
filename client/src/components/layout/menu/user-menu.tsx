@@ -25,6 +25,7 @@ interface MenuSiderUserProps {
 
 interface MenuProp {
   key: string;
+  label: string;
   style: object;
   onClick: () => any;
   icon: ReactNode;
@@ -37,48 +38,56 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
   const menuItems: MenuProp[] = [
     {
       key: 'home',
+      label: 'Home',
       style,
       onClick: () => navigate('/'),
       icon: <FundOutlined style={style} />,
     },
     {
       key: 'pipeline',
+      label: 'Pipeline',
       style,
       onClick: () => navigate('/pipeline'),
       icon: <BranchesOutlined style={style} />,
     },
     {
       key: 'leads',
+      label: 'Leads',
       style,
       onClick: () => navigate('/leads'),
       icon: <SolutionOutlined style={style} />,
     },
     {
       key: 'contact',
+      label: 'Contact',
       style,
       onClick: () => navigate('/contact'),
       icon: <ContactsOutlined style={style} />,
     },
     {
       key: 'opportunities',
+      label: 'Opportunities',
       style,
       onClick: () => navigate('/opportunities'),
       icon: <CrownOutlined style={style} />,
     },
     {
       key: 'product',
+      label: 'Product',
       style,
       onClick: () => navigate('/product'),
       icon: <WalletOutlined style={style} />,
     },
     {
       key: 'customer',
+      label: 'Customer',
       style,
       onClick: () => navigate('/customer'),
       icon: <UserOutlined style={style} />,
     },
     {
       key: 'schedule',
+      label:'Schedule',
       style,
       onClick: () => navigate('/schedule'),
       icon: <CalendarOutlined style={style} />,
@@ -98,7 +107,7 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
         mode='inline'
       >
         {menuItems.map((item) => (
-          <Menu.Item {...item}>{item.key}</Menu.Item>
+          <Menu.Item {...item}>{item.label}</Menu.Item>
         ))}
 
         {/* ----------------------------------------------------------- */}

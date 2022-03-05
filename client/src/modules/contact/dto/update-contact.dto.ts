@@ -1,2 +1,2 @@
-import { CreateContactDto } from './create-contact.dto';
-export interface UpdateContactDto extends Partial<CreateContactDto> {}
+import { IContact } from '../entity/contact.entity';
+export interface UpdateContactDto extends Partial<IContact> {}

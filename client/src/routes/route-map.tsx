@@ -15,6 +15,8 @@ const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Product = lazy(() => import('@pages/product'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
 const Leads = lazy(() => import('@pages/leads'));
+const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
+const ContactContainer = lazy(() => import('@components/contact/contact'));
 
 export const route: RouteObject[] = [
   {
@@ -37,6 +39,16 @@ export const route: RouteObject[] = [
       {
         path: 'contact',
         element: <Contact />,
+        children: [
+          {
+            index: true,
+            element: <ContactContainer />
+          },
+          {
+            path: 'view-details/:id',
+            element: <ViewContactDetails/>
+          }
+        ]
       },
       {
         path: 'pipeline',

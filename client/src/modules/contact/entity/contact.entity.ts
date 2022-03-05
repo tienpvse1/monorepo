@@ -2,12 +2,13 @@ import { IBase } from '@interfaces/base';
 
 export interface IContact extends IBase {
   name: string;
-  addresses: Address[];
+  //TODO: this is have any type
+  addresses: Address | Address[] | any;
   noteWorthies: NoteWorthy[];
   phone: string;
   type: string;
   email: string;
-  birth: string;
+  birth: string | any;
   mobile: string;
   photo: string;
   state: string;
@@ -16,9 +17,10 @@ export interface IContact extends IBase {
   jobPosition: string;
   website: string;
   title: string;
+  prefixMobile: string;
   internalNotes: string;
 }
-export interface Address {
+export interface Address extends IBase{
 	type: string;
 	address: string;
 	city: string;

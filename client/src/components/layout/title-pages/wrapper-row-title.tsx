@@ -20,7 +20,7 @@ export const WrapperRowTitle: FC<WrapperRowTitleProps> = ({
         <Col className={className} span={24}>
           <span
             style={{ fontSize: `${titleSize}` }}
-            className='title-admin-page'
+            className='title-page'
           >
             {title}
           </span>

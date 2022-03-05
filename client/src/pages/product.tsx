@@ -10,10 +10,10 @@ import { useState } from 'react';
 import { useToggle } from '@hooks/useToggle';
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { useUpdateProduct } from '@modules/product/mutation/product.update';
+import { dateFormat } from '@constance/date-format';
+const { DEFAULT } = dateFormat;
 
 const Product = () => {
-  const dateFormat = 'YYYY-MM-DD';
-
   const { data, isLoading } = useQueryProducts();
   const { updateProduct } = useUpdateProduct();
 
@@ -41,8 +41,8 @@ const Product = () => {
       updateProduct({
         id,
         ...record,
-        startDate: record.startDate.format(dateFormat),
-        endDate: record.endDate.format(dateFormat),
+        startDate: record.startDate.format(DEFAULT),
+        endDate: record.endDate.format(DEFAULT),
       });
     } catch (error) {
       return;
@@ -50,7 +50,7 @@ const Product = () => {
   };
 
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {},
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
     getCheckboxProps: (record: any) => ({
       disabled: record.name === 'Disabled User',
       name: record.name,
@@ -61,6 +61,7 @@ const Product = () => {
     <div className='product-container'>
       <Form form={form}>
         <Table
+          rowKey={(record) => record.id}
           loading={isLoading}
           dataSource={data}
           tableLayout='fixed'
@@ -188,7 +189,7 @@ const Product = () => {
 
                     <Button
                       type='default'
-                      onClick={() => showDeleteConfirm(() => {})}
+                      onClick={() => showDeleteConfirm(() => { })}
                       shape='round'
                       danger
                     >
