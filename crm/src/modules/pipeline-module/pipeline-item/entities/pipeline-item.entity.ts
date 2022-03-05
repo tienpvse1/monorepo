@@ -14,12 +14,10 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
-  Unique,
 } from 'typeorm';
 import { PipelineColumn } from '../../pipeline-column/entities/pipeline-column.entity';
 
 @Entity({ name: 'pipeline_item' })
-@Unique(['index', 'pipelineColumn.id'])
 export class PipelineItem extends BaseEntity {
   @Column()
   name: string;
