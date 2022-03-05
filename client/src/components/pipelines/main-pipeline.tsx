@@ -1,7 +1,6 @@
 import { EmptyComponent } from '@components/empty';
-import { CreateModal } from '@components/modal/modal-create';
+import { CreateModal } from '@components/modal/create-modal';
 import { PageTitlePipeline } from '@components/pipelines/page-title';
-import { ModalColumnCreate } from '@components/pipelines/pipeline-column/modal-column-create';
 import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-horizontal';
 import { useHandleDnD } from '@hooks/useHandleDnD';
 import { useToggle } from '@hooks/useToggle';
@@ -11,15 +10,14 @@ import { sortPipeline } from '@util/sort';
 import { Button } from 'antd';
 import { useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { PipeLineColumn } from '@components/pipelines/column';
-import { CreateFormSchedule } from '@components/schedule/create-form-schedule';
+import { PipeLineColumn } from '@components/pipelines/pipeline-column';
+import { CreateScheduleForm } from '@components/schedule/create-schedule-form';
 import { useScheduleContext } from '@context/schedule.context';
+import { CreateColumnModal } from './pipeline-column/create-column-modal';
 
-interface MainPipelineProps {
+interface MainPipelineProps {}
 
-}
-
-export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
+export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
   const [visible, setModalCreateStage] = useToggle();
   const { isOpenModal, toggleModal } = useScheduleContext();
 
@@ -30,14 +28,16 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
     setPipeLine,
     handleMoveColumn,
     handleMoveItemColumn,
-    handleMoveItemsBetweenColumns
+    handleMoveItemsBetweenColumns,
   } = useHandleDnD(data);
 
   useEffect(() => {
     setPipeLine(data);
-  }, [data, isError])
+  }, [data, isError]);
 
-  if (data !== undefined) { sortPipeline(data) };
+  if (data !== undefined) {
+    sortPipeline(data);
+  }
 
   const totalColumn = data?.pipelineColumns.length || 1;
   const widthOfItem = 333;
@@ -53,8 +53,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
     const finishColumn = destination.droppableId;
 
     //nếu kéo thả ở 1 vị trí -> return tránh xử lý code bên dưới
-    if (finishColumn === startColumn && finishIndex === startIndex)
-      return;
+    if (finishColumn === startColumn && finishIndex === startIndex) return;
 
     //Xử lý cho kéo thả cột
     if (result.type == 'column') {
@@ -70,22 +69,24 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
       }
 
       //di chuyển các item qua lại nhiều cột
-      handleMoveItemsBetweenColumns(startIndex, finishIndex, startColumn, finishColumn);
+      handleMoveItemsBetweenColumns(
+        startIndex,
+        finishIndex,
+        startColumn,
+        finishColumn
+      );
     }
   };
 
   return (
     <>
       <PageTitlePipeline setModalCreateStage={setModalCreateStage} />
-      {data?.pipelineColumns.length == 0 ?
+      {data?.pipelineColumns.length == 0 ? (
         <EmptyComponent
           imageStyle={{ height: 200 }}
-          description={
-            <span>
-              Stages have not been created.
-            </span>}
-        >
-        </EmptyComponent> :
+          description={<span>Stages have not been created.</span>}
+        ></EmptyComponent>
+      ) : (
         <ScrollBarHorizontal>
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
@@ -111,11 +112,15 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
                       )
                     )}
                     {providedColumns.placeholder}
-                    <div className="shadow-column-create">
+                    <div className='shadow-column-create'>
                       <Button
                         onClick={setModalCreateStage}
-                        style={{ width: '300px', height: '80px', fontSize: '15px' }}
-                        type="dashed"
+                        style={{
+                          width: '300px',
+                          height: '80px',
+                          fontSize: '15px',
+                        }}
+                        type='dashed'
                       >
                         Add a stage column
                       </Button>
@@ -126,8 +131,8 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
             </Droppable>
           </DragDropContext>
         </ScrollBarHorizontal>
-      }
-      <ModalColumnCreate
+      )}
+      <CreateColumnModal
         setVisible={setModalCreateStage}
         visible={visible}
         pipelineId={data?.id}
@@ -135,14 +140,13 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
 
       <CreateModal
         width={500}
-        title="Schedule Activity"
+        title='Schedule Activity'
         isOpenModal={isOpenModal}
         toggleCreateModal={toggleModal}
-        callback={() => { }}
+        callback={() => {}}
       >
-        <CreateFormSchedule />
+        <CreateScheduleForm />
       </CreateModal>
     </>
-  )
+  );
 };
-

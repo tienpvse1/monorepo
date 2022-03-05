@@ -1,7 +1,34 @@
-import { ICreatePipelineItemsDto } from './create-pipeline-items.dto';
+import {
+  IAddress,
+  INoteWorthy,
+  OpportunityRevenue,
+} from './create-pipeline-items.dto';
 
-export interface IUpdatePipelineItemDto
-  extends Partial<ICreatePipelineItemsDto> {}
+export interface IUpdatePipelineItemDto {
+  name: string;
+  index: number;
+  columnId: string;
+  expectedRevenue?: number;
+  photo?: string;
+  email?: string;
+  phone?: string;
+  priority?: number;
+  expectedClosing?: string;
+  internalDescription?: string;
+  type?: string;
+  birth?: string;
+  mobile?: string;
+  state?: string;
+  postalCode?: string;
+  taxId?: string;
+  jobPosition?: string;
+  website?: string;
+  title?: string;
+  internalNotes?: string;
+  addresses?: IAddress[];
+  noteWorthies?: INoteWorthy[];
+  opportunityRevenue?: OpportunityRevenue;
+}
 export interface IChangeStageDto {
   oldStageId: string;
   newStageId: string;

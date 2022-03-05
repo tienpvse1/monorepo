@@ -1,6 +1,6 @@
 import { DatePicker, Form, Input, Select } from 'antd'
 
-export const CreateFormSchedule = () => {
+export const CreateScheduleForm = () => {
   return (
     <div style={{ padding: '14px' }}>
       <Form.Item
