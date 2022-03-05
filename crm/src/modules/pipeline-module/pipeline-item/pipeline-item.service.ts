@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/base/nestjsx.service';
 import { getConnection, getCustomRepository, Repository } from 'typeorm';
+import { PipelineColumn } from '../pipeline-column/entities/pipeline-column.entity';
 import { PipelineColumnRepository } from '../pipeline-column/pipeline-column.repository';
 import { ChangeStageDto } from './dto/update-pipeline-item.dto';
 import { PipelineItem } from './entities/pipeline-item.entity';
@@ -27,7 +28,7 @@ export class PipelineItemService extends BaseService<PipelineItem> {
       }),
       pipelineColumnRepository.findOneItem({
         where: { id: dto.newStageId },
-        relations: ['pipelineItems'],
+        relations: ['pipelineItems', 'pipeline'],
       }),
     ]);
 
@@ -67,6 +68,8 @@ export class PipelineItemService extends BaseService<PipelineItem> {
         } as PipelineItem);
       }
       // return newPipelineColumn.save();
+      await queryRunner.manager.delete(PipelineColumn, newPipelineColumn.id);
+
       const result = await queryRunner.manager.save(newPipelineColumn);
       return result;
     } catch (error) {
