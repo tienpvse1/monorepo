@@ -7,7 +7,7 @@ import { getConnection } from 'typeorm';
 import { Socket } from '../socket/entities/socket.entity';
 import { Invitation } from './entities/invitation.entity';
 
-@WebSocketGateway(80, { namespace: 'invitation', cors: true })
+@WebSocketGateway({ namespace: 'invitation', cors: true })
 export class InvitationGateway extends BaseGateway<any> {
   @WebSocketServer() server: Server;
 
@@ -19,7 +19,7 @@ export class InvitationGateway extends BaseGateway<any> {
         .getRepository(Socket)
         .createQueryBuilder('socket')
         .select('socket.id')
-        .where('socket.account_id = :id', { id })
+        .where('socket.account.id = :id', { id })
         .getMany();
       for (const { id: socketId } of sockets) {
         this.server
