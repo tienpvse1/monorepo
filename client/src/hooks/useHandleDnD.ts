@@ -1,14 +1,12 @@
 import { IPipelineColumn } from "@modules/pipeline-column/entity/pipeline-column.entity";
 import { IPipeline } from "@modules/pipeline/entity/pipeline.entity";
 import { useUpdatePipeline } from "@modules/pipeline/mutation/pipeline.update";
-import { useChangeStage } from "@modules/pipeline-items/mutation/pipeline-items.update";
 import { useState } from "react";
 
 export const useHandleDnD = (data: IPipeline) => {
 
   const [newPipeLine, setPipeLine] = useState<IPipeline>();
   const { updatePipeline, isError } = useUpdatePipeline();
-  const { mutate } = useChangeStage();
 
   const setNewPipeline = (newColumn: IPipelineColumn[]) => {
 
@@ -19,28 +17,6 @@ export const useHandleDnD = (data: IPipeline) => {
     }
     setPipeLine(newState);
     updatePipeline(newState);
-  }
-
-  const setNewPipelineV2 = (
-    newColumn: IPipelineColumn[],
-    itemId: string,
-    oldStageId: string,
-    newStageId: string,
-    finishIndex: number) => {
-
-    const newState =
-    {
-      ...data,
-      pipelineColumns: newColumn
-    }
-    setPipeLine(newState);
-
-    mutate({
-      id: itemId,
-      oldStageId,
-      newStageId,
-      index: finishIndex
-    });
   }
 
   const reassignIndex = <T>(array: Array<T>) => {
@@ -58,7 +34,7 @@ export const useHandleDnD = (data: IPipeline) => {
     pipelineNewColumns.splice(finishIndex, 0, newItemColumn);
 
     //set lại column mới vô state
-    // setNewPipeline(reassignIndex(pipelineNewColumns));
+    setNewPipeline(reassignIndex(pipelineNewColumns));
   }
 
   const handleMoveItemColumn = (startIndex: number, finishIndex: number, columnID: string) => {
@@ -85,7 +61,7 @@ export const useHandleDnD = (data: IPipeline) => {
       else
         return item;
     })
-    // setNewPipeline(newColumn);
+    setNewPipeline(newColumn);
 
   }
 
@@ -128,8 +104,7 @@ export const useHandleDnD = (data: IPipeline) => {
         return item;
     })
 
-    // setNewPipeline(newColumn);
-    setNewPipelineV2(newColumn, draggableId, startColumn, finishColumn, finishIndex);
+    setNewPipeline(newColumn);
     console.log("items id:", draggableId, "oldStageID:", startColumn, "newStageID:", finishColumn, "index:", finishIndex);
 
   }

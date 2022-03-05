@@ -30,7 +30,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
     handleMoveItemColumn,
     handleMoveItemsBetweenColumns,
   } = useHandleDnD(data);
-
+  
   useEffect(() => {
     setPipeLine(data);
   }, [data, isError]);
