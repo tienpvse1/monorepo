@@ -39,6 +39,7 @@ import { TeamModule } from './modules/team/team.module';
 import { TeamGateway } from './modules/team/team.gateway';
 import { SocketModule } from './modules/socket/socket.module';
 import { InvitationModule } from './modules/invitation/invitation.module';
+import { OpportunityRevenueModule } from './modules/opportunity-revenue/opportunity-revenue.module';
 
 @Module({
   imports: [
@@ -76,6 +77,7 @@ import { InvitationModule } from './modules/invitation/invitation.module';
     TeamModule,
     SocketModule,
     InvitationModule,
+    OpportunityRevenueModule,
   ],
   providers: [GlobalModule, TeamGateway],
 })

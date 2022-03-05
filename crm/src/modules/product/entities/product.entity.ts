@@ -1,4 +1,5 @@
 import { BaseEntity } from 'src/base/entity.base';
+import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
 import { Pipeline } from 'src/modules/pipeline-module/pipeline/entities/pipeline.entity';
 import { ProductAccount } from 'src/modules/product-account/entities/product-account.entity';
 import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
@@ -22,4 +23,9 @@ export class Product extends BaseEntity {
 
   @OneToMany(() => ProductAccount, (account) => account.product)
   productAccounts: ProductAccount[];
+  @OneToMany(
+    () => OpportunityRevenue,
+    (opportunityRevenue) => opportunityRevenue.product,
+  )
+  opportunityRevenues: OpportunityRevenue[];
 }

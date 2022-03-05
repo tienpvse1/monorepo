@@ -3,6 +3,7 @@ import { Account } from 'src/modules/account/entities/account.entity';
 import { Address } from 'src/modules/address/entities/address.entity';
 import { Contact } from 'src/modules/contact/entities/contact.entity';
 import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
+import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
 import { Tag } from 'src/modules/tag/entities/tag.entity';
 import {
@@ -12,6 +13,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   Unique,
 } from 'typeorm';
 import { PipelineColumn } from '../../pipeline-column/entities/pipeline-column.entity';
@@ -61,6 +63,13 @@ export class PipelineItem extends BaseEntity {
   title: string;
   @Column({ nullable: true, name: 'internal_note' })
   internalNotes: string;
+
+  @OneToOne(
+    () => OpportunityRevenue,
+    (opportunityRevenue) => opportunityRevenue.pipelineItem,
+    { cascade: true },
+  )
+  opportunityRevenue: OpportunityRevenue;
 
   @ManyToOne(() => Account, (account) => account.pipelineItems)
   @JoinColumn({ name: 'account_id' })

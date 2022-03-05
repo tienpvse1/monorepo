@@ -38,6 +38,11 @@ import { ProductService } from './product.service';
 
     exclude: ['createManyBase', 'updateOneBase'],
   },
+  query: {
+    join: {
+      opportunityRevenues: {},
+    },
+  },
 })
 export class ProductController {
   constructor(public service: ProductService) {}
