@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
+import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
 import { getCustomRepository } from 'typeorm';
 import { PipelineRepository } from '../pipeline/pipeline.repository';
@@ -44,6 +45,9 @@ import { PipelineColumnService } from './pipeline-column.service';
   },
   routes: {
     exclude: ['createOneBase', 'createManyBase', 'getManyBase'],
+    updateOneBase: {
+      decorators: [HistoryLog('updated an stage')],
+    },
   },
 })
 export class PipelineColumnController {
@@ -59,6 +63,7 @@ export class PipelineColumnController {
   }
 
   @Post()
+  @HistoryLog('add a new stage to the pipeline')
   @ApiOperation({
     summary: 'simply add a new column to the end of pipeline',
   })

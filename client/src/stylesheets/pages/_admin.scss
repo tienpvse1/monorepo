@@ -12,9 +12,10 @@
     @extend .wrapper-title-page;
 }
 
-.title-admin-page {
-    font-weight: 550;
+.title-page {
+    font-weight: 500;
     width: 100%;
+    color: rgba(0, 0, 0, 0.7);
 }
 
 .number-of-sales {

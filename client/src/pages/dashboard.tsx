@@ -25,7 +25,6 @@ export const DashBoard: React.FC = () => {
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            paddingRight: '20px',
           }}
         >
           <div
@@ -40,21 +39,23 @@ export const DashBoard: React.FC = () => {
           <div style={{ marginTop: 20 }}>
             <div
               style={{
-                border: '1px solid rgba(0,0,0,0.1)',
+                border: '1px solid rgba(0, 0, 0, 0.05)',
+                boxShadow: '-2px 3px 3px 1px rgba(0, 0, 0, 0.05)',
                 borderRadius: 10,
                 padding: 10,
               }}
             >
               <Calendar
                 style={{
-                  width: '17vw',
+                  width: '19vw',
                 }}
                 fullscreen={false}
               />
             </div>
             <div
               style={{
-                border: '1px solid rgba(0,0,0,0.1)',
+                border: '1px solid rgba(0, 0, 0, 0.05)',
+                boxShadow: '-2px 3px 3px 1px rgba(0, 0, 0, 0.05)',
                 borderRadius: 10,
                 padding: 10,
                 marginTop: 10,

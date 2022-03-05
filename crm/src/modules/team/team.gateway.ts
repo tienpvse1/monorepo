@@ -5,11 +5,12 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { BaseGateway } from 'src/base/base.gateway';
 import { InternalServerEvent, SocketSendEvent } from 'src/constance/event';
-import { Account } from './account/entities/account.entity';
+import { Account } from '../account/entities/account.entity';
 
 @WebSocketGateway({ namespace: 'team', cors: true })
-export class TeamGateway {
+export class TeamGateway extends BaseGateway<any> {
   @WebSocketServer() server: Server;
 
   @OnEvent(InternalServerEvent.NEW_MEMBER_JOIN_TEAM)

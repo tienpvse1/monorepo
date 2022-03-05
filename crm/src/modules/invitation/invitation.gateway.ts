@@ -1,13 +1,14 @@
 import { OnEvent } from '@nestjs/event-emitter';
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
+import { BaseGateway } from 'src/base/base.gateway';
 import { InternalServerEvent, SocketSendEvent } from 'src/constance/event';
 import { getConnection } from 'typeorm';
 import { Socket } from '../socket/entities/socket.entity';
 import { Invitation } from './entities/invitation.entity';
 
-@WebSocketGateway(80, { namespace: 'invitation', cors: true })
-export class InvitationGateway {
+@WebSocketGateway({ namespace: 'invitation', cors: true })
+export class InvitationGateway extends BaseGateway<any> {
   @WebSocketServer() server: Server;
 
   @OnEvent(InternalServerEvent.INVITATION_SENT)
@@ -18,7 +19,7 @@ export class InvitationGateway {
         .getRepository(Socket)
         .createQueryBuilder('socket')
         .select('socket.id')
-        .where('socket.account_id = :id', { id })
+        .where('socket.account.id = :id', { id })
         .getMany();
       for (const { id: socketId } of sockets) {
         this.server

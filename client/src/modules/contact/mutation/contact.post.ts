@@ -17,5 +17,7 @@ export const bulkInsertContacts = async (bulk: {
   const { data } = await instance.post<IContact[]>(`${CONTACT}/bulk`, bulk);
   return data;
 };
-export const useInsertContact = () => useMutation(insertContact);
+export const useInsertContact = (onSuccess: any) => useMutation(insertContact, {
+  onSuccess,
+});
 export const useBulkInsertContact = () => useMutation(bulkInsertContacts);

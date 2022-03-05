@@ -36,7 +36,7 @@ import { ScheduleModule } from './modules/schedule/schedule.module';
 import { SessionModule } from './modules/session/session.module';
 import { TagModule } from './modules/tag/tag.module';
 import { TeamModule } from './modules/team/team.module';
-import { TeamGateway } from './modules/team.gateway';
+import { TeamGateway } from './modules/team/team.gateway';
 import { SocketModule } from './modules/socket/socket.module';
 import { InvitationModule } from './modules/invitation/invitation.module';
 

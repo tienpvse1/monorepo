@@ -31,7 +31,7 @@ export const MenuSiderAdmin = ({ style }: MenuSiderAdminProps) => {
         <Menu.Item
           key='admin'
           style={style}
-          onClick={() => navigate('/admin')}
+          onClick={() => navigate('/administration')}
           icon={<AppstoreOutlined style={style} />}
         >
           Dashboard

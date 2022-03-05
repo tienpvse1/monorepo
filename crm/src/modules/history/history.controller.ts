@@ -23,6 +23,11 @@ import { HistoryService } from './history.service';
       primary: true,
     },
   },
+  query: {
+    join: {
+      account: {},
+    },
+  },
 })
 export class HistoryController {
   constructor(public readonly service: HistoryService) {}

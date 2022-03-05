@@ -19,7 +19,8 @@ export const HeaderApp = () => {
   return (
     <div
       style={{
-        borderBottom: '1px solid rgba(0,0,0,0.1)',
+        borderBottom: '1px solid rgba(0,0,0,0.05)',
+        boxShadow: '0px 0px 5px 0px rgb(0 0 0 / 15%)',
         height: '65px',
         display: 'flex',
         alignItems: 'center',

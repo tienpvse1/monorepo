@@ -16,9 +16,12 @@ import { useToggle } from '@hooks/useToggle';
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { CreateModal } from '@components/modal/modal-create';
 import { CreateContactForm } from './create-contact-form';
+import { isEmail, isPhoneNumber, isRequired } from '@constance/rules-of-input-antd';
+import { useInsertContact } from '@modules/contact/mutation/contact.post';
+import { message } from 'antd';
 
 const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {},
+  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
   getCheckboxProps: (record: any) => ({
     disabled: record.name === 'Disabled User',
     name: record.name,
@@ -27,12 +30,26 @@ const rowSelection = {
 
 export const ContactData: FC = () => {
   const { data, isLoading } = useContacts();
-  const { mutate } = useUpdateContact(() =>
-    client.invalidateQueries(QUERY_CONTACTS)
+
+  const { mutate: updateContact } = useUpdateContact(() =>
+    {
+      client.invalidateQueries(QUERY_CONTACTS);
+      message.success('Save successfully !')
+    }
   );
   const { mutate: deleteContact } = useDeleteContact(() =>
-    client.invalidateQueries(QUERY_CONTACTS)
+    {
+      client.invalidateQueries(QUERY_CONTACTS);
+      message.success('Delete successfully !')
+    }
   );
+  const { mutate: insertContact } = useInsertContact(() =>
+    {
+      client.invalidateQueries(QUERY_CONTACTS);
+      message.success('Create new successfully !')
+    }
+  );
+
   const [form] = Form.useForm<IContact>();
   const [isEditing, toggleEditing] = useToggle();
   const [isOpenModal, toggleCreateModal] = useToggle();
@@ -55,7 +72,7 @@ export const ContactData: FC = () => {
     try {
       const record = await form.validateFields();
       toggleEditing();
-      mutate({
+      updateContact({
         id,
         ...record,
       });
@@ -63,6 +80,13 @@ export const ContactData: FC = () => {
       return;
     }
   };
+
+  const handleCreateContact = (record: IContact) => {
+    insertContact({
+      ...record,
+      addresses: [{...record.addresses}]
+    })
+  }
 
   return (
     <>
@@ -86,18 +110,14 @@ export const ContactData: FC = () => {
             key='name'
             render={(_, record: IContact) => (
               <EditableCell
+                linkTo={`view-details/${record.id}`}
                 dataIndex='name'
                 editing={isEditing}
                 editingIndex={editingIndex}
                 recordIndex={record.id}
                 title='Name'
                 record={record}
-                rules={[
-                  {
-                    required: true,
-                    message: 'Name is required',
-                  },
-                ]}
+                rules={[isRequired('Name is required')]}
               />
             )}
           />
@@ -107,22 +127,14 @@ export const ContactData: FC = () => {
             key='email'
             render={(_, record: IContact) => (
               <EditableCell
+                linkTo={`view-details/${record.id}`}
                 dataIndex='email'
                 editing={isEditing}
                 editingIndex={editingIndex}
                 recordIndex={record.id}
                 title='Email'
                 record={record}
-                rules={[
-                  {
-                    required: true,
-                    message: 'Address is required',
-                  },
-                  {
-                    type: 'email',
-                    message: 'must be email',
-                  },
-                ]}
+                rules={[isRequired('Address is required'), isEmail]}
               />
             )}
           />
@@ -132,22 +144,14 @@ export const ContactData: FC = () => {
             key='phone'
             render={(_, record: IContact) => (
               <EditableCell
+                linkTo={`view-details/${record.id}`}
                 dataIndex='phone'
                 editing={isEditing}
                 editingIndex={editingIndex}
                 recordIndex={record.id}
                 title='Phone Number'
                 record={record}
-                rules={[
-                  {
-                    required: true,
-                    message: 'phone is required',
-                  },
-                  {
-                    pattern: /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
-                    message: 'must be phone number',
-                  },
-                ]}
+                rules={[isRequired('Phone is required'), isPhoneNumber]}
               />
             )}
           />
@@ -157,18 +161,13 @@ export const ContactData: FC = () => {
             key='internalNotes'
             render={(_, record: IContact) => (
               <EditableCell
+                linkTo={`view-details/${record.id}`}
                 dataIndex='internalNotes'
                 editing={isEditing}
                 editingIndex={editingIndex}
                 recordIndex={record.id}
                 title='Notes'
                 record={record}
-                rules={[
-                  {
-                    required: true,
-                    message: 'Notes is required',
-                  },
-                ]}
               />
             )}
           />
@@ -231,6 +230,8 @@ export const ContactData: FC = () => {
         </Table>
       </Form>
       <CreateModal
+        title="New Contact"
+        callback={handleCreateContact}
         isOpenModal={isOpenModal}
         toggleCreateModal={toggleCreateModal}
       >

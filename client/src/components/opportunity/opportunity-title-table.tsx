@@ -14,8 +14,8 @@ export const OpportunityTitleTable = () => {
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <img
                 src={`${envVars.VITE_BE_DOMAIN}/files/crown.png`}
-                width={50}
-                height={50}
+                width={47}
+                height={47}
               />
               <span
                 style={{
