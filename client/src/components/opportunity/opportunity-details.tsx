@@ -70,7 +70,9 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({
       <Suspense fallback={<Loading />}>
         <SecondColumn data={data} />
       </Suspense>
-      <ThirdColumn />
+      <Suspense fallback={<Loading />}>
+        <ThirdColumn />
+      </Suspense>
     </div>
   );
 };

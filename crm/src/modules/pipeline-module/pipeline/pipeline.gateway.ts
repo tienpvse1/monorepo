@@ -1,10 +1,7 @@
 import { OnEvent } from '@nestjs/event-emitter';
-import {
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-} from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
+import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import { Socket } from 'socket.io';
+import { BaseGateway } from 'src/base/base.gateway';
 import {
   InternalServerEvent,
   SocketReceiveEvent,
@@ -15,10 +12,10 @@ import { Pipeline } from './entities/pipeline.entity';
 import { PipelineService } from './pipeline.service';
 
 @WebSocketGateway({ cors: true, namespace: 'pipeline' })
-export class PipelineGateway {
-  @WebSocketServer() server: Server;
-
-  constructor(private service: PipelineService) {}
+export class PipelineGateway extends BaseGateway<any> {
+  constructor(private service: PipelineService) {
+    super();
+  }
 
   @SubscribeMessage(SocketReceiveEvent.UPDATE_PIPELINE)
   async handleUpdatePipeline(

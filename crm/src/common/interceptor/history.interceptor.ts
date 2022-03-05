@@ -5,9 +5,11 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Request } from 'express';
 import { nanoid } from 'nanoid';
 import { Observable } from 'rxjs';
+import { InternalServerEvent } from 'src/constance/event';
 import { AccountRepository } from 'src/modules/account/account.repository';
 import { History } from 'src/modules/history/entities/history.entity';
 import { SessionRepository } from 'src/modules/session/session.repository';
@@ -17,7 +19,10 @@ import { MESSAGE } from '../decorators/message.decorator';
 
 @Injectable()
 export class HistoryInterceptor implements NestInterceptor {
-  constructor(private reflector: Reflector) {}
+  constructor(
+    private eventEmitter: EventEmitter2,
+    private reflector: Reflector,
+  ) {}
 
   async saveHistory(request: Request, message = '') {
     const accountRepository = getCustomRepository(AccountRepository);
@@ -29,12 +34,16 @@ export class HistoryInterceptor implements NestInterceptor {
         id: sessionId,
         ip: getIp(request.ip),
       },
-      relations: ['account'],
+      relations: ['account', 'account.team'],
     });
     if (!session) return;
     const account = await accountRepository.findOneItem({
       where: { id: session.account.id },
       relations: ['role'],
+    });
+    this.eventEmitter.emit(InternalServerEvent.HISTORY_ADDED, {
+      account,
+      message,
     });
     historyRepository.save({
       id: nanoid(10),
@@ -48,12 +57,16 @@ export class HistoryInterceptor implements NestInterceptor {
   }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const request: Request = context.switchToHttp().getRequest();
+    if (request.method === 'GET') {
+      this.saveHistory(request, null);
+      return next.handle();
+    }
+
     const message = this.reflector.getAll(MESSAGE, [
       context.getHandler(),
       context.getClass(),
     ]);
-    const request = context.switchToHttp().getRequest();
-
     this.saveHistory(request, message[0]);
     return next.handle();
   }
