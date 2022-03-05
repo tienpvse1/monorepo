@@ -13,6 +13,8 @@ import {
 import { CreateAddressDto } from 'src/modules/address/dto/create-address.dto';
 import { AddressTypes } from 'src/modules/address/entities/address.entity';
 import { CreateNoteWorthyDto } from 'src/modules/note-worthy/dto/create-note-worthy.dto';
+import { CreateOpportunityRevenueDto } from 'src/modules/opportunity-revenue/dto/create-opportunity-revenue.dto';
+import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
 import { PipelineColumn } from '../../pipeline-column/entities/pipeline-column.entity';
 
 export class CreatePipelineItemDto {
@@ -101,6 +103,8 @@ export class CreateSinglePipelineItemDto {
   @IsOptional()
   @IsArray()
   noteWorthies?: CreateNoteWorthyDto[];
+
+  opportunityRevenue: CreateOpportunityRevenueDto;
 }
 export class ParsedCreateSinglePipelineItemDto {
   name: string;
@@ -125,6 +129,7 @@ export class ParsedCreateSinglePipelineItemDto {
   website: string;
   title: string;
   internalNotes: string;
+  opportunityRevenue: OpportunityRevenue;
 
   addresses?: CreateAddressDto[];
   noteWorthies?: CreateNoteWorthyDto[];

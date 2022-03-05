@@ -1,5 +1,7 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
 import { ContactRepository } from 'src/modules/contact/contact.repository';
+import { OpportunityRevenueRepository } from 'src/modules/opportunity-revenue/opportunity-revenue.repository';
+import { ProductRepository } from 'src/modules/product/product.repository';
 import { getCustomRepository } from 'typeorm';
 import { PipelineColumnRepository } from '../pipeline-column/pipeline-column.repository';
 import { CreateSinglePipelineItemDto } from './dto/create-pipeline-item.dto';
@@ -13,19 +15,35 @@ export class ParseDtoPipe implements PipeTransform {
     );
     const pipelineItemRepository = getCustomRepository(PipelineItemRepository);
     const contactRepository = getCustomRepository(ContactRepository);
+    const productRepository = getCustomRepository(ProductRepository);
+    const opportunityRevenueRepository = getCustomRepository(
+      OpportunityRevenueRepository,
+    );
+    const { columnId, contactId, opportunityRevenue, ...rest } = value;
 
-    const { columnId, contactId, ...rest } = value;
-    const column = await pipelineColumnRepository.findOneItem({
-      where: { id: columnId },
-      relations: ['pipelineItems'],
-    });
-    const contact = await contactRepository.findOneItem({
-      where: { id: contactId },
-      relations: ['pipelineItems'],
-    });
+    const [column, contact, product] = await Promise.all([
+      pipelineColumnRepository.findOneItem({
+        where: { id: columnId },
+        relations: ['pipelineItems'],
+      }),
+      contactRepository.findOneItem({
+        where: { id: contactId },
+        relations: ['pipelineItems'],
+      }),
+      productRepository.findOneItem({
+        where: { id: opportunityRevenue.productId },
+        relations: ['opportunityRevenues'],
+      }),
+    ]);
+    const createdOpportunityRevenue =
+      await opportunityRevenueRepository.createItem({
+        quantity: opportunityRevenue.quantity,
+        product: product,
+      });
     const newItemIndex = column.pipelineItems.length;
     const savedItem = await pipelineItemRepository.createItem({
       ...rest,
+      opportunityRevenue: createdOpportunityRevenue,
       index: newItemIndex,
     });
     if (!column.pipelineItems) column.pipelineItems = [];
