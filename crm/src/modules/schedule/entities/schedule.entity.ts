@@ -31,5 +31,5 @@ export class Schedule extends BaseEntity {
   @ManyToOne(() => PipelineItem, (pipelineItem) => pipelineItem.schedules, {
     cascade: ['insert'],
   })
-  pipelineItem: PipelineItem[];
+  pipelineItem: PipelineItem;
 }
