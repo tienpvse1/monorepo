@@ -8,35 +8,45 @@ interface PageTitlePipelineProps {
   setModalCreateStage: () => void;
 }
 
-export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({ setModalCreateStage }) => {
-  const handleChange = (value: any) => {
-    console.log(`selected ${value}`);
-  }
+export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
+  setModalCreateStage,
+}) => {
+  const handleChange = (value: any) => {};
   return (
     <>
       <WrapperRowTitle
-        className="wrapper-title-page-2"
-        title="Pipeline"
-        titleSize="27px"
-        children={<SearchBar placeholder="Search for id, name or phone number" />}
+        className='wrapper-title-page-2'
+        title='Pipeline'
+        titleSize='27px'
+        children={
+          <SearchBar placeholder='Search for id, name or phone number' />
+        }
       />
       <Row>
-        <Col className="wrapper-title-page-2" span={24} >
+        <Col className='wrapper-title-page-2' span={24}>
           <Button
             onClick={setModalCreateStage}
-            className="button-create-task-pipeline"
+            className='button-create-task-pipeline'
             icon={<PlusOutlined />}
             type='primary'
           >
             Create Stage
           </Button>
           <div style={{ display: 'flex' }}>
-            <Select placeholder="Group by" style={{ width: 120, marginRight: '10px' }} onChange={handleChange}>
-              <Option value="salesPerson">Sales Person</Option>
-              <Option value="salesTeam">Sales Team</Option>
+            <Select
+              placeholder='Group by'
+              style={{ width: 120, marginRight: '10px' }}
+              onChange={handleChange}
+            >
+              <Option value='salesPerson'>Sales Person</Option>
+              <Option value='salesTeam'>Sales Team</Option>
             </Select>
-            <Button className="button-filter-pipeline"><FilterOutlined /></Button>
-            <Button className="button-more-pipeline"><MoreOutlined /></Button>
+            <Button className='button-filter-pipeline'>
+              <FilterOutlined />
+            </Button>
+            <Button className='button-more-pipeline'>
+              <MoreOutlined />
+            </Button>
           </div>
         </Col>
       </Row>

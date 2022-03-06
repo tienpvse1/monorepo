@@ -49,16 +49,10 @@ export class PipelineItemService extends BaseService<PipelineItem> {
       0,
       item,
     );
-    // const [result1, result2] = await Promise.all([
-    //   this.repository.remove(clone(newColumn).pipelineItems),
-    //   this.repository.remove(clone(oldColumn).pipelineItems),
-    // ]);
-    // console.log(result2);
+
     reIndexItems(oldColumn);
     reIndexItems(newColumn);
 
-    // console.log(oldColumn);
-    // console.log(newColumn);
     await oldColumn.save();
     await newColumn.save();
     return [oldColumn, newColumn];

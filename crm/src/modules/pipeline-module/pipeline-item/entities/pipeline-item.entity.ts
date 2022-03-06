@@ -77,11 +77,15 @@ export class PipelineItem extends BaseEntity {
   @JoinColumn({ name: 'contact_id' })
   contact: Contact;
 
-  @ManyToMany(() => Tag, (tag) => tag.pipelineItems)
+  @ManyToMany(() => Tag, (tag) => tag.pipelineItems, {
+    eager: true,
+    cascade: true,
+  })
   tags: Tag[];
 
   @OneToMany(() => Schedule, (schedule) => schedule.pipelineItem, {
     cascade: true,
+    eager: true,
   })
   schedules: Schedule[];
   @OneToMany(() => Address, (address) => address.pipelineItem, {
@@ -90,6 +94,7 @@ export class PipelineItem extends BaseEntity {
   addresses: Address[];
   @OneToMany(() => NoteWorthy, (noteWorthies) => noteWorthies.pipelineItem, {
     cascade: true,
+    eager: true,
   })
   noteWorthies: NoteWorthy[];
 

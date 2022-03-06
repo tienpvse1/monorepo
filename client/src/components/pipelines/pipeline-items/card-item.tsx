@@ -16,6 +16,7 @@ import { ICreateScheduleDto } from '@modules/schedule/dto/create-schedule.dto';
 import { useCreateSchedule } from '@modules/schedule/mutation/schedule.post';
 import { client } from '../../../App';
 import { QUERY_SCHEDULES } from '@modules/schedule/query/schedule.get';
+import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 const Planned = lazy(() => import('@components/schedule/planned'));
 const { Meta } = Card;
 
@@ -46,7 +47,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
       pipelineItemId: cardData.id,
     };
     mutate(schedule, {
-      onSuccess: () => client.refetchQueries(QUERY_SCHEDULES),
+      onSuccess: () => client.refetchQueries(GET_PIPELINE_DESIGN),
     });
   };
 
