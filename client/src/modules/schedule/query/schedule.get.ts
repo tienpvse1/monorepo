@@ -2,6 +2,7 @@ import { instance } from '@axios';
 import { controllers } from '@constance/controllers';
 import { queryWithIdProps } from '@modules/base/base.handler';
 import { RequestQueryBuilder } from '@nestjsx/crud-request';
+import { convert } from '@util/date';
 import { useQuery, UseQueryResult } from 'react-query';
 import { ISchedule } from '../entity/schedule.entity';
 
@@ -27,6 +28,35 @@ const getMySchedules = async (id: string, pipelineItemId: string) => {
   return data;
 };
 
+const getMySchedulesByMonth = async (id: string, month: number) => {
+  var date = new Date();
+  var firstDay = new Date(date.getFullYear(), month, 1);
+  var lastDay = new Date(date.getFullYear(), month + 1, 0);
+
+  const query = RequestQueryBuilder.create({
+    join: [{ field: 'account' }],
+    filter: [
+      {
+        field: 'account.id',
+        operator: '$eq',
+        value: id,
+      },
+      {
+        field: 'dueDate',
+        operator: '$gte',
+        value: convert(firstDay.toString()),
+      },
+      {
+        field: 'dueDate',
+        operator: '$lte',
+        value: convert(lastDay.toString()),
+      },
+    ],
+  }).query(false);
+  const { data } = await instance.get<ISchedule[]>(`${SCHEDULE}?${query}`);
+  return data;
+};
+
 export const useSchedules = (
   accountId: string,
   pipelineItemId: string
@@ -36,5 +66,16 @@ export const useSchedules = (
     () => getMySchedules(accountId, pipelineItemId),
     {
       ...queryWithIdProps(accountId),
+    }
+  );
+export const useSchedulesByMonth = (
+  accountId: string,
+  month: number
+): UseQueryResult<ISchedule[], any> =>
+  useQuery(
+    [QUERY_SCHEDULES, accountId],
+    () => getMySchedulesByMonth(accountId, month),
+    {
+      ...queryWithIdProps(accountId, false),
     }
   );
