@@ -12,4 +12,5 @@ export enum controllers {
   EMAIL_TEMPLATE = 'email-template',
   PRODUCT = 'product',
   HISTORY = 'history',
+  SCHEDULE = 'schedule',
 }

@@ -4,32 +4,32 @@ import {
   MailOutlined,
   MoreOutlined,
 } from '@ant-design/icons';
-import { Planned } from '@components/schedule/planned';
-import { useToggle } from '@hooks/useToggle';
+import { useBooleanToggle } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.delete';
 import { Avatar, Button, Card, Divider, Dropdown, Space, Tag } from 'antd';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, lazy, SetStateAction, Suspense } from 'react';
 import { PopoverAction } from '../../popover/popover-action';
+const Planned = lazy(() => import('@components/schedule/planned'));
 const { Meta } = Card;
 
 interface PipelineCardItemProps {
-  dataCardPipeline: IPipelineItem;
+  cardData: IPipelineItem;
   toggleDrawer: () => void;
   setCurrentOpportunityId: Dispatch<SetStateAction<string>>;
 }
 
 export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
-  dataCardPipeline,
+  cardData,
   toggleDrawer,
   setCurrentOpportunityId,
 }) => {
-  const [isVisibleDropdown, toggleDropdown] = useToggle();  
+  const [isDropdownVisible, toggleDropdown] = useBooleanToggle(false);
 
   const { removePipelineItems } = useDeletePipelineItems();
-  const onDeletePipeLineItem = () => removePipelineItems(dataCardPipeline.id);
+  const onDeletePipeLineItem = () => removePipelineItems(cardData.id);
   const handleViewDetailClick = () => {
-    setCurrentOpportunityId(dataCardPipeline.id);
+    setCurrentOpportunityId(cardData.id);
     toggleDrawer();
   };
 
@@ -53,7 +53,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
           <>
             <span style={{ fontWeight: 500 }}>
               <FlagOutlined style={{ color: 'green' }} />
-              {` ${dataCardPipeline.name}`}
+              {` ${cardData.name}`}
             </span>
             <Tag color={'blue'} style={{ marginLeft: 10, borderRadius: 5 }}>
               Design
@@ -84,11 +84,26 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
                 <Space size={'middle'}>
                   <MailOutlined style={{ fontSize: 18 }} />
 
-                  <Dropdown visible={isVisibleDropdown} overlay={<Planned isVisibleDropdown={isVisibleDropdown} toggleDropdown={toggleDropdown} />} >
-                    <ClockCircleOutlined onClick={toggleDropdown} style={{ fontSize: 18, cursor: 'pointer' }} />
+                  <Dropdown
+                    visible={isDropdownVisible}
+                    overlay={
+                      <Suspense fallback={<></>}>
+                        <Planned
+                          cardData={cardData}
+                          toggleDropdown={toggleDropdown}
+                        />
+                      </Suspense>
+                    }
+                  >
+                    <ClockCircleOutlined
+                      onClick={() => toggleDropdown()}
+                      style={{ fontSize: 18, cursor: 'pointer' }}
+                    />
                   </Dropdown>
 
-                  <Tag style={{ marginLeft: 10, borderRadius: 5 }}>Modified 2h ago</Tag>
+                  <Tag style={{ marginLeft: 10, borderRadius: 5 }}>
+                    Modified 2h ago
+                  </Tag>
                 </Space>
                 <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
               </div>
