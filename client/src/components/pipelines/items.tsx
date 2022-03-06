@@ -32,7 +32,7 @@ export const PipelineItems: React.FC<PipelineItemsProps> = ({
 
   return (
     <>
-      <Droppable droppableId={pipelineColumn.id} type='task'>
+      <Droppable droppableId={pipelineColumn.name} type='task'>
         {(provided) => (
           <div
             className='pipeline-column scroll-menu-pipeline-2'

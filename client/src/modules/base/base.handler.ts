@@ -2,8 +2,8 @@ import { message } from "antd";
 import { useQueryClient } from "react-query";
 
 export const handleMutationResponse = (
-  queryKey: string,
-  onSuccess?: () => void,
+  queryKey?: string,
+  onSuccess?: (data: any, variables: any, context?: any) => void,
   onError?: () => void
 ) => {
   const queryClient = useQueryClient();
@@ -12,7 +12,7 @@ export const handleMutationResponse = (
       message.error(`${error}`)
     },
     onSuccess: onSuccess ? onSuccess : (data) => {
-      queryClient.invalidateQueries(queryKey);
+      queryClient.invalidateQueries(queryKey)      
     },
   };
 };
