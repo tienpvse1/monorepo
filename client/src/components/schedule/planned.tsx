@@ -19,7 +19,6 @@ const Planned: React.FC<PlannedProps> = ({
   isDropdownVisible,
   toggleModal,
 }) => {
-  console.log(cardData);
   const ref = useClickOutside(() => {
     if (isDropdownVisible) toggleDropdown();
   });

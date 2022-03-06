@@ -41,8 +41,6 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
   }
 
   const handleChange = async (value: Types) => {
-    console.log('callledddd');
-    console.log(value);
     if (value === Types.ALL) {
       setPreviewData(initialData);
     } else if (value === Types.CLEANED) {

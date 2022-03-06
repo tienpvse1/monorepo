@@ -1,8 +1,7 @@
-import { ClockCircleTwoTone } from '@ant-design/icons';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useHistory } from '@modules/history/query/history.get';
 import { getHistoryDate } from '@util/date';
-import { Card, Divider, Timeline, Tooltip } from 'antd';
+import { Card, Divider, Timeline } from 'antd';
 import { useCookies } from 'react-cookie';
 
 interface ThirdColumnProps {}
@@ -10,7 +9,6 @@ interface ThirdColumnProps {}
 export const ThirdColumn: React.FC<ThirdColumnProps> = ({}) => {
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
   const { data } = useHistory(public_user_info.id);
-  console.log(data);
   return (
     <div>
       <Card title='History logs' style={{ width: '20vw' }}>

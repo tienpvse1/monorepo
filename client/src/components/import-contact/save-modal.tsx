@@ -18,7 +18,6 @@ const SaveModal: React.FC<SaveModalProps> = ({
 }) => {
   const [type, setType] = useState<Types>(Types.ALL);
   const onOk = async (event: any) => {
-    console.log('children called');
     if (type === Types.ALL) {
       handleSave(rawContacts);
       setShowModal(false);
