@@ -80,7 +80,9 @@ export class PipelineItem extends BaseEntity {
   @ManyToMany(() => Tag, (tag) => tag.pipelineItems)
   tags: Tag[];
 
-  @OneToMany(() => Schedule, (schedule) => schedule.pipelineItem)
+  @OneToMany(() => Schedule, (schedule) => schedule.pipelineItem, {
+    cascade: true,
+  })
   schedules: Schedule[];
   @OneToMany(() => Address, (address) => address.pipelineItem, {
     cascade: true,
