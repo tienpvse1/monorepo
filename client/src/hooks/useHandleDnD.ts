@@ -5,8 +5,6 @@ import { useUpdatePipeline } from "@modules/pipeline/mutation/pipeline.update";
 import { useState } from "react";
 
 export const useHandleDnD = (data: IPipeline) => {
-  data['pipelineColumns']
-
   const [newPipeLine, setPipeLine] = useState<IPipeline>();
   const { updatePipeline, isError } = useUpdatePipeline();
   const { changeStage } = useChangeStagePipelineItems();
