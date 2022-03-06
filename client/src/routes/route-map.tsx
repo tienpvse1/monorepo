@@ -17,6 +17,7 @@ const Opportunities = lazy(() => import('@pages/opportunities'));
 const Leads = lazy(() => import('@pages/leads'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
 const ContactContainer = lazy(() => import('@components/contact/contact'));
+const Schedule = lazy(() => import('@pages/schedule'));
 
 export const route: RouteObject[] = [
   {
@@ -42,17 +43,21 @@ export const route: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <ContactContainer />
+            element: <ContactContainer />,
           },
           {
             path: 'view-details/:id',
-            element: <ViewContactDetails/>
-          }
-        ]
+            element: <ViewContactDetails />,
+          },
+        ],
       },
       {
         path: 'pipeline',
         element: <Pipeline />,
+      },
+      {
+        path: 'schedule',
+        element: <Schedule />,
       },
       {
         path: 'email',

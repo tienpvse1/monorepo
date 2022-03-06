@@ -4,6 +4,7 @@ import { BaseService } from 'src/base/nestjsx.service';
 import { reIndexItems } from 'src/util/pipeline-column';
 // import { reIndexItems } from 'src/util/pipeline-column';
 import { getCustomRepository, Repository } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { PipelineColumnRepository } from '../pipeline-column/pipeline-column.repository';
 import { ChangeStageDto } from './dto/update-pipeline-item.dto';
 import { PipelineItem } from './entities/pipeline-item.entity';
@@ -56,5 +57,25 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     await oldColumn.save();
     await newColumn.save();
     return [oldColumn, newColumn];
+  }
+
+  // !this function can cause error when it comes to cascade update
+  async updatePipelineItemIndex(
+    id: string,
+    columnId: string,
+    { index }: QueryDeepPartialEntity<PipelineItem>,
+  ) {
+    const columnRepository = getCustomRepository(PipelineColumnRepository);
+    const [item, column] = await Promise.all([
+      this.findOneItem({
+        where: {
+          id,
+        },
+      }),
+      columnRepository.findOneItem({ where: { id: columnId } }),
+    ]);
+    item.index = index as number;
+    item.pipelineColumn = column;
+    return item.save();
   }
 }

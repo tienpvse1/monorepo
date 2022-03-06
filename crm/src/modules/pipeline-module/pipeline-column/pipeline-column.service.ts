@@ -8,6 +8,7 @@ import {
   CreatePipelineColumnDto,
   CreateSinglePipelineColumnDto,
 } from './dto/create-pipeline-column.dto';
+import { UpdatePipelineColumnDto } from './dto/update-pipeline-column.dto';
 import { PipelineColumn } from './entities/pipeline-column.entity';
 
 @Injectable()
@@ -55,5 +56,9 @@ export class PipelineColumnService extends BaseService<PipelineColumn> {
     } catch (error) {
       throw new BadRequestException(error.message);
     }
+  }
+
+  async updateColumnIndex(id: string, { index }: UpdatePipelineColumnDto) {
+    return this.update(id, { index });
   }
 }
