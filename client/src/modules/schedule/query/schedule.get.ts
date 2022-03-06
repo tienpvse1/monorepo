@@ -6,7 +6,7 @@ import { useQuery, UseQueryResult } from 'react-query';
 import { ISchedule } from '../entity/schedule.entity';
 
 const { SCHEDULE } = controllers;
-const QUERY_SCHEDULES = 'query-schedules';
+export const QUERY_SCHEDULES = 'query-schedules';
 const getMySchedules = async (id: string, pipelineItemId: string) => {
   const query = RequestQueryBuilder.create({
     join: [{ field: 'account' }, { field: 'pipelineItem' }],

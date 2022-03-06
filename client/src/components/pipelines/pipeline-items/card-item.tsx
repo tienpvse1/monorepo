@@ -4,12 +4,18 @@ import {
   MailOutlined,
   MoreOutlined,
 } from '@ant-design/icons';
+import { CreateModal } from '@components/modal/create-modal';
+import { CreateScheduleForm } from '@components/schedule/create-schedule-form';
 import { useBooleanToggle } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.delete';
 import { Avatar, Button, Card, Divider, Dropdown, Space, Tag } from 'antd';
 import { Dispatch, lazy, SetStateAction, Suspense } from 'react';
 import { PopoverAction } from '../../popover/popover-action';
+import { ICreateScheduleDto } from '@modules/schedule/dto/create-schedule.dto';
+import { useCreateSchedule } from '@modules/schedule/mutation/schedule.post';
+import { client } from '../../../App';
+import { QUERY_SCHEDULES } from '@modules/schedule/query/schedule.get';
 const Planned = lazy(() => import('@components/schedule/planned'));
 const { Meta } = Card;
 
@@ -25,12 +31,23 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
   setCurrentOpportunityId,
 }) => {
   const [isDropdownVisible, toggleDropdown] = useBooleanToggle(false);
-
+  const [value, toggle] = useBooleanToggle(false);
+  const { mutate } = useCreateSchedule();
   const { removePipelineItems } = useDeletePipelineItems();
   const onDeletePipeLineItem = () => removePipelineItems(cardData.id);
   const handleViewDetailClick = () => {
     setCurrentOpportunityId(cardData.id);
     toggleDrawer();
+  };
+
+  const handleSubmit = (value: any) => {
+    const schedule: ICreateScheduleDto = {
+      ...value,
+      pipelineItemId: cardData.id,
+    };
+    mutate(schedule, {
+      onSuccess: () => client.refetchQueries(QUERY_SCHEDULES),
+    });
   };
 
   return (
@@ -86,11 +103,14 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
 
                   <Dropdown
                     visible={isDropdownVisible}
+                    destroyPopupOnHide
                     overlay={
                       <Suspense fallback={<></>}>
                         <Planned
+                          toggleModal={toggle}
                           cardData={cardData}
                           toggleDropdown={toggleDropdown}
+                          isDropdownVisible={isDropdownVisible}
                         />
                       </Suspense>
                     }
@@ -111,6 +131,15 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
           }
         />
       </Card>
+      <CreateModal
+        width={500}
+        title='Schedule Activity 2'
+        isOpenModal={value}
+        toggleCreateModal={() => toggle()}
+        callback={(record) => handleSubmit(record)}
+      >
+        <CreateScheduleForm />
+      </CreateModal>
     </>
   );
 };

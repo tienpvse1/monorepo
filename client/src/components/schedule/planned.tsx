@@ -3,7 +3,6 @@ import {
   FileTextOutlined,
   PlusOutlined,
 } from '@ant-design/icons';
-import { CreateModal } from '@components/modal/create-modal';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useBooleanToggle, useClickOutside } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
@@ -11,34 +10,30 @@ import { useSchedules } from '@modules/schedule/query/schedule.get';
 import { Alert, Button } from 'antd';
 import moment from 'moment';
 import { useCookies } from 'react-cookie';
-import { CreateScheduleForm } from './create-schedule-form';
 interface PlannedProps {
   toggleDropdown: () => void;
   cardData: IPipelineItem;
+  isDropdownVisible: boolean;
+  toggleModal: () => void;
 }
-const Planned: React.FC<PlannedProps> = ({ toggleDropdown, cardData }) => {
+const Planned: React.FC<PlannedProps> = ({
+  toggleDropdown,
+  cardData,
+  isDropdownVisible,
+  toggleModal,
+}) => {
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
   const { data } = useSchedules(public_user_info.id, cardData.id);
-  const [value, toggle] = useBooleanToggle(false);
   const ref = useClickOutside(() => {
-    if (value == true) toggle(false);
+    if (isDropdownVisible) toggleDropdown();
   });
 
   const handleCreateSchedule = () => {
     toggleDropdown();
-    toggle();
+    toggleModal();
   };
   return (
     <div ref={ref} className='planned-container'>
-      <CreateModal
-        width={500}
-        title='Schedule Activity'
-        isOpenModal={value}
-        toggleCreateModal={() => toggle(false)}
-        callback={(record) => console.log(record)}
-      >
-        <CreateScheduleForm />
-      </CreateModal>
       <div className='planned-title'>Planned</div>
 
       <div className='planned-list'>
