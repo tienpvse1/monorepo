@@ -8,7 +8,6 @@ import {
   SocketSendEvent,
 } from 'src/constance/event';
 import { UpdatePipelineDto } from './dto/update-pipeline.dto';
-import { Pipeline } from './entities/pipeline.entity';
 import { PipelineService } from './pipeline.service';
 
 @WebSocketGateway({ cors: true, namespace: 'pipeline' })
@@ -26,7 +25,8 @@ export class PipelineGateway extends BaseGateway<any> {
   }
 
   @OnEvent(InternalServerEvent.PIPELINE_UPDATED)
-  handlePipelineUpdated(payload: Pipeline) {
-    this.server.emit(SocketSendEvent.PIPELINE_UPDATED, payload);
+  async handlePipelineUpdated() {
+    const pipeline = await this.service.findOneItem({});
+    this.server.emit(SocketSendEvent.PIPELINE_UPDATED, pipeline);
   }
 }

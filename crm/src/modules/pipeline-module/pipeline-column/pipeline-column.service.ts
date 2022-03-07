@@ -1,6 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/base/nestjsx.service';
+import { InternalServerEvent } from 'src/constance/event';
 import { getCustomRepository, getRepository, Repository } from 'typeorm';
 import { Pipeline } from '../pipeline/entities/pipeline.entity';
 import { PipelineRepository } from '../pipeline/pipeline.repository';
@@ -16,6 +18,7 @@ export class PipelineColumnService extends BaseService<PipelineColumn> {
   constructor(
     @InjectRepository(PipelineColumn)
     repository: Repository<PipelineColumn>,
+    private eventEmitter: EventEmitter2,
   ) {
     super(repository);
   }
@@ -52,6 +55,7 @@ export class PipelineColumnService extends BaseService<PipelineColumn> {
       });
       pipeline.pipelineColumns.push(insertResult);
       pipeline.save();
+      this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
       return insertResult;
     } catch (error) {
       throw new BadRequestException(error.message);
