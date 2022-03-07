@@ -18,6 +18,7 @@ const socket = io(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 function App() {
   const elements = useRoutes(route);
   const navigate = useNavigate();
+  console.log(envVars.VITE_BE_DOMAIN);
 
   const idle = useIdle(10000 * 60 * 30, { initialState: false });
   useEffect(() => {
@@ -55,9 +56,9 @@ function App() {
 
   return (
     <QueryClientProvider client={client}>
-        <Suspense fallback={<Loading />}>
-          <div className='App'>{elements}</div>
-        </Suspense>
+      <Suspense fallback={<Loading />}>
+        <div className='App'>{elements}</div>
+      </Suspense>
     </QueryClientProvider>
   );
 }
