@@ -1,4 +1,4 @@
-import { Form, Modal } from 'antd'
+import { Form, Modal } from 'antd';
 
 interface CreateModalProps {
   isOpenModal: boolean;
@@ -14,7 +14,7 @@ export const CreateModal: React.FC<CreateModalProps> = ({
   children,
   callback,
   width = 1000,
-  title
+  title,
 }) => {
   const [form] = Form.useForm<any>();
 
@@ -22,27 +22,28 @@ export const CreateModal: React.FC<CreateModalProps> = ({
     const record = await form.validateFields();
     callback(record);
     toggleCreateModal();
-  }
+  };
 
   return (
     <Modal
-      className="modal-create"
-      style={{borderRadius: '5px'}}
-      title={<h2 style={{ textAlign: "center" }}>{title}</h2>}
+      className='modal-create'
+      style={{ borderRadius: '5px' }}
+      title={<h2 style={{ textAlign: 'center' }}>{title}</h2>}
       centered
       visible={isOpenModal}
       onOk={handleSubmit}
       onCancel={toggleCreateModal}
       width={width}
     >
-      <div className="scroll-menu-modal-create">
+      <div className='scroll-menu-modal-create'>
         <Form
-          initialValues={{ ["prefixMobile"]: '84' }}
-          form={form} layout="vertical"
+          initialValues={{ ['prefixMobile']: '84' }}
+          form={form}
+          layout='vertical'
         >
           {children}
         </Form>
       </div>
-    </Modal >
-  )
-}
+    </Modal>
+  );
+};

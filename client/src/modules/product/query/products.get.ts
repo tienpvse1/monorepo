@@ -1,7 +1,7 @@
 import { Axios } from '@axios';
 import { useQuery } from 'react-query';
 import { controllers } from '@constance/controllers';
-import { IProduct } from '../enity/product.enity';
+import { IProduct } from '../entity/product.entity';
 const { PRODUCT } = controllers;
 
 export const getAllProduct = async () => {
@@ -10,7 +10,4 @@ export const getAllProduct = async () => {
   return data;
 };
 
-export const useQueryProducts = () => {
-  const { data, isLoading } = useQuery(PRODUCT, getAllProduct);
-  return { data, isLoading };
-};
+export const useQueryProducts = () => useQuery(PRODUCT, getAllProduct);

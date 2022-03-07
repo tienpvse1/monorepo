@@ -8,5 +8,6 @@ import { PipelineColumnService } from './pipeline-column.service';
   controllers: [PipelineColumnController],
   providers: [PipelineColumnService],
   imports: [TypeOrmModule.forFeature([PipelineColumn])],
+  exports: [PipelineColumnService],
 })
 export class PipelineColumnModule {}

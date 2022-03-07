@@ -25,11 +25,14 @@ export class Schedule extends BaseEntity {
 
   @ManyToOne(() => Account, (account) => account.schedules, {
     cascade: ['insert'],
+    onUpdate: 'CASCADE',
   })
   account: Account;
 
   @ManyToOne(() => PipelineItem, (pipelineItem) => pipelineItem.schedules, {
     cascade: ['insert'],
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
   })
-  pipelineItem: PipelineItem[];
+  pipelineItem: PipelineItem;
 }

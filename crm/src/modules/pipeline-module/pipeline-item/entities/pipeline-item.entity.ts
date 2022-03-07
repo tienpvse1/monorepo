@@ -3,6 +3,7 @@ import { Account } from 'src/modules/account/entities/account.entity';
 import { Address } from 'src/modules/address/entities/address.entity';
 import { Contact } from 'src/modules/contact/entities/contact.entity';
 import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
+import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
 import { Tag } from 'src/modules/tag/entities/tag.entity';
 import {
@@ -12,12 +13,11 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  Unique,
+  OneToOne,
 } from 'typeorm';
 import { PipelineColumn } from '../../pipeline-column/entities/pipeline-column.entity';
 
 @Entity({ name: 'pipeline_item' })
-@Unique(['index', 'pipelineColumn.id'])
 export class PipelineItem extends BaseEntity {
   @Column()
   name: string;
@@ -62,6 +62,13 @@ export class PipelineItem extends BaseEntity {
   @Column({ nullable: true, name: 'internal_note' })
   internalNotes: string;
 
+  @OneToOne(
+    () => OpportunityRevenue,
+    (opportunityRevenue) => opportunityRevenue.pipelineItem,
+    { cascade: true },
+  )
+  opportunityRevenue: OpportunityRevenue;
+
   @ManyToOne(() => Account, (account) => account.pipelineItems)
   @JoinColumn({ name: 'account_id' })
   account: Account;
@@ -70,10 +77,16 @@ export class PipelineItem extends BaseEntity {
   @JoinColumn({ name: 'contact_id' })
   contact: Contact;
 
-  @ManyToMany(() => Tag, (tag) => tag.pipelineItems)
+  @ManyToMany(() => Tag, (tag) => tag.pipelineItems, {
+    eager: true,
+    cascade: true,
+  })
   tags: Tag[];
 
-  @OneToMany(() => Schedule, (schedule) => schedule.pipelineItem)
+  @OneToMany(() => Schedule, (schedule) => schedule.pipelineItem, {
+    cascade: true,
+    eager: true,
+  })
   schedules: Schedule[];
   @OneToMany(() => Address, (address) => address.pipelineItem, {
     cascade: true,
@@ -81,6 +94,7 @@ export class PipelineItem extends BaseEntity {
   addresses: Address[];
   @OneToMany(() => NoteWorthy, (noteWorthies) => noteWorthies.pipelineItem, {
     cascade: true,
+    eager: true,
   })
   noteWorthies: NoteWorthy[];
 

@@ -4,8 +4,8 @@ import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column
 import { Button } from 'antd';
 import { Draggable } from 'react-beautiful-dnd';
 import { PipelineItems } from './items';
-import { ColumnNameHeader } from './pipeline-column/column-name-header';
-import { FormEditColumnName } from './pipeline-column/form-edit-column-name';
+import { ColumnHeaderName } from './pipeline-column/column-header-name';
+import { FormEditColumnName } from './pipeline-column/edit-column-name-form';
 
 interface PipeLineColumnProps {
   pipelineColumn: IPipelineColumn;
@@ -37,14 +37,14 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
                 setShowInput={setShowInput}
               />
             ) : (
-              <ColumnNameHeader
+              <ColumnHeaderName
                 pipelineColumn={pipelineColumn}
                 setShowInput={setShowInput}
               />
             )}
           </div>
           {/* //TODO: this price total is still hard-coded */}
-          <div className="price-total">
+          <div className='price-total'>
             <span>15.000.000 đ</span>
           </div>
           <Button

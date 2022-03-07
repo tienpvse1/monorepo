@@ -13,7 +13,6 @@ const updatePipelineItem = async (
   id: string,
   updateDto: IUpdatePipelineItemDto
 ) => {
-  console.log('🚀 ~ file: pipeline-items.update.ts ~ line 16 ~ id', id);
   const { data } = await instance.patch(`${PIPELINE_ITEM}/${id}`, updateDto);
   return data;
 };

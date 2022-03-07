@@ -8,5 +8,6 @@ import { PipelineItemService } from './pipeline-item.service';
   controllers: [PipelineItemController],
   providers: [PipelineItemService],
   imports: [TypeOrmModule.forFeature([PipelineItem])],
+  exports: [PipelineItemService],
 })
 export class PipelineItemModule {}

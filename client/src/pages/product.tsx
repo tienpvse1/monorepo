@@ -1,7 +1,7 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
 import { ProductTitleTable } from '@components/product/product-title-table';
 import { EditableCell } from '@components/table/editable-cell';
-import { IProduct } from '@modules/product/enity/product.enity';
+import { IProduct } from '@modules/product/entity/product.entity';
 import { useQueryProducts } from '@modules/product/query/products.get';
 import { Button, Form, Popconfirm, Space, Table } from 'antd';
 import Column from 'antd/lib/table/Column';

@@ -1,0 +1,4 @@
+.ant-modal-content {
+  width: 50vw;
+  transform: translateX(-10vw);
+}
