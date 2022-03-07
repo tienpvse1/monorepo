@@ -55,14 +55,16 @@ const Upload: React.FC<UploadProps> = ({ contacts, setImportedContacts }) => {
           id,
         });
     }
-
-    setErrors(errorMessages);
-    setWarnings(warningMessages);
+    if (errorMessages.length > 0 || warningMessages.length > 0) {
+      setErrors(errorMessages);
+      setWarnings(warningMessages);
+    } else {
+      setImportedContacts(data);
+    }
   };
   const handleChange = async (info: UploadChangeParam<any>) => {
     const data = await readExcel(info.file);
     validateData(data);
-    console.log(data);
     setData(data);
     // setImportedContacts(data);
   };

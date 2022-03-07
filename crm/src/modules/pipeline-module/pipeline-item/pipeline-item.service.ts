@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/base/nestjsx.service';
+import { InternalServerEvent } from 'src/constance/event';
 import { reIndexItems } from 'src/util/pipeline-column';
 // import { reIndexItems } from 'src/util/pipeline-column';
 import { getCustomRepository, Repository } from 'typeorm';
@@ -14,6 +16,7 @@ export class PipelineItemService extends BaseService<PipelineItem> {
   constructor(
     @InjectRepository(PipelineItem)
     repository: Repository<PipelineItem>,
+    private eventEmitter: EventEmitter2,
   ) {
     super(repository);
   }
@@ -56,6 +59,7 @@ export class PipelineItemService extends BaseService<PipelineItem> {
 
     await oldColumn.save();
     await newColumn.save();
+    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
     return [oldColumn, newColumn];
   }
 
