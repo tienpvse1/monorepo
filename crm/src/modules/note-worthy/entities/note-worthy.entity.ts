@@ -14,7 +14,9 @@ export class NoteWorthy extends BaseEntity {
   @ManyToOne(() => Contact, (contact) => contact.noteWorthies)
   @JoinColumn({ name: 'contact_id' })
   contact: Contact;
-  @ManyToOne(() => PipelineItem, (pipelineItem) => pipelineItem.noteWorthies)
+  @ManyToOne(() => PipelineItem, (pipelineItem) => pipelineItem.noteWorthies, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'pipeline_item_id' })
   pipelineItem: PipelineItem;
 }

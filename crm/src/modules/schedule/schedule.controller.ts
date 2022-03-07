@@ -39,6 +39,12 @@ import { ScheduleService } from './schedule.service';
       decorators: [HistoryLog('deleted an scheduled activity')],
     },
   },
+  query: {
+    join: {
+      account: {},
+      pipelineItem: {},
+    },
+  },
 })
 export class ScheduleController {
   constructor(public readonly service: ScheduleService) {}
@@ -48,6 +54,6 @@ export class ScheduleController {
   @HistoryLog('scheduled an activity')
   @UsePipes(ParseDtoPipe)
   createSchedule(@Body() parsedDto: ParsedCreateScheduleDto) {
-    return parsedDto;
+    return this.service.createItem(parsedDto);
   }
 }

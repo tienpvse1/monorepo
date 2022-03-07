@@ -37,11 +37,8 @@ export const compressImage = async (image: File, sizeMB: number) => {
   try {
     const compressedFile = await imageCompression(image, options);
 
-    console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
     return new File([compressedFile], `${compressedFile.name}.png`, {
       type: 'image/png',
     });
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };

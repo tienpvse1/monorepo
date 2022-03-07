@@ -5,7 +5,6 @@ import { useUpdatePipeline } from "@modules/pipeline/mutation/pipeline.update";
 import { useState } from "react";
 
 export const useHandleDnD = (data: IPipeline) => {
-
   const [newPipeLine, setPipeLine] = useState<IPipeline>();
   const { updatePipeline, isError } = useUpdatePipeline();
   const { changeStage } = useChangeStagePipelineItems();
@@ -14,11 +13,11 @@ export const useHandleDnD = (data: IPipeline) => {
     const newState =
     {
       ...data,
-      pipelineColumns: newColumn
-    }
+      pipelineColumns: newColumn,
+    };
     setPipeLine(newState);
     updatePipeline(newState);
-  }
+  };
 
   const handleChangeStageItems = (
     newColumn: IPipelineColumn[],
@@ -45,8 +44,8 @@ export const useHandleDnD = (data: IPipeline) => {
   }
 
   const reassignIndex = <T>(array: Array<T>) => {
-    return array.map((value, index) => ({ ...value, index: index }))
-  }
+    return array.map((value, index) => ({ ...value, index: index }));
+  };
 
   const handleMoveColumn = (startIndex: number, finishIndex: number) => {
     //lấy mảng pipelineColumns ra
@@ -61,7 +60,7 @@ export const useHandleDnD = (data: IPipeline) => {
     //set lại column mới vô state
 
     setNewPipeline(reassignIndex(pipelineNewColumns));
-  }
+  };
 
   const handleMoveItemColumn = (startIndex: number, finishIndex: number, columnName: string) => {
     // tìm column theo name và trả về giá trị column tìm đc
@@ -77,7 +76,7 @@ export const useHandleDnD = (data: IPipeline) => {
     // thêm dữ liệu card vừa đc lấy ra bỏ vào vị trí điểm đến finishIndex
     pipelineNewItems.splice(finishIndex, 0, newItemColumn);
 
-    //update index  
+    //update index
     const result = reassignIndex(pipelineNewItems);
 
     //update lại pipeline mới sau khi đổi chỗ card
@@ -130,7 +129,7 @@ export const useHandleDnD = (data: IPipeline) => {
     console.log("newItems2:", newItems2);
     //------------------------------------------------------------
 
-    // update lại state mới sau khi đổi chỗ 
+    // update lại state mới sau khi đổi chỗ
     const newColumn = data.pipelineColumns.map((item) => {
       if (item.name == startColumn)
         return { ...item, pipelineItems: newItems1 };
@@ -150,6 +149,6 @@ export const useHandleDnD = (data: IPipeline) => {
     isError,
     handleMoveColumn,
     handleMoveItemColumn,
-    handleMoveItemsBetweenColumns
+    handleMoveItemsBetweenColumns,
   };
-}
+};

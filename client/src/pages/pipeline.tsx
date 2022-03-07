@@ -1,17 +1,9 @@
-import { MainPipeline } from "@components/pipelines/main-pipeline";
-import { ScheduleContextProvider } from "@context/schedule.context";
+import { MainPipeline } from '@components/pipelines/main-pipeline';
 
-interface PipelineProps {
+interface PipelineProps {}
 
-}
-
-const Pipeline: React.FC<PipelineProps> = ({ }) => {
-
-  return (
-    <ScheduleContextProvider>
-      <MainPipeline />
-    </ScheduleContextProvider>
-  )
+const Pipeline: React.FC<PipelineProps> = ({}) => {
+  return <MainPipeline />;
 };
 
 export default Pipeline;

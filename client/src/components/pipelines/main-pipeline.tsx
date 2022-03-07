@@ -1,6 +1,6 @@
 import { EmptyComponent } from '@components/empty';
-import { CreateModal } from '@components/modal/create-modal';
 import { PageTitlePipeline } from '@components/pipelines/page-title';
+import { PipeLineColumn } from '@components/pipelines/pipeline-column';
 import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-horizontal';
 import { useHandleDnD } from '@hooks/useHandleDnD';
 import { useToggle } from '@hooks/useToggle';
@@ -10,9 +10,6 @@ import { sortPipeline } from '@util/sort';
 import { Button } from 'antd';
 import { useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { PipeLineColumn } from '@components/pipelines/pipeline-column';
-import { CreateScheduleForm } from '@components/schedule/create-schedule-form';
-import { useScheduleContext } from '@context/schedule.context';
 import { CreateColumnModal } from './pipeline-column/create-column-modal';
 import { useSocket } from '@hooks/socket';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
@@ -25,7 +22,6 @@ interface MainPipelineProps { }
 
 export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
   const [visible, setModalCreateStage] = useToggle();
-  const { isOpenModal, toggleModal } = useScheduleContext();
 
   const { data } = useGetPipeLineUser();
   const {
@@ -145,16 +141,6 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
         visible={visible}
         pipelineId={data?.id}
       />
-
-      <CreateModal
-        width={500}
-        title='Schedule Activity'
-        isOpenModal={isOpenModal}
-        toggleCreateModal={toggleModal}
-        callback={() => { }}
-      >
-        <CreateScheduleForm />
-      </CreateModal>
     </>
   );
 };

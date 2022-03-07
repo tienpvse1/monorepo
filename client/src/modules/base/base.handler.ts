@@ -1,5 +1,6 @@
 import { message } from "antd";
 import { useQueryClient } from "react-query";
+import { UseQueryOptions } from 'react-query';
 
 export const handleMutationResponse = (
   queryKey?: string,
@@ -14,5 +15,18 @@ export const handleMutationResponse = (
     onSuccess: onSuccess ? onSuccess : (data) => {
       queryClient.invalidateQueries(queryKey)      
     },
+  };
+};
+
+export const queryWithIdProps = (
+  id?: string,
+  isSuspense = true
+): Omit<
+  UseQueryOptions<any, unknown, any, string[]>,
+  'queryKey' | 'queryFn'
+> => {
+  return {
+    suspense: isSuspense,
+    enabled: Boolean(id),
   };
 };

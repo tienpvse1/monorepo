@@ -1,9 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/base/nestjsx.service';
+import { InternalServerEvent } from 'src/constance/event';
 import { reIndexItems } from 'src/util/pipeline-column';
 // import { reIndexItems } from 'src/util/pipeline-column';
 import { getCustomRepository, Repository } from 'typeorm';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { PipelineColumnRepository } from '../pipeline-column/pipeline-column.repository';
 import { ChangeStageDto } from './dto/update-pipeline-item.dto';
 import { PipelineItem } from './entities/pipeline-item.entity';
@@ -13,6 +16,7 @@ export class PipelineItemService extends BaseService<PipelineItem> {
   constructor(
     @InjectRepository(PipelineItem)
     repository: Repository<PipelineItem>,
+    private eventEmitter: EventEmitter2,
   ) {
     super(repository);
   }
@@ -49,18 +53,33 @@ export class PipelineItemService extends BaseService<PipelineItem> {
       0,
       item,
     );
-    // const [result1, result2] = await Promise.all([
-    //   this.repository.remove(clone(newColumn).pipelineItems),
-    //   this.repository.remove(clone(oldColumn).pipelineItems),
-    // ]);
-    // console.log(result2);
+
     reIndexItems(oldColumn);
     reIndexItems(newColumn);
 
-    // console.log(oldColumn);
-    // console.log(newColumn);
     await oldColumn.save();
     await newColumn.save();
+    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
     return [oldColumn, newColumn];
+  }
+
+  // !this function can cause error when it comes to cascade update
+  async updatePipelineItemIndex(
+    id: string,
+    columnId: string,
+    { index }: QueryDeepPartialEntity<PipelineItem>,
+  ) {
+    const columnRepository = getCustomRepository(PipelineColumnRepository);
+    const [item, column] = await Promise.all([
+      this.findOneItem({
+        where: {
+          id,
+        },
+      }),
+      columnRepository.findOneItem({ where: { id: columnId } }),
+    ]);
+    item.index = index as number;
+    item.pipelineColumn = column;
+    return item.save();
   }
 }

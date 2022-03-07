@@ -56,7 +56,7 @@ export const PipelineItems: React.FC<PipelineItemsProps> = ({
                       {...provided.dragHandleProps}
                     >
                       <PipelineCardItem
-                        dataCardPipeline={data}
+                        cardData={data}
                         toggleDrawer={toggleDrawer}
                         setCurrentOpportunityId={setCurrentOpportunityId}
                       />
