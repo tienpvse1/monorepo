@@ -14,10 +14,16 @@ import { PipeLineColumn } from '@components/pipelines/pipeline-column';
 import { CreateScheduleForm } from '@components/schedule/create-schedule-form';
 import { useScheduleContext } from '@context/schedule.context';
 import { CreateColumnModal } from './pipeline-column/create-column-modal';
+import { useSocket } from '@hooks/socket';
+import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
+import { connect } from 'socket.io-client';
+import { envVars } from '@env/var.env';
 
-interface MainPipelineProps {}
+const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 
-export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
+interface MainPipelineProps { }
+
+export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
   const [visible, setModalCreateStage] = useToggle();
   const { isOpenModal, toggleModal } = useScheduleContext();
 
@@ -30,7 +36,13 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
     handleMoveItemColumn,
     handleMoveItemsBetweenColumns,
   } = useHandleDnD(data);
-  
+
+  useSocket<IPipeline, any>({
+    event: 'pipeline-updated',
+    socket,
+    onReceive: (dataAfterUpdated) => setPipeLine(dataAfterUpdated)
+  });
+
   useEffect(() => {
     setPipeLine(data);
   }, [data, isError]);
@@ -139,7 +151,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
         title='Schedule Activity'
         isOpenModal={isOpenModal}
         toggleCreateModal={toggleModal}
-        callback={() => {}}
+        callback={() => { }}
       >
         <CreateScheduleForm />
       </CreateModal>
