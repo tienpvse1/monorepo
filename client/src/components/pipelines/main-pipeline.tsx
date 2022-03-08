@@ -2,25 +2,25 @@ import { EmptyComponent } from '@components/empty';
 import { PageTitlePipeline } from '@components/pipelines/page-title';
 import { PipeLineColumn } from '@components/pipelines/pipeline-column';
 import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-horizontal';
+import { envVars } from '@env/var.env';
+import { useSocket } from '@hooks/socket';
 import { useHandleDnD } from '@hooks/useHandleDnD';
 import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
+import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { useGetPipeLineUser } from '@modules/pipeline/query/pipeline.get';
 import { sortPipeline } from '@util/sort';
 import { Button } from 'antd';
 import { useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { CreateColumnModal } from './pipeline-column/create-column-modal';
-import { useSocket } from '@hooks/socket';
-import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { connect } from 'socket.io-client';
-import { envVars } from '@env/var.env';
+import { CreateColumnModal } from './pipeline-column/create-column-modal';
 
 const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 
-interface MainPipelineProps { }
+interface MainPipelineProps {}
 
-export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
+export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
   const [visible, setModalCreateStage] = useToggle();
 
   const { data } = useGetPipeLineUser();
@@ -36,7 +36,10 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
   useSocket<IPipeline, any>({
     event: 'pipeline-updated',
     socket,
-    onReceive: (dataAfterUpdated) => setPipeLine(dataAfterUpdated)
+    onReceive: (dataAfterUpdated) => {
+      console.log(dataAfterUpdated);
+      setPipeLine(dataAfterUpdated);
+    },
   });
 
   useEffect(() => {
@@ -70,15 +73,20 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
 
     //Xử lý cho kéo thả item
     if (result.type == 'task') {
-      //di chuyển các card item trong 1 column      
+      //di chuyển các card item trong 1 column
       if (startColumn === finishColumn) {
         handleMoveItemColumn(startIndex, finishIndex, startColumn);
         return;
       }
 
       //di chuyển các item qua lại nhiều cột
-      handleMoveItemsBetweenColumns(startIndex, finishIndex, startColumn, finishColumn, draggableId);
-
+      handleMoveItemsBetweenColumns(
+        startIndex,
+        finishIndex,
+        startColumn,
+        finishColumn,
+        draggableId
+      );
     }
   };
 
