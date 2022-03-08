@@ -84,7 +84,7 @@ export const ContactData: FC = () => {
   const handleCreateContact = (record: IContact) => {
     insertContact({
       ...record,
-      addresses: [{...record.addresses}]
+      addresses: record.addresses.length === 0 ? [] : [{ ...record.addresses }]
     })
   }
 

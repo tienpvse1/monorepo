@@ -3,13 +3,15 @@ import {
   isPhoneNumber,
   isRequired,
 } from '@constance/rules-of-input-antd';
+import { IContact } from '@modules/contact/entity/contact.entity';
+import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
 import { useContacts } from '@modules/contact/query/contact.get';
 import { ICreatePipelineItemsDto } from '@modules/pipeline-items/dto/create-pipeline-items.dto';
 import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { useQueryProducts } from '@modules/product/query/products.get';
 import { Button, Card, Form, Input, Select } from 'antd';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { client } from '../../../App';
 const { Option } = Select;
 
@@ -31,16 +33,20 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
   pipelineColumnID,
   toggleClose,
 }) => {
-  const { mutate } = usePostPipelineItems();
+  const { mutate: createNewItems } = usePostPipelineItems();
+
+  const { mutate: updateContact } = useUpdateContact();
+
   const { data } = useContacts();
   const { data: products } = useQueryProducts();
+
+  const [infoContact, setInfoContact] = useState<IContact>();
 
   const [form] = Form.useForm<SubmittedObject>();
 
   const handleSubmit = (value: SubmittedObject) => {
-    //TODO: this createPipelineItems is still comment code -> pending api update field contact id
 
-    const { quantity, productId, name, contactId } = value;
+    const { quantity, productId, name, contactId, email, mobile } = value;
     const data: ICreatePipelineItemsDto = {
       columnId: pipelineColumnID,
       contactId,
@@ -50,10 +56,17 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
         quantity,
       },
     };
-    mutate(data, {
+    createNewItems(data, {
       onSuccess: () => {
-        client.refetchQueries(GET_PIPELINE_DESIGN);
+        if (infoContact.email !== email || infoContact.mobile !== mobile) {
+          updateContact({
+            id: infoContact.id,
+            email,
+            mobile
+          })
+        }
         toggleClose();
+        client.invalidateQueries(GET_PIPELINE_DESIGN);
       },
     });
   };
@@ -62,6 +75,9 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
     const contactSelected = data?.find((contact) => {
       return contact.id == contactIdSelected;
     });
+
+    setInfoContact(contactSelected);
+
     form.setFieldsValue({
       email: contactSelected.email,
       mobile: contactSelected.mobile,
@@ -128,7 +144,6 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
             <Input />
           </Form.Item>
 
-          {/* //TODO: this Product Revenue is still no data */}
           {products && (
             <Form.Item
               label='Product Revenue'
