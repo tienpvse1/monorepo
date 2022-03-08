@@ -14,7 +14,7 @@ export const OpportunityCardImage: React.FC<OpportunityCardImageProps> = ({ data
       <Card
         bordered={false}
         style={{ display: 'flex', alignItems: 'center' }}
-        bodyStyle={{ fontSize: '18px' }}
+        bodyStyle={{ fontSize: '18px', width: 150 }}
         cover={
           <div style={{ padding: 20 }}>
             <Image
