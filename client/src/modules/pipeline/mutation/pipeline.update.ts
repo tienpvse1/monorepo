@@ -1,13 +1,13 @@
 import { Axios } from "@axios";
 import { controllers } from "@constance/controllers";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { IPipeline } from "../entity/pipeline.entity";
-import { message } from "antd"
 import { GET_PIPELINE_DESIGN } from "../query/pipeline.get";
+import { handleMutationResponse } from "@modules/base/base.handler";
 const { PIPELINE } = controllers;
 
 
-export const actionPutPipeline = async ({ id, ...rest }: IPipeline) => {
+export const actionPutPipeline = async ({ id, infoChangeStage, ...rest}: IPipeline) => {
   const { instance } = new Axios();
   const { data } = await instance.put(`${PIPELINE}/${id}`, { ...rest });
 
@@ -15,15 +15,9 @@ export const actionPutPipeline = async ({ id, ...rest }: IPipeline) => {
 }
 
 export const useUpdatePipeline = () => {
-  const queryClient = useQueryClient();
-  const { mutate, isLoading, isError } = useMutation(actionPutPipeline,
+  const { mutate, ...rest } = useMutation(actionPutPipeline,
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
-      },
-      onError: () => {
-        message.error('Oops something went wrong!');
-      }
+      ...handleMutationResponse(GET_PIPELINE_DESIGN)
     }
   );
 
@@ -31,5 +25,5 @@ export const useUpdatePipeline = () => {
     mutate(pipeline);
   }
 
-  return { updatePipeline, isLoading, isError };
+  return { updatePipeline, ...rest };
 }

@@ -11,10 +11,16 @@ import { Button } from 'antd';
 import { useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { CreateColumnModal } from './pipeline-column/create-column-modal';
+import { useSocket } from '@hooks/socket';
+import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
+import { connect } from 'socket.io-client';
+import { envVars } from '@env/var.env';
 
-interface MainPipelineProps {}
+const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 
-export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
+interface MainPipelineProps { }
+
+export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
   const [visible, setModalCreateStage] = useToggle();
 
   const { data } = useGetPipeLineUser();
@@ -26,6 +32,12 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
     handleMoveItemColumn,
     handleMoveItemsBetweenColumns,
   } = useHandleDnD(data);
+
+  useSocket<IPipeline, any>({
+    event: 'pipeline-updated',
+    socket,
+    onReceive: (dataAfterUpdated) => setPipeLine(dataAfterUpdated)
+  });
 
   useEffect(() => {
     setPipeLine(data);
@@ -39,7 +51,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
   const widthOfItem = 333;
 
   const onDragEnd = (result: DropResult) => {
-    const { source, destination } = result;
+    const { source, destination, draggableId } = result;
     //nếu ko có vị trí điểm đến -> return
     if (!destination) return;
 
@@ -58,19 +70,15 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
 
     //Xử lý cho kéo thả item
     if (result.type == 'task') {
-      //di chuyển các card item trong 1 column
+      //di chuyển các card item trong 1 column      
       if (startColumn === finishColumn) {
         handleMoveItemColumn(startIndex, finishIndex, startColumn);
         return;
       }
 
       //di chuyển các item qua lại nhiều cột
-      handleMoveItemsBetweenColumns(
-        startIndex,
-        finishIndex,
-        startColumn,
-        finishColumn
-      );
+      handleMoveItemsBetweenColumns(startIndex, finishIndex, startColumn, finishColumn, draggableId);
+
     }
   };
 

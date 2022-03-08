@@ -178,7 +178,7 @@ export const ContactData: FC = () => {
             width={120}
             render={(text) => (
               <span>
-                <Tag color={'gold'}>{text ? text.toUpperCase() : 'NULL'}</Tag>
+                <Tag color={'gold'}>{text ? text.toUpperCase() : 'NORMAL'}</Tag>
               </span>
             )}
           />
