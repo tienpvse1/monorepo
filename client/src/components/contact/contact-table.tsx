@@ -28,7 +28,7 @@ const rowSelection = {
   }),
 };
 
-export const ContactData: FC = () => {
+export const ContactTable: FC = () => {
   const { data, isLoading } = useContacts();
 
   const { mutate: updateContact } = useUpdateContact(() =>
