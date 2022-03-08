@@ -20,7 +20,7 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
   const [showInput, setShowInput] = useToggle();
 
   return (
-    <Draggable draggableId={pipelineColumn.id} index={index}>
+    <Draggable draggableId={pipelineColumn.name} index={index}>
       {(providedColumn) => (
         <div
           className='wrapper-draggable-pipeline-column'

@@ -1,8 +1,8 @@
 import { Axios } from "@axios";
 import { controllers } from "@constance/controllers";
+import { handleMutationResponse } from "@modules/base/base.handler";
 import { GET_PIPELINE_DESIGN } from "@modules/pipeline/query/pipeline.get";
-import { message } from "antd";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 const { PIPELINE_COLUMN } = controllers;
 
 export const actionDeletePipelineColumn = async (pipelineColumnId: string) => {
@@ -13,11 +13,9 @@ export const actionDeletePipelineColumn = async (pipelineColumnId: string) => {
 }
 
 export const useDeletePipelineColumn = () => {
-  const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation(actionDeletePipelineColumn,
+  const { mutate, ...rest } = useMutation(actionDeletePipelineColumn,
     {
-      onSuccess: () => { queryClient.invalidateQueries(GET_PIPELINE_DESIGN) },
-      onError: () => { message.error('delete pipeline column failed!') }
+      ...handleMutationResponse(GET_PIPELINE_DESIGN)
     }
   );
 
@@ -25,5 +23,5 @@ export const useDeletePipelineColumn = () => {
     mutate(pipelineColumnId);
   }
 
-  return { deletePipelineColumn, isLoading };
+  return { deletePipelineColumn, ...rest };
 }

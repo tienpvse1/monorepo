@@ -1,8 +1,8 @@
 import { Axios } from '@axios';
 import { controllers } from '@constance/controllers';
+import { handleMutationResponse } from '@modules/base/base.handler';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
-import { message } from 'antd';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 const { PIPELINE_ITEM } = controllers;
 
 export const deletePipelineItems = async (pipelineItemsId: string) => {
@@ -13,19 +13,13 @@ export const deletePipelineItems = async (pipelineItemsId: string) => {
 };
 
 export const useDeletePipelineItems = () => {
-  const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation(deletePipelineItems, {
-    onSuccess: () => {
-      queryClient.refetchQueries(GET_PIPELINE_DESIGN);
-    },
-    onError: () => {
-      message.error('delete pipeline items failed!');
-    },
+  const { mutate, ...rest } = useMutation(deletePipelineItems, {
+   ...handleMutationResponse(GET_PIPELINE_DESIGN)
   });
 
   const removePipelineItems = (pipelineItemsId: string) => {
     mutate(pipelineItemsId);
   };
 
-  return { removePipelineItems, isLoading };
+  return { removePipelineItems, ...rest };
 };

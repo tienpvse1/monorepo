@@ -1,6 +1,7 @@
 import { Axios } from '@axios';
 import { controllers } from '@constance/controllers';
 import { handleMutationResponse } from '@modules/base/base.handler';
+import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { useMutation } from 'react-query';
 import { ICreatePipelineItemsDto } from '../dto/create-pipeline-items.dto';
 
@@ -17,5 +18,5 @@ export const postPipelineItems = async (
 
 export const usePostPipelineItems = () =>
   useMutation(postPipelineItems, {
-    ...handleMutationResponse(),
+    ...handleMutationResponse(GET_PIPELINE_DESIGN)
   });

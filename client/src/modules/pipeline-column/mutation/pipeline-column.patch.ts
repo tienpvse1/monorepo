@@ -1,8 +1,8 @@
 import { Axios } from "@axios";
 import { controllers } from "@constance/controllers";
+import { handleMutationResponse } from "@modules/base/base.handler";
 import { GET_PIPELINE_DESIGN } from "@modules/pipeline/query/pipeline.get";
-import { message } from "antd";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { ICreatePipelineColumnDto } from "../dto/create-pipeline-column.dto"
 const { PIPELINE_COLUMN } = controllers;
 
@@ -15,11 +15,9 @@ export const actionPatchPipelineColumn = async (pipelineColumn: ICreatePipelineC
 }
 
 export const useUpdatePipelineColumn = () => {
-  const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation(actionPatchPipelineColumn,
+  const { mutate, ...rest } = useMutation(actionPatchPipelineColumn,
     {
-      onSuccess: () => { queryClient.invalidateQueries(GET_PIPELINE_DESIGN) },
-      onError: () => { message.error('update pipeline column name failed!') }
+      ...handleMutationResponse(GET_PIPELINE_DESIGN)
     }
   );
 
@@ -27,5 +25,5 @@ export const useUpdatePipelineColumn = () => {
     mutate(pipelineColumn);
   }
 
-  return { updatePipelineColumn, isLoading };
+  return { updatePipelineColumn, ...rest };
 }
