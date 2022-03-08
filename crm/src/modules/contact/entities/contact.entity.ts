@@ -1,9 +1,17 @@
 import { BaseEntity } from 'src/base/entity.base';
+import { Account } from 'src/modules/account/entities/account.entity';
 import { Address } from 'src/modules/address/entities/address.entity';
 import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
 import { Tag } from 'src/modules/tag/entities/tag.entity';
-import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 @Entity({ name: 'contact' })
 export class Contact extends BaseEntity {
@@ -37,6 +45,11 @@ export class Contact extends BaseEntity {
   title: string;
   @Column({ nullable: true, name: 'internal_note' })
   internalNotes: string;
+
+  @ManyToOne(() => Account, (account) => account.contacts)
+  @JoinColumn({ name: 'account_id' })
+  account: Account;
+
   @ManyToMany(() => Tag, (tag) => tag.contacts, { cascade: true })
   tags: Tag[];
 

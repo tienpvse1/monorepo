@@ -6,12 +6,19 @@ const PreviewContactTable = lazy(
   () => import('@components/import-contact/preview-contact-table')
 );
 import { CreateContactDto } from '@modules/contact/dto/create-contact.dto';
+import { useCookies } from 'react-cookie';
+import { PUBLIC_USER_INFO } from '@constance/cookie';
 
 const ImportContact: React.FC = () => {
   const [importedContacts, setImportedContacts] = useState<CreateContactDto[]>(
     []
   );
-  const { data: contacts } = useContacts();
+  const [
+    {
+      public_user_info: { id },
+    },
+  ] = useCookies([PUBLIC_USER_INFO]);
+  const { data: contacts } = useContacts(id);
   return (
     <div>
       {importedContacts.length <= 0 ? (

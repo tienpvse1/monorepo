@@ -2,6 +2,7 @@ import { hashSync } from 'bcryptjs';
 import { Exclude } from 'class-transformer';
 import { IsEmail, Length } from 'class-validator';
 import { BaseEntity } from 'src/base/entity.base';
+import { Contact } from 'src/modules/contact/entities/contact.entity';
 import { EmailTemplate } from 'src/modules/email-template/entities/email-template.entity';
 import { File } from 'src/modules/file/entities/file.entity';
 import { History } from 'src/modules/history/entities/history.entity';
@@ -94,6 +95,9 @@ export class Account extends BaseEntity {
 
   @OneToMany(() => Schedule, (schedule) => schedule.account)
   schedules: Schedule[];
+
+  @OneToMany(() => Contact, (contact) => contact.account)
+  contacts: Contact[];
 
   @ManyToOne(() => Role, (role) => role.accounts)
   @JoinColumn({ name: 'role_id' })
