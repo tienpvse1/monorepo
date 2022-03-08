@@ -87,7 +87,6 @@ export const useHandleDnD = (data: IPipeline) => {
         return item;
     })
     setNewPipeline(newColumn);
-
   }
 
   const handleMoveItemsBetweenColumns = (
@@ -104,15 +103,9 @@ export const useHandleDnD = (data: IPipeline) => {
       value.name == startColumn)    
 
     const items1 = Array.from(column1.pipelineItems);
-    console.log("before items1:", items1);
-    
     const [newItemColumn] = items1.splice(startIndex, 1);
-    console.log("after items1:", items1);
-    
-
     //update item index column start
     const newItems1 = reassignIndex(items1);
-    console.log("newItems1:", newItems1);
     
     //------------------------------------------------------------
     //bỏ item vừa lấy ra từ column start cho vào column finish
@@ -120,13 +113,10 @@ export const useHandleDnD = (data: IPipeline) => {
       value.name == finishColumn)
 
     const items2 = Array.from(column2.pipelineItems);
-    console.log("before items2:", items2);
-
     items2.splice(finishIndex, 0, newItemColumn);
-    console.log("after items2:", items2);
+
     //update item index column finish
     const newItems2 = reassignIndex(items2);
-    console.log("newItems2:", newItems2);
     //------------------------------------------------------------
 
     // update lại state mới sau khi đổi chỗ
