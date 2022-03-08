@@ -5,7 +5,7 @@ import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-h
 import { useHandleDnD } from '@hooks/useHandleDnD';
 import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import { useGetPipeLineUser } from '@modules/pipeline/query/pipeline.get';
+import { GET_PIPELINE_DESIGN, useGetPipeLineUser } from '@modules/pipeline/query/pipeline.get';
 import { sortPipeline } from '@util/sort';
 import { Button } from 'antd';
 import { useEffect } from 'react';
@@ -24,6 +24,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
   const [visible, setModalCreateStage] = useToggle();
 
   const { data } = useGetPipeLineUser();
+
   const {
     newPipeLine,
     isError,
@@ -33,13 +34,15 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
     handleMoveItemsBetweenColumns,
   } = useHandleDnD(data);
 
-  useSocket<IPipeline, any>({
-    event: 'pipeline-updated',
-    socket,
-    onReceive: (dataAfterUpdated) => setPipeLine(dataAfterUpdated)
-  });
+  // useSocket<IPipeline, any>({
+  //   event: 'pipeline-updated',
+  //   socket,
+  //   onReceive: (dataAfterUpdated) => setPipeLine(dataAfterUpdated)
+  // });
 
   useEffect(() => {
+    console.log('set changed');
+    
     setPipeLine(data);
   }, [data, isError]);
 

@@ -17,7 +17,7 @@ export const actionPutPipeline = async ({ id, infoChangeStage, ...rest}: IPipeli
 export const useUpdatePipeline = () => {
   const { mutate, ...rest } = useMutation(actionPutPipeline,
     {
-      ...handleMutationResponse(GET_PIPELINE_DESIGN)
+      ...handleMutationResponse()
     }
   );
 
