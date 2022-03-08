@@ -76,7 +76,7 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
       const value = await form.validateFields();
       mutate({
         ...value,
-        addresses: [{ ...value.addresses }],
+        addresses: value.addresses.length === 0 ? [] : [{ ...value.addresses }],
         id: contact.id
       });      
       toggleEditForm2();
