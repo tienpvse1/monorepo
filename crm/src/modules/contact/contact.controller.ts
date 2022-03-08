@@ -31,6 +31,7 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
       addresses: {},
       noteWorthies: {},
       pipelineItems: {},
+      account: {},
     },
   },
   routes: {

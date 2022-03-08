@@ -1,3 +1,4 @@
+import { PUBLIC_USER_INFO } from '@constance/cookie';
 import {
   isEmail,
   isPhoneNumber,
@@ -12,6 +13,7 @@ import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { useQueryProducts } from '@modules/product/query/products.get';
 import { Button, Card, Form, Input, Select } from 'antd';
 import { FC, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { client } from '../../../App';
 const { Option } = Select;
 
@@ -36,8 +38,12 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
   const { mutate: createNewItems } = usePostPipelineItems();
 
   const { mutate: updateContact } = useUpdateContact();
-
-  const { data } = useContacts();
+  const [
+    {
+      public_user_info: { id },
+    },
+  ] = useCookies([PUBLIC_USER_INFO]);
+  const { data } = useContacts(id);
   const { data: products } = useQueryProducts();
 
   const [infoContact, setInfoContact] = useState<IContact>();
@@ -45,7 +51,6 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
   const [form] = Form.useForm<SubmittedObject>();
 
   const handleSubmit = (value: SubmittedObject) => {
-
     const { quantity, productId, name, contactId, email, mobile } = value;
     const data: ICreatePipelineItemsDto = {
       columnId: pipelineColumnID,
@@ -62,8 +67,8 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
           updateContact({
             id: infoContact.id,
             email,
-            mobile
-          })
+            mobile,
+          });
         }
         toggleClose();
         client.invalidateQueries(GET_PIPELINE_DESIGN);
