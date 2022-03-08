@@ -10,7 +10,7 @@ const updateContact = async (id: string, contact: UpdateContactDto) => {
   return data;
 };
 
-export const useUpdateContact = (callback: any) =>
+export const useUpdateContact = (callback?: any) =>
   useMutation(
     ({ id, ...rest }: UpdateContactDto & { id: string }) =>
       updateContact(id, rest),
