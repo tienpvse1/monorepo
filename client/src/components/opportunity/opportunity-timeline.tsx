@@ -13,7 +13,7 @@ export const OpportunityTimeLine: React.FC<ThirdColumnProps> = ({ }) => {
   return (
     <>
       <Timeline mode='left'>
-        <div style={{ overflowY: 'auto', whiteSpace: 'nowrap', height: '500px' }}>
+        <div style={{ overflowY: 'auto', whiteSpace: 'nowrap', height: '518px' }}>
           {data.map((item) => (
             <Timeline.Item style={{ paddingTop: '10px' }}
               key={item.id}
