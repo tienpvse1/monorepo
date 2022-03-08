@@ -3,21 +3,11 @@ import { useChangeStagePipelineItems } from "@modules/pipeline-items/mutation/pi
 import { IPipeline } from "@modules/pipeline/entity/pipeline.entity";
 import { useUpdatePipeline } from "@modules/pipeline/mutation/pipeline.update";
 import { useState } from "react";
-import { useSocket } from '@hooks/socket';
-import { connect } from "socket.io-client";
-import { envVars } from "@env/var.env";
-const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 
 export const useHandleDnD = (data: IPipeline) => {
   const [newPipeLine, setPipeLine] = useState<IPipeline>();
   const { updatePipeline, isError } = useUpdatePipeline();
   const { changeStage } = useChangeStagePipelineItems();
-
-  // useSocket<IPipeline, any>({
-  //   event: 'pipeline-updated',
-  //   socket,
-  //   onReceive: (dataAfterUpdated) => setPipeLine(dataAfterUpdated)
-  // });
 
   const setNewPipeline = (newColumn: IPipelineColumn[]) => {
     const newState =
@@ -41,6 +31,7 @@ export const useHandleDnD = (data: IPipeline) => {
       pipelineColumns: newColumn,
     }
 
+    setPipeLine(newState);
     changeStage({
       ...newState,
       infoChangeStage: {
@@ -49,7 +40,6 @@ export const useHandleDnD = (data: IPipeline) => {
         newStage: finishColumn
       }
     })
-    setPipeLine(newState);
 
   }
 

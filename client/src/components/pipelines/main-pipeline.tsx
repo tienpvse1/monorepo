@@ -15,6 +15,7 @@ import { useSocket } from '@hooks/socket';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { connect } from 'socket.io-client';
 import { envVars } from '@env/var.env';
+import { useQueryClient } from 'react-query';
 
 const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 
@@ -24,6 +25,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
   const [visible, setModalCreateStage] = useToggle();
 
   const { data } = useGetPipeLineUser();
+  const queryClient = useQueryClient();
 
   const {
     newPipeLine,
@@ -34,15 +36,13 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
     handleMoveItemsBetweenColumns,
   } = useHandleDnD(data);
 
-  // useSocket<IPipeline, any>({
-  //   event: 'pipeline-updated',
-  //   socket,
-  //   onReceive: (dataAfterUpdated) => setPipeLine(dataAfterUpdated)
-  // });
+  useSocket<IPipeline, any>({
+    event: 'pipeline-updated',
+    socket,
+    onReceive: () => queryClient.refetchQueries(GET_PIPELINE_DESIGN)
+  });
 
   useEffect(() => {
-    console.log('set changed');
-    
     setPipeLine(data);
   }, [data, isError]);
 

@@ -2,12 +2,11 @@ import { Axios } from "@axios";
 import { controllers } from "@constance/controllers";
 import { useMutation } from "react-query";
 import { IPipeline } from "../entity/pipeline.entity";
-import { GET_PIPELINE_DESIGN } from "../query/pipeline.get";
 import { handleMutationResponse } from "@modules/base/base.handler";
 const { PIPELINE } = controllers;
 
 
-export const actionPutPipeline = async ({ id, infoChangeStage, ...rest}: IPipeline) => {
+export const actionPutPipeline = async ({ id, infoChangeStage, ...rest }: IPipeline) => {
   const { instance } = new Axios();
   const { data } = await instance.put(`${PIPELINE}/${id}`, { ...rest });
 
