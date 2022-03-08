@@ -13,7 +13,7 @@ export const handleMutationResponse = (
       message.error(`${error}`)
     },
     onSuccess: onSuccess ? onSuccess : (data) => {
-      queryClient.invalidateQueries(queryKey)      
+      queryClient.invalidateQueries(queryKey)
     },
   };
 };

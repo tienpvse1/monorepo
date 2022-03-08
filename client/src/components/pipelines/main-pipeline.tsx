@@ -5,7 +5,7 @@ import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-h
 import { useHandleDnD } from '@hooks/useHandleDnD';
 import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import { useGetPipeLineUser } from '@modules/pipeline/query/pipeline.get';
+import { GET_PIPELINE_DESIGN, useGetPipeLineUser } from '@modules/pipeline/query/pipeline.get';
 import { sortPipeline } from '@util/sort';
 import { Button } from 'antd';
 import { useEffect } from 'react';
@@ -15,6 +15,7 @@ import { useSocket } from '@hooks/socket';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { connect } from 'socket.io-client';
 import { envVars } from '@env/var.env';
+import { useQueryClient } from 'react-query';
 
 const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 
@@ -24,6 +25,8 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
   const [visible, setModalCreateStage] = useToggle();
 
   const { data } = useGetPipeLineUser();
+  const queryClient = useQueryClient();
+
   const {
     newPipeLine,
     isError,
@@ -36,7 +39,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
   useSocket<IPipeline, any>({
     event: 'pipeline-updated',
     socket,
-    onReceive: (dataAfterUpdated) => setPipeLine(dataAfterUpdated)
+    onReceive: () => queryClient.refetchQueries(GET_PIPELINE_DESIGN)
   });
 
   useEffect(() => {
