@@ -87,9 +87,16 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
     },
     {
       key: 'schedule',
-      label:'Schedule',
+      label: 'Schedule',
       style,
       onClick: () => navigate('/schedule'),
+      icon: <CalendarOutlined style={style} />,
+    },
+    {
+      key: 'secondary-pipeline',
+      label: 'Secondary pipeline',
+      style,
+      onClick: () => navigate('/secondary-pipeline'),
       icon: <CalendarOutlined style={style} />,
     },
   ];

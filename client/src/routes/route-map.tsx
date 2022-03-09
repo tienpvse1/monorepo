@@ -2,6 +2,7 @@ import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
 const Contact = lazy(() => import('@pages/contact'));
+const SecondaryPipeline = lazy(() => import('@pages/secondary-pipeline'));
 const HomePage = lazy(() => import('@pages/home'));
 const Pipeline = lazy(() => import('@pages/pipeline'));
 const LoginPage = lazy(() => import('@pages/login'));
@@ -82,6 +83,10 @@ export const route: RouteObject[] = [
       {
         path: 'leads',
         element: <Leads />,
+      },
+      {
+        path: 'secondary-pipeline',
+        element: <SecondaryPipeline />,
       },
     ],
   },
