@@ -105,11 +105,11 @@ export class PipelineController {
     summary: 'replace a single pipeline',
   })
   @HistoryLog('updated the pipeline')
-  replacePipeline(
+  async replacePipeline(
     @Param('id') id: string,
     @Body() updatePipelineDto: UpdatePipelineDto,
     @User('id') accountId: string,
   ) {
-    return this.service.updatePipeline(id, updatePipelineDto, accountId);
+    return await this.service.updatePipeline(id, updatePipelineDto, accountId);
   }
 }

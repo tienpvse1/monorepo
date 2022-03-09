@@ -39,13 +39,15 @@ export class PipelineService extends BaseService<Pipeline> {
 
   async updateColumns(pipelineColumns: PipelineColumn[]) {
     for (const { index, id } of pipelineColumns) {
-      this.columnService.updateColumnIndex(id, { index });
+      await this.columnService.updateColumnIndex(id, { index });
     }
   }
   async updateItems(pipelineColumns: PipelineColumn[]) {
     for (const column of pipelineColumns) {
       for (const { index, id } of column.pipelineItems) {
-        this.itemService.updatePipelineItemIndex(id, column.id, { index });
+        await this.itemService.updatePipelineItemIndex(id, column.id, {
+          index,
+        });
       }
     }
   }
@@ -70,7 +72,6 @@ export class PipelineService extends BaseService<Pipeline> {
     //   relations: ['pipelineColumns.pipelineItems.account'],
     // });
     const result = await this.findOwnOnePipeline(accountId);
-    reIndexPipeline(sortPipeline(result));
 
     this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED, { accountId });
     return result;

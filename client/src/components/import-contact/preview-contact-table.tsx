@@ -38,7 +38,6 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
         return rest;
       }),
     };
-    console.log(data);
     mutate(data);
   };
 
