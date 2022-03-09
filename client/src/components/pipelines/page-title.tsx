@@ -1,7 +1,7 @@
 import { FilterOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons';
 import { WrapperRowTitle } from '@components/layout/title-pages/wrapper-row-title';
 import { SearchBar } from '@components/search-bar';
-import { Button, Col, Row, Select } from 'antd';
+import { Button, Col, Row, Select, Space } from 'antd';
 const { Option } = Select;
 
 interface PageTitlePipelineProps {
@@ -11,7 +11,7 @@ interface PageTitlePipelineProps {
 export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
   setModalCreateStage,
 }) => {
-  const handleChange = (value: any) => {};
+  const handleChange = (value: any) => { };
   return (
     <>
       <WrapperRowTitle
@@ -33,20 +33,22 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
             Create Stage
           </Button>
           <div style={{ display: 'flex' }}>
-            <Select
-              placeholder='Group by'
-              style={{ width: 120, marginRight: '10px' }}
-              onChange={handleChange}
-            >
-              <Option value='salesPerson'>Sales Person</Option>
-              <Option value='salesTeam'>Sales Team</Option>
-            </Select>
-            <Button className='button-filter-pipeline'>
-              <FilterOutlined />
-            </Button>
-            <Button className='button-more-pipeline'>
-              <MoreOutlined />
-            </Button>
+            <Space>
+              <Select
+                placeholder='Group by'
+                style={{ width: 120 }}
+                onChange={handleChange}
+              >
+                <Option value='salesPerson'>Sales Person</Option>
+                <Option value='salesTeam'>Sales Team</Option>
+              </Select>
+              <Button className='button-filter-pipeline'>
+                <FilterOutlined />
+              </Button>
+              <Button className='button-more-pipeline'>
+                <MoreOutlined />
+              </Button>
+            </Space>
           </div>
         </Col>
       </Row>
