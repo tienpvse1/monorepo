@@ -1,43 +1,34 @@
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
-import { Loading } from '@components/loading/loading';
 import { imagePlaceHolderUrl } from '@constance/image';
-import { usePipelineItem } from '@modules/pipeline-items/query/pipeline-item.get';
+import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { handleUndefinedString } from '@util/undefined';
 import { Card, Divider, Image, Tag } from 'antd';
 import Meta from 'antd/lib/card/Meta';
-import { Suspense } from 'react';
-import { SecondColumn } from './second-column';
-import { OpportunityTimeLine } from './opportunity-timeline';
 
-interface OpportunityDetailsProps {
-  pipelineItemId: string;
+interface OpportunityCardImageProps {
+  data: IPipelineItem
 }
 
-export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({
-  pipelineItemId,
-}) => {
-  const { data } = usePipelineItem(pipelineItemId);
+export const OpportunityCardImage: React.FC<OpportunityCardImageProps> = ({ data }) => {
   return (
-    <div style={{ display: 'flex' }}>
+    <>
       <Card
-        style={{ width: 300 }}
+        bordered={false}
+        style={{ display: 'flex', alignItems: 'center' }}
+        bodyStyle={{ fontSize: '18px', width: 150 }}
         cover={
           <div style={{ padding: 20 }}>
             <Image
+              height={200}
               alt='example'
               src={data.photo ? data.photo : imagePlaceHolderUrl}
             />
           </div>
         }
-        actions={[
-          <SettingOutlined key='setting' />,
-          <EditOutlined key='edit' />,
-          <EllipsisOutlined key='ellipsis' />,
-        ]}
+      // actions={[
+      //   <SettingOutlined style={{ fontSize: '24px' }} key='setting' />,
+      //   <EditOutlined style={{ fontSize: '24px' }} key='edit' />,
+      //   <EllipsisOutlined style={{ fontSize: '24px' }} key='ellipsis' />,
+      // ]}
       >
         <Meta
           title='Summary'
@@ -67,12 +58,6 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({
           <Tag color={'error'}>Private</Tag>
         </div>
       </Card>
-      <Suspense fallback={<Loading />}>
-        <SecondColumn data={data} />
-      </Suspense>
-      <Suspense fallback={<Loading />}>
-        <OpportunityTimeLine />
-      </Suspense>
-    </div>
-  );
-};
+    </>
+  )
+}

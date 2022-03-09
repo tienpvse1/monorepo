@@ -10,35 +10,31 @@ import { useBooleanToggle } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.delete';
 import { Avatar, Button, Card, Divider, Dropdown, Space, Tag } from 'antd';
-import { Dispatch, lazy, SetStateAction, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { PopoverAction } from '../../popover/popover-action';
 import { ICreateScheduleDto } from '@modules/schedule/dto/create-schedule.dto';
 import { useCreateSchedule } from '@modules/schedule/mutation/schedule.post';
 import { client } from '../../../App';
 import { QUERY_SCHEDULES } from '@modules/schedule/query/schedule.get';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
+import { useNavigate } from 'react-router-dom';
 const Planned = lazy(() => import('@components/schedule/planned'));
 const { Meta } = Card;
 
 interface PipelineCardItemProps {
   cardData: IPipelineItem;
-  toggleDrawer: () => void;
-  setCurrentOpportunityId: Dispatch<SetStateAction<string>>;
 }
 
-export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
-  cardData,
-  toggleDrawer,
-  setCurrentOpportunityId,
-}) => {
+export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({cardData}) => {
   const [isDropdownVisible, toggleDropdown] = useBooleanToggle(false);
   const [value, toggle] = useBooleanToggle(false);
   const { mutate } = useCreateSchedule();
   const { removePipelineItems } = useDeletePipelineItems();
   const onDeletePipeLineItem = () => removePipelineItems(cardData.id);
+  const navigate = useNavigate();
+
   const handleViewDetailClick = () => {
-    setCurrentOpportunityId(cardData.id);
-    toggleDrawer();
+    navigate(`/opportunities/view-details/${cardData.id}`)
   };
 
   const handleSubmit = (value: any) => {

@@ -16,8 +16,10 @@ const Product = lazy(() => import('@pages/product'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
 const Leads = lazy(() => import('@pages/leads'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
+const ViewOpportunityDetails = lazy(() => import('@pages/view-opportunity-details'));
 const ContactContainer = lazy(() => import('@components/contact/contact'));
 const Schedule = lazy(() => import('@pages/schedule'));
+const OpportunitiesContainer = lazy(() => import('@components/opportunity/opportunity-container'));
 
 export const route: RouteObject[] = [
   {
@@ -78,6 +80,16 @@ export const route: RouteObject[] = [
       {
         path: 'opportunities',
         element: <Opportunities />,
+        children: [
+          {
+            index: true,
+            element: <OpportunitiesContainer />
+          },
+          {
+            path: 'view-details/:id',
+            element: <ViewOpportunityDetails />
+          }
+        ]
       },
       {
         path: 'leads',

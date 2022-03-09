@@ -34,7 +34,7 @@ const rowSelection = {
   }),
 };
 
-export const ContactData: FC = () => {
+export const ContactTable: FC = () => {
   const [
     {
       public_user_info: { id },

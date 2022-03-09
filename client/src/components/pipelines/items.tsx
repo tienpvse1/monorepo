@@ -1,11 +1,6 @@
-import { DrawerDetails } from '@components/drawer';
-import { Loading } from '@components/loading/loading';
-import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { Suspense, useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { OpportunityDetails } from '../opportunity/opportunity-details';
 import { CreateCardItem } from './pipeline-items/create-card';
 import { PipelineCardItem } from './pipeline-items/card-item';
 
@@ -20,15 +15,6 @@ export const PipelineItems: React.FC<PipelineItemsProps> = ({
   setShowCreateItemForm,
   showCreateItemForm,
 }) => {
-  const [showDrawer, toggleDrawer] = useToggle();
-  // when user hit the view detail of an opportunity, this state will be assigned by opportunity's id
-  const [currentOpportunityId, setCurrentOpportunityId] = useState<
-    string | undefined
-  >(undefined);
-
-  const handleCloseDrawer = () => {
-    toggleDrawer();
-  };
 
   return (
     <>
@@ -55,11 +41,7 @@ export const PipelineItems: React.FC<PipelineItemsProps> = ({
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >
-                      <PipelineCardItem
-                        cardData={data}
-                        toggleDrawer={toggleDrawer}
-                        setCurrentOpportunityId={setCurrentOpportunityId}
-                      />
+                      <PipelineCardItem cardData={data} />
                     </div>
                   )}
                 </Draggable>
@@ -69,17 +51,6 @@ export const PipelineItems: React.FC<PipelineItemsProps> = ({
           </div>
         )}
       </Droppable>
-      <DrawerDetails
-        visible={showDrawer}
-        onClose={handleCloseDrawer}
-        title='Opportunity'
-        placement='right'
-        width={'100vw'}
-      >
-        <Suspense fallback={<Loading />}>
-          <OpportunityDetails pipelineItemId={currentOpportunityId} />
-        </Suspense>
-      </DrawerDetails>
     </>
   );
 };
