@@ -21,13 +21,18 @@ export class ContactService extends BaseService<Contact> {
     createResult.account = account;
     return createResult.save();
   }
-  async createManyContact(dto: CreateContactDto[], accountId: string) {
+  async createManyContact(
+    payload: { bulk: CreateContactDto[] },
+    accountId: string,
+  ) {
+    const { bulk } = payload;
     const accountRepository = getCustomRepository(AccountRepository);
     const creator = await accountRepository.findOneItem({
       where: { id: accountId },
     });
+    // return dto;
     return this.createManyItem(
-      dto.map((item) => ({ ...item, account: creator })),
+      bulk.map((item) => ({ ...item, account: creator })),
     );
   }
 }

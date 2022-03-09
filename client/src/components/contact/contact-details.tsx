@@ -56,7 +56,7 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
     })
   }
 
-  const handleSubmitForm1 = async () => {    
+  const handleSubmitForm1 = async () => {
     try {
       const value = await form.validateFields();
       mutate({
@@ -64,7 +64,7 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
         birth: value.birth ? value.birth.format(BIRTH) : '',
         id: contact.id
       });
-      
+
       toggleEditForm1();
     } catch (error) {
       return;
@@ -76,9 +76,9 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
       const value = await form.validateFields();
       mutate({
         ...value,
-        addresses: value.addresses.length === 0 ? [] : [{ ...value.addresses }],
+        addresses: [value.addresses],
         id: contact.id
-      });      
+      });
       toggleEditForm2();
     } catch (error) {
       return;

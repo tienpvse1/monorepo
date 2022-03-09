@@ -10,7 +10,7 @@ import { SessionRepository } from './session.repository';
 @Injectable()
 export class SessionService extends CRUDService<Session, SessionRepository> {
   constructor(
-    @InjectRepository(SessionRepository) repository: SessionRepository,
+    @InjectRepository(SessionRepository) public repository: SessionRepository,
   ) {
     super(repository);
   }
