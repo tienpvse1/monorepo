@@ -77,10 +77,8 @@ export class PipelineController {
   @ApiOperation({
     summary: 'Retrieve ONLY one pipeline that exist in the system',
   })
-  getOnePipeline() {
-    return this.service.findOneItem({
-      relations: ['pipelineColumns', 'pipelineColumns.pipelineItems'],
-    });
+  getOnePipeline(@User('id') id: string) {
+    return this.service.findOwnOnePipeline(id);
   }
 
   @Post()
@@ -107,10 +105,11 @@ export class PipelineController {
     summary: 'replace a single pipeline',
   })
   @HistoryLog('updated the pipeline')
-  replacePipeline(
+  async replacePipeline(
     @Param('id') id: string,
     @Body() updatePipelineDto: UpdatePipelineDto,
+    @User('id') accountId: string,
   ) {
-    return this.service.updatePipeline(id, updatePipelineDto);
+    return await this.service.updatePipeline(id, updatePipelineDto, accountId);
   }
 }

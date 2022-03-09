@@ -32,7 +32,12 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
   const [previewData, setPreviewData] = useState(initialData);
 
   const handleSaveData = (contactData: CreateContactDto[]) => {
-    const data = { bulk: contactData };
+    const data = {
+      bulk: contactData.map((item) => {
+        const { id, ...rest } = item;
+        return rest;
+      }),
+    };
     mutate(data);
   };
 
