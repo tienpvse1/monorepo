@@ -6,6 +6,7 @@
 }
 
 .wrapper-draggable-card {
+    border-radius: 5px;
     margin-top: 10px;
     .ant-card-head {
         border-bottom: none;
@@ -105,7 +106,6 @@
 }
 
 .button-filter-pipeline {
-    margin-right: 10px;
     @extend .button-ant-custom-style;
 }
 

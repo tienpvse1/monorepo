@@ -1,3 +1,4 @@
+import { isTaxId } from '@constance/rules-of-input-antd'
 import { Col, Form, Input } from 'antd'
 
 export const AddressInfoForm = () => {
@@ -49,8 +50,9 @@ export const AddressInfoForm = () => {
         <Form.Item
           name="taxId"
           label="Tax ID"
+          rules={[isTaxId]}
         >
-          <Input />
+          <Input maxLength={14}/>
         </Form.Item>
       </Col>
     </>
