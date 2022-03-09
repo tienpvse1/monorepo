@@ -3,11 +3,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/base/nestjsx.service';
 import { InternalServerEvent } from 'src/constance/event';
-import {
-  filterOutOpportunity,
-  reIndexPipeline,
-  sortPipeline,
-} from 'src/util/pipeline';
+import { reIndexPipeline, sortPipeline } from 'src/util/pipeline';
 import { Repository } from 'typeorm';
 import { PipelineColumn } from '../pipeline-column/entities/pipeline-column.entity';
 import { PipelineColumnService } from '../pipeline-column/pipeline-column.service';
@@ -35,8 +31,9 @@ export class PipelineService extends BaseService<Pipeline> {
         'pipelineItems.account_id = :userId',
         { userId },
       )
+      .leftJoinAndSelect('pipelineItems.schedules', 'schedules')
       .getOne();
-
+    reIndexPipeline(sortPipeline(pipeline));
     return pipeline;
   }
 
@@ -68,11 +65,12 @@ export class PipelineService extends BaseService<Pipeline> {
       this.updateItems(pipeline.pipelineColumns),
     ]);
 
-    const result = await this.findOneItem({
-      where: { id },
-      relations: ['pipelineColumns.pipelineItems.account'],
-    });
-    reIndexPipeline(sortPipeline(filterOutOpportunity(result, accountId)));
+    // const result = await this.findOneItem({
+    //   where: { id },
+    //   relations: ['pipelineColumns.pipelineItems.account'],
+    // });
+    const result = await this.findOwnOnePipeline(accountId);
+    reIndexPipeline(sortPipeline(result));
 
     this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED, { accountId });
     return result;

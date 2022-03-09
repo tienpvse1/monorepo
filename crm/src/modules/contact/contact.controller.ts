@@ -70,7 +70,10 @@ export class ContactController {
 
   @Post('/bulk')
   @ApiBody({ type: [CreateContactDto] })
-  createMany(@Body() dto: CreateContactDto[], @User('id') accountId: string) {
+  createMany(
+    @Body() dto: { bulk: CreateContactDto[] },
+    @User('id') accountId: string,
+  ) {
     return this.service.createManyContact(dto, accountId);
   }
 }

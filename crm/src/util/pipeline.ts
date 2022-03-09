@@ -37,23 +37,3 @@ export const reIndexPipeline = (
   );
   return pipeline;
 };
-
-export const filterOutOpportunity = (pipeline: Pipeline, accountId: string) => {
-  const newColumns = pipeline.pipelineColumns.map((column) => {
-    if (column.pipelineItems.length === 0) {
-      return column;
-    }
-
-    return {
-      ...column,
-      pipelineItems: column.pipelineItems.filter(
-        (item) => item.account.id === accountId,
-      ),
-    } as PipelineColumn;
-  });
-
-  return {
-    ...pipeline,
-    pipelineColumns: newColumns,
-  };
-};
