@@ -3,7 +3,11 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/base/nestjsx.service';
 import { InternalServerEvent } from 'src/constance/event';
-import { reIndexPipeline, sortPipeline } from 'src/util/pipeline';
+import {
+  filterOutOpportunity,
+  reIndexPipeline,
+  sortPipeline,
+} from 'src/util/pipeline';
 import { Repository } from 'typeorm';
 import { PipelineColumn } from '../pipeline-column/entities/pipeline-column.entity';
 import { PipelineColumnService } from '../pipeline-column/pipeline-column.service';
@@ -22,12 +26,17 @@ export class PipelineService extends BaseService<Pipeline> {
     super(repository);
   }
   async findOwnOnePipeline(userId: string) {
-    const pipeline = await this.findOneItem({
-      where: {
-        account: { id: userId },
-      },
-      relations: ['pipelineColumns', 'pipelineColumns.pipelineItems'],
-    });
+    const pipeline = await this.repository
+      .createQueryBuilder('pipeline')
+      .leftJoinAndSelect('pipeline.pipelineColumns', 'pipelineColumns')
+      .leftJoinAndSelect(
+        'pipelineColumns.pipelineItems',
+        'pipelineItems',
+        'pipelineItems.account_id = :userId',
+        { userId },
+      )
+      .getOne();
+
     return pipeline;
   }
 
@@ -44,7 +53,11 @@ export class PipelineService extends BaseService<Pipeline> {
     }
   }
 
-  async updatePipeline(id: string, pipeline: UpdatePipelineDto) {
+  async updatePipeline(
+    id: string,
+    pipeline: UpdatePipelineDto,
+    accountId: string,
+  ) {
     reIndexPipeline(sortPipeline(pipeline));
     if (!pipeline.pipelineColumns) {
       return this.safeUpdate(id, pipeline, 'pipelineColumns');
@@ -55,9 +68,13 @@ export class PipelineService extends BaseService<Pipeline> {
       this.updateItems(pipeline.pipelineColumns),
     ]);
 
-    const result = await this.findOneItem({ where: { id } });
+    const result = await this.findOneItem({
+      where: { id },
+      relations: ['pipelineColumns.pipelineItems.account'],
+    });
+    reIndexPipeline(sortPipeline(filterOutOpportunity(result, accountId)));
 
-    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
+    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED, { accountId });
     return result;
   }
 }
