@@ -27,7 +27,7 @@ import { useCookies } from 'react-cookie';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 
 const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {},
+  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
   getCheckboxProps: (record: any) => ({
     disabled: record.name === 'Disabled User',
     name: record.name,
@@ -89,7 +89,7 @@ export const ContactTable: FC = () => {
   const handleCreateContact = (record: IContact) => {
     insertContact({
       ...record,
-      addresses: record.addresses.length === 0 ? [] : [{ ...record.addresses }],
+      addresses: [record.addresses],
     });
   };
 
