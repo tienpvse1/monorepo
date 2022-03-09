@@ -57,7 +57,7 @@ export class PipelineService extends BaseService<Pipeline> {
 
     const result = await this.findOneItem({ where: { id } });
 
-    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED, result);
+    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
     return result;
   }
 }

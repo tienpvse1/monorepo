@@ -17,6 +17,10 @@ export const getPipelineUser = async () => {
 };
 
 export const useGetPipeLineUser = () => {
-  const { data } = useQuery(GET_PIPELINE_DESIGN, getPipelineUser);
+  const { data } = useQuery(GET_PIPELINE_DESIGN, getPipelineUser,
+    {
+      staleTime: Infinity
+    }
+  );
   return { data };
 };

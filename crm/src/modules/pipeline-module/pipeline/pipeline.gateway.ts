@@ -7,6 +7,9 @@ import {
   SocketReceiveEvent,
   SocketSendEvent,
 } from 'src/constance/event';
+import { reIndexPipeline, sortPipeline } from 'src/util/pipeline';
+// import { sortPipeline } from 'src/util/pipeline';
+// import { reIndexItems } from 'src/util/pipeline-column';
 import { UpdatePipelineDto } from './dto/update-pipeline.dto';
 import { PipelineService } from './pipeline.service';
 
@@ -27,6 +30,8 @@ export class PipelineGateway extends BaseGateway<any> {
   @OnEvent(InternalServerEvent.PIPELINE_UPDATED)
   async handlePipelineUpdated() {
     const pipeline = await this.service.findOneItem({});
+    reIndexPipeline(sortPipeline(pipeline));
+
     this.server.emit(SocketSendEvent.PIPELINE_UPDATED, pipeline);
   }
 }
