@@ -1,6 +1,6 @@
 import { IAccount } from '@interfaces/account';
 import { ITeam } from '@modules/team/entity/team.entity';
-import { Badge, Image, Table as AntdTable, Tag } from 'antd';
+import { Badge, Button, Image, Table as AntdTable, Tag } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 interface TableProps {
   data: ITeam[];
@@ -69,8 +69,7 @@ export const Table: React.FC<TableProps> = ({ data }) => {
         key: 'operation',
         render: () => (
           <span className='table-operation'>
-            <a>Pause</a>
-            <a>Stop</a>
+            <Button type='default'>Assign</Button>
           </span>
         ),
       },
