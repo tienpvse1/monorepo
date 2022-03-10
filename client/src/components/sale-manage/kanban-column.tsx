@@ -27,6 +27,7 @@ export const KanbanColumn = (
                 minHeight: 600,
                 marginLeft: 10,
                 padding: '10px ',
+                flexShrink: 0,
               }}
             >
               <KanbanColumnHeader

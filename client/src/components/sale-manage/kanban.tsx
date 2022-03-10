@@ -1,24 +1,17 @@
-import { envVars } from '@env/var.env';
-import { useSocket } from '@hooks/socket';
 import { ITeam } from '@modules/team/entity/team.entity';
 import { useUpdateTeam } from '@modules/team/mutate/team.patch';
-import { getTeams } from '@modules/team/query/team.get';
-import { sortTeams } from '@util/array';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { io } from 'socket.io-client';
+import '../../stylesheets/kanban.css';
 import { KanbanColumn } from './kanban-column';
-const socket = io(`${envVars.VITE_BE_DOMAIN}/team`);
-interface KanbanProps {}
+interface KanbanProps {
+  data: ITeam[];
+  setData: Dispatch<SetStateAction<ITeam[]>>;
+}
 
-export const Kanban: React.FC<KanbanProps> = ({}) => {
-  const [data, setData] = useState<ITeam[]>([]);
+export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
   const { mutate } = useUpdateTeam();
-  const { data: socketData } = useSocket({
-    event: 'team-updated',
-    socket,
-    onReceive: (e: ITeam[]) => sortTeams(e),
-  });
+
   const handleDragEnd = (e: DropResult) => {
     const { destination, source, type } = e;
     const copied = [...data];
@@ -64,22 +57,19 @@ export const Kanban: React.FC<KanbanProps> = ({}) => {
     }
   };
 
-  // get initial data
-  useEffect(() => {
-    getTeams().then((data) => setData(data));
-  }, []);
-  // update data when there's an event from server
-  useEffect(() => {
-    if (socketData) {
-      setData(socketData);
-    }
-  }, [socketData]);
-
   return (
-    <DragDropContext onDragEnd={(e) => handleDragEnd(e)}>
-      <Droppable direction='horizontal' droppableId='kanban-table'>
-        {(provided, snapshot) => KanbanColumn(provided, data, snapshot)}
-      </Droppable>
-    </DragDropContext>
+    <div
+      style={{
+        overflowY: 'hidden',
+        overflowX: 'scroll',
+        minHeight: 600,
+      }}
+    >
+      <DragDropContext onDragEnd={(e) => handleDragEnd(e)}>
+        <Droppable direction='horizontal' droppableId='kanban-table'>
+          {(provided, snapshot) => KanbanColumn(provided, data, snapshot)}
+        </Droppable>
+      </DragDropContext>
+    </div>
   );
 };
