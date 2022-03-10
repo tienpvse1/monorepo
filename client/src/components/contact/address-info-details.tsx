@@ -1,17 +1,19 @@
-import { MyForm } from "@components/form/my-form"
-import { IContact } from "@modules/contact/entity/contact.entity"
-import { Col, Row } from "antd"
+import { MyForm } from '@components/form/my-form';
+import { IContact } from '@modules/contact/entity/contact.entity';
+import { Col, Row } from 'antd';
 
 interface AddressInfoDetailsProps {
   contact: IContact;
 }
 
-export const AddressInfoDetails: React.FC<AddressInfoDetailsProps> = ({ contact }) => {
+export const AddressInfoDetails: React.FC<AddressInfoDetailsProps> = ({
+  contact,
+}) => {
   return (
     <>
-      <Row >
+      <Row>
         <Col span={12}>
-          <MyForm label="Address">
+          {/* <MyForm label="Address">
             {contact.addresses[0]?.address}
           </MyForm>
           <MyForm label="City">
@@ -22,20 +24,14 @@ export const AddressInfoDetails: React.FC<AddressInfoDetailsProps> = ({ contact 
           </MyForm>
           <MyForm label="Country">
             {contact.addresses[0]?.country}
-          </MyForm>
+          </MyForm> */}
         </Col>
         <Col span={12}>
-          <MyForm label="Job Position">
-            {contact.jobPosition}
-          </MyForm>
-          <MyForm label="Website">
-            {contact.website}
-          </MyForm>
-          <MyForm label="TaxID">
-            {contact.taxId}
-          </MyForm>
+          <MyForm label='Job Position'>{contact.jobPosition}</MyForm>
+          <MyForm label='Website'>{contact.website}</MyForm>
+          <MyForm label='TaxID'>{contact.taxId}</MyForm>
         </Col>
       </Row>
     </>
-  )
-}
+  );
+};

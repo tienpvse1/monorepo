@@ -44,18 +44,6 @@ export const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
           </Descriptions.Item>
         </Descriptions>
       </InfoWrapper>
-      <InfoWrapper title='Addresses'>
-        <Table
-          pagination={false}
-          dataSource={data.addresses}
-          rowKey={(record) => record.id}
-        >
-          <Column title='Address type' dataIndex='type' key='age' />
-          <Column title='Address' dataIndex='address' key='address' />
-          <Column title='City' dataIndex='city' key='address' />
-          <Column title='Country' dataIndex='country' key='address' />
-        </Table>
-      </InfoWrapper>
       <InfoWrapper title='Noteworthy events'>
         <Table
           pagination={false}

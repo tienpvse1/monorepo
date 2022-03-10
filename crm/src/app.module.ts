@@ -10,7 +10,6 @@ import { join } from 'path';
 import { AdminModule } from './admin/admin.module';
 import { LoggingMiddleware } from './middleware/logging.middleware';
 import { AccountModule } from './modules/account/account.module';
-import { AddressModule } from './modules/address/address.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from './modules/config/config.module';
 import { ContactModule } from './modules/contact/contact.module';
@@ -72,7 +71,6 @@ import { OpportunityRevenueModule } from './modules/opportunity-revenue/opportun
     ProductAccountModule,
     TagModule,
     NoteWorthyModule,
-    AddressModule,
     EventEmitterModule.forRoot(),
     TeamModule,
     SocketModule,

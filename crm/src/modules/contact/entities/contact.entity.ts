@@ -1,6 +1,5 @@
 import { BaseEntity } from 'src/base/entity.base';
 import { Account } from 'src/modules/account/entities/account.entity';
-import { Address } from 'src/modules/address/entities/address.entity';
 import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
 import { Tag } from 'src/modules/tag/entities/tag.entity';
@@ -57,10 +56,7 @@ export class Contact extends BaseEntity {
     cascade: true,
   })
   pipelineItems: PipelineItem[];
-  @OneToMany(() => Address, (address) => address.contact, {
-    cascade: true,
-  })
-  addresses: Address[];
+
   @OneToMany(() => NoteWorthy, (noteWorthy) => noteWorthy.contact, {
     cascade: true,
   })

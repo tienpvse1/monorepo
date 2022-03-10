@@ -2,7 +2,6 @@ import { AdminModule as RootAdminModule } from '@adminjs/nestjs';
 import { Database, Resource } from '@adminjs/typeorm';
 import { Module } from '@nestjs/common';
 import AdminJS from 'adminjs';
-import { Address } from 'src/modules/address/entities/address.entity';
 import { Contact } from 'src/modules/contact/entities/contact.entity';
 import { Lead } from 'src/modules/lead/entities/lead.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
@@ -40,7 +39,6 @@ AdminJS.registerAdapter({ Database, Resource });
           Role,
           ProductAccount,
           Product,
-          Address,
           Team,
           NoteWorthy,
         ],

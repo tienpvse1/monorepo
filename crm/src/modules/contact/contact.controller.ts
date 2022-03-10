@@ -29,7 +29,6 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
   },
   query: {
     join: {
-      addresses: {},
       noteWorthies: {},
       pipelineItems: {},
       account: {},

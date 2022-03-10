@@ -26,7 +26,6 @@ export interface IPipelineItem extends IBase {
   website?: string;
   title?: string;
   internalNotes?: string;
-  addresses?: IAddress[];
   noteWorthies?: INoteWorthy[];
   account: IAccount;
   contact: IContact;
