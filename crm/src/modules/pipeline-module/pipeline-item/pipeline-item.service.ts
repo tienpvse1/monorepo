@@ -131,6 +131,7 @@ export class PipelineItemService extends BaseService<PipelineItem> {
         contact,
         pipelineColumn,
         opportunityRevenue: revenue,
+        index: pipelineColumn.pipelineItems.length,
       })
       .save();
 
