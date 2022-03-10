@@ -2,6 +2,7 @@ import { Body, Controller, Param, Patch, Post, UsePipes } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
+import { User } from 'src/common/decorators/user.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
 import {
   CreatePipelineItemDto,
@@ -13,7 +14,6 @@ import {
 } from './dto/update-pipeline-item.dto';
 import { PipelineItem } from './entities/pipeline-item.entity';
 import { GenerateNestedIdPipe } from './generate-nested-id.pipe';
-import { ParseDtoPipe } from './parse-dto.pipe';
 import { PipelineItemService } from './pipeline-item.service';
 
 @Controller('pipeline-item')
@@ -45,9 +45,10 @@ import { PipelineItemService } from './pipeline-item.service';
       contact: {},
       tags: {},
       schedules: {},
-      addresses: {},
       noteWorthies: {},
       pipelineColumn: {},
+      opportunityRevenue: {},
+      'opportunityRevenue.product': {},
     },
   },
 })
@@ -55,10 +56,15 @@ export class PipelineItemController {
   constructor(public service: PipelineItemService) {}
 
   @Post()
-  @UsePipes(GenerateNestedIdPipe, ParseDtoPipe)
+  @UsePipes(GenerateNestedIdPipe)
   @HistoryLog('Add a new opportunity')
   @ApiBody({ type: CreateSinglePipelineItemDto })
-  addOpportunity(@Body() item: PipelineItem & { contactId: string }) {
+  addOpportunity(
+    @Body() item: CreateSinglePipelineItemDto,
+    @User('id') accountId: string,
+  ) {
+    this.service.createPipelineItem(item, accountId);
+
     return item;
   }
 

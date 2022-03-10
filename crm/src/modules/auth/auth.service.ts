@@ -83,11 +83,12 @@ export class AuthService {
   // based on email
   async findOrCreateAccount(user: IGoogleUser, response: Response) {
     const { accessToken, ...rest } = user;
-    const account = await this.accountService.findOneWithoutError({
-      where: {
+    const account = await this.accountService.repository
+      .createQueryBuilder()
+      .where({
         email: rest.email,
-      },
-    });
+      })
+      .getOne();
     // mark this as an social account(google, facebook,etc..)
     // this case it's google account
     this.setSocialAccount(rest);
@@ -167,11 +168,15 @@ export class AuthService {
     try {
       const [isPasswordMatch, sessionFromAccountId] = await Promise.all([
         compare(password, account.password),
-        this.sessionService.getSessionByAccountId(account.id),
+        this.sessionService.repository
+          .createQueryBuilder('session')
+          .where('session.account_id = :accountId', { accountId: account.id })
+          .getOne(),
       ]);
       if (!isPasswordMatch)
         throw new BadRequestException('check your password');
       // if the session is exist and still valid, update it only
+
       if (sessionFromAccountId) {
         const session = await this.sessionService.updateSession(
           sessionFromAccountId.id,

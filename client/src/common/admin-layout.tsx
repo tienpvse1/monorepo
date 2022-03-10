@@ -1,4 +1,4 @@
-import { MenuSiderAdmin } from '@components/layout/menu/admin-menu';
+import { AdminMenuSider } from '@components/layout/menu/admin-menu';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { Role } from '@interfaces/type-roles';
 import { useCookies } from 'react-cookie';
@@ -14,7 +14,7 @@ const LayoutAdmin = () => {
   return (
     <AppLayout
       content={<Outlet />}
-      menuSider={<MenuSiderAdmin style={{ fontSize: 17 }} />}
+      menuSider={<AdminMenuSider style={{ fontSize: 17 }} />}
     />
   );
 };

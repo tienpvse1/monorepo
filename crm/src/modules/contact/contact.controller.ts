@@ -1,7 +1,8 @@
-import { Controller, UsePipes } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, UsePipes } from '@nestjs/common';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
+import { User } from 'src/common/decorators/user.decorator';
 import { ContactService } from './contact.service';
 import { CreateContactPipe } from './create-contact.pipe';
 import { CreateContactDto } from './dto/create-contact.dto';
@@ -28,9 +29,9 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
   },
   query: {
     join: {
-      addresses: {},
       noteWorthies: {},
       pipelineItems: {},
+      account: {},
     },
   },
   routes: {
@@ -55,8 +56,23 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
     deleteOneBase: {
       decorators: [HistoryLog('deleted an contact')],
     },
+    exclude: ['createOneBase', 'createManyBase'],
   },
 })
 export class ContactController {
   constructor(public readonly service: ContactService) {}
+
+  @Post()
+  createOne(@Body() dto: CreateContactDto, @User('id') id: string) {
+    return this.service.createOneContact(dto, id);
+  }
+
+  @Post('/bulk')
+  @ApiBody({ type: [CreateContactDto] })
+  createMany(
+    @Body() dto: { bulk: CreateContactDto[] },
+    @User('id') accountId: string,
+  ) {
+    return this.service.createManyContact(dto, accountId);
+  }
 }

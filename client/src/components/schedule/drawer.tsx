@@ -1,7 +1,7 @@
 import { InboxOutlined } from '@ant-design/icons';
 import { ISchedule } from '@modules/schedule/entity/schedule.entity';
 import { Alert, Drawer } from 'antd';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 
 interface ScheduleDrawerProps {
   data: ISchedule[];

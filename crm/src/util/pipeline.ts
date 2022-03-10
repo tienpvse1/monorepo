@@ -2,8 +2,9 @@ import { PipelineColumn } from 'src/modules/pipeline-module/pipeline-column/enti
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
 import { CreatePipelineDto } from 'src/modules/pipeline-module/pipeline/dto/create-pipeline.dto';
 import { UpdatePipelineDto } from 'src/modules/pipeline-module/pipeline/dto/update-pipeline.dto';
+import { Pipeline } from 'src/modules/pipeline-module/pipeline/entities/pipeline.entity';
 export const sortPipeline = (
-  pipeline: UpdatePipelineDto | CreatePipelineDto,
+  pipeline: UpdatePipelineDto | CreatePipelineDto | Pipeline,
 ) => {
   // sort item
   pipeline.pipelineColumns.forEach((item) =>

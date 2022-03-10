@@ -10,9 +10,18 @@ export const QUERY_CONTACTS = 'query-contacts';
 export const QUERY_CONTACTS_LIKE_EMAIL = 'query-contacts';
 export const QUERY_CONTACTS_BY_ID = 'query-contact-by-id';
 
-const getContacts = async () => {
-  const { instance } = new Axios();
-  const { data } = await instance.get<IContact[]>(`${CONTACT}`);
+const getContacts = async (accountId: string) => {
+  const query = RequestQueryBuilder.create({
+    join: [{ field: 'account' }],
+    filter: [
+      {
+        field: 'account.id',
+        operator: '$eq',
+        value: accountId,
+      },
+    ],
+  }).query(false);
+  const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
   return data;
 };
 
@@ -32,9 +41,9 @@ export const getContactsEmailLike = async (searchKey: string) => {
 
 export const getContactsById = async (contactId: string) => {
   const { instance } = new Axios();
-  const { data } = await instance.get<IContact>(`${CONTACT}/${contactId}?join=addresses`);
+  const { data } = await instance.get<IContact>(`${CONTACT}/${contactId}`);
   return data;
-}
+};
 
 export const useContactsWithEmailLike = (queryKey: string) =>
   useQuery(
@@ -46,10 +55,10 @@ export const useContactsWithEmailLike = (queryKey: string) =>
     }
   );
 
-export const useContacts = () => useQuery(QUERY_CONTACTS, getContacts);
+export const useContacts = (accountId: string) =>
+  useQuery([QUERY_CONTACTS, accountId], () => getContacts(accountId), {
+    enabled: Boolean(accountId),
+  });
 
 export const useQueryContactsById = (contactId: string) =>
-  useQuery(
-    QUERY_CONTACTS_BY_ID,
-    () => getContactsById(contactId)
-  );
+  useQuery(QUERY_CONTACTS_BY_ID, () => getContactsById(contactId));

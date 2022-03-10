@@ -1,38 +1,29 @@
-import { DrawerDetails } from '@components/drawer';
-import { Loading } from '@components/loading/loading';
-import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { Suspense, useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { OpportunityDetails } from '../opportunity/opportunity-details';
 import { CreateCardItem } from './pipeline-items/create-card';
 import { PipelineCardItem } from './pipeline-items/card-item';
+import { ThemeColor } from '@constance/color';
 
 interface PipelineItemsProps {
   pipelineColumn: IPipelineColumn;
   showCreateItemForm: boolean;
   setShowCreateItemForm: () => void;
 }
+const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
+  border: isDragging ? `2px solid ${ThemeColor.primaryColor}` : '',
+  ...draggableStyle
+})
 
 export const PipelineItems: React.FC<PipelineItemsProps> = ({
   pipelineColumn,
   setShowCreateItemForm,
   showCreateItemForm,
 }) => {
-  const [showDrawer, toggleDrawer] = useToggle();
-  // when user hit the view detail of an opportunity, this state will be assigned by opportunity's id
-  const [currentOpportunityId, setCurrentOpportunityId] = useState<
-    string | undefined
-  >(undefined);
-
-  const handleCloseDrawer = () => {
-    toggleDrawer();
-  };
 
   return (
     <>
-      <Droppable droppableId={pipelineColumn.id} type='task'>
+      <Droppable droppableId={pipelineColumn.name} type='task'>
         {(provided) => (
           <div
             className='pipeline-column scroll-menu-pipeline-2'
@@ -48,18 +39,15 @@ export const PipelineItems: React.FC<PipelineItemsProps> = ({
             {pipelineColumn.pipelineItems.map(
               (data: IPipelineItem, index: number) => (
                 <Draggable key={data.id} draggableId={data.id} index={index}>
-                  {(provided) => (
+                  {(provided, snapshot) => (
                     <div
                       className='wrapper-draggable-card'
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
+                      style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                     >
-                      <PipelineCardItem
-                        cardData={data}
-                        toggleDrawer={toggleDrawer}
-                        setCurrentOpportunityId={setCurrentOpportunityId}
-                      />
+                      <PipelineCardItem cardData={data} />
                     </div>
                   )}
                 </Draggable>
@@ -69,17 +57,6 @@ export const PipelineItems: React.FC<PipelineItemsProps> = ({
           </div>
         )}
       </Droppable>
-      <DrawerDetails
-        visible={showDrawer}
-        onClose={handleCloseDrawer}
-        title='Opportunity'
-        placement='right'
-        width={'100vw'}
-      >
-        <Suspense fallback={<Loading />}>
-          <OpportunityDetails pipelineItemId={currentOpportunityId} />
-        </Suspense>
-      </DrawerDetails>
     </>
   );
 };

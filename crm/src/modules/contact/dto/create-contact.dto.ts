@@ -7,15 +7,12 @@ import {
   IsUrl,
   MinLength,
 } from 'class-validator';
-import { CreateAddressDto } from 'src/modules/address/dto/create-address.dto';
 import { CreateNoteWorthyDto } from 'src/modules/note-worthy/dto/create-note-worthy.dto';
 
 export class CreateContactDto {
   @MinLength(2)
   name: string;
-  @IsOptional()
-  @IsArray()
-  addresses?: CreateAddressDto[];
+
   @IsOptional()
   @IsArray()
   noteWorthies?: CreateNoteWorthyDto[];

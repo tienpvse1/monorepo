@@ -22,29 +22,41 @@ export class PipelineService extends BaseService<Pipeline> {
     super(repository);
   }
   async findOwnOnePipeline(userId: string) {
-    const pipeline = await this.findOneItem({
-      where: {
-        account: { id: userId },
-      },
-      relations: ['pipelineColumns', 'pipelineColumns.pipelineItems'],
-    });
+    const pipeline = await this.repository
+      .createQueryBuilder('pipeline')
+      .leftJoinAndSelect('pipeline.pipelineColumns', 'pipelineColumns')
+      .leftJoinAndSelect(
+        'pipelineColumns.pipelineItems',
+        'pipelineItems',
+        'pipelineItems.account_id = :userId',
+        { userId },
+      )
+      .leftJoinAndSelect('pipelineItems.schedules', 'schedules')
+      .getOne();
+    reIndexPipeline(sortPipeline(pipeline));
     return pipeline;
   }
 
   async updateColumns(pipelineColumns: PipelineColumn[]) {
     for (const { index, id } of pipelineColumns) {
-      this.columnService.updateColumnIndex(id, { index });
+      await this.columnService.updateColumnIndex(id, { index });
     }
   }
   async updateItems(pipelineColumns: PipelineColumn[]) {
     for (const column of pipelineColumns) {
       for (const { index, id } of column.pipelineItems) {
-        this.itemService.updatePipelineItemIndex(id, column.id, { index });
+        await this.itemService.updatePipelineItemIndex(id, column.id, {
+          index,
+        });
       }
     }
   }
 
-  async updatePipeline(id: string, pipeline: UpdatePipelineDto) {
+  async updatePipeline(
+    id: string,
+    pipeline: UpdatePipelineDto,
+    accountId: string,
+  ) {
     reIndexPipeline(sortPipeline(pipeline));
     if (!pipeline.pipelineColumns) {
       return this.safeUpdate(id, pipeline, 'pipelineColumns');
@@ -55,9 +67,13 @@ export class PipelineService extends BaseService<Pipeline> {
       this.updateItems(pipeline.pipelineColumns),
     ]);
 
-    const result = await this.findOneItem({ where: { id } });
+    // const result = await this.findOneItem({
+    //   where: { id },
+    //   relations: ['pipelineColumns.pipelineItems.account'],
+    // });
+    const result = await this.findOwnOnePipeline(accountId);
 
-    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED, result);
+    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED, { accountId });
     return result;
   }
 }

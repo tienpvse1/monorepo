@@ -11,7 +11,7 @@ import { Card, Divider, Image, Tag } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import { Suspense } from 'react';
 import { SecondColumn } from './second-column';
-import { ThirdColumn } from './third-column';
+import { OpportunityTimeLine } from './opportunity-timeline';
 
 interface OpportunityDetailsProps {
   pipelineItemId: string;
@@ -71,7 +71,7 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({
         <SecondColumn data={data} />
       </Suspense>
       <Suspense fallback={<Loading />}>
-        <ThirdColumn />
+        <OpportunityTimeLine />
       </Suspense>
     </div>
   );

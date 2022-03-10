@@ -23,7 +23,12 @@ import { OpportunityRevenueService } from './opportunity-revenue.service';
       primary: true,
     },
   },
-  query: {},
+  query: {
+    join: {
+      pipelineItem: {},
+      product: {},
+    },
+  },
 })
 export class OpportunityRevenueController {
   constructor(public readonly service: OpportunityRevenueService) {}

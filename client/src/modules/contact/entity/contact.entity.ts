@@ -3,7 +3,6 @@ import { IBase } from '@interfaces/base';
 export interface IContact extends IBase {
   name: string;
   //TODO: this is have any type
-  addresses: Address | Address[] | any;
   noteWorthies: NoteWorthy[];
   phone: string;
   type: string;

@@ -16,9 +16,15 @@ import { useToggle } from '@hooks/useToggle';
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { CreateModal } from '@components/modal/create-modal';
 import { CreateContactForm } from './create-contact-form';
-import { isEmail, isPhoneNumber, isRequired } from '@constance/rules-of-input-antd';
+import {
+  isEmail,
+  isPhoneNumber,
+  isRequired,
+} from '@constance/rules-of-input-antd';
 import { useInsertContact } from '@modules/contact/mutation/contact.post';
 import { message } from 'antd';
+import { useCookies } from 'react-cookie';
+import { PUBLIC_USER_INFO } from '@constance/cookie';
 
 const rowSelection = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
@@ -28,27 +34,26 @@ const rowSelection = {
   }),
 };
 
-export const ContactData: FC = () => {
-  const { data, isLoading } = useContacts();
+export const ContactTable: FC = () => {
+  const [
+    {
+      public_user_info: { id },
+    },
+  ] = useCookies([PUBLIC_USER_INFO]);
+  const { data, isLoading } = useContacts(id);
 
-  const { mutate: updateContact } = useUpdateContact(() =>
-    {
-      client.invalidateQueries(QUERY_CONTACTS);
-      message.success('Save successfully !')
-    }
-  );
-  const { mutate: deleteContact } = useDeleteContact(() =>
-    {
-      client.invalidateQueries(QUERY_CONTACTS);
-      message.success('Delete successfully !')
-    }
-  );
-  const { mutate: insertContact } = useInsertContact(() =>
-    {
-      client.invalidateQueries(QUERY_CONTACTS);
-      message.success('Create new successfully !')
-    }
-  );
+  const { mutate: updateContact } = useUpdateContact(() => {
+    client.invalidateQueries(QUERY_CONTACTS);
+    message.success('Save successfully !');
+  });
+  const { mutate: deleteContact } = useDeleteContact(() => {
+    client.invalidateQueries(QUERY_CONTACTS);
+    message.success('Delete successfully !');
+  });
+  const { mutate: insertContact } = useInsertContact(() => {
+    client.invalidateQueries(QUERY_CONTACTS);
+    message.success('Create new successfully !');
+  });
 
   const [form] = Form.useForm<IContact>();
   const [isEditing, toggleEditing] = useToggle();
@@ -84,9 +89,8 @@ export const ContactData: FC = () => {
   const handleCreateContact = (record: IContact) => {
     insertContact({
       ...record,
-      addresses: [{...record.addresses}]
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -178,7 +182,7 @@ export const ContactData: FC = () => {
             width={120}
             render={(text) => (
               <span>
-                <Tag color={'gold'}>{text ? text.toUpperCase() : 'NULL'}</Tag>
+                <Tag color={'gold'}>{text ? text.toUpperCase() : 'NORMAL'}</Tag>
               </span>
             )}
           />
@@ -230,7 +234,7 @@ export const ContactData: FC = () => {
         </Table>
       </Form>
       <CreateModal
-        title="New Contact"
+        title='New Contact'
         callback={handleCreateContact}
         isOpenModal={isOpenModal}
         toggleCreateModal={toggleCreateModal}
