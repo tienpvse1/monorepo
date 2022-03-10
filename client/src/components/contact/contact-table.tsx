@@ -27,7 +27,7 @@ import { useCookies } from 'react-cookie';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 
 const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {},
+  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
   getCheckboxProps: (record: any) => ({
     disabled: record.name === 'Disabled User',
     name: record.name,
