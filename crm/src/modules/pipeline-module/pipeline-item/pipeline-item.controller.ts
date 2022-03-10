@@ -48,6 +48,7 @@ import { PipelineItemService } from './pipeline-item.service';
       noteWorthies: {},
       pipelineColumn: {},
       opportunityRevenue: {},
+      'opportunityRevenue.product': {},
     },
   },
 })
