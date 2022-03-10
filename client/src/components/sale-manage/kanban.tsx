@@ -1,15 +1,24 @@
-import { IAccount } from '@interfaces/account';
+import { envVars } from '@env/var.env';
+import { useSocket } from '@hooks/socket';
 import { ITeam } from '@modules/team/entity/team.entity';
+import { useUpdateTeam } from '@modules/team/mutate/team.patch';
 import { getTeams } from '@modules/team/query/team.get';
-import { nanoid } from 'nanoid';
+import { sortTeams } from '@util/array';
 import { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { io } from 'socket.io-client';
 import { KanbanColumn } from './kanban-column';
+const socket = io(`${envVars.VITE_BE_DOMAIN}/team`);
 interface KanbanProps {}
 
 export const Kanban: React.FC<KanbanProps> = ({}) => {
   const [data, setData] = useState<ITeam[]>([]);
-
+  const { mutate } = useUpdateTeam();
+  const { data: socketData } = useSocket({
+    event: 'team-updated',
+    socket,
+    onReceive: (e: ITeam[]) => sortTeams(e),
+  });
   const handleDragEnd = (e: DropResult) => {
     const { destination, source, type } = e;
     const copied = [...data];
@@ -20,6 +29,7 @@ export const Kanban: React.FC<KanbanProps> = ({}) => {
       const [removed] = copied.splice(source.index, 1);
       copied.splice(destination.index, 0, removed);
       setData(copied);
+      mutate(copied);
       return;
     }
     if (source.droppableId !== destination.droppableId) {
@@ -38,6 +48,7 @@ export const Kanban: React.FC<KanbanProps> = ({}) => {
         if (item.id === destination.droppableId) return destColumn;
         return item;
       });
+      mutate(result);
       setData(result);
     } else {
       // !drag into the same column case
@@ -49,12 +60,20 @@ export const Kanban: React.FC<KanbanProps> = ({}) => {
         item.id === destination.droppableId ? column : item
       );
       setData(result);
+      mutate(result);
     }
   };
 
+  // get initial data
   useEffect(() => {
     getTeams().then((data) => setData(data));
   }, []);
+  // update data when there's an event from server
+  useEffect(() => {
+    if (socketData) {
+      setData(socketData);
+    }
+  }, [socketData]);
 
   return (
     <DragDropContext onDragEnd={(e) => handleDragEnd(e)}>

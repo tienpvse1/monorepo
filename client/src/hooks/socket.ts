@@ -14,8 +14,8 @@ export const useSocket = <ResponseType, PayloadType>(props: {
   useEffect(() => {
     const { socket, event, onReceive } = props;
     socket.on(event, (response: ResponseType) => {
-      setData(response);
       onReceive(response);
+      setData(response);
     });
   }, [props.socket]);
   return { data, emit };
