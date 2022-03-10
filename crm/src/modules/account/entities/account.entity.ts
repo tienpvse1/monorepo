@@ -45,6 +45,9 @@ export class Account extends BaseEntity {
   @IsEmail()
   email: string;
 
+  @Column({ name: 'team_index', type: 'int', nullable: true })
+  teamIndex: number;
+
   @Column({ nullable: true })
   @Length(10)
   @Exclude({ toPlainOnly: true })
@@ -64,6 +67,8 @@ export class Account extends BaseEntity {
 
   @OneToMany(() => Invitation, (invitation) => invitation.sender)
   sentInvitations: Invitation[];
+  @OneToMany(() => Team, (team) => team.createdBy)
+  createdTeams: Team[];
   @ManyToMany(() => Invitation, (invitation) => invitation.receivers)
   receivedInvitations: Invitation[];
 

@@ -1,7 +1,10 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
+import { HasRoles } from 'src/common/decorators/role/decorator';
+import { User } from 'src/common/decorators/user.decorator';
+import { Roles } from 'src/constance';
 import { CreateTeamDto } from './dto/create-team.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import { Team } from './entities/team.entity';
@@ -41,9 +44,15 @@ import { TeamService } from './team.service';
     deleteOneBase: {
       decorators: [HistoryLog('deleted a team')],
     },
-    exclude: ['createManyBase'],
+    exclude: ['createManyBase', 'createOneBase', 'replaceOneBase'],
   },
 })
 export class TeamController {
   constructor(public readonly service: TeamService) {}
+
+  @Post()
+  @HasRoles(Roles.SALE_MANAGER)
+  createTeam(@User('id') accountId: string, @Body() dto: CreateTeamDto) {
+    return this.service.createTeam(accountId, dto);
+  }
 }

@@ -1,39 +1,14 @@
 import { IAccount } from '@interfaces/account';
+import { ITeam } from '@modules/team/entity/team.entity';
+import { getTeams } from '@modules/team/query/team.get';
 import { nanoid } from 'nanoid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { KanbanColumn } from './kanban-column';
 interface KanbanProps {}
-export type KanBanFakeData = {
-  id: string;
-  name: string;
-  color?: string;
-  accounts: Partial<IAccount & { id: string }>[];
-};
-const fakeData: KanBanFakeData[] = [
-  {
-    id: nanoid(5),
-    name: 'Not assigned',
-    color: 'green',
-    accounts: [
-      {
-        id: nanoid(5),
-        firstName: 'tien',
-        lastName: 'phan',
-      },
-      {
-        id: nanoid(5),
-        firstName: 'John',
-        lastName: 'Doe',
-      },
-    ],
-  },
-  { id: nanoid(5), color: 'blue', name: 'Team 1', accounts: [] },
-  { id: nanoid(5), color: 'purple', name: 'Team 3', accounts: [] },
-];
 
 export const Kanban: React.FC<KanbanProps> = ({}) => {
-  const [data, setData] = useState(fakeData);
+  const [data, setData] = useState<ITeam[]>([]);
 
   const handleDragEnd = (e: DropResult) => {
     const { destination, source, type } = e;
@@ -76,6 +51,10 @@ export const Kanban: React.FC<KanbanProps> = ({}) => {
       setData(result);
     }
   };
+
+  useEffect(() => {
+    getTeams().then((data) => setData(data));
+  }, []);
 
   return (
     <DragDropContext onDragEnd={(e) => handleDragEnd(e)}>

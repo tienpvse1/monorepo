@@ -8,8 +8,8 @@ import {
 
 export const KanBanItem = (
   provided: DroppableProvided,
-  accounts: Partial<IAccount & { id: string }>[],
-  snapshot: DroppableStateSnapshot
+  accounts: IAccount[],
+  _snapshot: DroppableStateSnapshot
 ) => {
   return (
     <div

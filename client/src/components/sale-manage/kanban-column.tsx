@@ -1,16 +1,16 @@
+import { ITeam } from '@modules/team/entity/team.entity';
 import {
   Draggable,
   Droppable,
   DroppableProvided,
   DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
-import { KanBanFakeData } from './kanban';
 import { KanbanColumnHeader } from './kanban-column-header';
 import { KanBanItem } from './kanban-item';
 
 export const KanbanColumn = (
   e: DroppableProvided,
-  teams: KanBanFakeData[],
+  teams: ITeam[],
   _snapshot?: DroppableStateSnapshot
 ) => {
   return (
@@ -19,7 +19,6 @@ export const KanbanColumn = (
         <Draggable index={index} key={team.id} draggableId={team.id}>
           {(provided, _snapshot) => (
             <div
-              {...provided.dragHandleProps}
               {...provided.draggableProps}
               ref={provided.innerRef}
               style={{
@@ -30,7 +29,10 @@ export const KanbanColumn = (
                 padding: '10px ',
               }}
             >
-              <KanbanColumnHeader data={team} />
+              <KanbanColumnHeader
+                handleDrag={provided.dragHandleProps}
+                data={team}
+              />
               <Droppable droppableId={team.id} type='column'>
                 {(provided, snapshot) =>
                   KanBanItem(provided, team.accounts, snapshot)
