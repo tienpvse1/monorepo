@@ -7,3 +7,14 @@
     border-radius: 5px !important;
     height: 40px;
 }
+
+.my-input-number {
+    border-radius: 5px !important;
+    height: 40px;
+    .ant-input-number-input {
+        height: 40px;
+    }
+    .ant-input-number-handler-wrap {
+        border-radius: 5px !important;
+    }
+}

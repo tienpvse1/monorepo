@@ -14,7 +14,7 @@ export interface IPipelineItem extends IBase {
   email?: string;
   phone?: string;
   priority?: number;
-  expectedClosing?: string;
+  expectedClosing?: string | any;
   internalDescription?: string;
   type?: string;
   birth?: string;

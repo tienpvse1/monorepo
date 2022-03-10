@@ -1,6 +1,7 @@
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { Alert, Button, Tabs } from 'antd'
 import { ContactInfo } from './contact-info';
+import { OpportunityDetails } from '@components/opportunity/opportunity-details';
 const { TabPane } = Tabs;
 
 interface OpportunityInfoTabsProps {
@@ -19,7 +20,7 @@ export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }
           tab='Details'
           key='0'
         >
-
+          <OpportunityDetails data={data} />
         </TabPane>
         <TabPane
           tab='Contact Info'

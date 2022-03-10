@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 interface EditableCellProps extends HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: any;
-  title: string;
+  title?: string;
   inputType?: 'number' | 'text' | 'datePicker';
   recordIndex: string;
   editingIndex: string;

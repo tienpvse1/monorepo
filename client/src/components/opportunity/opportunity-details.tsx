@@ -1,78 +1,118 @@
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
-import { Loading } from '@components/loading/loading';
-import { imagePlaceHolderUrl } from '@constance/image';
-import { usePipelineItem } from '@modules/pipeline-items/query/pipeline-item.get';
-import { handleUndefinedString } from '@util/undefined';
-import { Card, Divider, Image, Tag } from 'antd';
-import Meta from 'antd/lib/card/Meta';
-import { Suspense } from 'react';
-import { SecondColumn } from './second-column';
-import { OpportunityTimeLine } from './opportunity-timeline';
+import { Button, Col, Form, Row, Space } from "antd";
+import { MyForm } from '@components/form/my-form';
+import { IPipelineItem } from "@modules/pipeline-items/entity/pipeline-items.entity";
+import { EditButtonHover } from '@components/page-details/edit-button-hover';
+import { OpportunityInfoDetails } from "./opportunity-info-details";
+import { useToggle } from "@hooks/useToggle";
+import { OpportunityInfoForm } from "./opportunity-info-form";
+import moment from "moment";
+import { dateFormat } from "@constance/date-format";
+import { OpportunityAdditionalForm } from "./opportunity-additional-form";
+const { CRUD_AT } = dateFormat;
 
 interface OpportunityDetailsProps {
-  pipelineItemId: string;
+  data: IPipelineItem
 }
 
-export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({
-  pipelineItemId,
-}) => {
-  const { data } = usePipelineItem(pipelineItemId);
+export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) => {
+  const [isEditingForm1, toggleEditForm1] = useToggle();
+  const [isEditingForm2, toggleEditForm2] = useToggle();
+
+  const [form] = Form.useForm<IPipelineItem>();
+
+  const handleToggleEditForm1 = () => {
+    toggleEditForm1();
+    form.setFieldsValue({
+      name: data.name,
+      expectedClosing: data.expectedClosing ? moment(data.expectedClosing) : '',
+      expectedRevenue: data.expectedRevenue,
+    });
+  };
+  const handleToggleEditForm2 = () => {
+    toggleEditForm2();
+    form.setFieldsValue({
+      internalDescription: data.internalDescription
+    });
+  };
+
+  const handleSubmitForm1 = async () => {
+    try {
+      const value = await form.validateFields();
+      console.log(value);
+      
+      toggleEditForm1();
+    } catch (error) {
+      return;
+    }
+  };
+
+  const handleSubmitForm2 = async () => {
+    try {
+
+      toggleEditForm2();
+    } catch (error) {
+      return;
+    }
+  };
   return (
-    <div style={{ display: 'flex' }}>
-      <Card
-        style={{ width: 300 }}
-        cover={
-          <div style={{ padding: 20 }}>
-            <Image
-              alt='example'
-              src={data.photo ? data.photo : imagePlaceHolderUrl}
-            />
-          </div>
-        }
-        actions={[
-          <SettingOutlined key='setting' />,
-          <EditOutlined key='edit' />,
-          <EllipsisOutlined key='ellipsis' />,
-        ]}
-      >
-        <Meta
-          title='Summary'
-          description={
-            <>
-              <span
-                style={{
-                  color: 'rgba(0,0,0,0.9)',
-                  fontSize: 16,
-                }}
-              >
-                {handleUndefinedString(data.title)}
-              </span>
-              <br />
-              <span>{handleUndefinedString(data.jobPosition)}</span>
-              <br />
-              Email:{' '}
-              <i style={{ textDecoration: 'underline', color: 'blue' }}>
-                {handleUndefinedString(data.email)}
-              </i>
-            </>
-          }
-        />
-        <Divider />
-        <div>
-          {/* //!TODO this field is still hard coded */}
-          <Tag color={'error'}>Private</Tag>
-        </div>
-      </Card>
-      <Suspense fallback={<Loading />}>
-        <SecondColumn data={data} />
-      </Suspense>
-      <Suspense fallback={<Loading />}>
-        <OpportunityTimeLine />
-      </Suspense>
-    </div>
+    <>
+      <Form form={form} layout='vertical'>
+        {isEditingForm1 ? (
+          <Row gutter={[24, 0]}>
+            <OpportunityInfoForm showStageInput={false} />
+            <Col style={{ textAlign: 'right' }} span={24}>
+              <Space>
+                <Button onClick={() => handleSubmitForm1()} type='primary'>
+                  Save
+                </Button>
+                <Button onClick={toggleEditForm1}>Cancel</Button>
+              </Space>
+            </Col>
+          </Row>
+        ) : (
+          <EditButtonHover toggleEditForm={handleToggleEditForm1}>
+            <OpportunityInfoDetails opportunity={data} />
+          </EditButtonHover>
+        )}
+
+        <Row className='title-form-content'>Additional Information</Row>
+        {isEditingForm2 ? (
+          <Row gutter={[24, 0]}>
+            <OpportunityAdditionalForm />
+            <Col style={{ textAlign: 'right' }} span={24}>
+              <Space>
+                <Button onClick={() => handleSubmitForm2()} type='primary'>
+                  Save
+                </Button>
+                <Button onClick={toggleEditForm2}>Cancel</Button>
+              </Space>
+            </Col>
+          </Row>) : (
+          <EditButtonHover toggleEditForm={handleToggleEditForm2}>
+            <Row>
+              <Col span={24}>
+                <MyForm label='Description'>
+                  {data.internalDescription}
+                </MyForm>
+              </Col>
+            </Row>
+          </EditButtonHover>
+        )}
+
+        <Row className='title-form-content'>System Information</Row>
+        <Row>
+          <Col span={12}>
+            <MyForm label='Created At'>
+              {moment(data.createdAt).format(CRUD_AT)}
+            </MyForm>
+          </Col>
+          <Col span={12}>
+            <MyForm label='Last Modified At'>
+              {moment(data.updatedAt).format(CRUD_AT)}
+            </MyForm>
+          </Col>
+        </Row>
+      </Form>
+    </>
   );
 };
