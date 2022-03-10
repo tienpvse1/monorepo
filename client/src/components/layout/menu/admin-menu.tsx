@@ -3,7 +3,7 @@ import {
   CoffeeOutlined,
   SettingOutlined,
   SketchOutlined,
-  TeamOutlined
+  TeamOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -12,10 +12,10 @@ interface MenuSiderAdminProps {
   style: object;
 }
 
-export const MenuSiderAdmin = ({ style }: MenuSiderAdminProps) => {
+export const AdminMenuSider = ({ style }: MenuSiderAdminProps) => {
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   return (
     <>
       <Menu
@@ -65,8 +65,6 @@ export const MenuSiderAdmin = ({ style }: MenuSiderAdminProps) => {
         >
           Users
         </Menu.Item>
-
-
       </Menu>
     </>
   );
