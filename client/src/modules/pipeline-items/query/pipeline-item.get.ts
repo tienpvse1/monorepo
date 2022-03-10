@@ -9,7 +9,6 @@ export const GET_PIPELINE_ITEM_BY_ID = 'get-pipeline-item-by-id';
 export const getPipelineId = async (id: string) => {
   const queryBuilder = RequestQueryBuilder.create({
     join: [
-      { field: 'addresses' },
       { field: 'noteWorthies' },
       { field: 'pipelineColumn' },
     ],

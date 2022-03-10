@@ -89,7 +89,6 @@ export const ContactTable: FC = () => {
   const handleCreateContact = (record: IContact) => {
     insertContact({
       ...record,
-      addresses: record.addresses.length === 0 ? [] : [{ ...record.addresses }],
     });
   };
 

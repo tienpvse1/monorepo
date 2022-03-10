@@ -25,7 +25,6 @@ export interface IUpdatePipelineItemDto {
   website?: string;
   title?: string;
   internalNotes?: string;
-  addresses?: IAddress[];
   noteWorthies?: INoteWorthy[];
   opportunityRevenue?: OpportunityRevenue;
 }

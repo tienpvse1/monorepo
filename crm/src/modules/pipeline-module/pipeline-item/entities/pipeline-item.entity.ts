@@ -1,6 +1,5 @@
 import { BaseEntity } from 'src/base/entity.base';
 import { Account } from 'src/modules/account/entities/account.entity';
-import { Address } from 'src/modules/address/entities/address.entity';
 import { Contact } from 'src/modules/contact/entities/contact.entity';
 import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
 import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
@@ -88,10 +87,7 @@ export class PipelineItem extends BaseEntity {
     eager: true,
   })
   schedules: Schedule[];
-  @OneToMany(() => Address, (address) => address.pipelineItem, {
-    cascade: true,
-  })
-  addresses: Address[];
+
   @OneToMany(() => NoteWorthy, (noteWorthies) => noteWorthies.pipelineItem, {
     cascade: true,
     eager: true,

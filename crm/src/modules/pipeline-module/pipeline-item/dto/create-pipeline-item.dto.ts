@@ -10,8 +10,6 @@ import {
   Matches,
   Min,
 } from 'class-validator';
-import { CreateAddressDto } from 'src/modules/address/dto/create-address.dto';
-import { AddressTypes } from 'src/modules/address/entities/address.entity';
 import { CreateNoteWorthyDto } from 'src/modules/note-worthy/dto/create-note-worthy.dto';
 import { CreateOpportunityRevenueDto } from 'src/modules/opportunity-revenue/dto/create-opportunity-revenue.dto';
 import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
@@ -67,10 +65,6 @@ export class CreateSinglePipelineItemDto {
 
   @IsString()
   @IsOptional()
-  type?: AddressTypes;
-
-  @IsString()
-  @IsOptional()
   birth: Date;
   @IsOptional()
   @IsPhoneNumber('VN')
@@ -98,8 +92,6 @@ export class CreateSinglePipelineItemDto {
   @IsOptional()
   internalNotes: string;
 
-  @IsArray()
-  addresses?: CreateAddressDto[];
   @IsOptional()
   @IsArray()
   noteWorthies?: CreateNoteWorthyDto[];
@@ -131,6 +123,5 @@ export class ParsedCreateSinglePipelineItemDto {
   internalNotes: string;
   opportunityRevenue: OpportunityRevenue;
 
-  addresses?: CreateAddressDto[];
   noteWorthies?: CreateNoteWorthyDto[];
 }
