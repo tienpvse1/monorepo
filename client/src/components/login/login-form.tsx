@@ -27,6 +27,9 @@ export const LoginForm = () => {
     if (data.publicData.role.name == `${Role.ADMIN}`) {
       return <Navigate to={'/administration'} replace />;
     }
+    if (data.publicData.role.name == `${Role.SALE_MANAGER}`) {
+      return <Navigate to={'/sale-manager'} replace />;
+    }
     return <Navigate to={'/'} replace />;
   }
 
