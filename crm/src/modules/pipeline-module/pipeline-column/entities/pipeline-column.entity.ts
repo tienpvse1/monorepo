@@ -1,4 +1,5 @@
 import { BaseEntity } from 'src/base/entity.base';
+import { OpportunityHistory } from 'src/modules/opportunity-history/entities/opportunity-history.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { PipelineItem } from '../../pipeline-item/entities/pipeline-item.entity';
 
@@ -16,4 +17,12 @@ export class PipelineColumn extends BaseEntity {
     { eager: true, cascade: true },
   )
   pipelineItems: PipelineItem[];
+  @OneToMany(() => OpportunityHistory, (history) => history.oldStage, {
+    cascade: true,
+  })
+  source: OpportunityHistory[];
+  @OneToMany(() => OpportunityHistory, (history) => history.newStage, {
+    cascade: true,
+  })
+  destination: OpportunityHistory[];
 }

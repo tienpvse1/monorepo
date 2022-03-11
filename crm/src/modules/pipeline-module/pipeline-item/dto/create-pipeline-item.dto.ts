@@ -72,7 +72,14 @@ export class CreateSinglePipelineItemDto {
 
   @IsString()
   @IsOptional()
+  address: string;
+
+  @IsString()
+  @IsOptional()
   state: string;
+  @IsString()
+  @IsOptional()
+  city: string;
   @IsString()
   @IsOptional()
   postalCode: string;
@@ -114,7 +121,9 @@ export class ParsedCreateSinglePipelineItemDto {
 
   birth: Date;
   mobile: string;
+  address: string;
   state: string;
+  city: string;
   postalCode: string;
   taxId: string;
   jobPosition: string;
