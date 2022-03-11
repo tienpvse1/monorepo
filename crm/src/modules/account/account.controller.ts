@@ -55,6 +55,7 @@ import { ExcludePasswordPipe } from './exclude-password.pipe';
   query: {
     join: {
       team: {},
+      role: {},
     },
   },
 })
