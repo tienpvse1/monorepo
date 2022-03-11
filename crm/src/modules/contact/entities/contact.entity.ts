@@ -31,7 +31,14 @@ export class Contact extends BaseEntity {
   photo: string;
 
   @Column({ nullable: true })
+  address: string;
+  @Column({ nullable: true })
   state: string;
+  @Column({ nullable: true })
+  city: string;
+  @Column({ nullable: true })
+  country: string;
+
   @Column({ nullable: true })
   postalCode: string;
   @Column({ nullable: true })
@@ -40,6 +47,7 @@ export class Contact extends BaseEntity {
   jobPosition: string;
   @Column({ nullable: true })
   website: string;
+
   @Column({ nullable: true })
   title: string;
   @Column({ nullable: true, name: 'internal_note' })

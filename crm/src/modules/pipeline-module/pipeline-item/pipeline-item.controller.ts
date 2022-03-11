@@ -1,4 +1,12 @@
-import { Body, Controller, Param, Patch, Post, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Patch,
+  Post,
+  UsePipes,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -35,9 +43,8 @@ import { PipelineItemService } from './pipeline-item.service';
     },
   },
   routes: {
-    exclude: ['createOneBase'],
+    exclude: ['createOneBase', 'deleteOneBase'],
     updateOneBase: { decorators: [UsePipes(GenerateNestedIdPipe)] },
-    deleteOneBase: { decorators: [HistoryLog('deleted an opportunity')] },
   },
   query: {
     join: {
@@ -72,5 +79,11 @@ export class PipelineItemController {
   @HistoryLog("change the opportunity's stage")
   changeStage(@Param('id') id: string, @Body() dto: ChangeStageDto) {
     return this.service.changeStage(id, dto);
+  }
+
+  @Delete(':id')
+  @HistoryLog('Deleted an opportunity')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 }

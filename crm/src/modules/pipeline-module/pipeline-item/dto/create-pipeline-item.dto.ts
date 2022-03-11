@@ -1,11 +1,8 @@
 import {
   IsArray,
-  IsEmail,
   IsNumber,
   IsOptional,
-  IsPhoneNumber,
   IsString,
-  IsUrl,
   Length,
   Matches,
   Min,
@@ -36,18 +33,6 @@ export class CreateSinglePipelineItemDto {
   @IsOptional()
   expectedRevenue?: number;
 
-  @IsUrl()
-  @IsOptional()
-  photo?: string;
-
-  @IsEmail()
-  @IsOptional()
-  email?: string;
-
-  @IsPhoneNumber('VN')
-  @IsOptional()
-  phone?: string;
-
   @IsNumber()
   @IsOptional()
   priority?: number;
@@ -61,46 +46,7 @@ export class CreateSinglePipelineItemDto {
 
   @IsString()
   @IsOptional()
-  internalDescription?: string;
-
-  @IsString()
-  @IsOptional()
-  birth: Date;
-  @IsOptional()
-  @IsPhoneNumber('VN')
-  mobile: string;
-
-  @IsString()
-  @IsOptional()
-  address: string;
-
-  @IsString()
-  @IsOptional()
-  state: string;
-  @IsString()
-  @IsOptional()
-  city: string;
-  @IsString()
-  @IsOptional()
-  country: string;
-  @IsString()
-  @IsOptional()
-  postalCode: string;
-  @IsString()
-  @IsOptional()
-  taxId: string;
-  @IsString()
-  @IsOptional()
-  jobPosition: string;
-  @IsUrl()
-  @IsOptional()
-  website: string;
-  @IsString()
-  @IsOptional()
-  title: string;
-  @IsString()
-  @IsOptional()
-  internalNotes: string;
+  description?: string;
 
   @IsOptional()
   @IsArray()
@@ -113,27 +59,9 @@ export class ParsedCreateSinglePipelineItemDto {
   index: number;
   column: PipelineColumn;
 
-  expectedRevenue?: number;
-  photo?: string;
-  email?: string;
-  phone?: string;
-  priority?: number;
   expectedClosing?: Date;
-  internalDescription?: string;
-  type?: string;
+  description?: string;
 
-  birth: Date;
-  mobile: string;
-  address: string;
-  state: string;
-  city: string;
-  country: string;
-  postalCode: string;
-  taxId: string;
-  jobPosition: string;
-  website: string;
-  title: string;
-  internalNotes: string;
   opportunityRevenue: OpportunityRevenue;
 
   noteWorthies?: CreateNoteWorthyDto[];

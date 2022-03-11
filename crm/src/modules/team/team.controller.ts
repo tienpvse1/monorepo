@@ -1,4 +1,12 @@
-import { Body, Controller, Patch, Post, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Patch,
+  Post,
+  UsePipes,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -50,6 +58,7 @@ import { TeamService } from './team.service';
       'createOneBase',
       'replaceOneBase',
       'updateOneBase',
+      'deleteOneBase',
     ],
   },
 })
@@ -66,5 +75,11 @@ export class TeamController {
   @UsePipes(UpdatePositionPipe)
   updatePosition(@Body() teams: UpdateTeamPositionDto[]) {
     return this.service.updateTeam(teams);
+  }
+
+  @Delete(':id')
+  @HistoryLog('Deleted a team')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 }

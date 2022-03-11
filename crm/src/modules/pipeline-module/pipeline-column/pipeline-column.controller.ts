@@ -1,4 +1,11 @@
-import { Body, Controller, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  ParseUUIDPipe,
+  Post,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -30,7 +37,7 @@ import { PipelineColumnService } from './pipeline-column.service';
     },
   },
   routes: {
-    exclude: ['createOneBase', 'createManyBase'],
+    exclude: ['createOneBase', 'createManyBase', 'deleteOneBase'],
     updateOneBase: {
       decorators: [HistoryLog('updated an stage')],
     },
@@ -60,5 +67,11 @@ export class PipelineColumnController {
   })
   addSingleColumn(@Body() dto: CreateSinglePipelineColumnDto) {
     return this.service.addSingleColumn(dto);
+  }
+
+  @Delete(':id')
+  @HistoryLog('Deleted an stage')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 }

@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Delete, Param } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -36,11 +36,15 @@ import { LeadService } from './lead.service';
     updateOneBase: {
       decorators: [HistoryLog('updated a list information')],
     },
-    deleteOneBase: {
-      decorators: [HistoryLog('deleted a from the system')],
-    },
+    exclude: ['deleteOneBase'],
   },
 })
 export class LeadController {
   constructor(public service: LeadService) {}
+
+  @Delete(':id')
+  @HistoryLog('Deleted a lead')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
+  }
 }

@@ -1,4 +1,11 @@
-import { Body, Controller, Post, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Post,
+  UsePipes,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -31,12 +38,9 @@ import { ScheduleService } from './schedule.service';
     },
   },
   routes: {
-    exclude: ['createOneBase'],
+    exclude: ['createOneBase', 'deleteOneBase'],
     updateOneBase: {
       decorators: [HistoryLog('updated an scheduled activity')],
-    },
-    deleteOneBase: {
-      decorators: [HistoryLog('deleted an scheduled activity')],
     },
   },
   query: {
@@ -55,5 +59,11 @@ export class ScheduleController {
   @UsePipes(ParseDtoPipe)
   createSchedule(@Body() parsedDto: ParsedCreateScheduleDto) {
     return this.service.createItem(parsedDto);
+  }
+
+  @Delete(':id')
+  @HistoryLog('Deleted an activity')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 }
