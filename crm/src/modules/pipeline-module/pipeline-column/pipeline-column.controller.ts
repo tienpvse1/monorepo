@@ -10,8 +10,6 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
-import { getCustomRepository } from 'typeorm';
-import { PipelineRepository } from '../pipeline/pipeline.repository';
 import {
   CreatePipelineColumnDto,
   CreateSinglePipelineColumnDto,
@@ -72,12 +70,7 @@ export class PipelineColumnController {
   }
 
   @Get('/many/:pipelineId')
-  async getByPipelineID(@Param('pipelineId') pipelineId: string) {
-    const pipelineRepository = getCustomRepository(PipelineRepository);
-    const pipeline = await pipelineRepository.findOneItem({
-      where: { id: pipelineId },
-      relations: ['pipelineColumns'],
-    });
-    return pipeline.pipelineColumns;
+  async getByPipelineID() {
+    return this.service.getColumns();
   }
 }
