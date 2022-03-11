@@ -4,6 +4,7 @@ import { IContact } from '@modules/contact/entity/contact.entity';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import { ISchedule } from '@modules/schedule/entity/schedule.entity';
 import { IAddress, INoteWorthy } from '../dto/create-pipeline-items.dto';
+import { IProduct } from '@modules/product/entity/product.entity';
 
 export interface IPipelineItem extends IBase {
   name: string;
@@ -30,4 +31,10 @@ export interface IPipelineItem extends IBase {
   account: IAccount;
   contact: IContact;
   schedules: ISchedule[];
+  opportunityRevenue: IOpportunityRevenue;
+}
+
+export interface IOpportunityRevenue {
+  quantity: number;
+  product: IProduct
 }

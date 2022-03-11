@@ -13,7 +13,8 @@ export const getPipelineId = async (id: string) => {
     join: [
       { field: 'noteWorthies' },
       { field: 'pipelineColumn' },
-      { field: 'opportunityRevenue'}
+      { field: 'opportunityRevenue'},
+      { field: 'opportunityRevenue.product'}
     ],
     filter: [
       {
