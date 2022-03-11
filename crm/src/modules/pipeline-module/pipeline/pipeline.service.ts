@@ -1,40 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { InjectRepository } from '@nestjs/typeorm';
-import { BaseService } from 'src/base/nestjsx.service';
 import { InternalServerEvent } from 'src/constance/event';
-import { reIndexPipeline, sortPipeline } from 'src/util/pipeline';
-import { Repository } from 'typeorm';
+import { reIndexColumn, sortColumns } from 'src/util/pipeline';
+import { getRepository } from 'typeorm';
 import { PipelineColumn } from '../pipeline-column/entities/pipeline-column.entity';
 import { PipelineColumnService } from '../pipeline-column/pipeline-column.service';
 import { PipelineItemService } from '../pipeline-item/pipeline-item.service';
-import { UpdatePipelineDto } from './dto/update-pipeline.dto';
-import { Pipeline } from './entities/pipeline.entity';
 
 @Injectable()
-export class PipelineService extends BaseService<Pipeline> {
+export class PipelineService {
   constructor(
-    @InjectRepository(Pipeline) repository: Repository<Pipeline>,
     private eventEmitter: EventEmitter2,
     private itemService: PipelineItemService,
     private columnService: PipelineColumnService,
-  ) {
-    super(repository);
-  }
+  ) {}
   async findOwnOnePipeline(userId: string) {
-    const pipeline = await this.repository
-      .createQueryBuilder('pipeline')
-      .leftJoinAndSelect('pipeline.pipelineColumns', 'pipelineColumns')
+    const queryBuilder =
+      getRepository(PipelineColumn).createQueryBuilder('pipelineColumn');
+    const column = await queryBuilder
       .leftJoinAndSelect(
-        'pipelineColumns.pipelineItems',
+        'pipelineColumn.pipelineItems',
         'pipelineItems',
         'pipelineItems.account_id = :userId',
         { userId },
       )
       .leftJoinAndSelect('pipelineItems.schedules', 'schedules')
-      .getOne();
-    reIndexPipeline(sortPipeline(pipeline));
-    return pipeline;
+      .getMany();
+
+    reIndexColumn(sortColumns(column));
+    return column;
   }
 
   async updateColumns(pipelineColumns: PipelineColumn[]) {
@@ -52,28 +46,21 @@ export class PipelineService extends BaseService<Pipeline> {
     }
   }
 
-  async updatePipeline(
-    id: string,
-    pipeline: UpdatePipelineDto,
-    accountId: string,
-  ) {
-    reIndexPipeline(sortPipeline(pipeline));
-    if (!pipeline.pipelineColumns) {
-      return this.safeUpdate(id, pipeline, 'pipelineColumns');
-    }
+  async updatePipeline(columns: PipelineColumn[], accountId: string) {
+    reIndexColumn(sortColumns(columns));
 
-    await Promise.all([
-      this.updateColumns(pipeline.pipelineColumns),
-      this.updateItems(pipeline.pipelineColumns),
-    ]);
+    await Promise.all([this.updateColumns(columns), this.updateItems(columns)]);
 
-    // const result = await this.findOneItem({
-    //   where: { id },
-    //   relations: ['pipelineColumns.pipelineItems.account'],
-    // });
     const result = await this.findOwnOnePipeline(accountId);
+    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED, columns);
 
-    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED, { accountId });
-    return result;
+    return {
+      id: 'QIECTiuvzY',
+      createdAt: '2022-02-24T10:11:45.518Z',
+      updatedAt: '2022-02-24T10:12:03.000Z',
+      deletedAt: null,
+      name: 'pipeline 1',
+      pipelineColumns: result,
+    };
   }
 }
