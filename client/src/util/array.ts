@@ -1,3 +1,4 @@
+import { ITeam } from '@modules/team/entity/team.entity';
 import { SchemaOf } from 'yup';
 
 export const removeDuplicate = <T>(array: T[], field: keyof T) => {
@@ -21,4 +22,13 @@ export const removeMissingProps = async <T>(
     }
   }
   return result;
+};
+
+export const sortTeams = (data: ITeam[]) => {
+  data.forEach((team) => {
+    if (team.accounts) {
+      team.accounts.sort((a, b) => a.teamIndex - b.teamIndex);
+    }
+  });
+  data.sort((a, b) => a.index - b.index);
 };

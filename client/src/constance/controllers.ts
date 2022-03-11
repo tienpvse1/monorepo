@@ -13,4 +13,5 @@ export enum controllers {
   PRODUCT = 'product',
   HISTORY = 'history',
   SCHEDULE = 'schedule',
+  TEAM = 'team',
 }

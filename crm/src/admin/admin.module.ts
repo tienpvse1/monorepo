@@ -16,7 +16,6 @@ import { Account } from '../modules/account/entities/account.entity';
 import { EmailTemplate } from '../modules/email-template/entities/email-template.entity';
 import { PipelineColumn } from '../modules/pipeline-module/pipeline-column/entities/pipeline-column.entity';
 import { PipelineItem } from '../modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
-import { Pipeline } from '../modules/pipeline-module/pipeline/entities/pipeline.entity';
 
 AdminJS.registerAdapter({ Database, Resource });
 
@@ -28,7 +27,6 @@ AdminJS.registerAdapter({ Database, Resource });
         resources: [
           PipelineItem,
           PipelineColumn,
-          Pipeline,
           Account,
           EmailTemplate,
           Contact,

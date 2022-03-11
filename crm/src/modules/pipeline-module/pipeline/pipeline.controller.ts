@@ -1,65 +1,16 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-  UsePipes,
-} from '@nestjs/common';
+import { Body, Controller, Get, Put, UsePipes } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { User } from 'src/common/decorators/user.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
-import { CreatePipelineDto } from './dto/create-pipeline.dto';
+import { reIndexColumn, sortColumns } from 'src/util/pipeline';
 import { UpdatePipelineDto } from './dto/update-pipeline.dto';
-import { Pipeline } from './entities/pipeline.entity';
-import { CreatePipePipe } from './pipe/create-pipe.pipe';
 import { ValidationPipe } from './pipe/validation.pipe';
 import { PipelineService } from './pipeline.service';
 
 @Controller('pipeline')
 @ApiBearerAuth(AUTHORIZATION)
 @ApiTags('pipeline')
-@Crud({
-  model: {
-    type: Pipeline,
-  },
-  dto: {
-    create: CreatePipelineDto,
-    update: UpdatePipelineDto,
-    replace: UpdatePipelineDto,
-  },
-  params: {
-    id: {
-      type: 'uuid',
-      field: 'id',
-      primary: true,
-    },
-  },
-  query: {
-    join: {
-      pipelineColumns: {},
-      'pipelineColumns.pipelineItems': {
-        alias: 'columnItems',
-      },
-    },
-  },
-  routes: {
-    exclude: [
-      'replaceOneBase',
-      'createManyBase',
-      'getOneBase',
-      'createOneBase',
-      'getManyBase',
-    ],
-    deleteOneBase: {
-      decorators: [HistoryLog('deleted a pipeline')],
-    },
-  },
-})
 export class PipelineController {
   constructor(public service: PipelineService) {}
 
@@ -77,26 +28,22 @@ export class PipelineController {
   @ApiOperation({
     summary: 'Retrieve ONLY one pipeline that exist in the system',
   })
-  getOnePipeline(@User('id') id: string) {
-    return this.service.findOwnOnePipeline(id);
+  async getOnePipeline(@User('id') id: string) {
+    const result = await this.service.findOwnOnePipeline(id);
+    return {
+      id: 'QIECTiuvzY',
+      createdAt: '2022-02-24T10:11:45.518Z',
+      updatedAt: '2022-02-24T10:12:03.000Z',
+      deletedAt: null,
+      name: 'pipeline 1',
+      pipelineColumns: result,
+    };
   }
 
-  @Post()
-  @ApiOperation({
-    deprecated: true,
-    summary: 'System should not let user to create pipeline',
-    description:
-      'please do not use this api, because system should only have one pipeline by default, should not let user to do this manually',
-  })
-  @UsePipes(CreatePipePipe)
-  createPipeline(@Body() value: CreatePipelineDto) {
-    return this.service.createItem(value);
-  }
-
-  @Delete('soft/:id')
-  softDelete(@Param('id') id: string) {
-    return this.service.softDelete(id);
-  }
+  // @Delete('soft/:id')
+  // softDelete(@Param('id') id: string) {
+  //   return this.service.softDelete(id);
+  // }
 
   @Put('/:id')
   @UsePipes(new ValidationPipe())
@@ -106,10 +53,11 @@ export class PipelineController {
   })
   @HistoryLog('updated the pipeline')
   async replacePipeline(
-    @Param('id') id: string,
     @Body() updatePipelineDto: UpdatePipelineDto,
     @User('id') accountId: string,
   ) {
-    return await this.service.updatePipeline(id, updatePipelineDto, accountId);
+    const copiedColumns = [...updatePipelineDto.pipelineColumns];
+    reIndexColumn(sortColumns(copiedColumns));
+    return await this.service.updatePipeline(copiedColumns, accountId);
   }
 }

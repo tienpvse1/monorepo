@@ -13,7 +13,6 @@ export class Team extends BaseEntity {
   @Column({ type: 'int', default: '10' })
   required: number;
 
-  @Column({ default: 'cyan' })
   @ManyToOne(() => Account, (account) => account.createdTeams)
   @JoinColumn({ name: 'account_id' })
   createdBy: Account;

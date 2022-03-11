@@ -64,6 +64,7 @@ export class PipelineItemService extends BaseService<PipelineItem> {
 
     await oldColumn.save();
     await newColumn.save();
+
     this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
     return [oldColumn, newColumn];
   }
