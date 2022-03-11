@@ -108,7 +108,7 @@ export const OpportunitiesTable = () => {
       }
     }, {
       onSuccess: () => {
-        queryClient.invalidateQueries(GET_PIPELINE_ITEM_BY_ACCOUNT_ID);
+        queryClient.refetchQueries(GET_PIPELINE_ITEM_BY_ACCOUNT_ID);
         message.success('Created opportunity successfully !')
       },
     })

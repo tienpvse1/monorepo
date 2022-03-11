@@ -58,7 +58,6 @@ export const useHandleDnD = (data: IPipeline) => {
     pipelineNewColumns.splice(finishIndex, 0, newItemColumn);
 
     //set lại column mới vô state
-
     setNewPipeline(reassignIndex(pipelineNewColumns));
   };
 

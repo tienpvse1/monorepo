@@ -51,7 +51,7 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
           quantity: value.quantity
         }
       });
-      
+
       // updateOpportunity({
       //   id: data.id,
       //   contactId: value.contactId,
@@ -66,7 +66,7 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
       //     toggleEditForm1();
       //   }
       // })
-      
+
     } catch (error) {
       return;
     }
@@ -74,8 +74,17 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
 
   const handleSubmitForm2 = async () => {
     try {
+      const value = await form.validateFields();
+      updateOpportunity({
+        id: data.id,
+        ...value
+      }, {
+        onSuccess: () => {
+          message.success('Saved successfully !');
+          toggleEditForm2();
+        }
+      })
 
-      toggleEditForm2();
     } catch (error) {
       return;
     }

@@ -30,10 +30,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
   const { mutate } = useCreateSchedule();
   const { mutate: removePipelineItems } = useDeletePipelineItems();
   const onDeletePipeLineItem = () => removePipelineItems(cardData.id);
-  const navigate = useNavigate();
-
-  console.log(cardData.schedules);
-  
+  const navigate = useNavigate();  
   const handleViewDetailClick = () => {
     navigate(`/opportunities/view-details/${cardData.id}`)
   };
