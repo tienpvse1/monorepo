@@ -17,9 +17,8 @@ import { Link } from "react-router-dom";
 import { SelectBoxContact } from "@components/contact/select-box-contact";
 import { useContacts } from "@modules/contact/query/contact.get";
 import moment from "moment";
-import { dateFormat } from '@constance/date-format';
 import { useUpdatePipelineItem } from "@modules/pipeline-items/mutation/pipeline-items.update";
-const { DEFAULT } = dateFormat;
+import { message } from 'antd'
 
 export const OpportunitiesTable = () => {
   const [
@@ -30,7 +29,7 @@ export const OpportunitiesTable = () => {
 
   const { data, isLoading } = useQueryPipelineByAccountId(id);
   const { data: contact } = useContacts(id);
-  const {mutate: updateOpportunity} = useUpdatePipelineItem();
+  const { mutate: updateOpportunity } = useUpdatePipelineItem();
 
   const [isOpenModal, toggleCreateModal] = useToggle();
   const [isEditing, toggleEditing] = useToggle();
@@ -59,22 +58,22 @@ export const OpportunitiesTable = () => {
   const handleSave = async (id: string) => {
     try {
       const record = await form.validateFields();
-      // updateOpportunity({
-      //   id,
-      //   name: record.name,
-      //   columnId: record.contactId
-      // })
-      console.log({
+      updateOpportunity({
         id,
         name: record.name,
         contactId: record.contactId
-      });
-      
+      }, {
+        onSuccess: () => {
+          message.success('Saved successfully !');
+          toggleEditing();
+        }
+      })
+
     } catch (error) {
       return;
     }
   }
- 
+
   return (
     <>
       <Form form={form}>

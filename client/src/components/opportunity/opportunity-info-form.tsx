@@ -11,7 +11,7 @@ interface OpportunityInfoFormProps {
   showStageInput?: boolean;
 }
 
-export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({showStageInput = true}) => {
+export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({ showStageInput = true }) => {
   const [
     {
       public_user_info: { id },
@@ -29,6 +29,9 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({showSta
           rules={[isRequired('Opportunity name is required')]}>
           <Input />
         </Form.Item>
+
+        <SelectBoxContact rule={[isRequired('Contact is required')]} data={data} />
+
         <Form.Item
           name="salePerson"
           label="Sale Person"
@@ -46,8 +49,6 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({showSta
           </Select>
         </Form.Item>
 
-        <SelectBoxContact data={data} />
-
         <Form.Item
           name="expectedClosing"
           label="Close Date"
@@ -57,7 +58,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({showSta
       </Col>
       <Col span={12}>
 
-        {showStageInput && <SelectBoxStage />} 
+        {showStageInput && <SelectBoxStage />}
 
         <Form.Item
           name="expectedRevenue"

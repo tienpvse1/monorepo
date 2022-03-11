@@ -1,23 +1,26 @@
 import { IContact } from '@modules/contact/entity/contact.entity';
 import { Form, Select } from 'antd'
+import { Rule } from 'antd/lib/form';
 const { Option } = Select;
 
 interface SelectBoxContactProps {
   data: IContact[];
   callback?: (contactIdSelected: string) => void;
   label?: string;
-  formStyle?: React.CSSProperties
+  formStyle?: React.CSSProperties;
+  rule?: Rule[];
 }
 
 export const SelectBoxContact: React.FC<SelectBoxContactProps> = ({
   data,
   callback,
   label = 'Organization / Contact',
-  formStyle
+  formStyle,
+  rule
 }) => {
   return (
     <>
-      <Form.Item name='contactId' style={formStyle} label={label}>
+      <Form.Item name='contactId' style={formStyle} label={label} rules={rule}>
         <Select
           showSearch
           onSelect={callback}

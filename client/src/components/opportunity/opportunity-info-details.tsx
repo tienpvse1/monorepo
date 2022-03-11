@@ -14,14 +14,14 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({ 
           <MyForm label="Name">
             {opportunity.name}
           </MyForm>
+          <MyForm label="Organization / Contact">
+            {opportunity.contact.name}
+          </MyForm>
           <MyForm label="Sale Person">
             {`${opportunity.account.firstName} ${opportunity.account.lastName}`}
           </MyForm>
           <MyForm label="Sale Team">
-            Team sale
-          </MyForm>
-          <MyForm label="Organization / Contact">
-            MyMy
+            Team ABC (Sample)
           </MyForm>
           <MyForm label="Close Date">
             {opportunity.expectedClosing}

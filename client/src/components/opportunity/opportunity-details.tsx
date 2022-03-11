@@ -18,7 +18,7 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
   const [isEditingForm1, toggleEditForm1] = useToggle();
   const [isEditingForm2, toggleEditForm2] = useToggle();  
 
-  const [form] = Form.useForm<IPipelineItem>();
+  const [form] = Form.useForm();
 
   const handleToggleEditForm1 = () => {
     toggleEditForm1();
@@ -26,6 +26,7 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
       name: data.name,
       expectedClosing: data.expectedClosing ? moment(data.expectedClosing) : '',
       expectedRevenue: data.expectedRevenue,
+      contactId: data.contact.id
     });
   };
   const handleToggleEditForm2 = () => {
