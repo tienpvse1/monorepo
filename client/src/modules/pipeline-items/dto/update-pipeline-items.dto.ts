@@ -6,8 +6,8 @@ import {
 
 export interface IUpdatePipelineItemDto {
   name: string;
-  index: number;
-  columnId: string;
+  index?: number;
+  columnId?: string;
   expectedRevenue?: number;
   photo?: string;
   email?: string;
@@ -27,6 +27,7 @@ export interface IUpdatePipelineItemDto {
   internalNotes?: string;
   noteWorthies?: INoteWorthy[];
   opportunityRevenue?: OpportunityRevenue;
+  contactId: string;
 }
 export interface IChangeStageDto {
   oldStageId: string;

@@ -9,7 +9,8 @@ import { useParams } from 'react-router-dom'
 const ViewContactDetails = () => {
   const params = useParams();
   const { data } = useQueryContactsById(params.id);    
-
+  console.log(data);
+  
   return (
     <>
       {data ?

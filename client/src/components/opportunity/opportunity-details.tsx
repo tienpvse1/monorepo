@@ -16,7 +16,7 @@ interface OpportunityDetailsProps {
 
 export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) => {
   const [isEditingForm1, toggleEditForm1] = useToggle();
-  const [isEditingForm2, toggleEditForm2] = useToggle();
+  const [isEditingForm2, toggleEditForm2] = useToggle();  
 
   const [form] = Form.useForm<IPipelineItem>();
 

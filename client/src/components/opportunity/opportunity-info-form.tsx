@@ -1,5 +1,5 @@
 import { isQuantity, isRequired } from '@constance/rules-of-input-antd'
-import { Col, DatePicker, Form, Input, InputNumber } from 'antd'
+import { Col, DatePicker, Form, Input, InputNumber, Select } from 'antd'
 import { SelectBoxProduct } from '@components/product/select-box-product';
 import { SelectBoxContact } from '@components/contact/select-box-contact';
 import { useCookies } from 'react-cookie';
@@ -30,10 +30,20 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({showSta
           <Input />
         </Form.Item>
         <Form.Item
-          name="opportunityOwner"
-          label="Opportunity Owner"
+          name="salePerson"
+          label="Sale Person"
         >
-          <Input />
+          <Select>
+
+          </Select>
+        </Form.Item>
+        <Form.Item
+          name="saleTeam"
+          label="Sale Team"
+        >
+          <Select>
+
+          </Select>
         </Form.Item>
 
         <SelectBoxContact data={data} />

@@ -13,18 +13,18 @@ export const AddressInfoDetails: React.FC<AddressInfoDetailsProps> = ({
     <>
       <Row>
         <Col span={12}>
-          {/* <MyForm label="Address">
-            {contact.addresses[0]?.address}
+          <MyForm label="Address">
+            This is Address
           </MyForm>
           <MyForm label="City">
-            {contact.addresses[0]?.city}
+            This is city
           </MyForm>
           <MyForm label="Postal Code">
             {contact.postalCode}
           </MyForm>
           <MyForm label="Country">
-            {contact.addresses[0]?.country}
-          </MyForm> */}
+            This country
+          </MyForm>
         </Col>
         <Col span={12}>
           <MyForm label='Job Position'>{contact.jobPosition}</MyForm>

@@ -5,12 +5,19 @@ const { Option } = Select;
 interface SelectBoxContactProps {
   data: IContact[];
   callback?: (contactIdSelected: string) => void;
+  label?: string;
+  formStyle?: React.CSSProperties
 }
 
-export const SelectBoxContact: React.FC<SelectBoxContactProps> = ({ data, callback }) => {
+export const SelectBoxContact: React.FC<SelectBoxContactProps> = ({
+  data,
+  callback,
+  label = 'Organization / Contact',
+  formStyle
+}) => {
   return (
     <>
-      <Form.Item name='contactId' label='Organization / Contact'>
+      <Form.Item name='contactId' style={formStyle} label={label}>
         <Select
           showSearch
           onSelect={callback}

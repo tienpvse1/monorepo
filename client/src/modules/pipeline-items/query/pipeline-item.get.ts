@@ -14,7 +14,9 @@ export const getPipelineId = async (id: string) => {
       { field: 'noteWorthies' },
       { field: 'pipelineColumn' },
       { field: 'opportunityRevenue'},
-      { field: 'opportunityRevenue.product'}
+      { field: 'opportunityRevenue.product'},
+      { field: 'account' },
+      { field: 'team' }
     ],
     filter: [
       {

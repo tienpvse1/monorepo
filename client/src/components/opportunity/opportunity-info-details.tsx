@@ -14,9 +14,11 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({ 
           <MyForm label="Name">
             {opportunity.name}
           </MyForm>
-          <MyForm label="Opportunity Owner">
-            {/* //TODO this Opportunity Owner still hard code */}
-            Chuong Nguyen (Sample)
+          <MyForm label="Sale Person">
+            {`${opportunity.account.firstName} ${opportunity.account.lastName}`}
+          </MyForm>
+          <MyForm label="Sale Team">
+            Team sale
           </MyForm>
           <MyForm label="Organization / Contact">
             MyMy
