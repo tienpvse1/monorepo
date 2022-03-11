@@ -52,6 +52,11 @@ import { ExcludePasswordPipe } from './exclude-password.pipe';
       primary: true,
     },
   },
+  query: {
+    join: {
+      team: {},
+    },
+  },
 })
 @IsPassthrough()
 export class AccountController {

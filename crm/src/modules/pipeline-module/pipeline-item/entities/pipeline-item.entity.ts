@@ -2,6 +2,7 @@ import { BaseEntity } from 'src/base/entity.base';
 import { Account } from 'src/modules/account/entities/account.entity';
 import { Contact } from 'src/modules/contact/entities/contact.entity';
 import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
+import { OpportunityHistory } from 'src/modules/opportunity-history/entities/opportunity-history.entity';
 import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
 import { Tag } from 'src/modules/tag/entities/tag.entity';
@@ -47,7 +48,12 @@ export class PipelineItem extends BaseEntity {
   internalDescription: string;
 
   @Column({ nullable: true })
+  address: string;
+
+  @Column({ nullable: true })
   state: string;
+  @Column({ nullable: true })
+  city: string;
   @Column({ nullable: true })
   postalCode: string;
   @Column({ nullable: true })
@@ -87,6 +93,11 @@ export class PipelineItem extends BaseEntity {
     eager: true,
   })
   schedules: Schedule[];
+
+  @OneToMany(() => OpportunityHistory, (history) => history.pipelineItem, {
+    cascade: true,
+  })
+  histories: OpportunityHistory[];
 
   @OneToMany(() => NoteWorthy, (noteWorthies) => noteWorthies.pipelineItem, {
     cascade: true,
