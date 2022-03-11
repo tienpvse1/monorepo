@@ -16,7 +16,7 @@ import {
 } from 'typeorm';
 import { PipelineColumn } from '../../pipeline-column/entities/pipeline-column.entity';
 
-@Entity({ name: 'pipeline_item' })
+@Entity({ name: 'opportunity' })
 export class PipelineItem extends BaseEntity {
   @Column()
   name: string;

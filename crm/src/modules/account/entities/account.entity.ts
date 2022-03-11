@@ -107,6 +107,10 @@ export class Account extends BaseEntity {
   @JoinColumn({ name: 'team_id' })
   team: Team;
 
+  @OneToMany(() => Team, (team) => team.createdBy)
+  @JoinColumn({ name: 'team_id' })
+  createdTeams: Team[];
+
   @OneToMany(() => ProductAccount, (product) => product.account)
   productAccounts: ProductAccount[];
 

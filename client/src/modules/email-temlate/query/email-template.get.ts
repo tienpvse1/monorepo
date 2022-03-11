@@ -10,13 +10,13 @@ export const FETCH_TEMPLATES_KEY = 'fetch-templates';
 export const getTemplateById = async (id: string = '') => {
   const { instance } = new Axios();
   const { data } = await instance.get(`${EMAIL_TEMPLATE}/${id}`);
-  return data.data as IEmailTemplate;
+  return data as IEmailTemplate;
 };
 
 export const findAllTemplates = async () => {
   const { instance } = new Axios();
   const { data } = await instance.get(`${EMAIL_TEMPLATE}`);
-  return data.data as IEmailTemplate[];
+  return data as IEmailTemplate[];
 };
 
 export const useGetTemplateById = (id: string) =>

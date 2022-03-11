@@ -3,7 +3,7 @@ import { Pipeline } from 'src/modules/pipeline-module/pipeline/entities/pipeline
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { PipelineItem } from '../../pipeline-item/entities/pipeline-item.entity';
 
-@Entity({ name: 'pipeline_column' })
+@Entity({ name: 'stage' })
 export class PipelineColumn extends BaseEntity {
   @Column()
   name: string;
