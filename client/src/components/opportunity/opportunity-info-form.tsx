@@ -6,6 +6,8 @@ import { useCookies } from 'react-cookie';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useContacts } from '@modules/contact/query/contact.get';
 import { SelectBoxStage } from '@components/opportunity/select-box-stage';
+import { SelectBoxSalePerson } from '@components/sale/select-box-sale-person';
+const { Option } = Select;
 
 interface OpportunityInfoFormProps {
   showStageInput?: boolean;
@@ -32,20 +34,17 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({ showSt
 
         <SelectBoxContact rule={[isRequired('Contact is required')]} data={data} />
 
-        <Form.Item
-          name="salePerson"
-          label="Sale Person"
-        >
-          <Select>
+        <SelectBoxSalePerson />
 
-          </Select>
-        </Form.Item>
         <Form.Item
           name="saleTeam"
           label="Sale Team"
+          initialValue={1}
         >
-          <Select>
-
+          <Select disabled>
+            <Option value={1}>
+              Team ABC (Sample)
+            </Option>
           </Select>
         </Form.Item>
 

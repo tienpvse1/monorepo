@@ -15,7 +15,6 @@ import { PopoverAction } from '../../popover/popover-action';
 import { ICreateScheduleDto } from '@modules/schedule/dto/create-schedule.dto';
 import { useCreateSchedule } from '@modules/schedule/mutation/schedule.post';
 import { client } from '../../../App';
-import { QUERY_SCHEDULES } from '@modules/schedule/query/schedule.get';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { useNavigate } from 'react-router-dom';
 const Planned = lazy(() => import('@components/schedule/planned'));
@@ -25,14 +24,16 @@ interface PipelineCardItemProps {
   cardData: IPipelineItem;
 }
 
-export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({cardData}) => {
+export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) => {
   const [isDropdownVisible, toggleDropdown] = useBooleanToggle(false);
   const [value, toggle] = useBooleanToggle(false);
   const { mutate } = useCreateSchedule();
-  const { removePipelineItems } = useDeletePipelineItems();
+  const { mutate: removePipelineItems } = useDeletePipelineItems();
   const onDeletePipeLineItem = () => removePipelineItems(cardData.id);
   const navigate = useNavigate();
 
+  console.log(cardData.schedules);
+  
   const handleViewDetailClick = () => {
     navigate(`/opportunities/view-details/${cardData.id}`)
   };
@@ -114,7 +115,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({cardData}) =>
                   >
                     <ClockCircleOutlined
                       onClick={() => toggleDropdown()}
-                      style={{ fontSize: 18, cursor: 'pointer' }}
+                      style={{ fontSize: 18, cursor: 'pointer', color: cardData.schedules.length > 0 ? 'green' : '' }}
                     />
                   </Dropdown>
 

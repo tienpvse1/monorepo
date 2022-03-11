@@ -8,8 +8,7 @@ import { OpportunityStep } from "@components/opportunity/opportunity-step";
 import { OpportunityCardImage } from "@components/opportunity/opportunity-card-image";
 const ViewOpportunityDetails = () => {
   const params = useParams();
-  const { data } = usePipelineItem(params.id);
-  console.log(data);
+  const { data } = usePipelineItem(params.id);  
   
   return (
     <>

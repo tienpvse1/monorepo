@@ -2,8 +2,10 @@ import { IAccount } from '@interfaces/account';
 import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { Axios, instance } from '../../../axios';
 import { controllers } from '../../../constance/controllers';
-
+import { useQuery } from 'react-query';
 const { ACCOUNT } = controllers;
+
+export const GET_ACCOUNT_BY_SALE_ROLE = "get-account-by-sale-role";
 export const getUser = async () => {
   const { instance } = new Axios();
   const { data } = await instance.get(`${ACCOUNT}/custom`, {
@@ -30,6 +32,9 @@ export const getAccountBySaleRole = async () => {
       },
     ],
   }).query(false);
-  const { data } = await instance.get<IAccount>(`${ACCOUNT}?${queryBuilder}`);
+  const { data } = await instance.get<IAccount[]>(`${ACCOUNT}?${queryBuilder}`);
   return data;
 };
+
+export const useQueryAccountBySaleRole = () =>
+  useQuery(GET_ACCOUNT_BY_SALE_ROLE, () => getAccountBySaleRole())

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useToggle } from "@hooks/useToggle";
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { OpportunityTitleTable } from "@components/opportunity/opportunity-title-table";
-import { useQueryPipelineByAccountId } from "@modules/pipeline-items/query/pipeline-item.get";
+import { GET_PIPELINE_ITEM_BY_ACCOUNT_ID, useQueryPipelineByAccountId } from "@modules/pipeline-items/query/pipeline-item.get";
 import { useCookies } from "react-cookie";
 import { PUBLIC_USER_INFO } from "@constance/cookie";
 import { IPipelineItem } from "@modules/pipeline-items/entity/pipeline-items.entity";
@@ -19,6 +19,22 @@ import { useContacts } from "@modules/contact/query/contact.get";
 import moment from "moment";
 import { useUpdatePipelineItem } from "@modules/pipeline-items/mutation/pipeline-items.update";
 import { message } from 'antd'
+import { usePostPipelineItems } from "@modules/pipeline-items/mutation/pipeline-items.post";
+import { useQueryClient } from "react-query";
+import { useDeletePipelineItems } from "@modules/pipeline-items/mutation/pipeline-items.delete";
+
+interface SubmitFormCreateOpportunity {
+  columnId: string;
+  contactId: string;
+  expectedClosing: string;
+  expectedRevenue: string;
+  internalDescription: string;
+  internalNotes: string;
+  name: string;
+  productId: string;
+  quantity: number;
+  saleTeam: number;
+}
 
 export const OpportunitiesTable = () => {
   const [
@@ -30,6 +46,10 @@ export const OpportunitiesTable = () => {
   const { data, isLoading } = useQueryPipelineByAccountId(id);
   const { data: contact } = useContacts(id);
   const { mutate: updateOpportunity } = useUpdatePipelineItem();
+  const { mutate: createOpportunity } = usePostPipelineItems();
+  const { mutate: removePipelineItems } = useDeletePipelineItems();
+  const queryClient = useQueryClient();
+
 
   const [isOpenModal, toggleCreateModal] = useToggle();
   const [isEditing, toggleEditing] = useToggle();
@@ -72,6 +92,26 @@ export const OpportunitiesTable = () => {
     } catch (error) {
       return;
     }
+  }
+
+  const handleCreateOpportunity = (record: SubmitFormCreateOpportunity) => {
+    const { name, columnId, contactId, internalNotes, internalDescription, productId, quantity } = record;
+    createOpportunity({
+      name,
+      columnId,
+      contactId,
+      internalNotes,
+      internalDescription,
+      opportunityRevenue: {
+        productId,
+        quantity
+      }
+    }, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(GET_PIPELINE_ITEM_BY_ACCOUNT_ID);
+        message.success('Created opportunity successfully !')
+      },
+    })
   }
 
   return (
@@ -244,7 +284,14 @@ export const OpportunitiesTable = () => {
 
                     <Button
                       type='default'
-                      onClick={() => showDeleteConfirm(() => { })}
+                      onClick={() => showDeleteConfirm(() => removePipelineItems(record.id,
+                        {
+                          onSuccess: () => {
+                            queryClient.invalidateQueries(GET_PIPELINE_ITEM_BY_ACCOUNT_ID);
+                            message.success('Deleted opportunity successfully !')
+                          }
+                        }
+                      ))}
                       shape='round'
                       danger
                     >
@@ -259,7 +306,7 @@ export const OpportunitiesTable = () => {
       </Form>
       <CreateModal
         title='New Opportunity'
-        callback={() => { }}
+        callback={handleCreateOpportunity}
         isOpenModal={isOpenModal}
         toggleCreateModal={toggleCreateModal}
       >

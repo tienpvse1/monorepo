@@ -13,9 +13,9 @@ import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { Button, Card, Form, Input, InputNumber } from 'antd';
 import { FC, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { client } from '../../../App';
 import { SelectBoxProduct } from '@components/product/select-box-product';
 import { SelectBoxContact } from '@components/contact/select-box-contact';
+import { useQueryClient } from 'react-query';
 
 interface CreateCardItemProps {
   pipelineColumnID: string;
@@ -43,10 +43,9 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
     },
   ] = useCookies([PUBLIC_USER_INFO]);
   const { data } = useContacts(id);
-
   const [infoContact, setInfoContact] = useState<IContact>();
-
   const [form] = Form.useForm<SubmittedObject>();
+  const queryClient = useQueryClient();
 
   const handleSubmit = (value: SubmittedObject) => {
     const { quantity, productId, name, contactId, email, mobile } = value;
@@ -69,7 +68,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
           });
         }
         toggleClose();
-        client.invalidateQueries(GET_PIPELINE_DESIGN);
+        queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
       },
     });
   };

@@ -13,7 +13,7 @@ export const SelectBoxStage = () => {
     <>
       {pipelineColumns &&
         <Form.Item
-          name="stage"
+          name="columnId"
           label="Stage"
           required
           rules={[isRequired('Stage is required')]}

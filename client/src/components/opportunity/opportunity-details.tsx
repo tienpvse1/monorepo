@@ -1,4 +1,4 @@
-import { Button, Col, Form, Row, Space } from "antd";
+import { Button, Col, Form, message, Row, Space } from "antd";
 import { MyForm } from '@components/form/my-form';
 import { IPipelineItem } from "@modules/pipeline-items/entity/pipeline-items.entity";
 import { EditButtonHover } from '@components/page-details/edit-button-hover';
@@ -8,6 +8,7 @@ import { OpportunityInfoForm } from "./opportunity-info-form";
 import moment from "moment";
 import { dateFormat } from "@constance/date-format";
 import { OpportunityAdditionalForm } from "./opportunity-additional-form";
+import { useUpdatePipelineItem } from "@modules/pipeline-items/mutation/pipeline-items.update";
 const { CRUD_AT } = dateFormat;
 
 interface OpportunityDetailsProps {
@@ -16,7 +17,8 @@ interface OpportunityDetailsProps {
 
 export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) => {
   const [isEditingForm1, toggleEditForm1] = useToggle();
-  const [isEditingForm2, toggleEditForm2] = useToggle();  
+  const [isEditingForm2, toggleEditForm2] = useToggle();
+  const { mutate: updateOpportunity } = useUpdatePipelineItem();
 
   const [form] = Form.useForm();
 
@@ -26,7 +28,8 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
       name: data.name,
       expectedClosing: data.expectedClosing ? moment(data.expectedClosing) : '',
       expectedRevenue: data.expectedRevenue,
-      contactId: data.contact.id
+      contactId: data.contact.id,
+      salePerson: data.account.id
     });
   };
   const handleToggleEditForm2 = () => {
@@ -39,9 +42,31 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
   const handleSubmitForm1 = async () => {
     try {
       const value = await form.validateFields();
-      console.log(value);
+      console.log({
+        id: data.id,
+        contactId: value.contactId,
+        name: value.name,
+        opportunityRevenue: {
+          productId: value.productId,
+          quantity: value.quantity
+        }
+      });
       
-      toggleEditForm1();
+      // updateOpportunity({
+      //   id: data.id,
+      //   contactId: value.contactId,
+      //   name: value.name,
+      //   opportunityRevenue: {
+      //     productId: value.productId,
+      //     quantity: value.quantity
+      //   }
+      // }, {
+      //   onSuccess: () => {
+      //     message.success('Saved successfully !');
+      //     toggleEditForm1();
+      //   }
+      // })
+      
     } catch (error) {
       return;
     }

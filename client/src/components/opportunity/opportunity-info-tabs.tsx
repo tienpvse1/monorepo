@@ -1,7 +1,8 @@
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { Alert, Button, Tabs } from 'antd'
+import { Alert, Tabs } from 'antd'
 import { ContactInfo } from './contact-info';
 import { OpportunityDetails } from '@components/opportunity/opportunity-details';
+import { FileTextOutlined } from '@ant-design/icons';
 const { TabPane } = Tabs;
 
 interface OpportunityInfoTabsProps {
@@ -18,13 +19,13 @@ export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }
       >
         <TabPane
           tab='Details'
-          key='0'
+          key='1'
         >
           <OpportunityDetails data={data} />
         </TabPane>
         <TabPane
           tab='Contact Info'
-          key='1'
+          key='2'
           style={{
             height: '60vh',
             overflowY: 'scroll',
@@ -33,7 +34,7 @@ export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }
           <ContactInfo data={data} />
         </TabPane>
         {/* //TODO: these tab is still hard coded */}
-        <TabPane tab='Task' key='2'>
+        <TabPane tab='Task' key='3'>
           <Alert
             message='Meeting with John'
             type='error'
@@ -54,14 +55,14 @@ export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }
             description='go to store and buy coffee'
           />
         </TabPane>
-        <TabPane tab='Notes' key='3'>
-          Notes
-        </TabPane>
-        <TabPane tab='Upcoming Activity' key='4'>
-          <Button type='primary'>Compose</Button>
-        </TabPane>
-        <TabPane tab='Email' key='5'>
-          <Button type='primary'>Compose</Button>
+        <TabPane tab='Notes' key='4'>
+          <Alert
+            message="Internal Notes"
+            showIcon
+            icon={<FileTextOutlined />}
+            description={`${data.internalNotes}`}
+            type="warning"
+          />
         </TabPane>
       </Tabs>
     </>
