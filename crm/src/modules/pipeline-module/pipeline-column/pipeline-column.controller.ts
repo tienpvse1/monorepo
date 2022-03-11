@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  ParseUUIDPipe,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Param, ParseUUIDPipe, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -35,16 +28,16 @@ import { PipelineColumnService } from './pipeline-column.service';
       field: 'id',
       primary: true,
     },
-    pipelineId: {
-      type: 'string',
-      field: 'pipelineId',
-      primary: false,
-    },
   },
   routes: {
-    exclude: ['createOneBase', 'createManyBase', 'getManyBase'],
+    exclude: ['createOneBase', 'createManyBase'],
     updateOneBase: {
       decorators: [HistoryLog('updated an stage')],
+    },
+  },
+  query: {
+    join: {
+      pipelineItems: {},
     },
   },
 })
@@ -67,10 +60,5 @@ export class PipelineColumnController {
   })
   addSingleColumn(@Body() dto: CreateSinglePipelineColumnDto) {
     return this.service.addSingleColumn(dto);
-  }
-
-  @Get('/many/:pipelineId')
-  async getByPipelineID() {
-    return this.service.getColumns();
   }
 }

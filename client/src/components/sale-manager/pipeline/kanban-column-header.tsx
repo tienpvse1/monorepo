@@ -1,8 +1,8 @@
-import { ITeam } from '@modules/team/entity/team.entity';
+import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 
 interface KanbanColumnHeaderProps {
-  data: Partial<ITeam>;
+  data: Partial<IPipelineColumn>;
   handleDrag: DraggableProvidedDragHandleProps;
 }
 
@@ -21,7 +21,7 @@ export const KanbanColumnHeader: React.FC<KanbanColumnHeaderProps> = ({
       <div
         style={{
           height: '3px',
-          backgroundColor: 'blue',
+          backgroundColor: 'green',
           marginBottom: '5px',
         }}
       ></div>
@@ -43,7 +43,7 @@ export const KanbanColumnHeader: React.FC<KanbanColumnHeaderProps> = ({
             color: 'rgba(0,0,0,0.6)',
           }}
         >
-          {data.accounts ? data.accounts.length : 0}/10
+          {data.pipelineItems ? data.pipelineItems.length : 0}/10
         </span>
       </div>
     </div>
