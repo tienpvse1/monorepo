@@ -1,34 +1,42 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Delete, Param } from '@nestjs/common';
+import { Crud } from '@nestjsx/crud';
+import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import { Course } from './entities/course.entity';
 
 @Controller('course')
+@Crud({
+  model: {
+    type: Course,
+  },
+  dto: {
+    create: CreateCourseDto,
+    update: UpdateCourseDto,
+  },
+  routes: {
+    exclude: ['deleteOneBase'],
+  },
+  query: {
+    join: {
+      subjects: {},
+    },
+  },
+  params: {
+    id: {
+      field: 'id',
+      type: 'string',
+      primary: true,
+    },
+  },
+})
 export class CourseController {
-  constructor(private readonly courseService: CourseService) {}
-
-  @Post()
-  create(@Body() createCourseDto: CreateCourseDto) {
-    return this.courseService.create(createCourseDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.courseService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.courseService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCourseDto: UpdateCourseDto) {
-    return this.courseService.update(+id, updateCourseDto);
-  }
+  constructor(public service: CourseService) {}
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.courseService.remove(+id);
+  @HistoryLog('deleted a course')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 }

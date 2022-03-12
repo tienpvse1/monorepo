@@ -18,7 +18,7 @@ export class Course extends BaseEntity {
   @Index({ unique: true })
   code: string;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', default: false })
   isEnable: string;
 
   @OneToMany(() => Subject, (subject) => subject.course)
