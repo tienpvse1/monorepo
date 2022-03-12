@@ -1,5 +1,5 @@
 import { BaseEntity } from 'src/base/entity.base';
-import { Contact } from 'src/modules/contact/entities/contact.entity';
+import { Company } from 'src/modules/company/entities/company.entity';
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
 import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 
@@ -18,11 +18,11 @@ export class Tag extends BaseEntity {
   })
   pipelineItems: PipelineItem[];
 
-  @ManyToMany(() => Contact, (contact) => contact.tags)
+  @ManyToMany(() => Company, (company) => company.tags)
   @JoinTable({
-    name: 'tag_contact',
-    joinColumn: { name: 'contact_id' },
+    name: 'tag_company',
+    joinColumn: { name: 'company_id' },
     inverseJoinColumn: { name: 'tag_id' },
   })
-  contacts: Contact[];
+  companies: Company[];
 }
