@@ -10,12 +10,12 @@ import { useContacts } from '@modules/contact/query/contact.get';
 import { ICreatePipelineItemsDto } from '@modules/pipeline-items/dto/create-pipeline-items.dto';
 import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
-import { useQueryProducts } from '@modules/product/query/products.get';
-import { Button, Card, Form, Input, Select } from 'antd';
+import { Button, Card, Form, Input, InputNumber } from 'antd';
 import { FC, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { client } from '../../../App';
-const { Option } = Select;
+import { SelectBoxProduct } from '@components/product/select-box-product';
+import { SelectBoxContact } from '@components/contact/select-box-contact';
+import { useQueryClient } from 'react-query';
 
 interface CreateCardItemProps {
   pipelineColumnID: string;
@@ -36,7 +36,6 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
   toggleClose,
 }) => {
   const { mutate: createNewItems } = usePostPipelineItems();
-
   const { mutate: updateContact } = useUpdateContact();
   const [
     {
@@ -44,11 +43,9 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
     },
   ] = useCookies([PUBLIC_USER_INFO]);
   const { data } = useContacts(id);
-  const { data: products } = useQueryProducts();
-
   const [infoContact, setInfoContact] = useState<IContact>();
-
   const [form] = Form.useForm<SubmittedObject>();
+  const queryClient = useQueryClient();
 
   const handleSubmit = (value: SubmittedObject) => {
     const { quantity, productId, name, contactId, email, mobile } = value;
@@ -71,7 +68,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
           });
         }
         toggleClose();
-        client.invalidateQueries(GET_PIPELINE_DESIGN);
+        queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
       },
     });
   };
@@ -109,28 +106,8 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
           initialValues={{ remember: true }}
           onFinish={(value) => handleSubmit(value)}
         >
-          <Form.Item name='contactId' label='Organization / Contact'>
-            <Select
-              showSearch
-              onSelect={(contactID: string) => handleSelect(contactID)}
-              placeholder='Select a contact'
-              optionFilterProp='children'
-              filterOption={(input, option: any) =>
-                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-              filterSort={(optionA, optionB) =>
-                optionA.children
-                  .toLowerCase()
-                  .localeCompare(optionB.children.toLowerCase())
-              }
-            >
-              {data?.map((contact) => (
-                <Option key={contact.id} value={`${contact.id}`}>
-                  {contact.name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
+
+          <SelectBoxContact data={data} callback={handleSelect} />
 
           <Form.Item
             label='Opportunity'
@@ -149,28 +126,15 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
             <Input />
           </Form.Item>
 
-          {products && (
-            <Form.Item
-              label='Product Revenue'
-              initialValue={products[0].id}
-              name='productId'
-            >
-              <Select>
-                {products.map((product) => (
-                  <Option value={product.id} key={product.id}>
-                    {product.name}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-          )}
+          <SelectBoxProduct />
+
           <Form.Item
             label='Expected sold quantity'
-            rules={[{ type: 'number', message: 'must be number' }]}
+            rules={[{ type: 'number', min: 1, max: 99 }]}
             name='quantity'
             initialValue={1}
           >
-            <Input />
+            <InputNumber className='my-input-number' />
           </Form.Item>
 
           <Button htmlType='submit' type='primary'>

@@ -5,7 +5,11 @@ import { Button, Col, Row, Select, Space } from 'antd'
 const { Option } = Select;
 import { envVars } from '@env/var.env';
 
-export const OpportunityTitleTable = () => {
+interface OpportunityTitleTableProps {
+  toggleCreateModal: () => void;
+}
+
+export const OpportunityTitleTable: React.FC<OpportunityTitleTableProps> = ({ toggleCreateModal }) => {
   return (
     <>
       <div style={{ padding: '10px' }}>
@@ -35,6 +39,7 @@ export const OpportunityTitleTable = () => {
                 className='button-ant-custom-style'
                 type='primary'
                 size='middle'
+                onClick={toggleCreateModal}
               >
                 <PlusOutlined /> New Opportunity
               </Button>

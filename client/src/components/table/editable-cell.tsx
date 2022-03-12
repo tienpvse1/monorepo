@@ -6,18 +6,22 @@ import { Link } from 'react-router-dom';
 interface EditableCellProps extends HTMLAttributes<HTMLElement> {
   editing: boolean;
   dataIndex: any;
-  title: string;
-  inputType?: 'number' | 'text' | 'datePicker';
+  title?: string;
+  inputType?: 'number' | 'text' | 'datePicker' | 'select';
   recordIndex: string;
   editingIndex: string;
   record: any;
   rules?: Rule[];
   linkTo?: string;
+  customChildren?: React.ReactNode;
+  nameForm: string;
+  selectBox?: React.ReactNode
 }
 
 export const EditableCell: React.FC<EditableCellProps> = ({
   editing,
   dataIndex,
+  customChildren,
   title,
   inputType = 'text',
   recordIndex,
@@ -25,6 +29,8 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   editingIndex,
   record,
   rules = [],
+  nameForm,
+  selectBox,
   linkTo = ''
 }) => {
 
@@ -41,11 +47,12 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   return (
     <>
       {editing && recordIndex === editingIndex ? (
-        <Form.Item name={dataIndex} style={{ margin: 0 }} rules={rules}>
-          {inputNode}
-        </Form.Item>
+        selectBox ? selectBox :
+          <Form.Item name={nameForm} style={{ margin: 0 }} rules={rules}>
+            {inputNode}
+          </Form.Item>
       ) : (
-        <Link className="my-link" to={linkTo} >{record[dataIndex]}</Link>
+        customChildren ? customChildren : <Link className="my-link" to={linkTo} >{record[dataIndex]}</Link>
       )}
     </>
   );

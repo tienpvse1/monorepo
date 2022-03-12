@@ -1,5 +1,6 @@
 import { instance } from '@axios';
 import { controllers } from '@constance/controllers';
+import { handleMutationResponse } from '@modules/base/base.handler';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import { useMutation } from 'react-query';
 import {
@@ -30,7 +31,9 @@ const changeOpportunityStage = async (
 
 export const useUpdatePipelineItem = () =>
   useMutation(({ id, ...rest }: IUpdatePipelineItemDto & { id: string }) =>
-    updatePipelineItem(id, rest)
+    updatePipelineItem(id, rest), {
+      ...handleMutationResponse()
+    }
   );
 
 export const useChangeStage = () =>

@@ -2,6 +2,9 @@ import {
   CheckOutlined,
   FileTextOutlined,
   PlusOutlined,
+  MailOutlined,
+  CoffeeOutlined,
+  PushpinOutlined
 } from '@ant-design/icons';
 import { useClickOutside } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
@@ -40,9 +43,17 @@ const Planned: React.FC<PlannedProps> = ({
             description={
               <>Due {moment(new Date(schedule.dueDate)).fromNow()}</>
             }
-            type='info'
+            type={
+              schedule.type == 'todo' && 'info' ||
+              schedule.type == 'email' && 'error' ||
+              schedule.type == 'meeting' && 'warning' || 'success'
+            }
             showIcon
-            icon={<FileTextOutlined />}
+            icon={
+              schedule.type == 'todo' && <FileTextOutlined /> ||
+              schedule.type == 'email' && <MailOutlined /> ||
+              schedule.type == 'meeting' && <CoffeeOutlined /> || <PushpinOutlined />
+            }
             closable
             closeIcon={<CheckOutlined style={{ fontSize: '14px' }} />}
           />

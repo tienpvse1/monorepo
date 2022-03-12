@@ -105,7 +105,7 @@ export const ContactTable: FC = () => {
           title={() => <ContactHeader toggleCreateModal={toggleCreateModal} />}
           pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
           dataSource={data}
-          size={'large'}
+          size={'small'}
           rowKey={(record) => record.id}
         >
           <Column
@@ -116,6 +116,7 @@ export const ContactTable: FC = () => {
               <EditableCell
                 linkTo={`view-details/${record.id}`}
                 dataIndex='name'
+                nameForm='name'
                 editing={isEditing}
                 editingIndex={editingIndex}
                 recordIndex={record.id}
@@ -133,6 +134,7 @@ export const ContactTable: FC = () => {
               <EditableCell
                 linkTo={`view-details/${record.id}`}
                 dataIndex='email'
+                nameForm='email'
                 editing={isEditing}
                 editingIndex={editingIndex}
                 recordIndex={record.id}
@@ -150,6 +152,7 @@ export const ContactTable: FC = () => {
               <EditableCell
                 linkTo={`view-details/${record.id}`}
                 dataIndex='phone'
+                nameForm='phone'
                 editing={isEditing}
                 editingIndex={editingIndex}
                 recordIndex={record.id}
@@ -167,6 +170,7 @@ export const ContactTable: FC = () => {
               <EditableCell
                 linkTo={`view-details/${record.id}`}
                 dataIndex='internalNotes'
+                nameForm='internalNotes'
                 editing={isEditing}
                 editingIndex={editingIndex}
                 recordIndex={record.id}
