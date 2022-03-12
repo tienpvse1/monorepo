@@ -5,11 +5,10 @@ import { BaseService } from 'src/base/nestjsx.service';
 import { InternalServerEvent } from 'src/constance/event';
 import { AccountRepository } from 'src/modules/account/account.repository';
 import { ContactRepository } from 'src/modules/contact/contact.repository';
-import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
 import { ProductRepository } from 'src/modules/product/product.repository';
 import { reIndexItems } from 'src/util/pipeline-column';
 // import { reIndexItems } from 'src/util/pipeline-column';
-import { getCustomRepository, getRepository, Repository } from 'typeorm';
+import { getCustomRepository, Repository } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { PipelineColumnRepository } from '../pipeline-column/pipeline-column.repository';
 import { CreateSinglePipelineItemDto } from './dto/create-pipeline-item.dto';
@@ -96,28 +95,27 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     const {
       columnId,
       contactId,
-      opportunityRevenue: { productId, quantity },
+      opportunityRevenue: { productId },
       ...rest
     } = dto;
 
-    const revenueRepository = getRepository(OpportunityRevenue);
     const productRepository = getCustomRepository(ProductRepository);
     const contactRepository = getCustomRepository(ContactRepository);
     const accountRepository = getCustomRepository(AccountRepository);
     const columnRepository = getCustomRepository(PipelineColumnRepository);
 
-    const [account, contact, product, pipelineColumn] = await Promise.all([
+    const [account, contact, pipelineColumn] = await Promise.all([
       accountRepository.findOneItem({ where: { id: accountId } }),
       contactRepository.findOneItem({ where: { id: contactId } }),
       productRepository.findOneItem({ where: { id: productId } }),
       columnRepository.findOneItem({ where: { id: columnId } }),
     ]);
-    const revenue = await revenueRepository
-      .create({
-        quantity: quantity,
-        product: product,
-      })
-      .save();
+    // const revenue = await revenueRepository
+    //   .create({
+    //     quantity: quantity,
+    //     product: product,
+    //   })
+    //   .save();
 
     const createdPipelineItem = await this.repository
       .create({
@@ -125,8 +123,6 @@ export class PipelineItemService extends BaseService<PipelineItem> {
         account,
         contact,
         pipelineColumn,
-        opportunityRevenue: revenue,
-        index: pipelineColumn.pipelineItems.length,
       })
       .save();
 

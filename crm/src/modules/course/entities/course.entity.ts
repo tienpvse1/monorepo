@@ -1,15 +1,7 @@
-import { Account } from 'src/modules/account/entities/account.entity';
+import { BaseEntity } from 'src/base/entity.base';
 import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
-import { ProductAccount } from 'src/modules/product-account/entities/product-account.entity';
 import { Subject } from 'src/modules/subject/entities/subject.entity';
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  Index,
-  ManyToMany,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 
 @Entity()
 export class Course extends BaseEntity {

@@ -1,5 +1,4 @@
 import { BaseEntity } from 'src/base/entity.base';
-import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
 import { ProductAccount } from 'src/modules/product-account/entities/product-account.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 

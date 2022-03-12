@@ -1,5 +1,6 @@
+import { BaseEntity } from 'src/base/entity.base';
 import { Course } from 'src/modules/course/entities/course.entity';
-import { BaseEntity, Column, Entity, Index, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Subject extends BaseEntity {
