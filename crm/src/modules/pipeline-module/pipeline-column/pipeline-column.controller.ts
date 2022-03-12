@@ -45,6 +45,8 @@ import { PipelineColumnService } from './pipeline-column.service';
   query: {
     join: {
       pipelineItems: {},
+      'pipelineItems.contact': {},
+      'pipelineItems.schedules': {},
     },
   },
 })

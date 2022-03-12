@@ -3,7 +3,6 @@ import { Database, Resource } from '@adminjs/typeorm';
 import { Module } from '@nestjs/common';
 import AdminJS from 'adminjs';
 import { Contact } from 'src/modules/contact/entities/contact.entity';
-import { Lead } from 'src/modules/lead/entities/lead.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
 import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
 import { Permission } from 'src/modules/permission/entities/permission.entity';
@@ -31,7 +30,6 @@ AdminJS.registerAdapter({ Database, Resource });
           EmailTemplate,
           Contact,
           Email,
-          Lead,
           Schedule,
           Permission,
           Role,

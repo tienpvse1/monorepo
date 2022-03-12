@@ -89,12 +89,6 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     return item.save();
   }
 
-  async assignAccount(accountId: string) {
-    this.repository.query('UPDATE pipeline_item SET account_id=$1', [
-      accountId,
-    ]);
-  }
-
   async createPipelineItem(
     dto: CreateSinglePipelineItemDto,
     accountId: string,
@@ -137,5 +131,17 @@ export class PipelineItemService extends BaseService<PipelineItem> {
       .save();
 
     return createdPipelineItem;
+  }
+
+  async assignAccount(id: string, accountId: string) {
+    const accountRepository = getCustomRepository(AccountRepository);
+    const [pipelineItem, account] = await Promise.all([
+      this.findOneItem({ where: { id } }),
+      accountRepository.findOneItem({ where: { id: accountId } }),
+    ]);
+    pipelineItem.account = account;
+    const result = await pipelineItem.save();
+    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
+    return result;
   }
 }
