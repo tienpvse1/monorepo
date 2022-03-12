@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -29,7 +29,7 @@ import { RoleService } from './role.service';
     },
   },
   routes: {
-    exclude: ['createOneBase'],
+    exclude: ['createOneBase', 'deleteOneBase'],
   },
 })
 export class RoleController {
@@ -51,5 +51,11 @@ export class RoleController {
     return this.service.findOne(id, {
       relations: ['permissions'],
     });
+  }
+
+  @Delete(':id')
+  @HistoryLog('Deleted an email template')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 }

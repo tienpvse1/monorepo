@@ -1,11 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { OpportunityHistoryService } from './opportunity-history.service';
 import { CreateOpportunityHistoryDto } from './dto/create-opportunity-history.dto';
 import { UpdateOpportunityHistoryDto } from './dto/update-opportunity-history.dto';
 
 @Controller('opportunity-history')
 export class OpportunityHistoryController {
-  constructor(private readonly opportunityHistoryService: OpportunityHistoryService) {}
+  constructor(
+    private readonly opportunityHistoryService: OpportunityHistoryService,
+  ) {}
 
   @Post()
   create(@Body() createOpportunityHistoryDto: CreateOpportunityHistoryDto) {
@@ -23,8 +33,14 @@ export class OpportunityHistoryController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOpportunityHistoryDto: UpdateOpportunityHistoryDto) {
-    return this.opportunityHistoryService.update(+id, updateOpportunityHistoryDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateOpportunityHistoryDto: UpdateOpportunityHistoryDto,
+  ) {
+    return this.opportunityHistoryService.update(
+      +id,
+      updateOpportunityHistoryDto,
+    );
   }
 
   @Delete(':id')

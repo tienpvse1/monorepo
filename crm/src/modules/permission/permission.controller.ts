@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Delete, Param } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -36,8 +36,15 @@ import { PermissionService } from './permission.service';
     deleteOneBase: {
       decorators: [HistoryLog('deleted an authority')],
     },
+    exclude: ['deleteOneBase'],
   },
 })
 export class PermissionController {
   constructor(public service: PermissionService) {}
+
+  @Delete(':id')
+  @HistoryLog('Deleted an email template')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
+  }
 }

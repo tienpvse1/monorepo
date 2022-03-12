@@ -17,6 +17,7 @@ const Product = lazy(() => import('@pages/product'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
 const Leads = lazy(() => import('@pages/leads'));
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
+const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/pipeline'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
 const ViewOpportunityDetails = lazy(
   () => import('@pages/view-opportunity-details')
@@ -120,6 +121,10 @@ export const route: RouteObject[] = [
       {
         index: true,
         element: <SaleManage />,
+      },
+      {
+        path: '/sale-manager/pipeline',
+        element: <SaleManagerPipeline />,
       },
     ],
   },

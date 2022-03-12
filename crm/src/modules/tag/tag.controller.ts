@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Delete, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -24,11 +24,15 @@ import { TagService } from './tag.service';
     updateOneBase: {
       decorators: [HistoryLog('updated a tag')],
     },
-    deleteOneBase: {
-      decorators: [HistoryLog('deleted a tag')],
-    },
+    exclude: ['deleteOneBase'],
   },
 })
 export class TagController {
   constructor(public readonly service: TagService) {}
+
+  @Delete(':id')
+  @HistoryLog('Deleted an email tag')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
+  }
 }
