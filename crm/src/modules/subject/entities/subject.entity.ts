@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/base/entity.base';
 import { Course } from 'src/modules/course/entities/course.entity';
-import { Column, Entity, Index, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Subject extends BaseEntity {
@@ -30,5 +30,6 @@ export class Subject extends BaseEntity {
   status: string;
 
   @ManyToOne(() => Course, (course) => course.subjects)
+  @JoinColumn({ name: 'course_id' })
   course: Course;
 }

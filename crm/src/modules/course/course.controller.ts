@@ -1,4 +1,5 @@
 import { Controller, Delete, Param } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { CourseService } from './course.service';
@@ -31,6 +32,7 @@ import { Course } from './entities/course.entity';
     },
   },
 })
+@ApiTags('course')
 export class CourseController {
   constructor(public service: CourseService) {}
 

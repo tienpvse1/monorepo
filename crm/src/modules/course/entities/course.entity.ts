@@ -21,7 +21,7 @@ export class Course extends BaseEntity {
   @Column({ type: 'boolean', default: false })
   isEnable: string;
 
-  @OneToMany(() => Subject, (subject) => subject.course)
+  @OneToMany(() => Subject, (subject) => subject.course, { cascade: true })
   subjects: Subject[];
 
   @OneToMany(

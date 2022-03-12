@@ -1,34 +1,42 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { SubjectService } from './subject.service';
+import { Controller, Delete, Param } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { Crud } from '@nestjsx/crud';
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
+import { Subject } from './entities/subject.entity';
+import { SubjectService } from './subject.service';
 
 @Controller('subject')
+@ApiTags('subject')
+@Crud({
+  model: {
+    type: Subject,
+  },
+  dto: {
+    create: CreateSubjectDto,
+    update: UpdateSubjectDto,
+    replace: UpdateSubjectDto,
+  },
+  routes: {
+    exclude: ['deleteOneBase'],
+  },
+  query: {
+    join: {
+      course: {},
+    },
+  },
+  params: {
+    id: {
+      type: 'string',
+      field: 'id',
+      primary: true,
+    },
+  },
+})
 export class SubjectController {
-  constructor(private readonly subjectService: SubjectService) {}
-
-  @Post()
-  create(@Body() createSubjectDto: CreateSubjectDto) {
-    return this.subjectService.create(createSubjectDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.subjectService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.subjectService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSubjectDto: UpdateSubjectDto) {
-    return this.subjectService.update(+id, updateSubjectDto);
-  }
-
+  constructor(public service: SubjectService) {}
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.subjectService.remove(+id);
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 }
