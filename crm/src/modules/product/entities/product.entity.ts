@@ -19,9 +19,9 @@ export class Product extends BaseEntity {
 
   @OneToMany(() => ProductAccount, (account) => account.product)
   productAccounts: ProductAccount[];
-  @OneToMany(
-    () => OpportunityRevenue,
-    (opportunityRevenue) => opportunityRevenue.product,
-  )
-  opportunityRevenues: OpportunityRevenue[];
+  // @OneToMany(
+  //   () => OpportunityRevenue,
+  //   (opportunityRevenue) => opportunityRevenue.product,
+  // )
+  // opportunityRevenues: OpportunityRevenue[];
 }

@@ -39,6 +39,8 @@ import { SessionModule } from './modules/session/session.module';
 import { SocketModule } from './modules/socket/socket.module';
 import { TagModule } from './modules/tag/tag.module';
 import { TeamModule } from './modules/team/team.module';
+import { CourseModule } from './modules/course/course.module';
+import { SubjectModule } from './modules/subject/subject.module';
 
 @Module({
   imports: [
@@ -77,6 +79,8 @@ import { TeamModule } from './modules/team/team.module';
     OpportunityRevenueModule,
     OpportunityHistoryModule,
     CompanyModule,
+    CourseModule,
+    SubjectModule,
   ],
   providers: [GlobalModule],
 })

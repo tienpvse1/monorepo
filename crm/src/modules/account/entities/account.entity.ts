@@ -71,10 +71,6 @@ export class Account extends BaseEntity {
   @ManyToMany(() => Invitation, (invitation) => invitation.receivers)
   receivedInvitations: Invitation[];
 
-  // !updated: account will no longer own any pipeline anymore
-  // @OneToOne(() => Pipeline, (pipeline) => pipeline.account)
-  // pipeline: Pipeline;
-
   // account can be assign to sell product to any opportunity by sale manager
   @OneToMany(() => PipelineItem, (pipeline) => pipeline.account)
   pipelineItems: PipelineItem[];
