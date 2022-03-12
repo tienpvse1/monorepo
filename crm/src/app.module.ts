@@ -11,6 +11,7 @@ import { AdminModule } from './admin/admin.module';
 import { LoggingMiddleware } from './middleware/logging.middleware';
 import { AccountModule } from './modules/account/account.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CompanyModule } from './modules/company/company.module';
 import { ConfigModule } from './modules/config/config.module';
 import { ContactModule } from './modules/contact/contact.module';
 import { DatabaseModule } from './modules/database/database.module';
@@ -19,10 +20,10 @@ import { FileModule } from './modules/file/file.module';
 import { GlobalModule } from './modules/global/global.module';
 import { HistoryModule } from './modules/history/history.module';
 import { InvitationModule } from './modules/invitation/invitation.module';
-import { LeadModule } from './modules/lead/lead.module';
 import { MailerModule } from './modules/mailer/mailer.module';
 import { MessageModule } from './modules/message/message.module';
 import { NoteWorthyModule } from './modules/note-worthy/note-worthy.module';
+import { OpportunityHistoryModule } from './modules/opportunity-history/opportunity-history.module';
 import { OpportunityRevenueModule } from './modules/opportunity-revenue/opportunity-revenue.module';
 import { PermissionModule } from './modules/permission/permission.module';
 import { PipelineColumnModule } from './modules/pipeline-module/pipeline-column/pipeline-column.module';
@@ -38,7 +39,8 @@ import { SessionModule } from './modules/session/session.module';
 import { SocketModule } from './modules/socket/socket.module';
 import { TagModule } from './modules/tag/tag.module';
 import { TeamModule } from './modules/team/team.module';
-import { OpportunityHistoryModule } from './modules/opportunity-history/opportunity-history.module';
+import { CourseModule } from './modules/course/course.module';
+import { SubjectModule } from './modules/subject/subject.module';
 
 @Module({
   imports: [
@@ -62,7 +64,6 @@ import { OpportunityHistoryModule } from './modules/opportunity-history/opportun
     MessageModule,
     AdminModule,
     SessionModule,
-    LeadModule,
     ScheduleModule,
     PermissionModule,
     RoleModule,
@@ -77,6 +78,9 @@ import { OpportunityHistoryModule } from './modules/opportunity-history/opportun
     InvitationModule,
     OpportunityRevenueModule,
     OpportunityHistoryModule,
+    CompanyModule,
+    CourseModule,
+    SubjectModule,
   ],
   providers: [GlobalModule],
 })

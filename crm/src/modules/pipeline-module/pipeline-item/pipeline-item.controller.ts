@@ -1,9 +1,18 @@
-import { Body, Controller, Param, Patch, Post, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Patch,
+  Post,
+  UsePipes,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { User } from 'src/common/decorators/user.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
+import { AssignAccountToOpportunityDto } from './dto/assign-account.dto';
 import {
   CreatePipelineItemDto,
   CreateSinglePipelineItemDto,
@@ -35,9 +44,8 @@ import { PipelineItemService } from './pipeline-item.service';
     },
   },
   routes: {
-    exclude: ['createOneBase'],
+    exclude: ['createOneBase', 'deleteOneBase'],
     updateOneBase: { decorators: [UsePipes(GenerateNestedIdPipe)] },
-    deleteOneBase: { decorators: [HistoryLog('deleted an opportunity')] },
   },
   query: {
     join: {
@@ -72,5 +80,16 @@ export class PipelineItemController {
   @HistoryLog("change the opportunity's stage")
   changeStage(@Param('id') id: string, @Body() dto: ChangeStageDto) {
     return this.service.changeStage(id, dto);
+  }
+  @Patch('assign')
+  @HistoryLog('assign an opportunity')
+  assignAccount(@Body() { id, accountId }: AssignAccountToOpportunityDto) {
+    return this.service.assignAccount(id, accountId);
+  }
+
+  @Delete(':id')
+  @HistoryLog('Deleted an opportunity')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 }

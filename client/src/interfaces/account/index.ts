@@ -11,6 +11,12 @@ export interface IAccount extends IBase {
   email: string;
   password: string;
   isSocialAccount: boolean;
-  role: Role;
+  role: {
+    name: Role;
+    id: string;
+    createdAt: string;
+    updatedAt: string;
+    deletedAt: string;
+  };
   pipeline: IPipeline;
 }

@@ -1,7 +1,7 @@
 import {
   Body,
   Controller,
-  Get,
+  Delete,
   Param,
   ParseUUIDPipe,
   Post,
@@ -35,16 +35,18 @@ import { PipelineColumnService } from './pipeline-column.service';
       field: 'id',
       primary: true,
     },
-    pipelineId: {
-      type: 'string',
-      field: 'pipelineId',
-      primary: false,
-    },
   },
   routes: {
-    exclude: ['createOneBase', 'createManyBase', 'getManyBase'],
+    exclude: ['createOneBase', 'createManyBase', 'deleteOneBase'],
     updateOneBase: {
       decorators: [HistoryLog('updated an stage')],
+    },
+  },
+  query: {
+    join: {
+      pipelineItems: {},
+      'pipelineItems.contact': {},
+      'pipelineItems.schedules': {},
     },
   },
 })
@@ -69,8 +71,9 @@ export class PipelineColumnController {
     return this.service.addSingleColumn(dto);
   }
 
-  @Get('/many/:pipelineId')
-  async getByPipelineID() {
-    return this.service.getColumns();
+  @Delete(':id')
+  @HistoryLog('Deleted an stage')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 }

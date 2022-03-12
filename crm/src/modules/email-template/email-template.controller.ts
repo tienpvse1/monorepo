@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -35,9 +35,7 @@ import { EmailTemplate } from './entities/email-template.entity';
     updateOneBase: {
       decorators: [HistoryLog('updated an drafted email template')],
     },
-    deleteOneBase: {
-      decorators: [HistoryLog('deleted an drafted email template')],
-    },
+    exclude: ['deleteOneBase'],
   },
 })
 export class EmailTemplateController {
@@ -52,5 +50,11 @@ export class EmailTemplateController {
       accountRepository,
       'emailTemplates',
     );
+  }
+
+  @Delete(':id')
+  @HistoryLog('Deleted an email template')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 }
