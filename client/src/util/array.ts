@@ -32,3 +32,16 @@ export const sortTeams = (data: ITeam[]) => {
   });
   data.sort((a, b) => a.index - b.index);
 };
+export const reIndexTeam = (data: ITeam[]) => {
+  const reIndexed = data.map((column, index) => {
+    column.accounts = column.accounts.map((account, index) => ({
+      ...account,
+      teamIndex: index,
+    }));
+    return {
+      ...column,
+      index,
+    };
+  });
+  return reIndexed;
+};

@@ -1,5 +1,6 @@
 import { ITeam } from '@modules/team/entity/team.entity';
 import { useUpdateTeam } from '@modules/team/mutate/team.patch';
+import { reIndexTeam } from '@util/array';
 import { Dispatch, SetStateAction } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import '../../stylesheets/kanban.css';
@@ -11,7 +12,6 @@ interface KanbanProps {
 
 export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
   const { mutate } = useUpdateTeam();
-
   const handleDragEnd = (e: DropResult) => {
     const { destination, source, type } = e;
     const copied = [...data];
@@ -41,8 +41,9 @@ export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
         if (item.id === destination.droppableId) return destColumn;
         return item;
       });
-      mutate(result);
-      setData(result);
+      const reIndexed = reIndexTeam(result);
+      mutate(reIndexed);
+      setData(reIndexed);
     } else {
       // !drag into the same column case
       const column = copied.find((item) => item.id === destination.droppableId);
@@ -52,8 +53,10 @@ export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
       const result = copied.map((item) =>
         item.id === destination.droppableId ? column : item
       );
-      setData(result);
-      mutate(result);
+      const reIndexed = reIndexTeam(result);
+
+      setData(reIndexed);
+      mutate(reIndexed);
     }
   };
 

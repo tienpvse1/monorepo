@@ -42,7 +42,7 @@ export const KanBanItem = (
                   }}
                 >
                   <Card.Meta
-                    title={account.firstName}
+                    title={`${account.firstName} ${account.lastName}`}
                     description='This is the description'
                     avatar={
                       <Avatar
