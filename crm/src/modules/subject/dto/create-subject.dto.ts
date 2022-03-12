@@ -5,6 +5,9 @@ export class CreateSubjectDto {
   code: string;
 
   @IsString()
+  courseId: string;
+
+  @IsString()
   name: string;
 
   @IsString()

@@ -1,4 +1,4 @@
-import { Controller, Delete, Param } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { CreateSubjectDto } from './dto/create-subject.dto';
@@ -18,7 +18,7 @@ import { SubjectService } from './subject.service';
     replace: UpdateSubjectDto,
   },
   routes: {
-    exclude: ['deleteOneBase'],
+    exclude: ['deleteOneBase', 'createOneBase', 'createManyBase'],
   },
   query: {
     join: {
@@ -38,5 +38,10 @@ export class SubjectController {
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.service.softDelete(id);
+  }
+
+  @Post()
+  create(@Body() dto: CreateSubjectDto) {
+    return this.service.create(dto);
   }
 }
