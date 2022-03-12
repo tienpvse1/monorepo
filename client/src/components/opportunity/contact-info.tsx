@@ -14,7 +14,7 @@ export const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
       <span style={{ fontSize: '17px' }}>
         <p style={{ fontWeight: '600', fontSize: '20px' }}>{data.title}</p>
         <span style={{ fontWeight: '600' }}>
-          {handleUndefinedString(data.expectedRevenue.toString())}$
+          {/* {handleUndefinedString(data.expectedRevenue.toString())}$ */}
         </span>{' '}
         at
         {/* //TODO: this field is still hard-coded */}

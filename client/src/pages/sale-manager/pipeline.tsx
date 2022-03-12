@@ -1,6 +1,6 @@
 import { Kanban } from '@components/sale-manager/pipeline/kanban';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import { getStages } from '@modules/pipeline-column/query/pipeline.get';
+import { getStages } from '@modules/pipeline-column/query/pipeline-column.get';
 import { useEffect, useState } from 'react';
 
 interface SaleManagerPipelineProps {}

@@ -1,13 +1,10 @@
 import { isRequired } from '@constance/rules-of-input-antd'
 import { Form, Select } from 'antd'
 const { Option } = Select;
-import { useLiveQuery } from 'dexie-react-hooks';
-import { getPipeline } from '@db/pipeline.db';
-import { useGetStagesByPipelineId } from '@modules/pipeline-column/query/pipeline.get';
+import { useQueryStagesInfo } from '@modules/pipeline-column/query/pipeline-column.get';
 
 export const SelectBoxStage = () => {
-  const pipeline = useLiveQuery(getPipeline);
-  const { data: pipelineColumns } = useGetStagesByPipelineId(pipeline?.id);
+  const { data: pipelineColumns } = useQueryStagesInfo();
 
   return (
     <>

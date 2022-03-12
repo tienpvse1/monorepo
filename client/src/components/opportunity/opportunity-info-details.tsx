@@ -36,10 +36,10 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({ 
             {opportunity.expectedRevenue}
           </MyForm>
           <MyForm label="Product name">
-            {opportunity.opportunityRevenue.product.name}
+            {/* {opportunity.opportunityRevenue.product.name} */}
           </MyForm>
           <MyForm label="Expected sold quantity">
-            {opportunity.opportunityRevenue.quantity}
+            {/* {opportunity.opportunityRevenue.quantity} */}
           </MyForm>
         </Col>
       </Row>

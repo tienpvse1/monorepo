@@ -37,6 +37,7 @@ export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }
         <TabPane tab='Task' key='3'>
           {data.schedules.length > 0 ? data.schedules.map((schedule) =>
           (<Alert
+            key={schedule.id}
             message={schedule.type.toUpperCase()}
             type={
               schedule.type == 'todo' && 'info' ||
