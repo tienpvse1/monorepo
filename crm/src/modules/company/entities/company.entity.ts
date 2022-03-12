@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/base/entity.base';
+import { Contact } from 'src/modules/contact/entities/contact.entity';
 import { Tag } from 'src/modules/tag/entities/tag.entity';
-import { Column, Entity, ManyToMany } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 
 @Entity()
 export class Company extends BaseEntity {
@@ -30,4 +31,7 @@ export class Company extends BaseEntity {
 
   @ManyToMany(() => Tag, (tag) => tag.companies, { cascade: ['insert'] })
   tags: Tag[];
+
+  @OneToMany(() => Contact, (contact) => contact.company)
+  contacts: Contact[];
 }

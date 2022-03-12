@@ -1,5 +1,6 @@
 import { BaseEntity } from 'src/base/entity.base';
 import { Account } from 'src/modules/account/entities/account.entity';
+import { Company } from 'src/modules/company/entities/company.entity';
 import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
@@ -36,6 +37,10 @@ export class Contact extends BaseEntity {
   @ManyToOne(() => Account, (account) => account.contacts)
   @JoinColumn({ name: 'account_id' })
   account: Account;
+
+  @ManyToOne(() => Company, (company) => company.contacts)
+  @JoinColumn({ name: 'company_id' })
+  company: Account;
 
   @OneToMany(() => PipelineItem, (pipelineItem) => pipelineItem.contact, {
     cascade: true,
