@@ -22,9 +22,9 @@ import { CreateColumnModal } from './pipeline-column/create-column-modal';
 
 const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 
-interface MainPipelineProps { }
+interface MainPipelineProps {}
 
-export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
+export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
   const [visible, setModalCreateStage] = useToggle();
 
   const { data } = useGetPipeLineUser();
@@ -42,7 +42,10 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
   useSocket<IPipeline, any>({
     event: 'pipeline-updated',
     socket,
-    onReceive: () => queryClient.refetchQueries(GET_PIPELINE_DESIGN),
+    onReceive: (data) => {
+      console.log(data);
+      queryClient.refetchQueries(GET_PIPELINE_DESIGN);
+    },
   });
 
   useEffect(() => {

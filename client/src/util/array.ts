@@ -45,3 +45,36 @@ export const reIndexTeam = (data: ITeam[]) => {
   });
   return reIndexed;
 };
+
+export const abstractReIndex = <Parent>(
+  array: Parent[],
+  childField: keyof Parent,
+  childIndex = 'index'
+) => {
+  const reIndexed = array.map((column, index) => {
+    // @ts-ignore
+    column[childField] = column[childField].map((item, index) => ({
+      ...item,
+      [childIndex]: index,
+    }));
+    return {
+      ...column,
+      index,
+    };
+  });
+  return reIndexed;
+};
+export const abstractSort = <Parent>(
+  array: Parent[],
+  childField: keyof Parent,
+  childIndex = 'index'
+) => {
+  array.forEach((item) => {
+    if (item[childField]) {
+      // @ts-ignore
+      item[childField].sort((a, b) => a[childIndex] - b[childIndex]);
+    }
+  });
+  // @ts-ignore
+  array.sort((a, b) => a.index - b.index);
+};

@@ -1,4 +1,6 @@
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
+import { useChangePipeline } from '@modules/pipeline/mutation/pipeline.update';
+import { abstractReIndex } from '@util/array';
 import { Dispatch, SetStateAction } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import '../../../stylesheets/kanban.css';
@@ -9,6 +11,7 @@ interface KanbanProps {
 }
 
 export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
+  const { mutate } = useChangePipeline();
   const handleDragEnd = (e: DropResult) => {
     const { destination, source, type } = e;
     const copied = [...data];
@@ -37,7 +40,13 @@ export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
         if (item.id === destination.droppableId) return destColumn;
         return item;
       });
-      setData(result);
+      const reIndexed = abstractReIndex(result, 'pipelineItems');
+      console.log(reIndexed);
+      mutate({
+        pipelineColumns: reIndexed,
+        id: 'hard-coded-id',
+      });
+      setData(reIndexed);
     } else {
       // !drag into the same column case
       const column = copied.find((item) => item.id === destination.droppableId);
@@ -47,7 +56,12 @@ export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
       const result = copied.map((item) =>
         item.id === destination.droppableId ? column : item
       );
-      setData(result);
+      const reIndexed = abstractReIndex(result, 'pipelineItems');
+      mutate({
+        pipelineColumns: reIndexed,
+        id: 'hard-coded-id',
+      });
+      setData(reIndexed);
     }
   };
 

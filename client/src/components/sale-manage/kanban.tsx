@@ -1,6 +1,6 @@
 import { ITeam } from '@modules/team/entity/team.entity';
 import { useUpdateTeam } from '@modules/team/mutate/team.patch';
-import { reIndexTeam } from '@util/array';
+import { abstractReIndex, reIndexTeam } from '@util/array';
 import { Dispatch, SetStateAction } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import '../../stylesheets/kanban.css';
@@ -41,7 +41,7 @@ export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
         if (item.id === destination.droppableId) return destColumn;
         return item;
       });
-      const reIndexed = reIndexTeam(result);
+      const reIndexed = abstractReIndex<ITeam>(result, 'accounts', 'teamIndex');
       mutate(reIndexed);
       setData(reIndexed);
     } else {
@@ -53,7 +53,7 @@ export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
       const result = copied.map((item) =>
         item.id === destination.droppableId ? column : item
       );
-      const reIndexed = reIndexTeam(result);
+      const reIndexed = abstractReIndex<ITeam>(result, 'accounts', 'teamIndex');
 
       setData(reIndexed);
       mutate(reIndexed);
