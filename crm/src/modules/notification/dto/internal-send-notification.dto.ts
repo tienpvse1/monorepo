@@ -1,6 +1,6 @@
 export class InternalSendNotificationPayload {
   receiverId: string;
-  message: string;
+  description: string;
   name: string;
   senderId: string;
 }

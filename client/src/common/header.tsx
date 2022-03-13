@@ -15,6 +15,7 @@ import { envVars } from '@env/var.env';
 import { INotification } from '@modules/notification/entity/notification.entity';
 import { getNotifications } from '@modules/notification/query/notification.get';
 import { useUpdateSession } from '@modules/session/mutation/session.patch';
+import { useSocket } from '@hooks/socket';
 const socket = io(`${envVars.VITE_BE_DOMAIN}/notification`);
 export const HeaderApp = () => {
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
@@ -30,6 +31,13 @@ export const HeaderApp = () => {
       setNotifications(data)
     );
   }, []);
+
+  useSocket({
+    event: 'send-notification',
+    onReceive: (data: INotification) =>
+      setNotifications((prev) => [...prev, data]),
+    socket,
+  });
   return (
     <div
       style={{
