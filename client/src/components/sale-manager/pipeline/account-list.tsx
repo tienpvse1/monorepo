@@ -1,19 +1,43 @@
 import { useSaleAccounts } from '@modules/account/get/account.get';
-import { Form, Mentions, Modal } from 'antd';
-import { useRef } from 'react';
+import { useAssignAccount } from '@modules/pipeline-items/mutation/pipeline-item.patch';
+import { Form, Modal, Select } from 'antd';
+import { useState } from 'react';
 import '../../../stylesheets/account-list.css';
 interface AccountListProps {
   visible: boolean;
   toggle: () => void;
+  itemId: string;
 }
 
 export const AccountList: React.FC<AccountListProps> = ({
   toggle,
+  itemId,
   visible,
 }) => {
-  const { data, isLoading } = useSaleAccounts();
+  const { data } = useSaleAccounts();
+  const { mutate } = useAssignAccount();
   const [form] = Form.useForm();
-  const onFinish = (e: any) => console.log(e);
+  const onFinish = (e: any) => {
+    mutate({
+      accountId: e.sales,
+      id: itemId,
+    });
+    toggle();
+  };
+  const [result, setResult] = useState<
+    {
+      id: string;
+      name: string;
+      photo: string;
+    }[]
+  >([]);
+  const handleSearch = (value: string) => {
+    const searchResult = data.filter((item) =>
+      item.name.toLowerCase().includes(value.toLowerCase())
+    );
+    setResult(searchResult);
+  };
+
   return (
     <Form form={form} layout='horizontal' onFinish={onFinish}>
       <Modal
@@ -33,32 +57,18 @@ export const AccountList: React.FC<AccountListProps> = ({
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
         >
-          <Mentions
-            loading={isLoading}
-            style={{ width: '100%' }}
-            // onSelect={onSelect}
-            placeholder='Try typing @'
-            onSelect={(e) => console.log(e)}
+          <Select
+            showSearch
+            placeholder='Select a person'
+            optionFilterProp='children'
+            onSearch={handleSearch}
           >
-            {data &&
-              data.map((item) => (
-                <Mentions.Option value={item.name} key={item.id}>
-                  <img
-                    src={item.photo}
-                    width={30}
-                    height={30}
-                    alt={item.name}
-                  />
-                  <span
-                    style={{
-                      marginLeft: 8,
-                    }}
-                  >
-                    {item.name}
-                  </span>
-                </Mentions.Option>
-              ))}
-          </Mentions>
+            {result.map((item, index) => (
+              <Select.Option key={index} value={item.id}>
+                {item.name}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
       </Modal>
     </Form>

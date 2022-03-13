@@ -5,8 +5,8 @@ import {
 } from '@ant-design/icons';
 import { useBooleanToggle } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { useAssignAccount } from '@modules/pipeline-items/mutation/pipeline-item.patch';
 import { Avatar, Card, Tooltip } from 'antd';
+import { useState } from 'react';
 import {
   Draggable,
   DroppableProvided,
@@ -19,13 +19,14 @@ export const KanBanItem = (
   pipelineItems: IPipelineItem[],
   _snapshot: DroppableStateSnapshot
 ) => {
-  const { mutate } = useAssignAccount();
+  const [currentId, setCurrentId] = useState<string>('');
   const [value, toggle] = useBooleanToggle(false);
-  const handleAssignClick = (accountId: string, id: string) => {
+  const handleAssignClick = (id: string) => {
     // mutate({
     //   accountId,
     //   id,
     // });
+    setCurrentId(id);
     toggle();
   };
   return (
@@ -46,7 +47,7 @@ export const KanBanItem = (
                 marginTop: 10,
               }}
             >
-              <AccountList toggle={toggle} visible={value} />
+              <AccountList toggle={toggle} itemId={currentId} visible={value} />
               <Card
                 title=''
                 style={{
@@ -59,7 +60,7 @@ export const KanBanItem = (
                   </Tooltip>,
                   <Tooltip placement='bottom' title='Assign'>
                     <UserSwitchOutlined
-                      onClick={() => handleAssignClick('DC8B8a1fqd', item.id)}
+                      onClick={() => handleAssignClick(item.id)}
                     />
                   </Tooltip>,
                   <Tooltip placement='bottom' title='More'>

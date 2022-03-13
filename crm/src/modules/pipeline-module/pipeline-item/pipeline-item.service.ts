@@ -133,10 +133,15 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     const accountRepository = getCustomRepository(AccountRepository);
     const [pipelineItem, account] = await Promise.all([
       this.findOneItem({ where: { id } }),
-      accountRepository.findOneItem({ where: { id: accountId } }),
+      accountRepository.findOneItem({
+        where: { id: accountId },
+        relations: ['pipelineItems'],
+      }),
     ]);
-    pipelineItem.account = account;
-    const result = await pipelineItem.save();
+
+    if (!account.pipelineItems) account.pipelineItems = [];
+    account.pipelineItems.push(pipelineItem);
+    const result = await account.save();
     this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
     return result;
   }
