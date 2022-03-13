@@ -1,4 +1,4 @@
-import { isRequired, isTaxId } from '@constance/rules-of-input-antd'
+import { isTaxId } from '@constance/rules-of-input-antd'
 import { Col, Form, Input } from 'antd'
 
 export const AddressInfoForm = () => {
@@ -7,18 +7,24 @@ export const AddressInfoForm = () => {
     <>
       <Col span={12}>
         <Form.Item
-          name={['addresses', 'address']}
+          name={'address'}
           label="Address"
-          rules={[isRequired('Address is required')]}
         >
-          <Input.TextArea />
+          <Input.TextArea showCount maxLength={250}/>
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           name={['addresses', 'city']}
           label="City"
           rules={[isRequired('City is required')]}
         >
           <Input />
+        </Form.Item> */}
+        <Form.Item
+          name="taxId"
+          label="Tax ID"
+          rules={[isTaxId]}
+        >
+          <Input maxLength={13} />
         </Form.Item>
         <Input.Group compact>
           <Form.Item
@@ -28,14 +34,14 @@ export const AddressInfoForm = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             name={['addresses', 'country']}
             label="Country"
             rules={[isRequired('Country is required')]}
             style={{ width: '30%' }}
           >
             <Input />
-          </Form.Item>
+          </Form.Item> */}
         </Input.Group>
       </Col>
       <Col span={12}>
@@ -50,13 +56,6 @@ export const AddressInfoForm = () => {
           label="Website"
         >
           <Input />
-        </Form.Item>
-        <Form.Item
-          name="taxId"
-          label="Tax ID"
-          rules={[isTaxId]}
-        >
-          <Input maxLength={14}/>
         </Form.Item>
       </Col>
     </>

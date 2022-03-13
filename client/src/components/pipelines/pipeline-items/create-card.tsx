@@ -82,7 +82,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
 
     form.setFieldsValue({
       email: contactSelected.email,
-      mobile: contactSelected.mobile,
+      phone: contactSelected.phone,
       name: `${contactSelected.name}'s opportunity`,
     });
   };
@@ -122,7 +122,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
             <Input />
           </Form.Item>
 
-          <Form.Item label='Mobile' rules={[isPhoneNumber]} name='mobile'>
+          <Form.Item label='Phone' rules={[isPhoneNumber]} name='phone'>
             <Input />
           </Form.Item>
 

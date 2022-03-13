@@ -17,7 +17,7 @@ export const isRequired = (message: string) => (
 )
 
 export const isTaxId = {
-  pattern: /(^[0-9]{12}$)/,
+  pattern: /(^[0-9]*$)/,
   message: 'Tax id is not valid'
 }
 
