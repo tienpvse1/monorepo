@@ -15,7 +15,7 @@ const AdminLayout = lazy(() => import('@common/admin-layout'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Product = lazy(() => import('@pages/product'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
-const Leads = lazy(() => import('@pages/leads'));
+const Company = lazy(() => import('@pages/company'));
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
 const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/pipeline'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
@@ -27,6 +27,12 @@ const Schedule = lazy(() => import('@pages/schedule'));
 const OpportunitiesContainer = lazy(
   () => import('@components/opportunity/opportunity-container')
 );
+const CompanyContainer = lazy(
+  () => import('@components/company/company-container')
+); 
+const ViewCompanyDetails = lazy(
+  () => import('@pages/view-company-details')
+); 
 
 export const route: RouteObject[] = [
   {
@@ -99,8 +105,18 @@ export const route: RouteObject[] = [
         ],
       },
       {
-        path: 'leads',
-        element: <Leads />,
+        path: 'company',
+        element: <Company />,
+        children: [
+          {
+            index: true,
+            element: <CompanyContainer />
+          },
+          {
+            path: 'view-details/',
+            element: <ViewCompanyDetails />
+          }
+        ]
       },
     ],
   },

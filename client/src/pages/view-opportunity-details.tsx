@@ -9,7 +9,6 @@ import { OpportunityCardImage } from "@components/opportunity/opportunity-card-i
 const ViewOpportunityDetails = () => {
   const params = useParams();
   const { data } = usePipelineItem(params.id);  
-  console.log(data);
     
   return (
     <>
