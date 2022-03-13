@@ -5,7 +5,11 @@ import { Button, Col, Row, Select, Space } from 'antd'
 const { Option } = Select;
 import { envVars } from '@env/var.env';
 
-export const CompanyTitleTable = () => {
+interface CompanyTitleTableProps {
+  toggleCreateModal: () => void;
+}
+
+export const CompanyTitleTable: React.FC<CompanyTitleTableProps> = ({ toggleCreateModal }) => {
   return (
     <>
       <div style={{ padding: '10px' }}>
@@ -35,6 +39,7 @@ export const CompanyTitleTable = () => {
                 className='button-ant-custom-style'
                 type='primary'
                 size='middle'
+                onClick={toggleCreateModal}
               >
                 <PlusOutlined /> New Company
               </Button>

@@ -8,7 +8,7 @@ export const OpportunityAdditionalForm = () => {
           name="internalDescription"
           label="Description"
         >
-          <Input.TextArea />
+          <Input.TextArea showCount maxLength={150} placeholder='Description...' style={{ height: '80px' }}/>
         </Form.Item>
       </Col>
     </>
