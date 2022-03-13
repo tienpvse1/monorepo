@@ -1,20 +1,19 @@
-import { isRequired } from '@constance/rules-of-input-antd'
-import { Form, Select } from 'antd'
+import { isRequired } from '@constance/rules-of-input-antd';
+import { Form, Select } from 'antd';
+import 'ant-design-pro/dist/ant-design-pro.css';
+
 const { Option } = Select;
-import { useLiveQuery } from 'dexie-react-hooks';
-import { getPipeline } from '@db/pipeline.db';
-import { useGetStagesByPipelineId } from '@modules/pipeline-column/query/pipeline.get';
+import { useStages } from '@modules/pipeline-column/query/pipeline.get';
 
 export const SelectBoxStage = () => {
-  const pipeline = useLiveQuery(getPipeline);
-  const { data: pipelineColumns } = useGetStagesByPipelineId(pipeline?.id);
+  const { data: pipelineColumns } = useStages();
 
   return (
     <>
-      {pipelineColumns &&
+      {pipelineColumns && (
         <Form.Item
-          name="columnId"
-          label="Stage"
+          name='columnId'
+          label='Stage'
           required
           rules={[isRequired('Stage is required')]}
           initialValue={pipelineColumns[0].id}
@@ -27,7 +26,7 @@ export const SelectBoxStage = () => {
             ))}
           </Select>
         </Form.Item>
-      }
+      )}
     </>
-  )
-}
+  );
+};
