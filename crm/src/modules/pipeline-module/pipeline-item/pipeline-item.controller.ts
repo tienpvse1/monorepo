@@ -83,8 +83,11 @@ export class PipelineItemController {
   }
   @Patch('assign')
   @HistoryLog('assign an opportunity')
-  assignAccount(@Body() { id, accountId }: AssignAccountToOpportunityDto) {
-    return this.service.assignAccount(id, accountId);
+  assignAccount(
+    @Body() { id, accountId }: AssignAccountToOpportunityDto,
+    @User('id') managerId: string,
+  ) {
+    return this.service.assignAccount(id, accountId, managerId);
   }
 
   @Delete(':id')

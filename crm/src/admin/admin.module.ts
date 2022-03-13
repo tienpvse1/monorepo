@@ -6,6 +6,7 @@ import { Contact } from 'src/modules/contact/entities/contact.entity';
 import { Course } from 'src/modules/course/entities/course.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
 import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
+import { Notification } from 'src/modules/notification/entities/notification.entity';
 import { OpportunityHistory } from 'src/modules/opportunity-history/entities/opportunity-history.entity';
 import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
 import { Permission } from 'src/modules/permission/entities/permission.entity';
@@ -45,6 +46,7 @@ AdminJS.registerAdapter({ Database, Resource });
           Subject,
           OpportunityRevenue,
           OpportunityHistory,
+          Notification,
         ],
         branding: {
           logo: 'https://iconape.com/wp-content/files/kr/371166/svg/371166.svg',
