@@ -8,6 +8,7 @@ import { File } from 'src/modules/file/entities/file.entity';
 import { History } from 'src/modules/history/entities/history.entity';
 import { Invitation } from 'src/modules/invitation/entities/invitation.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
+import { Notification } from 'src/modules/notification/entities/notification.entity';
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
 import { ProductAccount } from 'src/modules/product-account/entities/product-account.entity';
 import { Role } from 'src/modules/role/entities/role.entity';
@@ -96,6 +97,15 @@ export class Account extends BaseEntity {
   @OneToMany(() => Contact, (contact) => contact.account)
   contacts: Contact[];
 
+  @OneToMany(() => ProductAccount, (product) => product.account)
+  productAccounts: ProductAccount[];
+
+  @OneToMany(() => Notification, (notification) => notification.receiver)
+  inboxNotifications: Notification[];
+
+  @OneToMany(() => Notification, (notification) => notification.sender)
+  sentNotifications: Notification[];
+
   @ManyToOne(() => Role, (role) => role.accounts)
   @JoinColumn({ name: 'role_id' })
   role: Role;
@@ -103,9 +113,6 @@ export class Account extends BaseEntity {
   @ManyToOne(() => Team, (team) => team.accounts)
   @JoinColumn({ name: 'team_id' })
   team: Team;
-
-  @OneToMany(() => ProductAccount, (product) => product.account)
-  productAccounts: ProductAccount[];
 
   // hash the password before save or update it in database
   @BeforeInsert()
