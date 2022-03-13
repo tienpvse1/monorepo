@@ -39,7 +39,7 @@ const Profile = () => {
             <div style={{ fontSize: '24px', fontWeight: '500', marginBottom: '15px' }}>
               {`${publicData.firstName} ${publicData.lastName}`}
             </div>
-            <div style={{ fontSize: '18px' }}>
+            <div style={{ fontSize: '18px' , textAlign: 'center'}}>
               Go dua thu duc, Ho Chi Minh, Vietnam
             </div>
           </div>
