@@ -1,5 +1,7 @@
-import { isRequired } from '@constance/rules-of-input-antd'
-import { Form, Select } from 'antd'
+import { isRequired } from '@constance/rules-of-input-antd';
+import { Form, Select } from 'antd';
+import 'ant-design-pro/dist/ant-design-pro.css';
+
 const { Option } = Select;
 import { useQueryStagesInfo } from '@modules/pipeline-column/query/pipeline-column.get';
 
@@ -8,10 +10,10 @@ export const SelectBoxStage = () => {
 
   return (
     <>
-      {pipelineColumns &&
+      {pipelineColumns && (
         <Form.Item
-          name="columnId"
-          label="Stage"
+          name='columnId'
+          label='Stage'
           required
           rules={[isRequired('Stage is required')]}
           initialValue={pipelineColumns[0].id}
@@ -24,7 +26,7 @@ export const SelectBoxStage = () => {
             ))}
           </Select>
         </Form.Item>
-      }
+      )}
     </>
-  )
-}
+  );
+};
