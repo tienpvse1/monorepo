@@ -34,7 +34,7 @@ export const reIndexPipeline = (pipeline: UpdatePipelineDto) => {
 
 export const sortColumns = (columns: PipelineColumn[]) => {
   columns.forEach((item) => {
-    item.pipelineItems.sort((a, b) => (a.index = b.index));
+    item.pipelineItems.sort((a, b) => a.index - b.index);
   });
   columns.sort((a, b) => a.index - b.index);
   return columns;

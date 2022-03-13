@@ -27,13 +27,30 @@ export class PipelineGateway extends BaseGateway<any> {
     }
 
     reIndexColumn(sortColumns(payload));
-    this.server.emit(SocketSendEvent.PIPELINE_UPDATED, {
+    return this.server.emit(SocketSendEvent.PIPELINE_UPDATED, {
       id: 'QIECTiuvzY',
       createdAt: '2022-02-24T10:11:45.518Z',
       updatedAt: '2022-02-24T10:12:03.000Z',
       deletedAt: null,
       name: 'pipeline 1',
       pipelineColumns: payload,
+    });
+  }
+  @OnEvent(InternalServerEvent.PIPELINE_UPDATED)
+  async handlePipelineUpdatedForManager() {
+    const payload = await this.service.repository.find({
+      relations: ['pipelineItems'],
+    });
+
+    const reindexed = sortColumns(payload);
+
+    return this.server.emit(SocketSendEvent.MANAGER_PIPELINE_UPDATED, {
+      id: 'QIECTiuvzY',
+      createdAt: '2022-02-24T10:11:45.518Z',
+      updatedAt: '2022-02-24T10:12:03.000Z',
+      deletedAt: null,
+      name: 'pipeline 1',
+      pipelineColumns: reindexed,
     });
   }
 }
