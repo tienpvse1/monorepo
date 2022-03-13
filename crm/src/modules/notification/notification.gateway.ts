@@ -6,7 +6,7 @@ import { AccountService } from '../account/account.service';
 import { InternalSendNotificationPayload } from './dto/internal-send-notification.dto';
 // import { NotificationService } from './notification.service';
 
-@WebSocketGateway()
+@WebSocketGateway({ namespace: 'notification', cors: true })
 export class NotificationGateway {
   @WebSocketServer()
   server: Server;

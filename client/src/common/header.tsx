@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import {
   BellOutlined,
   SettingOutlined,
@@ -8,14 +8,28 @@ const DropDown = lazy(() => import('@components/header/dropdown'));
 import HeaderDrawer from '@components/header/header-drawer';
 import { Loading } from '@components/loading/loading';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
-import { Avatar, Dropdown, Tooltip } from 'antd';
+import { Avatar, Badge, Dropdown, Tooltip } from 'antd';
 import { useCookies } from 'react-cookie';
-
+import { io } from 'socket.io-client';
+import { envVars } from '@env/var.env';
+import { INotification } from '@modules/notification/entity/notification.entity';
+import { getNotifications } from '@modules/notification/query/notification.get';
+import { useUpdateSession } from '@modules/session/mutation/session.patch';
+const socket = io(`${envVars.VITE_BE_DOMAIN}/notification`);
 export const HeaderApp = () => {
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
+  const { mutate } = useUpdateSession();
   const [showDrawer, setShowDrawer] = useState(false);
   const toggleDrawer = () => setShowDrawer(!showDrawer);
-
+  const [notifications, setNotifications] = useState<INotification[]>([]);
+  useEffect(() => {
+    mutate({
+      notificationId: socket.id,
+    });
+    getNotifications(public_user_info.id).then((data) =>
+      setNotifications(data)
+    );
+  }, []);
   return (
     <div
       style={{
@@ -37,7 +51,11 @@ export const HeaderApp = () => {
         }}
       >
         <Tooltip title='Notification'>
-          <BellOutlined style={{ fontSize: 23, color: 'rgba(0,0,0,0.7)' }} />
+          <Badge
+            count={notifications.filter((item) => item.seen === false).length}
+          >
+            <BellOutlined style={{ fontSize: 23, color: 'rgba(0,0,0,0.7)' }} />
+          </Badge>
         </Tooltip>
         <Tooltip title='Tasks'>
           <UnorderedListOutlined

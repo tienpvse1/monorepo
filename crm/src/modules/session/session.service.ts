@@ -35,4 +35,13 @@ export class SessionService extends CRUDService<Session, SessionRepository> {
 
     return session.save();
   }
+
+  async updateSessionNotificationId(accountId: string, notificationId: string) {
+    const session = await this.repository
+      .createQueryBuilder('session')
+      .update({ notificationId })
+      .where('session.account_id = :id', { id: accountId })
+      .execute();
+    return session;
+  }
 }

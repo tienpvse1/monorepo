@@ -1,4 +1,5 @@
 import { Controller } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
@@ -14,7 +15,14 @@ import { NotificationService } from './notification.service';
     create: CreateNotificationDto,
     update: UpdateNotificationDto,
   },
+  query: {
+    join: {
+      receiver: {},
+      sender: {},
+    },
+  },
 })
+@ApiTags('notification')
 export class NotificationController {
   constructor(public service: NotificationService) {}
 }

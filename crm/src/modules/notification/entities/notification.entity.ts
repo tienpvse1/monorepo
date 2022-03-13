@@ -8,6 +8,10 @@ export class Notification extends BaseEntity {
   name: string;
   @Column()
   description: string;
+
+  @Column({ type: 'boolean', default: false })
+  seen: boolean;
+
   @ManyToOne(() => Account, (account) => account.sentNotifications)
   sender: Account;
 
