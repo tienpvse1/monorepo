@@ -10,10 +10,12 @@ export const SelectBoxSalePerson = () => {
         name="salePerson"
         label="Sale Person"
       >
-        <Select disabled>
+        <Select
+          disabled
+        >
           {data?.map((account) => (
             <Option key={account.id} value={account.id}>
-                {`${account.firstName} ${account.lastName}`}
+              {`${account.name}`}
             </Option>
           ))}
         </Select>

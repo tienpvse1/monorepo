@@ -26,7 +26,6 @@ interface MainPipelineProps { }
 
 export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
   const [visible, setModalCreateStage] = useToggle();
-
   const { data } = useGetPipeLineUser();
   const queryClient = useQueryClient();
 
@@ -42,7 +41,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
   useSocket<IPipeline, any>({
     event: 'pipeline-updated',
     socket,
-    onReceive: () => queryClient.refetchQueries(GET_PIPELINE_DESIGN),
+    onReceive: () => queryClient.invalidateQueries(GET_PIPELINE_DESIGN),
   });
 
   useEffect(() => {
