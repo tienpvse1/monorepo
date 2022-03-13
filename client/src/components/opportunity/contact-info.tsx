@@ -34,13 +34,13 @@ export const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
           }
         >
           <Descriptions.Item label='Email'>
-            {handleUndefinedString(data.email)}
+            {handleUndefinedString(data.contact.email)}
           </Descriptions.Item>
           <Descriptions.Item label='Telephone'>
-            {handleUndefinedString(data.phone)}
+            {handleUndefinedString(data.contact.phone)}
           </Descriptions.Item>
           <Descriptions.Item label='Mobile'>
-            {handleUndefinedString(data.mobile)}
+            {handleUndefinedString(data.contact.mobile)}
           </Descriptions.Item>
         </Descriptions>
       </InfoWrapper>

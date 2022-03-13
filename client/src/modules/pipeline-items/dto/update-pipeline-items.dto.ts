@@ -11,7 +11,6 @@ export interface OpportunityRevenue {
   quantity: number;
 }
 export interface IUpdatePipelineItemDto extends Partial<IPipelineItem>{
-  contactId: string;
 }
 export interface IChangeStageDto {
   oldStageId: string;

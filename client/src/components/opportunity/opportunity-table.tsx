@@ -81,7 +81,7 @@ export const OpportunitiesTable = () => {
       updateOpportunity({
         id,
         name: record.name,
-        contactId: record.contactId
+        // contactId: record.contactId
       }, {
         onSuccess: () => {
           message.success('Saved successfully !');
@@ -164,7 +164,7 @@ export const OpportunitiesTable = () => {
                   />
                 }
                 nameForm='contactName'
-                editing={isEditing}
+                editing={false}
                 editingIndex={editingIndex}
                 recordIndex={record.id}
                 record={record.contact}
