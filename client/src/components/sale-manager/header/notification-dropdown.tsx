@@ -43,7 +43,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
             }}
           />
         }
-        count={5}
+        count={notifications.filter((item) => !item.seen).length}
       >
         <NoticeIcon.Tab
           onClick={() => console.log('')}
