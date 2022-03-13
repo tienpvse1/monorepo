@@ -10,8 +10,10 @@ export enum controllers {
   CONTACT_FORM_FIELD = 'contact-form-field',
   MAILER = 'mailer',
   EMAIL_TEMPLATE = 'email-template',
+  NOTIFICATION = 'notification',
   PRODUCT = 'product',
   HISTORY = 'history',
   SCHEDULE = 'schedule',
+  SESSION = 'session',
   TEAM = 'team',
 }

@@ -1,1 +1,5 @@
-export class CreateSessionDto {}
+export class CreateSessionDto {
+  ip: string;
+  notificationId: string;
+  expiredAt: Date;
+}
