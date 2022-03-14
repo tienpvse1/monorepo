@@ -183,7 +183,7 @@ export const Profile: React.FC<ProfileProps> = ({}) => {
           <div style={{ display: 'flex' }}>
             <div>
               <Inplace
-                label='Postol code'
+                label='Postal code'
                 inputStyle={{ width: 300 }}
                 defaultValue={publicData?.postalCode}
                 field='postalCode'
