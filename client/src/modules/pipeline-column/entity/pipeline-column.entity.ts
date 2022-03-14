@@ -6,4 +6,5 @@ export interface IPipelineColumn extends IBase {
   pipeline: string;
   pipelineItems: IPipelineItem[];
   index: number;
+  isWon: boolean;
 }
