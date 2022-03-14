@@ -51,13 +51,15 @@ export const LineChart: React.FC<ChartInterface> = ({ height, width }) => {
     {
       public_user_info: { id },
     },
+    ,
+    removeCookie,
   ] = useCookies([PUBLIC_USER_INFO]);
   const { data: stages, isError } = useMyStages(id);
 
-  // if (isError) {
-  //   removeCookie('public_user_info');
-  //   navigate('/login');
-  // }
+  if (isError) {
+    removeCookie('public_user_info');
+    navigate('/login');
+  }
 
   useEffect(() => {
     if (chartRef.current) {
@@ -116,7 +118,7 @@ export const LineChart: React.FC<ChartInterface> = ({ height, width }) => {
               },
               title: {
                 display: true,
-                text: 'Chart.js Line Chart',
+                text: 'Opportunity overview',
                 position: 'bottom',
               },
             },

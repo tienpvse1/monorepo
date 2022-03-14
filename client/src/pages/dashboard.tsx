@@ -3,7 +3,9 @@ import { DashboardHeader } from '@components/dashboard/header';
 import { LineChart } from '@components/dashboard/line-chart';
 import Upcoming from '@components/dashboard/upcoming';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
+import { useUpcomingEvents } from '@modules/schedule/query/schedule.get';
 import { Calendar } from 'antd';
+import moment from 'moment';
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 import '../stylesheets/dashboard.css';
@@ -11,11 +13,17 @@ export const DashBoard: React.FC = () => {
   const [data, setData] = useState<(ICardData & { index: number })[]>(
     cardData.map((item, index) => ({ ...item, index }))
   );
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [
     {
-      public_user_info: { firstName, lastName },
+      public_user_info: { firstName, lastName, id },
     },
   ] = useCookies([PUBLIC_USER_INFO]);
+
+  const { data: upcomingSchedule } = useUpcomingEvents({
+    accountId: id,
+    date: currentDate,
+  });
 
   return (
     <>
@@ -46,6 +54,7 @@ export const DashBoard: React.FC = () => {
               }}
             >
               <Calendar
+                onSelect={(e) => setCurrentDate(e.toDate())}
                 style={{
                   width: '19vw',
                 }}
@@ -63,18 +72,16 @@ export const DashBoard: React.FC = () => {
             >
               <h3>Upcoming events</h3>
               <div>
-                <Upcoming
-                  by='Tienpvse'
-                  severity='info'
-                  title='Meeting with boss'
-                  time='12h30-2h00pm'
-                />
-                <Upcoming
-                  by='Tienpvse'
-                  severity='info'
-                  title='Meeting with boss'
-                  time='12h30-2h00pm'
-                />
+                {upcomingSchedule &&
+                  upcomingSchedule.map((item) => (
+                    <Upcoming
+                      key={item.id}
+                      by={`${item.account.firstName} ${item.account.lastName}`}
+                      severity='info'
+                      title={item.summary}
+                      time={moment(new Date(item.dueDate)).fromNow()}
+                    />
+                  ))}
               </div>
             </div>
           </div>
