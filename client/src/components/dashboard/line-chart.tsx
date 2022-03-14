@@ -1,3 +1,5 @@
+import { PUBLIC_USER_INFO } from '@constance/cookie';
+import { useMyStages } from '@modules/pipeline-column/query/pipeline.get';
 import {
   BarElement,
   CategoryScale,
@@ -13,6 +15,8 @@ import {
 } from 'chart.js';
 import React, { useEffect, useRef, useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 ChartJS.register(
   CategoryScale,
@@ -31,17 +35,29 @@ export const options = {
 };
 
 const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-const stages = ['New', 'Qualified', 'Proposal', 'Won', 'Lose'];
+
 interface ChartInterface {
   height: number | string;
   width: number | string;
 }
 export const LineChart: React.FC<ChartInterface> = ({ height, width }) => {
+  const navigate = useNavigate();
   const [data, setData] = useState<ChartData<'line', number[], string>>({
     labels,
     datasets: [],
   });
   const chartRef = useRef<ChartJS<'line', number[], string>>(null);
+  const [
+    {
+      public_user_info: { id },
+    },
+  ] = useCookies([PUBLIC_USER_INFO]);
+  const { data: stages, isError } = useMyStages(id);
+
+  // if (isError) {
+  //   removeCookie('public_user_info');
+  //   navigate('/login');
+  // }
 
   useEffect(() => {
     if (chartRef.current) {
@@ -106,10 +122,12 @@ export const LineChart: React.FC<ChartInterface> = ({ height, width }) => {
             },
           }}
           data={{
-            labels: stages,
+            labels: stages ? stages.map((item) => item.name) : [],
             datasets: [
               {
-                data: [10, 20, 30, 22, 16, 19],
+                data: stages
+                  ? stages.map((item) => item.pipelineItems.length)
+                  : [],
                 backgroundColor: [
                   'rgba(255, 106, 0, 0.2)',
                   'rgba(255, 106, 0, 0.25)',
