@@ -4,6 +4,7 @@ import {
   Delete,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -75,5 +76,15 @@ export class PipelineColumnController {
   @HistoryLog('Deleted an stage')
   delete(@Param('id') id: string) {
     return this.service.softDelete(id);
+  }
+
+  @Patch('set-won/:id')
+  @ApiOperation({
+    summary: 'mark an column as won stage',
+    description:
+      'if there is another column is set as won in database, its "isWon" field will be updated into false and set this stage as won instead',
+  })
+  updateWon(@Param('id') id: string) {
+    return this.service.setWon(id);
   }
 }
