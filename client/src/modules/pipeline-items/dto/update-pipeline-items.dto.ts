@@ -1,4 +1,4 @@
-import { IPipelineItem } from "../entity/pipeline-items.entity";
+import { IPipelineItem } from '../entity/pipeline-items.entity';
 
 export interface INoteWorthy {
   name: string;
@@ -10,11 +10,16 @@ export interface OpportunityRevenue {
   productId: string;
   quantity: number;
 }
-export interface IUpdatePipelineItemDto extends Partial<IPipelineItem>{
+export interface IUpdatePipelineItemDto extends Partial<IPipelineItem> {
   contactId: string;
 }
 export interface IChangeStageDto {
   oldStageId: string;
   newStageId: string;
   index?: number;
+}
+
+export interface IUpdateExpectedClosing {
+  expectedClosing: string;
+  id: string;
 }

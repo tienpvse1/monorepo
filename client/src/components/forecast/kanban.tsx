@@ -1,4 +1,5 @@
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
+import { useUpdateExpectedClosing } from '@modules/pipeline-items/mutation/pipeline-item.patch';
 import { Dispatch, SetStateAction } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import '../../stylesheets/kanban.css';
@@ -9,10 +10,9 @@ interface KanbanProps {
 }
 
 export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
-  // const { mutate } = useChangePipeline();
+  const { mutate } = useUpdateExpectedClosing();
   const handleDragEnd = (e: DropResult) => {
     const { destination, source, draggableId } = e;
-    
 
     const copied = [...data];
     if (!destination) return;
@@ -30,6 +30,16 @@ export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
         return item;
       });
       setData(result);
+      const month = Number.parseInt(destination.droppableId);
+      mutate({
+        id: draggableId,
+        expectedClosing:
+          month === 0
+            ? null
+            : `${new Date().getFullYear()}-${Number.parseInt(
+                destination.droppableId
+              )}-01`,
+      });
     } else {
       // !drag into the same column case
       const column = copied[Number.parseInt(source.droppableId)];
