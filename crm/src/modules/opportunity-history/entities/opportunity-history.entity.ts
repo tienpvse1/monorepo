@@ -20,7 +20,7 @@ export class OpportunityHistory extends BaseEntity {
     default: HistoryType.CHANGE_STATE,
     name: 'history_type',
   })
-  type: string;
+  type: HistoryType;
   @ManyToOne(() => PipelineColumn, (stage) => stage.source)
   @JoinColumn({ name: 'old_stage_id' })
   oldStage: PipelineColumn;
