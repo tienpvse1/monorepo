@@ -6,9 +6,8 @@ import { Contact } from 'src/modules/contact/entities/contact.entity';
 import { EmailTemplate } from 'src/modules/email-template/entities/email-template.entity';
 import { File } from 'src/modules/file/entities/file.entity';
 import { History } from 'src/modules/history/entities/history.entity';
-import { Invitation } from 'src/modules/invitation/entities/invitation.entity';
-import { Lead } from 'src/modules/lead/entities/lead.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
+import { Notification } from 'src/modules/notification/entities/notification.entity';
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
 import { ProductAccount } from 'src/modules/product-account/entities/product-account.entity';
 import { Role } from 'src/modules/role/entities/role.entity';
@@ -22,7 +21,6 @@ import {
   Entity,
   Index,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -65,16 +63,8 @@ export class Account extends BaseEntity {
   @OneToOne(() => Session, (session) => session.account)
   session: Session;
 
-  @OneToMany(() => Invitation, (invitation) => invitation.sender)
-  sentInvitations: Invitation[];
   @OneToMany(() => Team, (team) => team.createdBy)
   createdTeams: Team[];
-  @ManyToMany(() => Invitation, (invitation) => invitation.receivers)
-  receivedInvitations: Invitation[];
-
-  // !updated: account will no longer own any pipeline anymore
-  // @OneToOne(() => Pipeline, (pipeline) => pipeline.account)
-  // pipeline: Pipeline;
 
   // account can be assign to sell product to any opportunity by sale manager
   @OneToMany(() => PipelineItem, (pipeline) => pipeline.account)
@@ -92,9 +82,6 @@ export class Account extends BaseEntity {
   @OneToMany(() => Email, (email) => email.account)
   emails: Email[];
 
-  @OneToMany(() => Lead, (lead) => lead.account)
-  leads: Lead[];
-
   @OneToMany(() => History, (history) => history.account)
   histories: History[];
 
@@ -104,6 +91,15 @@ export class Account extends BaseEntity {
   @OneToMany(() => Contact, (contact) => contact.account)
   contacts: Contact[];
 
+  @OneToMany(() => ProductAccount, (product) => product.account)
+  productAccounts: ProductAccount[];
+
+  @OneToMany(() => Notification, (notification) => notification.receiver)
+  inboxNotifications: Notification[];
+
+  @OneToMany(() => Notification, (notification) => notification.sender)
+  sentNotifications: Notification[];
+
   @ManyToOne(() => Role, (role) => role.accounts)
   @JoinColumn({ name: 'role_id' })
   role: Role;
@@ -111,9 +107,6 @@ export class Account extends BaseEntity {
   @ManyToOne(() => Team, (team) => team.accounts)
   @JoinColumn({ name: 'team_id' })
   team: Team;
-
-  @OneToMany(() => ProductAccount, (product) => product.account)
-  productAccounts: ProductAccount[];
 
   // hash the password before save or update it in database
   @BeforeInsert()

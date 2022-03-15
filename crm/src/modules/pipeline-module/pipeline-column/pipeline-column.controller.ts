@@ -1,17 +1,16 @@
 import {
   Body,
   Controller,
-  Get,
+  Delete,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { AUTHORIZATION } from 'src/constance/swagger';
-import { getCustomRepository } from 'typeorm';
-import { PipelineRepository } from '../pipeline/pipeline.repository';
 import {
   CreatePipelineColumnDto,
   CreateSinglePipelineColumnDto,
@@ -37,16 +36,20 @@ import { PipelineColumnService } from './pipeline-column.service';
       field: 'id',
       primary: true,
     },
-    pipelineId: {
-      type: 'string',
-      field: 'pipelineId',
-      primary: false,
-    },
   },
   routes: {
-    exclude: ['createOneBase', 'createManyBase', 'getManyBase'],
+    exclude: ['createOneBase', 'createManyBase', 'deleteOneBase'],
     updateOneBase: {
       decorators: [HistoryLog('updated an stage')],
+    },
+  },
+  query: {
+    join: {
+      pipelineItems: {},
+      'pipelineItems.contact': {},
+      'pipelineItems.account': {},
+      'pipelineItems.schedules': {},
+      'pipelineItems.reason': {},
     },
   },
 })
@@ -71,13 +74,19 @@ export class PipelineColumnController {
     return this.service.addSingleColumn(dto);
   }
 
-  @Get('/many/:pipelineId')
-  async getByPipelineID(@Param('pipelineId') pipelineId: string) {
-    const pipelineRepository = getCustomRepository(PipelineRepository);
-    const pipeline = await pipelineRepository.findOneItem({
-      where: { id: pipelineId },
-      relations: ['pipelineColumns'],
-    });
-    return pipeline.pipelineColumns;
+  @Delete(':id')
+  @HistoryLog('Deleted an stage')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
+  }
+
+  @Patch('set-won/:id')
+  @ApiOperation({
+    summary: 'mark an column as won stage',
+    description:
+      'if there is another column is set as won in database, its "isWon" field will be updated into false and set this stage as won instead',
+  })
+  updateWon(@Param('id') id: string) {
+    return this.service.setWon(id);
   }
 }

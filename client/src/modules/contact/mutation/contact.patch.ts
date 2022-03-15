@@ -1,5 +1,6 @@
 import { instance } from '@axios';
 import { controllers } from '@constance/controllers';
+import { handleMutationResponse } from '@modules/base/base.handler';
 import { useMutation } from 'react-query';
 import { UpdateContactDto } from '../dto/update-contact.dto';
 
@@ -15,6 +16,7 @@ export const useUpdateContact = (callback?: any) =>
     ({ id, ...rest }: UpdateContactDto & { id: string }) =>
       updateContact(id, rest),
     {
+      ...handleMutationResponse(),
       onSuccess: () => callback(),
     }
   );

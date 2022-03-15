@@ -12,14 +12,8 @@ export const deletePipelineItems = async (pipelineItemsId: string) => {
   return data;
 };
 
-export const useDeletePipelineItems = () => {
-  const { mutate, ...rest } = useMutation(deletePipelineItems, {
-   ...handleMutationResponse(GET_PIPELINE_DESIGN)
-  });
-
-  const removePipelineItems = (pipelineItemsId: string) => {
-    mutate(pipelineItemsId);
-  };
-
-  return { removePipelineItems, ...rest };
-};
+export const useDeletePipelineItems = () => useMutation(deletePipelineItems,
+  {
+    ...handleMutationResponse(GET_PIPELINE_DESIGN)
+  }
+);

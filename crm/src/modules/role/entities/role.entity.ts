@@ -7,6 +7,7 @@ export enum RoleType {
   ADMIN = 'admin',
   SALE = 'sale',
   SALE_MANAGE = 'sale_manager',
+  ACCOUNTANT = 'accountant',
 }
 @Entity()
 export class Role extends BaseEntity {

@@ -1,4 +1,11 @@
-import { Body, Controller, Param, Patch, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Patch,
+  UsePipes,
+} from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Crud, Override } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -36,7 +43,7 @@ import { ProductService } from './product.service';
       decorators: [UsePipes(DateValidatorPipe)],
     },
 
-    exclude: ['createManyBase', 'updateOneBase'],
+    exclude: ['createManyBase', 'updateOneBase', 'deleteOneBase'],
   },
   query: {
     join: {
@@ -71,5 +78,11 @@ export class ProductController {
   async updateProduct(@Param('id') id: string, @Body() dto: UpdateProductDto) {
     const validatedData = await this.service.validateUpdateData(id, dto);
     return this.service.update(id, validatedData);
+  }
+
+  @Delete(':id')
+  @HistoryLog('Deleted an email template')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 }

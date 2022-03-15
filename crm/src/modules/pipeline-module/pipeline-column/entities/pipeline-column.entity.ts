@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/base/entity.base';
-import { Pipeline } from 'src/modules/pipeline-module/pipeline/entities/pipeline.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { OpportunityHistory } from 'src/modules/opportunity-history/entities/opportunity-history.entity';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { PipelineItem } from '../../pipeline-item/entities/pipeline-item.entity';
 
 @Entity({ name: 'pipeline_column' })
@@ -11,12 +11,8 @@ export class PipelineColumn extends BaseEntity {
   @Column({ default: 0, name: 'index_position' })
   index: number;
 
-  @ManyToOne(() => Pipeline, (pipeline) => pipeline.pipelineColumns, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn({ name: 'pipeline_id' })
-  pipeline: Pipeline;
+  @Column({ type: 'boolean', default: false, name: 'is_won' })
+  isWon: boolean;
 
   @OneToMany(
     () => PipelineItem,
@@ -24,4 +20,12 @@ export class PipelineColumn extends BaseEntity {
     { eager: true, cascade: true },
   )
   pipelineItems: PipelineItem[];
+  @OneToMany(() => OpportunityHistory, (history) => history.oldStage, {
+    cascade: true,
+  })
+  source: OpportunityHistory[];
+  @OneToMany(() => OpportunityHistory, (history) => history.newStage, {
+    cascade: true,
+  })
+  destination: OpportunityHistory[];
 }

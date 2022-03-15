@@ -1,6 +1,6 @@
 import { DashBoard } from './dashboard';
 
-export const HomePage = () => {
+const HomePage = () => {
   return (
     <>
       <DashBoard />

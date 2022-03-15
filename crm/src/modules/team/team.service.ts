@@ -50,6 +50,7 @@ export class TeamService extends BaseService<Team> {
   }
 
   async updateTeam(dto: UpdateTeamPositionDto[]) {
+    this.eventEmitter.emit(InternalServerEvent.TEAM_UPDATED, dto);
     const queryBuilder = this.repository.createQueryBuilder();
     for (const { index, id } of dto) {
       await queryBuilder
@@ -61,7 +62,6 @@ export class TeamService extends BaseService<Team> {
         .execute();
     }
     await this.updateAccount(dto);
-    this.eventEmitter.emit(InternalServerEvent.TEAM_UPDATED);
     return this.repository.find({ relations: ['accounts'] });
   }
 }

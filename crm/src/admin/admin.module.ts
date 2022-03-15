@@ -3,20 +3,23 @@ import { Database, Resource } from '@adminjs/typeorm';
 import { Module } from '@nestjs/common';
 import AdminJS from 'adminjs';
 import { Contact } from 'src/modules/contact/entities/contact.entity';
-import { Lead } from 'src/modules/lead/entities/lead.entity';
+import { Course } from 'src/modules/course/entities/course.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
 import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
+import { Notification } from 'src/modules/notification/entities/notification.entity';
+import { OpportunityHistory } from 'src/modules/opportunity-history/entities/opportunity-history.entity';
+import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
 import { Permission } from 'src/modules/permission/entities/permission.entity';
 import { ProductAccount } from 'src/modules/product-account/entities/product-account.entity';
 import { Product } from 'src/modules/product/entities/product.entity';
 import { Role } from 'src/modules/role/entities/role.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
+import { Subject } from 'src/modules/subject/entities/subject.entity';
 import { Team } from 'src/modules/team/entities/team.entity';
 import { Account } from '../modules/account/entities/account.entity';
 import { EmailTemplate } from '../modules/email-template/entities/email-template.entity';
 import { PipelineColumn } from '../modules/pipeline-module/pipeline-column/entities/pipeline-column.entity';
 import { PipelineItem } from '../modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
-import { Pipeline } from '../modules/pipeline-module/pipeline/entities/pipeline.entity';
 
 AdminJS.registerAdapter({ Database, Resource });
 
@@ -28,12 +31,10 @@ AdminJS.registerAdapter({ Database, Resource });
         resources: [
           PipelineItem,
           PipelineColumn,
-          Pipeline,
           Account,
           EmailTemplate,
           Contact,
           Email,
-          Lead,
           Schedule,
           Permission,
           Role,
@@ -41,6 +42,11 @@ AdminJS.registerAdapter({ Database, Resource });
           Product,
           Team,
           NoteWorthy,
+          Course,
+          Subject,
+          OpportunityRevenue,
+          OpportunityHistory,
+          Notification,
         ],
         branding: {
           logo: 'https://iconape.com/wp-content/files/kr/371166/svg/371166.svg',

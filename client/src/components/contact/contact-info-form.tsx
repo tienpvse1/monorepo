@@ -21,17 +21,20 @@ export const ContactInfoForm = () => {
           <Input />
         </Form.Item>
         <Form.Item
+          name="company"
+          label="Company"
+        >
+          <Select>
+
+          </Select>
+        </Form.Item>
+        <Form.Item
           name="birth"
           label="Birth"
         >
           <DatePicker style={{ width: '100%' }} />
         </Form.Item>
-        <Form.Item
-          name="title"
-          label="Title"
-        >
-          <Input />
-        </Form.Item>
+
       </Col>
       <Col span={12}>
         <Form.Item
@@ -55,6 +58,12 @@ export const ContactInfoForm = () => {
           <Select>
 
           </Select>
+        </Form.Item>
+        <Form.Item
+          name="title"
+          label="Title"
+        >
+          <Input />
         </Form.Item>
       </Col>
     </>

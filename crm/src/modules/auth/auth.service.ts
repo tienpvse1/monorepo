@@ -9,12 +9,10 @@ import { JwtService } from '@nestjs/jwt';
 import { compare, compareSync, hash } from 'bcryptjs';
 import { Request, Response } from 'express';
 import { getIp } from 'src/util/ip';
-import { getRepository } from 'typeorm';
 import { AccountService } from '../account/account.service';
 import { Account } from '../account/entities/account.entity';
 import { Session } from '../session/entities/session.entity';
 import { SessionService } from '../session/session.service';
-import { Socket } from '../socket/entities/socket.entity';
 import { LoginRequestDto } from './interfaces/login-request.dto';
 import { IToken } from './interfaces/token.interface';
 import { IGoogleUser } from './interfaces/user.google';
@@ -160,7 +158,7 @@ export class AuthService {
   }
 
   async loginUsingSession(
-    { email, password, socketId }: LoginRequestDto,
+    { email, password }: LoginRequestDto,
     ip: string,
     req: Request,
   ) {
@@ -181,29 +179,10 @@ export class AuthService {
         const session = await this.sessionService.updateSession(
           sessionFromAccountId.id,
           getIp(ip),
-          socketId,
         );
         return this.sendResult(req, session, account);
       }
-      if (socketId) {
-        const socketRepository = getRepository(Socket);
-        const createdSocket = await socketRepository
-          .create({ id: socketId })
-          .save();
-        const [newPassword, session] = await Promise.all([
-          hash(password, 10),
-          this.sessionService.create({
-            account: account,
-            ip: getIp(ip),
-            sockets: [createdSocket],
-          }),
-        ]);
-        // saving session to account
-        account.session = session;
-        account.password = newPassword;
-        await account.save();
-        return this.sendResult(req, session, account);
-      }
+
       const [newPassword, session] = await Promise.all([
         hash(password, 10),
         this.sessionService.create({

@@ -1,7 +1,8 @@
 export enum InternalServerEvent {
-  PIPELINE_UPDATED = 'pipeline-updated',
+  MANAGER_PIPELINE_UPDATED = 'manager-pipeline-updated',
   NEW_MEMBER_JOIN_TEAM = 'new-member-join-team',
-  INVITATION_SENT = 'invitation-sent',
+  SEND_NOTIFICATION = 'send-notification',
+  PIPELINE_UPDATED = 'pipeline-updated',
   HISTORY_ADDED = 'history-added',
   TEAM_UPDATED = 'team-updated',
 }
@@ -12,10 +13,11 @@ export enum SocketReceiveEvent {
 }
 
 export enum SocketSendEvent {
-  PIPELINE_UPDATED = 'pipeline-updated',
+  MANAGER_PIPELINE_UPDATED = 'manager-pipeline-updated',
   NEW_MEMBER_JOIN_TEAM = 'new-member-join-team',
-  INVITATION_SENT = 'invitation-sent',
+  SEND_NOTIFICATION = 'send-notification',
+  PIPELINE_UPDATED = 'pipeline-updated',
   HISTORY_ADDED = 'history-added',
-  JOINED = 'joined',
   TEAM_UPDATED = 'team-updated',
+  JOINED = 'joined',
 }

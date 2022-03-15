@@ -80,6 +80,7 @@ const Product = () => {
             render={(_, record: IProduct) => (
               <EditableCell
                 dataIndex='name'
+                nameForm='name'
                 editing={isEditing}
                 editingIndex={editingIndex}
                 recordIndex={record.id}
@@ -102,6 +103,7 @@ const Product = () => {
               <EditableCell
                 inputType='datePicker'
                 dataIndex='startDate'
+                nameForm='startDate'
                 editing={isEditing}
                 editingIndex={editingIndex}
                 recordIndex={record.id}
@@ -124,6 +126,7 @@ const Product = () => {
               <EditableCell
                 inputType='datePicker'
                 dataIndex='endDate'
+                nameForm='endDate'
                 editing={isEditing}
                 editingIndex={editingIndex}
                 recordIndex={record.id}
@@ -145,6 +148,7 @@ const Product = () => {
             render={(_, record: IProduct) => (
               <EditableCell
                 dataIndex='price'
+                nameForm='price'
                 editing={isEditing}
                 editingIndex={editingIndex}
                 recordIndex={record.id}

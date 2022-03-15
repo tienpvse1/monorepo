@@ -13,7 +13,7 @@ export const LoginForm = () => {
     authenticateUser,
     {
       onSuccess: (data) => {
-        savePermissions(data.publicData.permissions);
+        savePermissions(data.publicData.role.permissions);
       },
     }
   );

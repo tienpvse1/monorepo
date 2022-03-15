@@ -2,6 +2,8 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Delete,
+  Param,
   Post,
   UseInterceptors,
   UsePipes,
@@ -44,12 +46,19 @@ import { ExcludePasswordPipe } from './exclude-password.pipe';
         HistoryLog('updated their account'),
       ],
     },
+    exclude: ['deleteOneBase'],
   },
   params: {
     id: {
       type: 'string',
       field: 'id',
       primary: true,
+    },
+  },
+  query: {
+    join: {
+      team: {},
+      role: {},
     },
   },
 })
@@ -61,5 +70,10 @@ export class AccountController {
   @HistoryLog('joined a team')
   joinTeam(@Body() dto: JoinTeamDto) {
     return this.service.joinTeam(dto);
+  }
+  @Delete(':id')
+  @HistoryLog('Deleted an account')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 }

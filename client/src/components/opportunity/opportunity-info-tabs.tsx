@@ -1,6 +1,8 @@
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { Alert, Button, Tabs } from 'antd'
+import { Alert, Empty, Tabs } from 'antd'
 import { ContactInfo } from './contact-info';
+import { OpportunityDetails } from '@components/opportunity/opportunity-details';
+import { OpportunityNotes } from './opportunity-notes';
 const { TabPane } = Tabs;
 
 interface OpportunityInfoTabsProps {
@@ -17,13 +19,13 @@ export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }
       >
         <TabPane
           tab='Details'
-          key='0'
+          key='1'
         >
-
+          <OpportunityDetails data={data} />
         </TabPane>
         <TabPane
           tab='Contact Info'
-          key='1'
+          key='2'
           style={{
             height: '60vh',
             overflowY: 'scroll',
@@ -32,35 +34,23 @@ export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }
           <ContactInfo data={data} />
         </TabPane>
         {/* //TODO: these tab is still hard coded */}
-        <TabPane tab='Task' key='2'>
-          <Alert
-            message='Meeting with John'
-            type='error'
+        <TabPane tab='Task' key='3'>
+          {data.schedules.length > 0 ? data.schedules.map((schedule) =>
+          (<Alert
+            key={schedule.id}
+            message={schedule.type.toUpperCase()}
+            type={
+              schedule.type == 'todo' && 'info' ||
+              schedule.type == 'email' && 'error' ||
+              schedule.type == 'meeting' && 'warning' || 'success'
+            }
             closable
-            description='Please make sure not to forget this'
-          />
-          <Alert
-            message='Sending email to John'
-            type='warning'
-            closable
-            description='Send an email to tienpvse at 9:00pm'
-          />
-          <Alert
-            showIcon
-            message='Meeting with John'
-            type='success'
-            closable
-            description='go to store and buy coffee'
-          />
+            description={schedule.summary}
+          />)
+          ) : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
         </TabPane>
-        <TabPane tab='Notes' key='3'>
-          Notes
-        </TabPane>
-        <TabPane tab='Upcoming Activity' key='4'>
-          <Button type='primary'>Compose</Button>
-        </TabPane>
-        <TabPane tab='Email' key='5'>
-          <Button type='primary'>Compose</Button>
+        <TabPane tab='Notes' key='4'>
+          <OpportunityNotes data={data.contact}/>
         </TabPane>
       </Tabs>
     </>

@@ -1,8 +1,8 @@
+import { ITeam } from '@modules/team/entity/team.entity';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
-import { KanBanFakeData } from './kanban';
 
 interface KanbanColumnHeaderProps {
-  data: Partial<KanBanFakeData>;
+  data: Partial<ITeam>;
   handleDrag: DraggableProvidedDragHandleProps;
 }
 
@@ -21,7 +21,7 @@ export const KanbanColumnHeader: React.FC<KanbanColumnHeaderProps> = ({
       <div
         style={{
           height: '3px',
-          backgroundColor: data.color,
+          backgroundColor: 'blue',
           marginBottom: '5px',
         }}
       ></div>

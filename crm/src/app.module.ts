@@ -11,18 +11,20 @@ import { AdminModule } from './admin/admin.module';
 import { LoggingMiddleware } from './middleware/logging.middleware';
 import { AccountModule } from './modules/account/account.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CompanyModule } from './modules/company/company.module';
 import { ConfigModule } from './modules/config/config.module';
 import { ContactModule } from './modules/contact/contact.module';
+import { CourseModule } from './modules/course/course.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { EmailTemplateModule } from './modules/email-template/email-template.module';
 import { FileModule } from './modules/file/file.module';
 import { GlobalModule } from './modules/global/global.module';
 import { HistoryModule } from './modules/history/history.module';
-import { InvitationModule } from './modules/invitation/invitation.module';
-import { LeadModule } from './modules/lead/lead.module';
 import { MailerModule } from './modules/mailer/mailer.module';
 import { MessageModule } from './modules/message/message.module';
 import { NoteWorthyModule } from './modules/note-worthy/note-worthy.module';
+import { NotificationModule } from './modules/notification/notification.module';
+import { OpportunityHistoryModule } from './modules/opportunity-history/opportunity-history.module';
 import { OpportunityRevenueModule } from './modules/opportunity-revenue/opportunity-revenue.module';
 import { PermissionModule } from './modules/permission/permission.module';
 import { PipelineColumnModule } from './modules/pipeline-module/pipeline-column/pipeline-column.module';
@@ -35,9 +37,10 @@ import { ProductModule } from './modules/product/product.module';
 import { RoleModule } from './modules/role/role.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
 import { SessionModule } from './modules/session/session.module';
-import { SocketModule } from './modules/socket/socket.module';
+import { SubjectModule } from './modules/subject/subject.module';
 import { TagModule } from './modules/tag/tag.module';
 import { TeamModule } from './modules/team/team.module';
+import { ReasonModule } from './modules/reason/reason.module';
 
 @Module({
   imports: [
@@ -61,7 +64,6 @@ import { TeamModule } from './modules/team/team.module';
     MessageModule,
     AdminModule,
     SessionModule,
-    LeadModule,
     ScheduleModule,
     PermissionModule,
     RoleModule,
@@ -72,9 +74,13 @@ import { TeamModule } from './modules/team/team.module';
     NoteWorthyModule,
     EventEmitterModule.forRoot(),
     TeamModule,
-    SocketModule,
-    InvitationModule,
     OpportunityRevenueModule,
+    OpportunityHistoryModule,
+    CompanyModule,
+    CourseModule,
+    SubjectModule,
+    NotificationModule,
+    ReasonModule,
   ],
   providers: [GlobalModule],
 })

@@ -1,21 +1,18 @@
-import { useLiveQuery } from 'dexie-react-hooks';
-import { client } from '../../App';
+import { useStages } from '@modules/pipeline-column/query/pipeline-column.get';
+import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useChangeStage } from '@modules/pipeline-items/mutation/pipeline-items.update';
 import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-item.get';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { qualifyStage } from '@util/stage';
-import { getPipeline } from '@db/pipeline.db';
-import { useGetStagesByPipelineId } from '@modules/pipeline-column/query/pipeline.get';
-import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { Steps } from 'antd';
+import { client } from '../../App';
 const { Step } = Steps;
 
 interface OpportunityStepProps {
-  data: IPipelineItem
+  data: IPipelineItem;
 }
 export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
-  const pipeline = useLiveQuery(getPipeline);
-  const { data: pipelineColumns } = useGetStagesByPipelineId(pipeline?.id);
+  const { data: pipelineColumns } = useStages();
   const { mutate } = useChangeStage();
   const handleUpdateStage = (currentStageId: string, newStageId: string) => {
     mutate(
@@ -54,5 +51,5 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
         ))}
       </Steps>
     </>
-  )
-}
+  );
+};

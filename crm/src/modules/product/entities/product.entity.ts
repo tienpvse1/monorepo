@@ -1,8 +1,6 @@
 import { BaseEntity } from 'src/base/entity.base';
-import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
-import { Pipeline } from 'src/modules/pipeline-module/pipeline/entities/pipeline.entity';
 import { ProductAccount } from 'src/modules/product-account/entities/product-account.entity';
-import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity()
 export class Product extends BaseEntity {
@@ -18,14 +16,11 @@ export class Product extends BaseEntity {
   @Column({ type: 'float' })
   price: number;
 
-  @OneToOne(() => Pipeline, (pipeline) => pipeline.product)
-  pipeline: Pipeline;
-
   @OneToMany(() => ProductAccount, (account) => account.product)
   productAccounts: ProductAccount[];
-  @OneToMany(
-    () => OpportunityRevenue,
-    (opportunityRevenue) => opportunityRevenue.product,
-  )
-  opportunityRevenues: OpportunityRevenue[];
+  // @OneToMany(
+  //   () => OpportunityRevenue,
+  //   (opportunityRevenue) => opportunityRevenue.product,
+  // )
+  // opportunityRevenues: OpportunityRevenue[];
 }

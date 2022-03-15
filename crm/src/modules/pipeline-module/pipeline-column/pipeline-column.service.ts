@@ -1,11 +1,13 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/base/nestjsx.service';
 import { InternalServerEvent } from 'src/constance/event';
-import { getCustomRepository, getRepository, Repository } from 'typeorm';
-import { Pipeline } from '../pipeline/entities/pipeline.entity';
-import { PipelineRepository } from '../pipeline/pipeline.repository';
+import { Repository } from 'typeorm';
 import {
   CreatePipelineColumnDto,
   CreateSinglePipelineColumnDto,
@@ -28,11 +30,7 @@ export class PipelineColumnService extends BaseService<PipelineColumn> {
     createPipelineDto: CreatePipelineColumnDto,
   ) {
     try {
-      const pipelineRepository = getRepository(Pipeline);
-      const pipeline = await pipelineRepository.findOne(pipelineId);
-
       const createdPipeline = this.repository.create(createPipelineDto);
-      createdPipeline.pipeline = pipeline;
       const createResult = await createdPipeline.save();
       return createResult;
     } catch (error) {
@@ -40,22 +38,19 @@ export class PipelineColumnService extends BaseService<PipelineColumn> {
     }
   }
 
-  async addSingleColumn({ name, pipelineId }: CreateSinglePipelineColumnDto) {
-    const pipelineRepository = getCustomRepository(PipelineRepository);
-    const pipeline = await pipelineRepository.findOneItem({
-      where: { id: pipelineId },
-      relations: ['pipelineColumns'],
-    });
-    const newPipelineIndex = pipeline.pipelineColumns.length;
+  async addSingleColumn({ name }: CreateSinglePipelineColumnDto) {
+    const total = await this.count();
+    const columnIndex = total;
 
     try {
       const insertResult = await this.createItem({
-        index: newPipelineIndex,
+        index: columnIndex,
         name,
       });
-      pipeline.pipelineColumns.push(insertResult);
-      pipeline.save();
-      this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
+
+      const result = await this.find();
+
+      this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED, result);
       return insertResult;
     } catch (error) {
       throw new BadRequestException(error.message);
@@ -64,5 +59,41 @@ export class PipelineColumnService extends BaseService<PipelineColumn> {
 
   async updateColumnIndex(id: string, { index }: UpdatePipelineColumnDto) {
     return this.update(id, { index });
+  }
+
+  async getColumns() {
+    return this.repository.find();
+  }
+
+  async setWon(id: string): Promise<PipelineColumn> {
+    const [columnWithWonInDb, pipelineToUpdate] = await Promise.all([
+      this.repository
+        .createQueryBuilder('pipelineColumn')
+        .where('pipelineColumn.is_won = :isWon', { isWon: true })
+        .getOne(),
+      this.repository
+        .createQueryBuilder('pipelineColumn')
+        .where('pipelineColumn.id = :id', { id })
+        .getOne(),
+    ]);
+    if (!pipelineToUpdate) {
+      throw new NotFoundException('stage not found');
+    }
+    if (columnWithWonInDb) {
+      this.repository
+        .createQueryBuilder('pipelineColumn')
+        .update({ isWon: false })
+        .where('id = :id', { id: columnWithWonInDb.id })
+        .execute();
+    }
+    const updated = await this.repository
+      .createQueryBuilder('pipelineColumn')
+      .update({ isWon: true })
+      .where('id = :id', { id })
+      .execute();
+    if (updated.affected < 0)
+      throw new BadRequestException('cannot update this stage as won');
+    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
+    return { ...pipelineToUpdate, isWon: true } as PipelineColumn;
   }
 }
