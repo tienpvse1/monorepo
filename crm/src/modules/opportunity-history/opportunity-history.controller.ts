@@ -10,8 +10,10 @@ import {
 import { OpportunityHistoryService } from './opportunity-history.service';
 import { CreateOpportunityHistoryDto } from './dto/create-opportunity-history.dto';
 import { UpdateOpportunityHistoryDto } from './dto/update-opportunity-history.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('opportunity-history')
+@ApiTags('opportunity history')
 export class OpportunityHistoryController {
   constructor(
     private readonly opportunityHistoryService: OpportunityHistoryService,
