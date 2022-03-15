@@ -1,4 +1,4 @@
-import { useStages } from '@modules/pipeline-column/query/pipeline.get';
+import { useStages } from '@modules/pipeline-column/query/pipeline-column.get';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useChangeStage } from '@modules/pipeline-items/mutation/pipeline-items.update';
 import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-item.get';

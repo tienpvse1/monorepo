@@ -13,23 +13,20 @@ export const AddressInfoDetails: React.FC<AddressInfoDetailsProps> = ({
     <>
       <Row>
         <Col span={12}>
-          <MyForm label="Address">
-            This is Address
-          </MyForm>
-          <MyForm label="City">
-            This is city
-          </MyForm>
+          <div className="address-form-details">
+            <label className="my-form-label">Address</label>
+            <div className="my-form-content">
+             {contact.address}
+            </div>
+          </div>
+          <MyForm label='TaxID'>{contact.taxId}</MyForm>
           <MyForm label="Postal Code">
             {contact.postalCode}
-          </MyForm>
-          <MyForm label="Country">
-            This country
           </MyForm>
         </Col>
         <Col span={12}>
           <MyForm label='Job Position'>{contact.jobPosition}</MyForm>
           <MyForm label='Website'>{contact.website}</MyForm>
-          <MyForm label='TaxID'>{contact.taxId}</MyForm>
         </Col>
       </Row>
     </>

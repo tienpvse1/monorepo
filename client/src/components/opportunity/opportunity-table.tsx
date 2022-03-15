@@ -22,6 +22,8 @@ import { message } from 'antd'
 import { usePostPipelineItems } from "@modules/pipeline-items/mutation/pipeline-items.post";
 import { useQueryClient } from "react-query";
 import { useDeletePipelineItems } from "@modules/pipeline-items/mutation/pipeline-items.delete";
+// import { dateFormat } from "@constance/date-format";
+// const { DEFAULT } = dateFormat;
 
 interface SubmitFormCreateOpportunity {
   columnId: string;
@@ -71,7 +73,7 @@ export const OpportunitiesTable = () => {
     form.setFieldsValue({
       name,
       contactId: contact.id,
-      expectedClosing: moment(expectedClosing)
+      expectedClosing: expectedClosing ? moment(expectedClosing) : ''
     })
   };
 
@@ -81,7 +83,8 @@ export const OpportunitiesTable = () => {
       updateOpportunity({
         id,
         name: record.name,
-        contactId: record.contactId
+        // expectedClosing: record.expectedClosing ? record.expectedClosing.format(DEFAULT) : '',
+        // contactId: record.contactId
       }, {
         onSuccess: () => {
           message.success('Saved successfully !');
@@ -164,7 +167,7 @@ export const OpportunitiesTable = () => {
                   />
                 }
                 nameForm='contactName'
-                editing={isEditing}
+                editing={false}
                 editingIndex={editingIndex}
                 recordIndex={record.id}
                 record={record.contact}

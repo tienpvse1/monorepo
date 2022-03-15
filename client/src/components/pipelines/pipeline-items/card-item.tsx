@@ -1,6 +1,6 @@
 import {
   ClockCircleOutlined,
-  FlagOutlined,
+  CrownFilled,
   MailOutlined,
   MoreOutlined,
 } from '@ant-design/icons';
@@ -64,12 +64,12 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
         title={
           <>
             <span style={{ fontWeight: 500 }}>
-              <FlagOutlined style={{ color: 'green' }} />
+              <CrownFilled style={{ color: '#FBC02D' }}/>
               {` ${cardData.name}`}
             </span>
-            <Tag color={'blue'} style={{ marginLeft: 10, borderRadius: 5 }}>
+            {/* <Tag color={'blue'} style={{ marginLeft: 10, borderRadius: 5 }}>
               Design
-            </Tag>
+            </Tag> */}
           </>
         }
         style={{
@@ -112,7 +112,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
                   >
                     <ClockCircleOutlined
                       onClick={() => toggleDropdown()}
-                      style={{ fontSize: 18, cursor: 'pointer', color: cardData.schedules.length > 0 ? 'green' : '' }}
+                      style={{ fontSize: 18, cursor: 'pointer', color: cardData.schedules?.length > 0 ? 'green' : '' }}
                     />
                   </Dropdown>
 

@@ -83,9 +83,12 @@ export const useHandleDnD = (data: IPipeline) => {
 
     //update lại pipeline mới sau khi đổi chỗ card
     const newColumn = data.pipelineColumns.map((item) => {
-      if (item.name == columnName) return { ...item, pipelineItems: result };
-      else return item;
-    });
+      if (item.name == columnName)
+        return { ...item, pipelineItems: result };
+      else
+        return item;
+    })
+
     setNewPipeline(newColumn);
   };
 

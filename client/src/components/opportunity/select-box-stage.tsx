@@ -3,10 +3,10 @@ import { Form, Select } from 'antd';
 import 'ant-design-pro/dist/ant-design-pro.css';
 
 const { Option } = Select;
-import { useStages } from '@modules/pipeline-column/query/pipeline.get';
+import { useQueryStagesInfo } from '@modules/pipeline-column/query/pipeline-column.get';
 
 export const SelectBoxStage = () => {
-  const { data: pipelineColumns } = useStages();
+  const { data: pipelineColumns } = useQueryStagesInfo();
 
   return (
     <>

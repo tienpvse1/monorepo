@@ -25,7 +25,7 @@ export const CreateContactForm = () => {
           name="internalNotes"
           label="Internal Notes"
         >
-          <Input.TextArea placeholder="notes..." style={{ height: '80px' }} />
+          <Input.TextArea showCount maxLength={150} placeholder="notes..." style={{ height: '80px' }} />
         </Form.Item>
       </WrapperModalForm>
     </>

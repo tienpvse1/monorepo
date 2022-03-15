@@ -23,7 +23,7 @@ export const CreateOpportunityForm = () => {
           name="internalNotes"
           label="Internal Notes"
         >
-          <Input.TextArea placeholder="notes..." style={{ height: '80px' }} />
+          <Input.TextArea showCount maxLength={150} placeholder="Notes..." style={{ height: '80px' }} />
         </Form.Item>
       </WrapperModalForm>
     </>

@@ -39,24 +39,7 @@ export const getAccountById = async (id: string) => {
   return data;
 };
 
-export const getAccountBySaleRole = async () => {
-  const queryBuilder = RequestQueryBuilder.create({
-    join: [
-      { field: 'role' }
-    ],
-    filter: [
-      {
-        field: 'role.name',
-        operator: '$eq',
-        value: 'sale',
-      },
-    ],
-  }).query(false);
-  const { data } = await instance.get<IAccount[]>(`${ACCOUNT}?${queryBuilder}`);
-  return data;
-};
-
 export const useQueryAccountBySaleRole = () =>
-  useQuery(GET_ACCOUNT_BY_SALE_ROLE, () => getAccountBySaleRole())
+  useQuery(GET_ACCOUNT_BY_SALE_ROLE, () => getSaleAccounts())
 export const useSaleAccounts = () =>
   useQuery(QUERY_SALE_ACCOUNTS, getSaleAccounts);

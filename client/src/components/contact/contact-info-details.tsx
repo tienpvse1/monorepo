@@ -20,12 +20,13 @@ export const ContactInfoDetails: React.FC<ContactInfoDetailsProps> = ({ contact 
           <MyForm label="Email">
             {contact.email}
           </MyForm>
+          <MyForm label="Company">
+
+          </MyForm>
           <MyForm label="Birth">
             {contact.birth ? moment(contact.birth).format(BIRTH).toString() : ''}
           </MyForm>
-          <MyForm label="Title">
-            {contact.title}
-          </MyForm>
+
         </Col>
         <Col span={12}>
           <MyForm label="Phone">
@@ -36,6 +37,9 @@ export const ContactInfoDetails: React.FC<ContactInfoDetailsProps> = ({ contact 
           </MyForm>
           <MyForm label="Type">
 
+          </MyForm>
+          <MyForm label="Title">
+            {contact.title}
           </MyForm>
         </Col>
       </Row>

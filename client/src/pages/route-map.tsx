@@ -2,7 +2,6 @@ import SaleManagerLayout from '@common/sale-manager-layout';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-const Leads = lazy(() => import('@pages/leads'));
 const HomePage = lazy(() => import('@pages/home'));
 const Contact = lazy(() => import('@pages/contact'));
 const LoginPage = lazy(() => import('@pages/login'));
@@ -17,6 +16,7 @@ const AddContact = lazy(() => import('@pages/import-contact'));
 const AdminLayout = lazy(() => import('@common/admin-layout'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
+const Company = lazy(() => import('@pages/company'));
 const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
 const ContactContainer = lazy(() => import('@components/contact/contact'));
@@ -28,6 +28,14 @@ const ViewOpportunityDetails = lazy(
 const OpportunitiesContainer = lazy(
   () => import('@components/opportunity/opportunity-container')
 );
+const CompanyContainer = lazy(
+  () => import('@components/company/company-container')
+); 
+const ViewCompanyDetails = lazy(
+  () => import('@pages/view-company-details')
+); 
+
+const PipelineAdmin = lazy(() => import('@components/admin/pipeline-admin'))
 
 export const route: RouteObject[] = [
   {
@@ -104,8 +112,18 @@ export const route: RouteObject[] = [
         ],
       },
       {
-        path: 'leads',
-        element: <Leads />,
+        path: 'company',
+        element: <Company />,
+        children: [
+          {
+            index: true,
+            element: <CompanyContainer />
+          },
+          {
+            path: 'view-details/',
+            element: <ViewCompanyDetails />
+          }
+        ]
       },
     ],
   },
@@ -117,6 +135,10 @@ export const route: RouteObject[] = [
         index: true,
         element: <AdminPage />,
       },
+      {
+        path: 'pipeline',
+        element: <PipelineAdmin />
+      }
     ],
   },
   {

@@ -17,8 +17,8 @@ export const isRequired = (message: string) => (
 )
 
 export const isTaxId = {
-  pattern: /(^[0-9]{12}$)/,
-  message: 'Tax id is not valid'
+  pattern: /(^[0-9]{10,13}$)/,
+  message: 'Tax id is a number that must have between 10 and 13 characters'
 }
 
 export const isQuantity: any = {

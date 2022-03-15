@@ -2,7 +2,6 @@ import { IBase } from '@interfaces/base';
 
 export interface IContact extends IBase {
   name: string;
-  //TODO: this is have any type
   noteWorthies: NoteWorthy[];
   phone: string;
   type: string;
@@ -18,6 +17,7 @@ export interface IContact extends IBase {
   title: string;
   prefixMobile: string;
   internalNotes: string;
+  address: string;
 }
 export interface Address extends IBase{
 	type: string;

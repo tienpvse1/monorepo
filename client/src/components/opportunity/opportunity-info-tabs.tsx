@@ -2,7 +2,7 @@ import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.ent
 import { Alert, Empty, Tabs } from 'antd'
 import { ContactInfo } from './contact-info';
 import { OpportunityDetails } from '@components/opportunity/opportunity-details';
-import { FileTextOutlined } from '@ant-design/icons';
+import { OpportunityNotes } from './opportunity-notes';
 const { TabPane } = Tabs;
 
 interface OpportunityInfoTabsProps {
@@ -37,6 +37,7 @@ export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }
         <TabPane tab='Task' key='3'>
           {data.schedules.length > 0 ? data.schedules.map((schedule) =>
           (<Alert
+            key={schedule.id}
             message={schedule.type.toUpperCase()}
             type={
               schedule.type == 'todo' && 'info' ||
@@ -49,13 +50,7 @@ export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }
           ) : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
         </TabPane>
         <TabPane tab='Notes' key='4'>
-          <Alert
-            message="Internal Notes"
-            showIcon
-            icon={<FileTextOutlined />}
-            description={data.internalNotes ?  data.internalNotes : 'No notes were recorded'}
-            type="warning"
-          />
+          <OpportunityNotes data={data.contact}/>
         </TabPane>
       </Tabs>
     </>

@@ -5,7 +5,11 @@ import { Button, Col, Row, Select, Space } from 'antd'
 const { Option } = Select;
 import { envVars } from '@env/var.env';
 
-export const LeadTitleTable = () => {
+interface CompanyTitleTableProps {
+  toggleCreateModal: () => void;
+}
+
+export const CompanyTitleTable: React.FC<CompanyTitleTableProps> = ({ toggleCreateModal }) => {
   return (
     <>
       <div style={{ padding: '10px' }}>
@@ -13,7 +17,7 @@ export const LeadTitleTable = () => {
           <Col span={12}>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <img
-                src={`${envVars.VITE_BE_DOMAIN}/files/team.png`}
+                src={`${envVars.VITE_BE_DOMAIN}/files/enterprise.png`}
                 width={50}
                 height={50}
               />
@@ -25,7 +29,7 @@ export const LeadTitleTable = () => {
                   marginLeft: '10px'
                 }}
               >
-                Leads
+                Company
               </span>
             </div>
           </Col>
@@ -35,8 +39,9 @@ export const LeadTitleTable = () => {
                 className='button-ant-custom-style'
                 type='primary'
                 size='middle'
+                onClick={toggleCreateModal}
               >
-                <PlusOutlined /> New Leads
+                <PlusOutlined /> New Company
               </Button>
             </Space>
           </Col>

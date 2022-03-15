@@ -2,7 +2,7 @@ import { Kanban } from '@components/sale-manager/pipeline/kanban';
 import { envVars } from '@env/var.env';
 import { useSocket } from '@hooks/socket';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import { getStages } from '@modules/pipeline-column/query/pipeline.get';
+import { getStages } from '@modules/pipeline-column/query/pipeline-column.get';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { abstractSort } from '@util/array';
 import { useEffect, useState } from 'react';

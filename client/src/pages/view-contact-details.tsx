@@ -1,16 +1,13 @@
-import { FileTextOutlined, SmileOutlined } from "@ant-design/icons";
-import { ContactDetails } from "@components/contact/contact-details";
+import { SmileOutlined } from "@ant-design/icons";
 import { PageDetailsTitle } from "@components/page-details/page-details-title"
 import { useQueryContactsById } from "@modules/contact/query/contact.get";
-import { Alert, Col, Divider, Row, Tabs, Timeline } from "antd"
-const { TabPane } = Tabs;
+import { Col, Divider, Row, Timeline } from "antd"
 import { useParams } from 'react-router-dom'
-
+import { ContactInfoTabs } from '@components/contact/contact-info-tabs';
 const ViewContactDetails = () => {
   const params = useParams();
-  const { data } = useQueryContactsById(params.id);    
-  console.log(data);
-  
+  const { data } = useQueryContactsById(params.id);
+
   return (
     <>
       {data ?
@@ -19,23 +16,7 @@ const ViewContactDetails = () => {
           <Row gutter={[0, 0]}>
             <Col span={16}>
               <div className="container-content-details-page">
-                <Tabs size="large" defaultActiveKey="1" >
-                  <TabPane tab="Details" key="1">
-                    <ContactDetails contact={data} />
-                  </TabPane>
-                  <TabPane tab="Opportunities" key="2">
-                    This is opportunities of contact will be show in table
-                  </TabPane>
-                  <TabPane tab="Notes" key="3">
-                    <Alert
-                      message="Internal Notes"
-                      showIcon
-                      icon={<FileTextOutlined />}
-                      description={`${data.internalNotes}`}
-                      type="warning"
-                    />
-                  </TabPane>
-                </Tabs>
+                <ContactInfoTabs data={data} />
               </div>
             </Col>
             <Col span={8}>

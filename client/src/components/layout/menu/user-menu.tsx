@@ -48,6 +48,7 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
       icon: <BranchesOutlined style={style} />,
     },
     {
+
       key: 'forecast',
       label: 'Forecast',
       style,
@@ -55,10 +56,10 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
       icon: <FieldTimeOutlined style={style} />,
     },
     {
-      key: 'leads',
-      label: 'Leads',
+      key: 'company',
+      label: 'Company',
       style,
-      onClick: () => navigate('/leads'),
+      onClick: () => navigate('/company'),
       icon: <SolutionOutlined style={style} />,
     },
     {

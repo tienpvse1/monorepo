@@ -10,7 +10,7 @@ import { useContacts } from '@modules/contact/query/contact.get';
 import { ICreatePipelineItemsDto } from '@modules/pipeline-items/dto/create-pipeline-items.dto';
 import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
-import { Button, Card, Form, Input, InputNumber } from 'antd';
+import { Button, Card, Form, Input, InputNumber, Select } from 'antd';
 import { FC, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { SelectBoxProduct } from '@components/product/select-box-product';
@@ -52,21 +52,17 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
     const data: ICreatePipelineItemsDto = {
       columnId: pipelineColumnID,
       contactId,
-      name,
-      opportunityRevenue: {
-        productId,
-        quantity,
-      },
+      name
     };
     createNewItems(data, {
       onSuccess: () => {
-        if (infoContact.email !== email || infoContact.mobile !== mobile) {
-          updateContact({
-            id: infoContact.id,
-            email,
-            mobile,
-          });
-        }
+        // if (infoContact.email !== email || infoContact.mobile !== mobile) {
+        //   updateContact({
+        //     id: infoContact.id,
+        //     email,
+        //     mobile,
+        //   });
+        // }
         toggleClose();
         queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
       },
@@ -81,9 +77,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
     setInfoContact(contactSelected);
 
     form.setFieldsValue({
-      email: contactSelected.email,
-      mobile: contactSelected.mobile,
-      name: `${contactSelected.name}'s opportunity`,
+      name: `${contactSelected.name}'s opportunity`
     });
   };
 
@@ -107,7 +101,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
           onFinish={(value) => handleSubmit(value)}
         >
 
-          <SelectBoxContact data={data} callback={handleSelect} />
+          <SelectBoxContact rule={[isRequired('Contact is required')]} data={data} callback={handleSelect} />
 
           <Form.Item
             label='Opportunity'
@@ -118,12 +112,14 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
             <Input placeholder='Opportunity name...' />
           </Form.Item>
 
-          <Form.Item label='Email' rules={[isEmail]} name='email'>
-            <Input />
-          </Form.Item>
+          <Form.Item
+            label='Company'
+            name='email'
+            // rules={[isEmail, isRequired('Company is required')]}
+          >
+            <Select>
 
-          <Form.Item label='Mobile' rules={[isPhoneNumber]} name='mobile'>
-            <Input />
+            </Select>
           </Form.Item>
 
           <SelectBoxProduct />
