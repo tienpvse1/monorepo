@@ -1,34 +1,42 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Delete, Param } from '@nestjs/common';
+import { Crud } from '@nestjsx/crud';
+import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { Company } from './entities/company.entity';
 
 @Controller('company')
+@Crud({
+  model: {
+    type: Company,
+  },
+  dto: {
+    create: CreateCompanyDto,
+    update: UpdateCompanyDto,
+  },
+  params: {
+    id: {
+      field: 'id',
+      primary: true,
+      type: 'string',
+    },
+  },
+  query: {
+    join: {
+      contacts: {},
+    },
+  },
+  routes: {
+    exclude: ['deleteOneBase'],
+  },
+})
 export class CompanyController {
-  constructor(private readonly companyService: CompanyService) {}
-
-  @Post()
-  create(@Body() createCompanyDto: CreateCompanyDto) {
-    return this.companyService.create(createCompanyDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.companyService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.companyService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCompanyDto: UpdateCompanyDto) {
-    return this.companyService.update(+id, updateCompanyDto);
-  }
+  constructor(public service: CompanyService) {}
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.companyService.remove(+id);
+  @HistoryLog('deleted an company')
+  delete(@Param('id') id: string) {
+    return this.service.softDelete(id);
   }
 }
