@@ -13,8 +13,8 @@ export const getPipelineId = async (id: string) => {
     join: [
       { field: 'noteWorthies' },
       { field: 'pipelineColumn' },
-      { field: 'opportunityRevenue'},
-      { field: 'opportunityRevenue.product'},
+      { field: 'opportunityRevenue' },
+      { field: 'opportunityRevenue.product' },
       { field: 'account' },
       { field: 'contact' },
       { field: 'schedules' }
@@ -56,12 +56,31 @@ export const getPipelineByAccountID = async (accountId: string) => {
   return data;
 };
 
+export const getAllPipelineItem = async () => {
+  const queryBuilder = RequestQueryBuilder.create({
+    join: [
+      { field: 'pipelineColumn' },
+      { field: 'account' },
+      { field: 'contact' }
+    ],
+  }).query(false);
 
+  const { data } = await instance.get<IPipelineItem[]>(
+    `${PIPELINE_ITEM}?${queryBuilder}`
+  );
+  return data;
+};
 
 export const usePipelineItem = (id: string) =>
   useQuery([GET_PIPELINE_ITEM_BY_ID, id], () => getPipelineId(id), {
     suspense: true,
   });
+
+export const useQueryAllPipelineItem = () =>
+  useQuery([GET_PIPELINE_ITEM_BY_ACCOUNT_ID], () => getAllPipelineItem(), {
+    suspense: true,
+  });
+
 
 export const useQueryPipelineByAccountId = (accountId: string) =>
   useQuery([GET_PIPELINE_ITEM_BY_ACCOUNT_ID, accountId],

@@ -1,5 +1,5 @@
 import { PUBLIC_USER_INFO } from '@constance/cookie';
-import { useMyStages } from '@modules/pipeline-column/query/pipeline.get';
+import { useMyStages } from '@modules/pipeline-column/query/pipeline-column.get';
 import {
   BarElement,
   CategoryScale,

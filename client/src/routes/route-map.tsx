@@ -34,6 +34,8 @@ const ViewCompanyDetails = lazy(
   () => import('@pages/view-company-details')
 ); 
 
+const PipelineAdmin = lazy(() => import('@components/admin/pipeline-admin'))
+
 export const route: RouteObject[] = [
   {
     path: '/login',
@@ -128,6 +130,10 @@ export const route: RouteObject[] = [
         index: true,
         element: <AdminPage />,
       },
+      {
+        path: 'pipeline',
+        element: <PipelineAdmin />
+      }
     ],
   },
   {

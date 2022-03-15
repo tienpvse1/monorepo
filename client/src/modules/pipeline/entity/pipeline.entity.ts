@@ -4,11 +4,6 @@ import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column
 
 export interface IPipeline extends IBase {
   name: string;
-  account: IAccount;
+  account?: IAccount;
   pipelineColumns: IPipelineColumn[];
-  infoChangeStage?: {
-    itemsId: string,
-    oldStage: string,
-    newStage: string
-  };
 }

@@ -1,5 +1,6 @@
 import {
   AppstoreOutlined,
+  BranchesOutlined,
   CoffeeOutlined,
   SettingOutlined,
   SketchOutlined,
@@ -35,6 +36,15 @@ export const AdminMenuSider = ({ style }: MenuSiderAdminProps) => {
           icon={<AppstoreOutlined style={style} />}
         >
           Dashboard
+        </Menu.Item>
+
+        <Menu.Item
+          key='pipeline'
+          style={style}
+          onClick={() => navigate('/administration/pipeline')}
+          icon={<BranchesOutlined style={style} />}
+        >
+          Pipeline
         </Menu.Item>
 
         <Menu.Item

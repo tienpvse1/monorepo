@@ -2,54 +2,73 @@ import { EmptyComponent } from '@components/empty';
 import { PageTitlePipeline } from '@components/pipelines/page-title';
 import { PipeLineColumn } from '@components/pipelines/pipeline-column';
 import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-horizontal';
-import { useSocket } from '@hooks/socket';
-import { useHandleDnD } from '@hooks/useHandleDnD';
+// import { useSocket } from '@hooks/socket';
+// import { useHandleDnD } from '@hooks/useHandleDnD';
 import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import {
-  GET_PIPELINE_DESIGN,
-  useGetPipeLineUser,
-} from '@modules/pipeline/query/pipeline.get';
+// import {
+//   GET_PIPELINE_DESIGN,
+//   useGetPipeLineUser,
+// } from '@modules/pipeline/query/pipeline.get';
+// import { GET_STAGES_BY_PIPELINE_ID } from '@modules/pipeline-column/query/pipeline-column.get';
 import { sortPipeline } from '@util/sort';
 import { Button } from 'antd';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { connect } from 'socket.io-client';
-import { envVars } from '@env/var.env';
-import { useQueryClient } from 'react-query';
+// import { connect } from 'socket.io-client';
+// import { envVars } from '@env/var.env';
+// import { useQueryClient } from 'react-query';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { CreateColumnModal } from './pipeline-column/create-column-modal';
 import { CreateModal } from '@components/modal/create-modal';
 import { VerificationForm } from '@components/accountant/verification-form';
 
-const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
+// const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 
-interface MainPipelineProps { }
+interface MainPipelineProps {
+  data: IPipeline;
+  newPipeLine: IPipeline,
+  handleMoveColumn: (startIndex: number, finishIndex: number) => void,
+  handleMoveItemColumn: (startIndex: number, finishIndex: number, columnName: string) => void,
+  handleMoveItemsBetweenColumns: (startIndex: number,
+    finishIndex: number,
+    startColumn: string,
+    finishColumn: string,
+    draggableId: string) => void,
+}
 
-export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
+export const MainPipeline: React.FC<MainPipelineProps> = ({ 
+  data,
+  newPipeLine,
+  handleMoveColumn,
+  handleMoveItemColumn,
+  handleMoveItemsBetweenColumns,
+
+ }) => {
   const [visible, setModalCreateStage] = useToggle();
-  const [isVisible, toggleModalChangeStage] = useToggle();
-  const { data } = useGetPipeLineUser();
-  const queryClient = useQueryClient();
+  const [isVisible, toggleModalChangeStageWon] = useToggle();
+  // const queryClient = useQueryClient();
 
-  const {
-    newPipeLine,
-    isError,
-    setPipeLine,
-    handleMoveColumn,
-    handleMoveItemColumn,
-    handleMoveItemsBetweenColumns,
-  } = useHandleDnD(data);
+  const stageWon = data?.pipelineColumns.find((stage) => stage.isWon === true)
 
-  useSocket<IPipeline, any>({
-    event: 'pipeline-updated',
-    socket,
-    onReceive: () => queryClient.invalidateQueries(GET_PIPELINE_DESIGN),
-  });
+  // const {
+  //   newPipeLine,
+  //   isError,
+  //   setPipeLine,
+  //   handleMoveColumn,
+  //   handleMoveItemColumn,
+  //   handleMoveItemsBetweenColumns,
+  // } = useHandleDnD(data);
 
-  useEffect(() => {
-    setPipeLine(data);
-  }, [data, isError]);
+  // useSocket<IPipeline, any>({
+  //   event: 'pipeline-updated',
+  //   socket,
+  //   onReceive: (data) => setPipeLine(data)
+  // });
+
+  // useEffect(() => {
+  //   setPipeLine(data);
+  // }, [data, isError]);
 
   if (data !== undefined) {
     sortPipeline(data);
@@ -59,7 +78,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
   const widthOfItem = 333;
 
   const handleChangeStageWon = (record: any) => {
-    
+
   }
 
   const onDragEnd = (result: DropResult) => {
@@ -88,8 +107,8 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
         return;
       }
 
-      if (finishColumn === 'Won') {
-        toggleModalChangeStage();
+      if (finishColumn === stageWon.name) {
+        toggleModalChangeStageWon();
         return;
       }
 
@@ -168,7 +187,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
         bodyStyle={{ height: '350px' }}
         width={900}
         isOpenModal={isVisible}
-        toggleCreateModal={toggleModalChangeStage}
+        toggleCreateModal={toggleModalChangeStageWon}
         callback={handleChangeStageWon}
       >
         <VerificationForm />

@@ -22,9 +22,9 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
   const [showInput, setShowInput] = useToggle();
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
 
-  if (pipelineColumn.name === 'Won' && public_user_info.role.name === 'sale') {
-    return <></>;
-  }
+  // if (pipelineColumn.isWon && public_user_info.role.name === 'sale') {
+  //   return <></>;
+  // }
 
   return (
     <Draggable isDragDisabled={true} draggableId={pipelineColumn.name} index={index}>

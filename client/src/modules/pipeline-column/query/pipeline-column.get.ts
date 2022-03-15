@@ -14,6 +14,9 @@ export const getStages = async () => {
       {
         field: 'pipelineItems',
       },
+      {
+        field: 'pipelineItems.schedules',
+      },
     ],
   }).query(false);
   const { data } = await instance.get<IPipelineColumn[]>(
@@ -55,7 +58,7 @@ export const getStagesInfo = async () => {
 
 export const useStages = () =>
   useQuery([GET_STAGES_BY_PIPELINE_ID], getStages, {
-    suspense: true,
+    suspense: true
   });
 
 export const useQueryStagesInfo = () =>
