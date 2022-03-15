@@ -17,6 +17,7 @@ const AddContact = lazy(() => import('@pages/import-contact'));
 const AdminLayout = lazy(() => import('@common/admin-layout'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
+const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
 const ContactContainer = lazy(() => import('@components/contact/contact'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
@@ -71,6 +72,10 @@ export const route: RouteObject[] = [
       {
         path: 'email',
         element: <EmailCompose />,
+      },
+      {
+        path: 'forecast',
+        element: <ForecastKanban />,
       },
       {
         path: 'profile',

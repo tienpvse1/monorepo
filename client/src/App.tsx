@@ -6,7 +6,7 @@ import { Suspense, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useNavigate, useRoutes } from 'react-router-dom';
 import './constance/color';
-import { route } from './routes/route-map';
+import { route } from './pages/route-map';
 import './stylesheets/App.scss';
 export const client = new QueryClient();
 function App() {
