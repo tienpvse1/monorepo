@@ -2,28 +2,28 @@ import SaleManagerLayout from '@common/sale-manager-layout';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-const Contact = lazy(() => import('@pages/contact'));
 const HomePage = lazy(() => import('@pages/home'));
-const Pipeline = lazy(() => import('@pages/pipeline'));
+const Contact = lazy(() => import('@pages/contact'));
 const LoginPage = lazy(() => import('@pages/login'));
 const AdminPage = lazy(() => import('@pages/admin'));
-const AddContact = lazy(() => import('@pages/import-contact'));
+const Product = lazy(() => import('@pages/product'));
+const Schedule = lazy(() => import('@pages/schedule'));
+const Pipeline = lazy(() => import('@pages/pipeline'));
 const SignUpPage = lazy(() => import('@pages/signup'));
 const Layout = lazy(() => import('@common/user-layout'));
 const ProfilePage = lazy(() => import('@pages/profile'));
+const AddContact = lazy(() => import('@pages/import-contact'));
 const AdminLayout = lazy(() => import('@common/admin-layout'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
-const Product = lazy(() => import('@pages/product'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
 const Company = lazy(() => import('@pages/company'));
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
-const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/pipeline'));
+const ContactContainer = lazy(() => import('@components/contact/contact'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
+const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/pipeline'));
 const ViewOpportunityDetails = lazy(
   () => import('@pages/view-opportunity-details')
 );
-const ContactContainer = lazy(() => import('@components/contact/contact'));
-const Schedule = lazy(() => import('@pages/schedule'));
 const OpportunitiesContainer = lazy(
   () => import('@components/opportunity/opportunity-container')
 );

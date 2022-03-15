@@ -10,7 +10,7 @@ export class History extends BaseEntity {
   @Column({ nullable: true })
   name: string;
 
-  @Column()
+  @Column({ type: 'text' })
   url: string;
 
   @Column()

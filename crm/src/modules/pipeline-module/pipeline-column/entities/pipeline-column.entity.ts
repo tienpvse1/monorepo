@@ -11,6 +11,9 @@ export class PipelineColumn extends BaseEntity {
   @Column({ default: 0, name: 'index_position' })
   index: number;
 
+  @Column({ type: 'boolean', default: false, name: 'is_won' })
+  isWon: boolean;
+
   @OneToMany(
     () => PipelineItem,
     (pipelineItem) => pipelineItem.pipelineColumn,
