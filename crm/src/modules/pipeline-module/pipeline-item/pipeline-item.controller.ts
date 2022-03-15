@@ -56,6 +56,7 @@ import { PipelineItemService } from './pipeline-item.service';
       noteWorthies: {},
       pipelineColumn: {},
       opportunityRevenue: {},
+      reason: {},
       'opportunityRevenue.product': {},
     },
   },
@@ -93,6 +94,6 @@ export class PipelineItemController {
   @Delete(':id')
   @HistoryLog('Deleted an opportunity')
   delete(@Param('id') id: string) {
-    return this.service.softDelete(id);
+    return this.service.softDelete(id, { relations: ['reason'] });
   }
 }

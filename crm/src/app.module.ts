@@ -40,6 +40,7 @@ import { SessionModule } from './modules/session/session.module';
 import { SubjectModule } from './modules/subject/subject.module';
 import { TagModule } from './modules/tag/tag.module';
 import { TeamModule } from './modules/team/team.module';
+import { ReasonModule } from './modules/reason/reason.module';
 
 @Module({
   imports: [
@@ -79,6 +80,7 @@ import { TeamModule } from './modules/team/team.module';
     CourseModule,
     SubjectModule,
     NotificationModule,
+    ReasonModule,
   ],
   providers: [GlobalModule],
 })

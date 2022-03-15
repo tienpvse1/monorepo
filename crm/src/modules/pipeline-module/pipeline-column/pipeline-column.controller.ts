@@ -49,6 +49,7 @@ import { PipelineColumnService } from './pipeline-column.service';
       'pipelineItems.contact': {},
       'pipelineItems.account': {},
       'pipelineItems.schedules': {},
+      'pipelineItems.reason': {},
     },
   },
 })
