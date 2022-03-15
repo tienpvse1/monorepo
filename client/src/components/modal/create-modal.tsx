@@ -6,6 +6,7 @@ interface CreateModalProps {
   callback: (record) => void;
   width?: number;
   title: string;
+  bodyStyle?: React.CSSProperties;
 }
 
 export const CreateModal: React.FC<CreateModalProps> = ({
@@ -15,6 +16,7 @@ export const CreateModal: React.FC<CreateModalProps> = ({
   callback,
   width = 1000,
   title,
+  bodyStyle
 }) => {
   const [form] = Form.useForm<any>();
 
@@ -27,13 +29,13 @@ export const CreateModal: React.FC<CreateModalProps> = ({
   return (
     <Modal
       className='modal-create'
-      style={{ borderRadius: '5px' }}
       title={<h2 style={{ textAlign: 'center' }}>{title}</h2>}
       centered
       visible={isOpenModal}
       onOk={handleSubmit}
       onCancel={toggleCreateModal}
       width={width}
+      bodyStyle={bodyStyle}
     >
       <div className='scroll-menu-modal-create'>
         <Form

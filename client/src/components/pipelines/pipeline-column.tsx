@@ -1,8 +1,10 @@
 import { PlusOutlined } from '@ant-design/icons';
+import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import { Button } from 'antd';
 import { Draggable } from 'react-beautiful-dnd';
+import { useCookies } from 'react-cookie';
 import { PipelineItems } from './items';
 import { ColumnHeaderName } from './pipeline-column/column-header-name';
 import { FormEditColumnName } from './pipeline-column/edit-column-name-form';
@@ -18,9 +20,14 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
 }) => {
   const [showCreateItemForm, setShowCreateItemForm] = useToggle();
   const [showInput, setShowInput] = useToggle();
+  const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
+
+  if (pipelineColumn.name === 'Won' && public_user_info.role.name === 'sale') {
+    return <></>;
+  }
 
   return (
-    <Draggable draggableId={pipelineColumn.name} index={index}>
+    <Draggable isDragDisabled={true} draggableId={pipelineColumn.name} index={index}>
       {(providedColumn) => (
         <div
           className='wrapper-draggable-pipeline-column'

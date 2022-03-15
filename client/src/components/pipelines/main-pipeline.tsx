@@ -19,13 +19,16 @@ import { envVars } from '@env/var.env';
 import { useQueryClient } from 'react-query';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { CreateColumnModal } from './pipeline-column/create-column-modal';
+import { CreateModal } from '@components/modal/create-modal';
+import { VerificationForm } from '@components/accountant/verification-form';
 
 const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 
-interface MainPipelineProps {}
+interface MainPipelineProps { }
 
-export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
+export const MainPipeline: React.FC<MainPipelineProps> = ({ }) => {
   const [visible, setModalCreateStage] = useToggle();
+  const [isVisible, toggleModalChangeStage] = useToggle();
   const { data } = useGetPipeLineUser();
   const queryClient = useQueryClient();
 
@@ -55,6 +58,10 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
   const totalColumn = data?.pipelineColumns.length || 1;
   const widthOfItem = 333;
 
+  const handleChangeStageWon = (record: any) => {
+    
+  }
+
   const onDragEnd = (result: DropResult) => {
     const { source, destination, draggableId } = result;
     //nếu ko có vị trí điểm đến -> return
@@ -78,6 +85,11 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
       //di chuyển các card item trong 1 column
       if (startColumn === finishColumn) {
         handleMoveItemColumn(startIndex, finishIndex, startColumn);
+        return;
+      }
+
+      if (finishColumn === 'Won') {
+        toggleModalChangeStage();
         return;
       }
 
@@ -151,6 +163,16 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({}) => {
         visible={visible}
         pipelineId={data?.id}
       />
+      <CreateModal
+        title="Successful Confirmation"
+        bodyStyle={{ height: '350px' }}
+        width={900}
+        isOpenModal={isVisible}
+        toggleCreateModal={toggleModalChangeStage}
+        callback={handleChangeStageWon}
+      >
+        <VerificationForm />
+      </CreateModal>
     </>
   );
 };

@@ -10,9 +10,10 @@ export interface IAuth {
       updatedAt: Date;
       deletedAt: Date;
       id: string;
+      permissions: Permission[];
     };
     email: string;
     id: string;
-    permissions: Permission[];
+    
   };
 }
