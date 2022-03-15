@@ -1,4 +1,5 @@
 import { Controller, Delete, Param } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { CompanyService } from './company.service';
@@ -31,6 +32,7 @@ import { Company } from './entities/company.entity';
     exclude: ['deleteOneBase'],
   },
 })
+@ApiTags('company')
 export class CompanyController {
   constructor(public service: CompanyService) {}
 
