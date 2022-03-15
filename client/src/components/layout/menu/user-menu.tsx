@@ -5,19 +5,16 @@ import {
   CodeSandboxOutlined,
   ContactsOutlined,
   CrownOutlined,
+  FieldTimeOutlined,
   FundOutlined,
-  PlusOutlined,
   SolutionOutlined,
   UserOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
-import { envVars } from '@env/var.env';
 import { Menu } from 'antd';
-import { Reorder } from 'framer-motion';
-import { ReorderGroup } from 'framer-motion/types/components/Reorder/Group';
-import { ReactNode, useState } from 'react';
-const { SubMenu } = Menu;
+import { ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+const { SubMenu } = Menu;
 
 interface MenuSiderUserProps {
   style: object;
@@ -25,7 +22,7 @@ interface MenuSiderUserProps {
 
 interface MenuProp {
   key: string;
-  label: string;
+  label: ReactNode;
   style: object;
   onClick: () => any;
   icon: ReactNode;
@@ -49,6 +46,14 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
       style,
       onClick: () => navigate('/pipeline'),
       icon: <BranchesOutlined style={style} />,
+    },
+    {
+
+      key: 'forecast',
+      label: 'Forecast',
+      style,
+      onClick: () => navigate('/forecast'),
+      icon: <FieldTimeOutlined style={style} />,
     },
     {
       key: 'company',
@@ -87,10 +92,29 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
     },
     {
       key: 'schedule',
-      label:'Schedule',
+      label: 'Schedule',
       style,
       onClick: () => navigate('/schedule'),
       icon: <CalendarOutlined style={style} />,
+    },
+    {
+      key: 'email',
+      label: (
+        <>
+          <img
+            src={'https://cdn-icons-png.flaticon.com/512/732/732200.png'}
+            height={20}
+            width={20}
+            style={{
+              marginRight: 10,
+            }}
+          />
+          Gmail
+        </>
+      ),
+      style,
+      onClick: () => navigate('/email'),
+      icon: null,
     },
   ];
 
@@ -109,82 +133,6 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
         {menuItems.map((item) => (
           <Menu.Item {...item}>{item.label}</Menu.Item>
         ))}
-
-        {/* ----------------------------------------------------------- */}
-        <SubMenu
-          key='sub1'
-          title={
-            <div
-              style={{
-                fontSize: 20,
-                fontWeight: 'bold',
-                color: 'rgba(0,0,0,0.6)',
-              }}
-            >
-              Integrations
-            </div>
-          }
-          icon={<CodeSandboxOutlined style={style} />}
-        >
-          <Menu.Item key='slack' style={style}>
-            <img
-              src={`${envVars.VITE_BE_DOMAIN}/files/slack.png`}
-              height={20}
-              width={20}
-              style={{
-                marginRight: 10,
-              }}
-            />
-            Slack
-          </Menu.Item>
-
-          <Menu.Item key='notion' style={style}>
-            <img
-              src={`${envVars.VITE_BE_DOMAIN}/files/notion.png`}
-              height={20}
-              width={20}
-              style={{
-                marginRight: 10,
-              }}
-            />
-            Notion
-          </Menu.Item>
-          <Menu.Item key='googleDrive' style={style}>
-            <img
-              src={`${envVars.VITE_BE_DOMAIN}/files/google-drive.png`}
-              height={20}
-              width={20}
-              style={{
-                marginRight: 10,
-              }}
-            />
-            Google drive
-          </Menu.Item>
-          <Menu.Item
-            onClick={() => navigate('/email')}
-            key='email'
-            style={style}
-          >
-            <img
-              src={'https://cdn-icons-png.flaticon.com/512/732/732200.png'}
-              height={20}
-              width={20}
-              style={{
-                marginRight: 10,
-              }}
-            />
-            Gmail
-          </Menu.Item>
-          <Menu.Item key='add' style={style}>
-            <PlusOutlined
-              width={20}
-              style={{
-                marginRight: 8,
-              }}
-            />
-            Add plugin
-          </Menu.Item>
-        </SubMenu>
       </Menu>
     </>
   );

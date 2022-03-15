@@ -5,7 +5,6 @@ import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { convert, convert2 } from '@util/date';
 import moment from 'moment';
 import { useQuery, UseQueryResult } from 'react-query';
-import { boolean } from 'yup';
 import { ISchedule } from '../entity/schedule.entity';
 
 const { SCHEDULE } = controllers;

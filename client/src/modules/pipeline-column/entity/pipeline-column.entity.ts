@@ -7,4 +7,5 @@ export interface IPipelineColumn extends IBase {
   pipelineItems: IPipelineItem[];
   index: number;
   isWon: boolean;
+  expectedClosing: string;
 }

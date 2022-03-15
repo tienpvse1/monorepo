@@ -18,3 +18,7 @@ export const checkDateValid = ({
   startDate: Date;
   endDate: Date;
 }) => endDate >= startDate;
+
+export const normalizeDate = (date: string | Date) => {
+  return date.toString().replace('-', '');
+};

@@ -3,7 +3,6 @@ export enum InternalServerEvent {
   NEW_MEMBER_JOIN_TEAM = 'new-member-join-team',
   SEND_NOTIFICATION = 'send-notification',
   PIPELINE_UPDATED = 'pipeline-updated',
-  INVITATION_SENT = 'invitation-sent',
   HISTORY_ADDED = 'history-added',
   TEAM_UPDATED = 'team-updated',
 }
@@ -18,7 +17,6 @@ export enum SocketSendEvent {
   NEW_MEMBER_JOIN_TEAM = 'new-member-join-team',
   SEND_NOTIFICATION = 'send-notification',
   PIPELINE_UPDATED = 'pipeline-updated',
-  INVITATION_SENT = 'invitation-sent',
   HISTORY_ADDED = 'history-added',
   TEAM_UPDATED = 'team-updated',
   JOINED = 'joined',
