@@ -1,8 +1,8 @@
+import React, { CSSProperties, ReactNode } from 'react';
 import { BellOutlined } from '@ant-design/icons';
 import { INotification } from '@modules/notification/entity/notification.entity';
 import NoticeIcon from 'ant-design-pro/lib/NoticeIcon';
 import 'ant-design-pro/dist/ant-design-pro.css';
-import React, { CSSProperties, ReactNode } from 'react';
 interface NotificationDropdownProps {
   notifications: INotification[];
 }
