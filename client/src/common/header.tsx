@@ -1,6 +1,11 @@
-import { SettingOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import {
+  BellOutlined,
+  SettingOutlined,
+  UnorderedListOutlined,
+} from '@ant-design/icons';
 import HeaderDrawer from '@components/header/header-drawer';
 import { Loading } from '@components/loading/loading';
+import NotificationDropdown from '@components/sale-manager/header/notification-dropdown';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { envVars } from '@env/var.env';
 import { useSocket } from '@hooks/socket';
@@ -11,9 +16,6 @@ import { Avatar, Dropdown, Tooltip } from 'antd';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { io } from 'socket.io-client';
-const NotificationDropdown = lazy(
-  () => import('@components/sale-manager/header/notification-dropdown')
-);
 
 const DropDown = lazy(() => import('@components/header/dropdown'));
 const socket = io(`${envVars.VITE_BE_DOMAIN}/notification`);
@@ -59,9 +61,8 @@ export const HeaderApp = () => {
         }}
       >
         <Tooltip title='Notification'>
-          <Suspense fallback={<Loading />}>
-            <NotificationDropdown notifications={notifications} />
-          </Suspense>
+          {/* <NotificationDropdown notifications={notifications} /> */}
+          <BellOutlined style={{ fontSize: 23, color: 'rgba(0,0,0,0.7)' }} />
         </Tooltip>
         <Tooltip title='Tasks'>
           <UnorderedListOutlined
