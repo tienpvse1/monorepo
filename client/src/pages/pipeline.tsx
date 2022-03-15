@@ -3,8 +3,9 @@ import { envVars } from '@env/var.env';
 import { useSocket } from '@hooks/socket';
 import { useHandleDnD } from '@hooks/useHandleDnD';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
-import { useGetPipeLineUser } from '@modules/pipeline/query/pipeline.get';
+import { GET_PIPELINE_DESIGN, useGetPipeLineUser } from '@modules/pipeline/query/pipeline.get';
 import { useEffect } from 'react';
+import { useQueryClient } from 'react-query';
 import { connect } from 'socket.io-client';
 
 const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
@@ -13,6 +14,7 @@ interface PipelineProps { }
 
 const Pipeline: React.FC<PipelineProps> = ({ }) => {
   const { data } = useGetPipeLineUser();
+  const queryClient = useQueryClient();
   const {
     newPipeLine,
     setPipeLine,
@@ -24,7 +26,7 @@ const Pipeline: React.FC<PipelineProps> = ({ }) => {
   useSocket<IPipeline, any>({
     event: 'pipeline-updated',
     socket,
-    onReceive: (data) => console.log("dataSale:", data)
+    onReceive: () => queryClient.refetchQueries(GET_PIPELINE_DESIGN)
   });
 
   useEffect(() => {

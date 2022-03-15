@@ -1,5 +1,5 @@
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import { useChangeStagePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.changeStage';
+// import { useChangeStagePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.changeStage';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { useUpdatePipeline } from '@modules/pipeline/mutation/pipeline.update';
 import { startFireworks } from '@util/firework';
@@ -8,7 +8,7 @@ import { useState } from 'react';
 export const useHandleDnD = (data: IPipeline) => {
   const [newPipeLine, setPipeLine] = useState<IPipeline>();
   const { updatePipeline, isError } = useUpdatePipeline();
-  const { changeStage } = useChangeStagePipelineItems();
+  // const { changeStage } = useChangeStagePipelineItems();
 
   const setNewPipeline = (newColumn: IPipelineColumn[]) => {
     const newState = {
@@ -19,27 +19,22 @@ export const useHandleDnD = (data: IPipeline) => {
     updatePipeline(newState);
   };
 
-  const handleChangeStageItems = (
-    newColumn: IPipelineColumn[],
-    draggableId: string,
-    startColumn: string,
-    finishColumn: string
-  ) => {
-    const newState = {
-      ...data,
-      pipelineColumns: newColumn,
-    };
+  // const handleChangeStageItems = (
+  //   newColumn: IPipelineColumn[],
+  //   draggableId: string,
+  //   startColumn: string,
+  //   finishColumn: string
+  // ) => {
+  //   const newState = {
+  //     ...data,
+  //     pipelineColumns: newColumn,
+  //   };
 
-    setPipeLine(newState);
-    changeStage({
-      ...newState,
-      infoChangeStage: {
-        itemsId: draggableId,
-        oldStage: startColumn,
-        newStage: finishColumn,
-      },
-    });
-  };
+  //   setPipeLine(newState);
+  //   changeStage({
+  //     ...newState
+  //   });
+  // };
 
   const reassignIndex = <T>(array: Array<T>) => {
     return array.map((value, index) => ({ ...value, index: index }));
@@ -133,7 +128,8 @@ export const useHandleDnD = (data: IPipeline) => {
     });
 
     // Update and Record stage transition activity
-    handleChangeStageItems(newColumn, draggableId, startColumn, finishColumn);
+    setNewPipeline(newColumn)
+    // handleChangeStageItems(newColumn, draggableId, startColumn, finishColumn);
   };
 
   return {
