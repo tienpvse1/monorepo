@@ -18,7 +18,7 @@ export class Course extends BaseEntity {
   @Index({ unique: true })
   code: string;
 
-  @Column({ type: 'boolean', default: false })
+  @Column({ type: 'boolean', default: false, name: 'is_enable' })
   isEnable: string;
 
   @OneToMany(() => Subject, (subject) => subject.course, { cascade: true })

@@ -7,8 +7,8 @@ export interface IPipeline extends IBase {
   account: IAccount;
   pipelineColumns: IPipelineColumn[];
   infoChangeStage?: {
-    itemsId: string,
-    oldStage: string,
-    newStage: string
+    itemsId: string;
+    oldStage: string;
+    newStage: string;
   };
 }

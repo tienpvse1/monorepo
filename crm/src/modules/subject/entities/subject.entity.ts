@@ -26,7 +26,7 @@ export class Subject extends BaseEntity {
   @Column({ type: 'float' })
   duration: number;
 
-  @Column()
+  @Column({ nullable: true })
   status: string;
 
   @ManyToOne(() => Course, (course) => course.subjects)

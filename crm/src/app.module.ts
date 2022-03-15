@@ -20,7 +20,6 @@ import { EmailTemplateModule } from './modules/email-template/email-template.mod
 import { FileModule } from './modules/file/file.module';
 import { GlobalModule } from './modules/global/global.module';
 import { HistoryModule } from './modules/history/history.module';
-import { InvitationModule } from './modules/invitation/invitation.module';
 import { MailerModule } from './modules/mailer/mailer.module';
 import { MessageModule } from './modules/message/message.module';
 import { NoteWorthyModule } from './modules/note-worthy/note-worthy.module';
@@ -74,7 +73,6 @@ import { TeamModule } from './modules/team/team.module';
     NoteWorthyModule,
     EventEmitterModule.forRoot(),
     TeamModule,
-    InvitationModule,
     OpportunityRevenueModule,
     OpportunityHistoryModule,
     CompanyModule,
