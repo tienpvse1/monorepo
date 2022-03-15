@@ -4,6 +4,7 @@ import { Contact } from 'src/modules/contact/entities/contact.entity';
 import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
 import { OpportunityHistory } from 'src/modules/opportunity-history/entities/opportunity-history.entity';
 import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
+import { Reason } from 'src/modules/reason/entities/reason.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
 import { Tag } from 'src/modules/tag/entities/tag.entity';
 import {
@@ -39,6 +40,9 @@ export class PipelineItem extends BaseEntity {
     { cascade: true },
   )
   opportunityRevenue: OpportunityRevenue;
+
+  @OneToOne(() => Reason, (reason) => reason.pipelineItem, { cascade: true })
+  reason: Reason;
 
   @ManyToOne(() => Account, (account) => account.pipelineItems)
   @JoinColumn({ name: 'account_id' })

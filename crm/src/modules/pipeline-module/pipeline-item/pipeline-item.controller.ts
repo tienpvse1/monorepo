@@ -93,6 +93,6 @@ export class PipelineItemController {
   @Delete(':id')
   @HistoryLog('Deleted an opportunity')
   delete(@Param('id') id: string) {
-    return this.service.softDelete(id);
+    return this.service.softDelete(id, { relations: ['reason'] });
   }
 }
