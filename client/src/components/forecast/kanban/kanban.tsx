@@ -2,7 +2,7 @@ import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.ent
 import { useUpdateExpectedClosing } from '@modules/pipeline-items/mutation/pipeline-item.patch';
 import { Dispatch, SetStateAction } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import '../../stylesheets/kanban.css';
+import '../../../stylesheets/kanban.css';
 import { KanbanColumn } from './kanban-column';
 interface KanbanProps {
   data: IPipelineItem[][];

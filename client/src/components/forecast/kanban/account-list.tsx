@@ -2,7 +2,7 @@ import { useSaleAccounts } from '@modules/account/get/account.get';
 import { useAssignAccount } from '@modules/pipeline-items/mutation/pipeline-item.patch';
 import { Form, Modal, Select } from 'antd';
 import { useState } from 'react';
-import '../../stylesheets/account-list.css';
+import '../../../stylesheets/account-list.css';
 interface AccountListProps {
   visible: boolean;
   toggle: () => void;
