@@ -12,10 +12,7 @@ export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
   // const { mutate } = useChangePipeline();
   const handleDragEnd = (e: DropResult) => {
     const { destination, source, draggableId } = e;
-    console.log(
-      '🚀 ~ file: kanban.tsx ~ line 15 ~ handleDragEnd ~ draggableId',
-      draggableId
-    );
+    
 
     const copied = [...data];
     if (!destination) return;
