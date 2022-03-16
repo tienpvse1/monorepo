@@ -2,7 +2,6 @@
 import {
   BranchesOutlined,
   CalendarOutlined,
-  CodeSandboxOutlined,
   ContactsOutlined,
   CrownOutlined,
   FieldTimeOutlined,
@@ -14,7 +13,6 @@ import {
 import { Menu } from 'antd';
 import { ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-const { SubMenu } = Menu;
 
 interface MenuSiderUserProps {
   style: object;
