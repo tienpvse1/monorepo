@@ -1,8 +1,8 @@
+import React, { CSSProperties, ReactNode } from 'react';
 import { BellOutlined } from '@ant-design/icons';
 import { INotification } from '@modules/notification/entity/notification.entity';
 import NoticeIcon from 'ant-design-pro/lib/NoticeIcon';
 import 'ant-design-pro/dist/ant-design-pro.css';
-
 interface NotificationDropdownProps {
   notifications: INotification[];
 }
@@ -12,11 +12,11 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
 }) => {
   const transformNotification = (): {
     avatar?: string | React.ReactNode;
-    title?: React.ReactNode;
-    description?: React.ReactNode;
-    datetime?: React.ReactNode;
-    extra?: React.ReactNode;
-    style?: React.CSSProperties;
+    title?: ReactNode;
+    description?: ReactNode;
+    datetime?: ReactNode;
+    extra?: ReactNode;
+    style?: CSSProperties;
   }[] => {
     return notifications.map((item) => ({
       avatar: item.sender.photo,
