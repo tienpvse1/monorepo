@@ -1,7 +1,7 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Col, Row, Upload } from "antd"
 import { Form, Input } from "antd";
-import { isRequired, isTaxId } from "@constance/rules-of-input-antd";
+import { isRequired } from "@constance/rules-of-input-antd";
 const fileList: any = [
   {
     uid: '-1',
@@ -55,23 +55,33 @@ export const VerificationForm = () => {
         </Col>
         <Col style={{ padding: '20px' }} span={12}>
           <Form.Item
-            name="taxId"
-            label="Tax ID"
+            name="billId"
+            label="Bill ID"
             required
-            rules={[isRequired('Tax Id is required') ,isTaxId]}
+            rules={[isRequired('Tax Id is required')]}
           >
-            <Input maxLength={13}/>
+            <Input maxLength={14} />
           </Form.Item>
           <Form.Item
-            name="feedBack"
-            label="Feedback"
+            name="reason"
+            label="Reason"
           >
             <Input.TextArea
               showCount
               maxLength={150}
-              placeholder="Write Feedback..."
+              placeholder="Write reason..."
               rows={4}
             />
+          </Form.Item>
+          {/* hidden input */}
+          <Form.Item name="oldStageId" style={{ display: 'none' }}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="newStageId" style={{ display: 'none' }}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="draggableId" style={{ display: 'none' }}>
+            <Input />
           </Form.Item>
         </Col>
       </Row>

@@ -3,10 +3,12 @@ import { Form, Modal } from 'antd';
 interface CreateModalProps {
   isOpenModal: boolean;
   toggleCreateModal: () => void;
-  callback: (record) => void;
+  callback?: (record) => void;
   width?: number;
   title: string;
   bodyStyle?: React.CSSProperties;
+  hasForm?: boolean;
+  hasSubmitMethod?: () => void;
 }
 
 export const CreateModal: React.FC<CreateModalProps> = ({
@@ -16,7 +18,9 @@ export const CreateModal: React.FC<CreateModalProps> = ({
   callback,
   width = 1000,
   title,
-  bodyStyle
+  bodyStyle,
+  hasForm = false,
+  hasSubmitMethod
 }) => {
   const [form] = Form.useForm<any>();
 
@@ -32,19 +36,21 @@ export const CreateModal: React.FC<CreateModalProps> = ({
       title={<h2 style={{ textAlign: 'center' }}>{title}</h2>}
       centered
       visible={isOpenModal}
-      onOk={handleSubmit}
+      onOk={hasForm ? hasSubmitMethod : handleSubmit}
       onCancel={toggleCreateModal}
       width={width}
       bodyStyle={bodyStyle}
     >
       <div className='scroll-menu-modal-create'>
-        <Form
-          initialValues={{ ['prefixMobile']: '84' }}
-          form={form}
-          layout='vertical'
-        >
-          {children}
-        </Form>
+        {hasForm ?
+          <>{children}</> :
+          <Form
+            initialValues={{ ['prefixMobile']: '84' }}
+            form={form}
+            layout='vertical'
+          >
+            {children}
+          </Form>}
       </div>
     </Modal>
   );
