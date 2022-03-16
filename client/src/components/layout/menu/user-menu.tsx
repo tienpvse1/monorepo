@@ -99,22 +99,19 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
     },
     {
       key: 'email',
-      label: (
-        <>
-          <img
-            src={'https://cdn-icons-png.flaticon.com/512/732/732200.png'}
-            height={20}
-            width={20}
-            style={{
-              marginRight: 10,
-            }}
-          />
-          Gmail
-        </>
-      ),
+      label: 'Email',
       style,
       onClick: () => navigate('/email'),
-      icon: null,
+      icon: (
+        <img
+          src={'https://cdn-icons-png.flaticon.com/512/732/732200.png'}
+          height={20}
+          width={20}
+          style={{
+            marginRight: 10,
+          }}
+        />
+      ),
     },
   ];
 

@@ -6,10 +6,12 @@ const { Option } = Select;
 
 interface PageTitlePipelineProps {
   setModalCreateStage: () => void;
+  isRoleAdmin: boolean;
 }
 
 export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
   setModalCreateStage,
+  isRoleAdmin
 }) => {
   const handleChange = (value: any) => { };
   return (
@@ -23,16 +25,21 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
         }
       />
       <Row>
-        <Col className='wrapper-title-page-2' span={24}>
-          <Button
-            onClick={setModalCreateStage}
-            className='button-create-task-pipeline'
-            icon={<PlusOutlined />}
-            type='primary'
-          >
-            Create Stage
-          </Button>
-          <div style={{ display: 'flex' }}>
+        <Col
+          span={24}
+          className='wrapper-title-page-2'
+          style={isRoleAdmin ? {} : { flexDirection: 'row-reverse' }}
+        >
+          {isRoleAdmin &&
+            <Button
+              onClick={setModalCreateStage}
+              className='button-create-task-pipeline'
+              icon={<PlusOutlined />}
+              type='primary'
+            >
+              Create Stage
+            </Button>}
+          <div>
             <Space>
               <Select
                 placeholder='Group by'

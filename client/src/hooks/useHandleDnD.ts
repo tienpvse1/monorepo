@@ -1,5 +1,4 @@
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-// import { useChangeStagePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.changeStage';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { useUpdatePipeline } from '@modules/pipeline/mutation/pipeline.update';
 import { startFireworks } from '@util/firework';
@@ -8,7 +7,6 @@ import { useState } from 'react';
 export const useHandleDnD = (data: IPipeline) => {
   const [newPipeLine, setPipeLine] = useState<IPipeline>();
   const { updatePipeline, isError } = useUpdatePipeline();
-  // const { changeStage } = useChangeStagePipelineItems();
 
   const setNewPipeline = (newColumn: IPipelineColumn[]) => {
     const newState = {
@@ -18,23 +16,6 @@ export const useHandleDnD = (data: IPipeline) => {
     setPipeLine(newState);
     updatePipeline(newState);
   };
-
-  // const handleChangeStageItems = (
-  //   newColumn: IPipelineColumn[],
-  //   draggableId: string,
-  //   startColumn: string,
-  //   finishColumn: string
-  // ) => {
-  //   const newState = {
-  //     ...data,
-  //     pipelineColumns: newColumn,
-  //   };
-
-  //   setPipeLine(newState);
-  //   changeStage({
-  //     ...newState
-  //   });
-  // };
 
   const reassignIndex = <T>(array: Array<T>) => {
     return array.map((value, index) => ({ ...value, index: index }));
@@ -61,7 +42,7 @@ export const useHandleDnD = (data: IPipeline) => {
   ) => {
     // tìm column theo name và trả về giá trị column tìm đc
     const column = data.pipelineColumns.find(
-      (value) => value.name == columnName
+      (value) => value.id == columnName
     );
 
     // lấy items của column vừa tìm được bỏ vào pipelineNewColumns
@@ -78,7 +59,7 @@ export const useHandleDnD = (data: IPipeline) => {
 
     //update lại pipeline mới sau khi đổi chỗ card
     const newColumn = data.pipelineColumns.map((item) => {
-      if (item.name == columnName)
+      if (item.id == columnName)
         return { ...item, pipelineItems: result };
       else
         return item;
@@ -97,7 +78,7 @@ export const useHandleDnD = (data: IPipeline) => {
     //------------------------------------------------------------
     //tìm item theo column start xong lấy nó ra
     const column1 = data.pipelineColumns.find(
-      (value) => value.name == startColumn
+      (value) => value.id == startColumn
     );
 
     const items1 = Array.from(column1.pipelineItems);
@@ -108,9 +89,11 @@ export const useHandleDnD = (data: IPipeline) => {
     //------------------------------------------------------------
     //bỏ item vừa lấy ra từ column start cho vào column finish
     const column2 = data.pipelineColumns.find(
-      (value) => value.name == finishColumn
+      (value) => value.id == finishColumn
     );
+    
     if (column2.isWon) startFireworks();
+
     const items2 = Array.from(column2.pipelineItems);
     items2.splice(finishIndex, 0, newItemColumn);
 
@@ -120,16 +103,15 @@ export const useHandleDnD = (data: IPipeline) => {
 
     // update lại state mới sau khi đổi chỗ
     const newColumn = data.pipelineColumns.map((item) => {
-      if (item.name == startColumn)
+      if (item.id == startColumn)
         return { ...item, pipelineItems: newItems1 };
-      else if (item.name == finishColumn)
+      else if (item.id == finishColumn)
         return { ...item, pipelineItems: newItems2 };
       else return item;
     });
 
     // Update and Record stage transition activity
     setNewPipeline(newColumn)
-    // handleChangeStageItems(newColumn, draggableId, startColumn, finishColumn);
   };
 
   return {

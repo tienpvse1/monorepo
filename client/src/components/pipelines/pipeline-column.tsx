@@ -1,8 +1,9 @@
-import { PlusOutlined } from '@ant-design/icons';
+import { LockOutlined, PlusOutlined } from '@ant-design/icons';
+import { ThemeColor } from '@constance/color';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { Draggable } from 'react-beautiful-dnd';
 import { useCookies } from 'react-cookie';
 import { PipelineItems } from './items';
@@ -22,18 +23,37 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
   const [showInput, setShowInput] = useToggle();
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
 
-  // if (pipelineColumn.isWon && public_user_info.role.name === 'sale') {
-  //   return <></>;
-  // }
+  const handleIsRoleAdmin = () => {
+    return public_user_info.role.name === 'admin' ? true : false
+  }
+  const handleIsRoleAccountant = () => {
+    return public_user_info.role.name === 'accountant' ? true : false
+  }
 
   return (
-    <Draggable isDragDisabled={true} draggableId={pipelineColumn.name} index={index}>
+    <Draggable isDragDisabled={!handleIsRoleAdmin()} draggableId={pipelineColumn.id} index={index}>
       {(providedColumn) => (
         <div
           className='wrapper-draggable-pipeline-column'
           ref={providedColumn.innerRef}
           {...providedColumn.draggableProps}
         >
+          {!handleIsRoleAccountant() && pipelineColumn.isWon &&
+            <div className="lock-component">
+              <Tooltip title="Unauthorized" color={ThemeColor.primaryColor} key={'lock'}>
+                <div className="lock">
+                  <LockOutlined style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100%',
+                    fontSize: '28px',
+                    color: ThemeColor.primaryColor
+                  }} />
+                </div>
+              </Tooltip>
+            </div>}
+
           <div
             {...providedColumn.dragHandleProps}
             className='pipeline-column-header'
@@ -45,6 +65,7 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
               />
             ) : (
               <ColumnHeaderName
+                isRoleAdmin={handleIsRoleAdmin()}
                 pipelineColumn={pipelineColumn}
                 setShowInput={setShowInput}
               />
@@ -54,16 +75,21 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
           <div className='price-total'>
             <span>15.000.000 đ</span>
           </div>
-          <Button
-            onClick={setShowCreateItemForm}
-            style={{ marginTop: '10px', width: '100%', border: 'none' }}
-          >
-            <PlusOutlined />
-          </Button>
+
+          {!handleIsRoleAdmin() &&
+            <Button
+              onClick={setShowCreateItemForm}
+              style={{ marginTop: '10px', width: '100%', border: 'none' }}
+            >
+              <PlusOutlined />
+            </Button>}
+
           <PipelineItems
             showCreateItemForm={showCreateItemForm}
             setShowCreateItemForm={setShowCreateItemForm}
             pipelineColumn={pipelineColumn}
+            isRoleAccountant={handleIsRoleAccountant()}
+            isWonStage={pipelineColumn.isWon}
           />
         </div>
       )}

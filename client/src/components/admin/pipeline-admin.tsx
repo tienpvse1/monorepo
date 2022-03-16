@@ -10,14 +10,15 @@ import { useQuery } from 'react-query';
 import { connect } from 'socket.io-client';
 const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 
-interface PipelineProps { }
+interface PipelineAdminProps { }
 
-const PipelineAdmin: React.FC<PipelineProps> = ({ }) => {  
+const PipelineAdmin: React.FC<PipelineAdminProps> = ({ }) => {
   const { data: stages } = useQuery(GET_PIPELINE_DESIGN, getStages, {
     suspense: true,
     staleTime: Infinity
   });
 
+  // TODO: this is still hard code
   const pipeline: IPipeline = {
     id: "QIECTiuvzY",
     createdAt: null,

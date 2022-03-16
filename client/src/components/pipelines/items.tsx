@@ -9,6 +9,8 @@ interface PipelineItemsProps {
   pipelineColumn: IPipelineColumn;
   showCreateItemForm: boolean;
   setShowCreateItemForm: () => void;
+  isRoleAccountant?: boolean;
+  isWonStage?: boolean
 }
 const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
   border: isDragging ? `2px solid ${ThemeColor.primaryColor}` : '',
@@ -19,11 +21,17 @@ export const PipelineItems: React.FC<PipelineItemsProps> = ({
   pipelineColumn,
   setShowCreateItemForm,
   showCreateItemForm,
+  isRoleAccountant,
+  isWonStage
 }) => {
 
   return (
     <>
-      <Droppable droppableId={pipelineColumn.name} type='task'>
+      <Droppable
+        isDropDisabled={!isRoleAccountant && isWonStage && true}
+        droppableId={pipelineColumn.id}
+        type='task'
+      >
         {(provided) => (
           <div
             className='pipeline-column scroll-menu-pipeline-2'
@@ -38,7 +46,7 @@ export const PipelineItems: React.FC<PipelineItemsProps> = ({
             )}
             {pipelineColumn.pipelineItems.map(
               (data: IPipelineItem, index: number) => (
-                <Draggable key={data.id} draggableId={data.id} index={index}>
+                <Draggable isDragDisabled={pipelineColumn.isWon} key={data.id} draggableId={data.id} index={index}>
                   {(provided, snapshot) => (
                     <div
                       className='wrapper-draggable-card'
