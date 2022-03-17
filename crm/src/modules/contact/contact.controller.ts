@@ -40,6 +40,7 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
       pipelineItems: {},
       account: {},
       company: {},
+      'account.team': {},
     },
   },
   routes: {
