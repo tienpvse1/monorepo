@@ -2,10 +2,9 @@ import { CloseOutlined, InboxOutlined, PlusOutlined } from '@ant-design/icons';
 import { useUpdateEmailTemplate } from '@modules/email-temlate/mutation/email-template.patch';
 import { usePostEmailTemplate } from '@modules/email-temlate/mutation/email-template.post';
 import { useGetAllTemplates } from '@modules/email-temlate/query/email-template.get';
-import { Button, Input } from 'antd';
+import { Button, Input, Spin } from 'antd';
 import { KeyboardEvent, useState } from 'react';
 import { Design } from 'react-email-editor';
-import LoadingComponent from 'react-loading';
 interface TemplateSelectionProps {
   design: Design;
   onClose: () => void;
@@ -21,7 +20,7 @@ export const TemplateSelection: React.FC<TemplateSelectionProps> = ({
   const { mutate } = usePostEmailTemplate();
   const toggleClicked = () => setClicked(!clicked);
   const [name, setName] = useState('');
-  if (isLoading) return <LoadingComponent type='cubes' />;
+  if (isLoading) return <Spin size='large' />;
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
