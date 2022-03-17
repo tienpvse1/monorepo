@@ -1,11 +1,12 @@
 import { BaseEntity } from 'src/base/entity.base';
 import { Contact } from 'src/modules/contact/entities/contact.entity';
 import { Tag } from 'src/modules/tag/entities/tag.entity';
-import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
+import { Column, Entity, Index, ManyToMany, OneToMany } from 'typeorm';
 
 @Entity()
 export class Company extends BaseEntity {
   @Column()
+  @Index({ unique: true })
   name: string;
 
   @Column({ nullable: true })

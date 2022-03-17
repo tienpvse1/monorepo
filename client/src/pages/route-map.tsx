@@ -1,6 +1,7 @@
 import SaleManagerLayout from '@common/sale-manager-layout';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
+import Statistic from './statistic';
 
 const HomePage = lazy(() => import('@pages/home'));
 const Contact = lazy(() => import('@pages/contact'));
@@ -74,6 +75,10 @@ export const route: RouteObject[] = [
       {
         path: 'schedule',
         element: <Schedule />,
+      },
+      {
+        path: 'statistic',
+        element: <Statistic />,
       },
       {
         path: 'email',
