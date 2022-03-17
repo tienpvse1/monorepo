@@ -47,6 +47,7 @@ export const OpportunitiesTable = () => {
 
   const { data, isLoading } = useQueryPipelineByAccountId(id);
   const { data: contact } = useContacts(id);
+  
   const { mutate: updateOpportunity } = useUpdatePipelineItem();
   const { mutate: createOpportunity } = usePostPipelineItems();
   const { mutate: removePipelineItems } = useDeletePipelineItems();

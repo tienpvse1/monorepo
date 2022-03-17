@@ -9,7 +9,7 @@ const Pipeline: React.FC<PipelineProps> = ({ }) => {
 
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
 
-  if(public_user_info.role.name === 'accountant')
+  if(public_user_info.role.name !== 'sale')
     return <PipelineAdmin />;
 
   return (

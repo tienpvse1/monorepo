@@ -1,3 +1,4 @@
+import { FrownOutlined } from "@ant-design/icons";
 import { envVars } from "@env/var.env"
 import { IPipelineItem } from "@modules/pipeline-items/entity/pipeline-items.entity";
 import { Badge, Button, Col, Row, Space } from "antd"
@@ -49,6 +50,7 @@ export const OpportunityTitleDetails: React.FC<OpportunityTitleDetailsProps> = (
               <Space style={{ float: 'right' }}>
                 {!opportunity.pipelineColumn.isWon &&
                   <Button
+                    icon={<FrownOutlined style={{fontSize: '18px'}} />}
                     className='button-ant-custom-style'
                     type='primary'
                     size='middle'
