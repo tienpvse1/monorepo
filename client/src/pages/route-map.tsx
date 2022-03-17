@@ -30,12 +30,10 @@ const OpportunitiesContainer = lazy(
 );
 const CompanyContainer = lazy(
   () => import('@components/company/company-container')
-); 
-const ViewCompanyDetails = lazy(
-  () => import('@pages/view-company-details')
-); 
+);
+const ViewCompanyDetails = lazy(() => import('@pages/view-company-details'));
 
-const PipelineAdmin = lazy(() => import('@components/admin/pipeline-admin'))
+const PipelineAdmin = lazy(() => import('@components/admin/pipeline-admin'));
 
 export const route: RouteObject[] = [
   {
@@ -117,13 +115,13 @@ export const route: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <CompanyContainer />
+            element: <CompanyContainer />,
           },
           {
             path: 'view-details/',
-            element: <ViewCompanyDetails />
-          }
-        ]
+            element: <ViewCompanyDetails />,
+          },
+        ],
       },
     ],
   },
@@ -137,8 +135,8 @@ export const route: RouteObject[] = [
       },
       {
         path: 'pipeline',
-        element: <PipelineAdmin />
-      }
+        element: <PipelineAdmin />,
+      },
     ],
   },
   {
@@ -152,6 +150,10 @@ export const route: RouteObject[] = [
       {
         path: '/sale-manager/pipeline',
         element: <SaleManagerPipeline />,
+      },
+      {
+        path: '/sale-manager/details/:id',
+        element: <ViewOpportunityDetails />,
       },
     ],
   },

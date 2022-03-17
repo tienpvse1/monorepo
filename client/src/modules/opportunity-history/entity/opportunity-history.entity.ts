@@ -1,3 +1,4 @@
+import { IBase } from '@interfaces/base';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 
 export enum OpportunityHistoryType {
@@ -6,7 +7,7 @@ export enum OpportunityHistoryType {
   UPDATE = 'update',
   DELETE = 'delete',
 }
-export interface IOpportunityHistory {
+export interface IOpportunityHistory extends IBase {
   description: string;
   type: OpportunityHistoryType;
   pipelineItem: IPipelineItem;

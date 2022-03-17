@@ -9,11 +9,11 @@ export const QUERY_OPPORTUNITY_HISTORY = 'query-opportunity-history';
 export const getOpportunityHistory = async (opportunityId: string) => {
   const query = RequestQueryBuilder.create({
     filter: [
-      { field: 'opportunity.id', operator: '$eq', value: opportunityId },
+      { field: 'pipelineItem.id', operator: '$eq', value: opportunityId },
     ],
     join: ['pipelineItem'],
   }).query();
-  const { data } = await instance.get<IOpportunityHistory>(
+  const { data } = await instance.get<IOpportunityHistory[]>(
     `${OPPORTUNITY_HISTORY}?${query}`
   );
   return data;
