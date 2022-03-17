@@ -1,2 +1,4 @@
-import { IContact } from "../entity/contact.entity";
-export interface CreateContactDto extends Partial<IContact> { }
+import { IContact } from '../entity/contact.entity';
+export interface CreateContactDto extends Partial<IContact> {
+  companyName: string;
+}

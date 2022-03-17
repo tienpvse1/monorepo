@@ -13,6 +13,8 @@ export class CreateContactDto {
   @MinLength(2)
   name: string;
 
+  @IsString()
+  companyName: string;
   @IsOptional()
   @IsArray()
   noteWorthies?: CreateNoteWorthyDto[];
@@ -28,30 +30,19 @@ export class CreateContactDto {
   @IsString()
   @IsOptional()
   birth: Date;
-  @IsOptional()
-  @IsPhoneNumber('VN')
-  mobile: string;
+
   @IsOptional()
   @IsUrl()
   photo: string;
-  @IsString()
-  @IsOptional()
-  state: string;
-  @IsString()
-  @IsOptional()
-  postalCode: string;
-  @IsString()
-  @IsOptional()
-  taxId: string;
+
   @IsString()
   @IsOptional()
   jobPosition: string;
-  @IsUrl()
-  @IsOptional()
-  website: string;
+
   @IsString()
   @IsOptional()
-  title: string;
+  address: string;
+
   @IsString()
   @IsOptional()
   internalNotes: string;

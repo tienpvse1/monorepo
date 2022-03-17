@@ -40,7 +40,7 @@ export class Contact extends BaseEntity {
 
   @ManyToOne(() => Company, (company) => company.contacts)
   @JoinColumn({ name: 'company_id' })
-  company: Account;
+  company: Company;
 
   @OneToMany(() => PipelineItem, (pipelineItem) => pipelineItem.contact, {
     cascade: true,
