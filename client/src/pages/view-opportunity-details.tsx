@@ -21,7 +21,7 @@ const ViewOpportunityDetails = () => {
             </Col>
           </Row>
           <Row gutter={[0, 0]}>
-            <Col span={16}>
+            <Col span={15}>
               <div className='container-content-details-page'>
                 <OpportunityInfoTabs data={data} />
               </div>
@@ -29,7 +29,7 @@ const ViewOpportunityDetails = () => {
                 <OpportunityCardImage data={data} />
               </div>
             </Col>
-            <Col span={8}>
+            <Col span={9}>
               <div className='container-page'>
                 <span style={{ fontSize: '16px' }}>History Logs</span>
                 <Divider></Divider>
