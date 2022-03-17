@@ -6,7 +6,8 @@ import { IPipelineItem } from '../entity/pipeline-items.entity';
 
 const { PIPELINE_ITEM } = controllers;
 export const GET_PIPELINE_ITEM_BY_ID = 'get-pipeline-item-by-id';
-export const GET_PIPELINE_ITEM_BY_ACCOUNT_ID = 'get-pipeline-item-by-account-id';
+export const GET_PIPELINE_ITEM_BY_ACCOUNT_ID =
+  'get-pipeline-item-by-account-id';
 
 export const getPipelineId = async (id: string) => {
   const queryBuilder = RequestQueryBuilder.create({
@@ -17,7 +18,7 @@ export const getPipelineId = async (id: string) => {
       { field: 'opportunityRevenue.product' },
       { field: 'account' },
       { field: 'contact' },
-      { field: 'schedules' }
+      { field: 'schedules' },
     ],
     filter: [
       {
@@ -39,7 +40,7 @@ export const getPipelineByAccountID = async (accountId: string) => {
     join: [
       { field: 'pipelineColumn' },
       { field: 'account' },
-      { field: 'contact' }
+      { field: 'contact' },
     ],
     filter: [
       {
@@ -61,7 +62,7 @@ export const getAllPipelineItem = async () => {
     join: [
       { field: 'pipelineColumn' },
       { field: 'account' },
-      { field: 'contact' }
+      { field: 'contact' },
     ],
   }).query(false);
 
@@ -74,6 +75,7 @@ export const getAllPipelineItem = async () => {
 export const usePipelineItem = (id: string) =>
   useQuery([GET_PIPELINE_ITEM_BY_ID, id], () => getPipelineId(id), {
     suspense: true,
+    enabled: Boolean(id),
   });
 
 export const useQueryAllPipelineItem = () =>
@@ -81,7 +83,7 @@ export const useQueryAllPipelineItem = () =>
     suspense: true,
   });
 
-
 export const useQueryPipelineByAccountId = (accountId: string) =>
-  useQuery([GET_PIPELINE_ITEM_BY_ACCOUNT_ID, accountId],
-    () => getPipelineByAccountID(accountId))
+  useQuery([GET_PIPELINE_ITEM_BY_ACCOUNT_ID, accountId], () =>
+    getPipelineByAccountID(accountId)
+  );

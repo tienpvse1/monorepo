@@ -1,48 +1,43 @@
-import { MyForm } from '@components/form/my-form'
+import { MyForm } from '@components/form/my-form';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { Col, Row } from 'antd'
+import { Col, Row } from 'antd';
 
 interface OpportunityInfoDetailsProps {
   opportunity: IPipelineItem;
 }
 
-export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({ opportunity }) => {
+export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
+  opportunity,
+}) => {
   return (
     <>
       <Row>
         <Col span={12}>
-          <MyForm label="Name">
-            {opportunity.name}
-          </MyForm>
-          <MyForm label="Organization / Contact">
+          <MyForm label='Name'>{opportunity.name}</MyForm>
+          <MyForm label='Organization / Contact'>
             {opportunity.contact.name}
           </MyForm>
-          <MyForm label="Sale Person">
-            {`${opportunity.account.firstName} ${opportunity.account.lastName}`}
+          <MyForm label='Sale Person'>
+            {!opportunity.account
+              ? 'Unassigned'
+              : `${opportunity.account.firstName} ${opportunity.account.lastName}`}
           </MyForm>
-          <MyForm label="Sale Team">
-            Team ABC (Sample)
-          </MyForm>
-          <MyForm label="Close Date">
-            {opportunity.expectedClosing}
-          </MyForm>
-
+          <MyForm label='Sale Team'>Team ABC (Sample)</MyForm>
+          <MyForm label='Close Date'>{opportunity.expectedClosing}</MyForm>
         </Col>
         <Col span={12}>
-          <MyForm label="Stage">
-            {opportunity.pipelineColumn.name}
-          </MyForm>
-          <MyForm label="Expected Revenue">
+          <MyForm label='Stage'>{opportunity.pipelineColumn.name}</MyForm>
+          <MyForm label='Expected Revenue'>
             {opportunity.expectedRevenue}
           </MyForm>
-          <MyForm label="Product name">
+          <MyForm label='Product name'>
             {/* {opportunity.opportunityRevenue.product.name} */}
           </MyForm>
-          <MyForm label="Expected sold quantity">
+          <MyForm label='Expected sold quantity'>
             {/* {opportunity.opportunityRevenue.quantity} */}
           </MyForm>
         </Col>
       </Row>
     </>
-  )
-}
+  );
+};
