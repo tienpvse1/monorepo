@@ -36,21 +36,21 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
     form.setFieldsValue({
       name: contact.name,
       email: contact.email,
-      birth: contact.birth ? moment(contact.birth) : '',
-      title: contact.title,
+      // birth: contact.birth ? moment(contact.birth) : '',
+      // title: contact.title,
       phone: contact.phone,
-      mobile: contact.mobile,
-      prefixMobile: '84',
+      // mobile: contact.mobile,
+      // prefixMobile: '84',
     });
   };
 
   const handleToggleEditForm2 = () => {
     toggleEditForm2();
     form.setFieldsValue({
-      postalCode: contact.postalCode,
+      // postalCode: contact.postalCode,
       jobPosition: contact.jobPosition,
-      website: contact.website,
-      taxId: contact.taxId,
+      // website: contact.website,
+      // taxId: contact.taxId,
     });
   };
 
@@ -59,7 +59,7 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
       const value = await form.validateFields();
       mutate({
         ...value,
-        birth: value.birth ? value.birth.format(BIRTH) : '',
+        // birth: value.birth ? value.birth.format(BIRTH) : '',
         id: contact.id,
       });
 

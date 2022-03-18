@@ -16,18 +16,19 @@ export const ContactInfoDetails: React.FC<ContactInfoDetailsProps> = ({
     <>
       <Row>
         <Col span={12}>
-          <MyForm label='Name'>{contact.name}</MyForm>
-          <MyForm label='Email'>{contact.email}</MyForm>
+          <MyForm label='Name'>name</MyForm>
+          <MyForm label='Email'>email</MyForm>
           <MyForm label='Company'></MyForm>
           <MyForm label='Birth'>
-            {contact.birth
+            {/* {contact.birth
               ? moment(contact.birth).format(BIRTH).toString()
-              : ''}
+              : ''} */}
+              birth
           </MyForm>
         </Col>
         <Col span={12}>
-          <MyForm label='Phone'>{contact.phone}</MyForm>
-          <MyForm label='Mobile'>{contact.company.mobile}</MyForm>
+          <MyForm label='Phone'>phone</MyForm>
+          <MyForm label='Mobile'>mobile</MyForm>
           <MyForm label='Type'></MyForm>
         </Col>
       </Row>
