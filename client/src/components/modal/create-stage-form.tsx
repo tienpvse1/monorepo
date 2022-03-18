@@ -1,4 +1,4 @@
-import { Modal, Form, Input } from 'antd';
+import { Modal, Form, Input, Checkbox } from 'antd';
 
 interface ModalFormCreateStageColumnProps {
   visible: boolean;
@@ -44,6 +44,11 @@ export const ModalFormCreateStageColumn: React.FC<
             ]}
           >
             <Input />
+          </Form.Item>
+          <Form.Item
+            name='isWon'
+          >
+            <Checkbox>Stage is won</Checkbox>
           </Form.Item>
         </Form>
       </Modal>

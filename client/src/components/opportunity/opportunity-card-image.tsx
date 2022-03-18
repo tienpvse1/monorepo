@@ -1,3 +1,4 @@
+import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { imagePlaceHolderUrl } from '@constance/image';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { handleUndefinedString } from '@util/undefined';
@@ -12,23 +13,23 @@ export const OpportunityCardImage: React.FC<OpportunityCardImageProps> = ({ data
   return (
     <>
       <Card
-        bordered={false}
-        style={{ display: 'flex', alignItems: 'center' }}
-        bodyStyle={{ fontSize: '18px', width: 150 }}
+        // bordered={false}
+        // style={{ display: 'flex', alignItems: 'center' }}
+        // bodyStyle={{ fontSize: '18px', width: 150 }}
         cover={
           <div style={{ padding: 20 }}>
             <Image
-              height={200}
+              // height={200}
               alt='example'
               src={data.photo ? data.photo : imagePlaceHolderUrl}
             />
           </div>
         }
-      // actions={[
-      //   <SettingOutlined style={{ fontSize: '24px' }} key='setting' />,
-      //   <EditOutlined style={{ fontSize: '24px' }} key='edit' />,
-      //   <EllipsisOutlined style={{ fontSize: '24px' }} key='ellipsis' />,
-      // ]}
+      actions={[
+        <SettingOutlined style={{ fontSize: '24px' }} key='setting' />,
+        <EditOutlined style={{ fontSize: '24px' }} key='edit' />,
+        <EllipsisOutlined style={{ fontSize: '24px' }} key='ellipsis' />,
+      ]}
       >
         <Meta
           title='Summary'

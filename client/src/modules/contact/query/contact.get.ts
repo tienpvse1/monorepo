@@ -1,4 +1,4 @@
-import { Axios, instance } from '@axios';
+import { instance } from '@axios';
 import { controllers } from '@constance/controllers';
 import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { useQuery } from 'react-query';
@@ -12,7 +12,10 @@ export const QUERY_CONTACTS_BY_ID = 'query-contact-by-id';
 
 const getContacts = async (accountId: string) => {
   const query = RequestQueryBuilder.create({
-    join: [{ field: 'account' }],
+    join: [
+      { field: 'account' },
+      { field: 'company' }
+    ],
     filter: [
       {
         field: 'account.id',
@@ -20,6 +23,17 @@ const getContacts = async (accountId: string) => {
         value: accountId,
       },
     ],
+  }).query(false);
+  const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
+  return data;
+};
+const getAllContacts = async () => {
+  const query = RequestQueryBuilder.create({
+    join: [
+      {
+        field: 'account'
+      }
+    ]
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
   return data;
@@ -52,6 +66,7 @@ export const getContactsById = async (contactId: string) => {
       { field: 'account' },
       { field: 'company' },
       { field: 'account.team' },
+      { field: 'pipelineItems' }
     ],
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
@@ -72,6 +87,9 @@ export const useContacts = (accountId: string) =>
   useQuery([QUERY_CONTACTS, accountId], () => getContacts(accountId), {
     enabled: Boolean(accountId),
   });
+
+export const useQueryAllContacts = () =>
+  useQuery([QUERY_CONTACTS], () => getAllContacts());
 
 export const useQueryContactsById = (contactId: string) =>
   useQuery(QUERY_CONTACTS_BY_ID, () => getContactsById(contactId));

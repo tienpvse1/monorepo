@@ -1,7 +1,7 @@
 import { Form, Input, Row } from 'antd'
 import { WrapperModalForm } from '@components/modal/modal-wrapper-form'
 import { ContactInfoForm } from './contact-info-form';
-import { AddressInfoForm } from './address-info-form';
+// import { AddressInfoForm } from './address-info-form';
 
 export const CreateContactForm = () => {
 
@@ -14,11 +14,11 @@ export const CreateContactForm = () => {
         </Row>
       </WrapperModalForm>
 
-      <WrapperModalForm titleName='Address Information' >
+      {/* <WrapperModalForm titleName='Address Information' >
         <Row gutter={[24, 0]}>
           <AddressInfoForm />
         </Row>
-      </WrapperModalForm>
+      </WrapperModalForm> */}
 
       <WrapperModalForm titleName='Notes Information' >
         <Form.Item

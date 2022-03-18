@@ -6,24 +6,28 @@ import { useState } from "react";
 import { useToggle } from "@hooks/useToggle";
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { OpportunityTitleTable } from "@components/opportunity/opportunity-title-table";
-import { GET_PIPELINE_ITEM_BY_ACCOUNT_ID, useQueryPipelineByAccountId } from "@modules/pipeline-items/query/pipeline-item.get";
-import { useCookies } from "react-cookie";
-import { PUBLIC_USER_INFO } from "@constance/cookie";
+import { GET_PIPELINE_ITEM_BY_ACCOUNT } from "@modules/pipeline-items/query/pipeline-item.get";
 import { IPipelineItem } from "@modules/pipeline-items/entity/pipeline-items.entity";
 import { isRequired } from "@constance/rules-of-input-antd";
 import { CreateModal } from '@components/modal/create-modal';
 import { CreateOpportunityForm } from "./create-opportunity-form";
 import { Link } from "react-router-dom";
 import { SelectBoxContact } from "@components/contact/select-box-contact";
-import { useContacts } from "@modules/contact/query/contact.get";
 import moment from "moment";
 import { useUpdatePipelineItem } from "@modules/pipeline-items/mutation/pipeline-items.update";
 import { message } from 'antd'
 import { usePostPipelineItems } from "@modules/pipeline-items/mutation/pipeline-items.post";
 import { useQueryClient } from "react-query";
 import { useDeletePipelineItems } from "@modules/pipeline-items/mutation/pipeline-items.delete";
+import { IContact } from "@modules/contact/entity/contact.entity";
 // import { dateFormat } from "@constance/date-format";
 // const { DEFAULT } = dateFormat;
+
+interface OpportunitiesTableProps {
+  dataSource: IPipelineItem[];
+  isLoading: boolean;
+  dataSelectBoxContact: IContact[];
+}
 
 interface SubmitFormCreateOpportunity {
   columnId: string;
@@ -38,15 +42,11 @@ interface SubmitFormCreateOpportunity {
   saleTeam: number;
 }
 
-export const OpportunitiesTable = () => {
-  const [
-    {
-      public_user_info: { id },
-    },
-  ] = useCookies([PUBLIC_USER_INFO]);
-
-  const { data, isLoading } = useQueryPipelineByAccountId(id);
-  const { data: contact } = useContacts(id);
+export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
+  dataSource,
+  dataSelectBoxContact,
+  isLoading
+}) => {
   const { mutate: updateOpportunity } = useUpdatePipelineItem();
   const { mutate: createOpportunity } = usePostPipelineItems();
   const { mutate: removePipelineItems } = useDeletePipelineItems();
@@ -111,7 +111,7 @@ export const OpportunitiesTable = () => {
       }
     }, {
       onSuccess: () => {
-        queryClient.refetchQueries(GET_PIPELINE_ITEM_BY_ACCOUNT_ID);
+        queryClient.invalidateQueries(GET_PIPELINE_ITEM_BY_ACCOUNT);
         message.success('Created opportunity successfully !')
       },
     })
@@ -122,7 +122,7 @@ export const OpportunitiesTable = () => {
       <Form form={form}>
         <Table
           loading={isLoading}
-          dataSource={data}
+          dataSource={dataSource}
           tableLayout='fixed'
           rowSelection={{
             type: 'checkbox',
@@ -163,7 +163,7 @@ export const OpportunitiesTable = () => {
                   <SelectBoxContact
                     formStyle={{ margin: 0 }}
                     label=""
-                    data={contact}
+                    data={dataSelectBoxContact}
                   />
                 }
                 nameForm='contactName'
@@ -290,7 +290,7 @@ export const OpportunitiesTable = () => {
                       onClick={() => showDeleteConfirm(() => removePipelineItems(record.id,
                         {
                           onSuccess: () => {
-                            queryClient.invalidateQueries(GET_PIPELINE_ITEM_BY_ACCOUNT_ID);
+                            queryClient.invalidateQueries(GET_PIPELINE_ITEM_BY_ACCOUNT);
                             message.success('Deleted opportunity successfully !')
                           }
                         }

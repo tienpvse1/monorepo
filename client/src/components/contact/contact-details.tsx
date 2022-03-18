@@ -37,20 +37,17 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
       name: contact.name,
       email: contact.email,
       birth: contact.birth ? moment(contact.birth) : '',
-      title: contact.title,
-      phone: contact.phone,
-      mobile: contact.mobile,
-      prefixMobile: '84',
+      phone: contact.phone
     });
   };
 
   const handleToggleEditForm2 = () => {
     toggleEditForm2();
     form.setFieldsValue({
-      postalCode: contact.postalCode,
+      // postalCode: contact.postalCode,
       jobPosition: contact.jobPosition,
-      website: contact.website,
-      taxId: contact.taxId,
+      // website: contact.website,
+      // taxId: contact.taxId,
     });
   };
 
@@ -103,7 +100,7 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
           </EditButtonHover>
         )}
 
-        <Row className='title-form-content'>Address Information</Row>
+        {/* <Row className='title-form-content'>Address Information</Row>
         {isEditingForm2 ? (
           <Row gutter={[24, 0]}>
             <AddressInfoForm />
@@ -120,7 +117,7 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
           <EditButtonHover toggleEditForm={handleToggleEditForm2}>
             <AddressInfoDetails contact={contact} />
           </EditButtonHover>
-        )}
+        )} */}
 
         <Row className='title-form-content'>System Information</Row>
         <Row>
