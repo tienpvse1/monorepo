@@ -1,3 +1,5 @@
+import { IContact } from "../entity/contact.entity";
+
 export interface IImportedContact {
   name: string;
   company: string;
@@ -8,14 +10,4 @@ export interface IImportedContact {
   address: string;
   internalNotes: string;
 }
-
-export interface CreateContactDto {
-  name: string;
-  companyName: string;
-  phone: string;
-  type: string;
-  email: string;
-  jobPosition: string;
-  address: string;
-  internalNotes: string;
-}
+export interface CreateContactDto extends Partial<IContact> {}

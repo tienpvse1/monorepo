@@ -9,7 +9,7 @@ interface MyFormProps {
 export const MyForm: React.FC<MyFormProps> = ({ label, children, customStyle, customStyleContent }) => {
   return (
     <>
-      <div style={customStyle} className="my-form-details">
+      <div key={label} style={customStyle} className="my-form-details">
         <label className="my-form-label">{label}</label>
         <div style={customStyleContent} className="my-form-content">
           {children}

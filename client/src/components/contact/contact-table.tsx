@@ -25,6 +25,8 @@ import { useInsertContact } from '@modules/contact/mutation/contact.post';
 import { message } from 'antd';
 import { useCookies } from 'react-cookie';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
+import { dateFormat } from "@constance/date-format";
+const { DEFAULT } = dateFormat;
 
 const rowSelection = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
@@ -40,7 +42,9 @@ export const ContactTable: FC = () => {
       public_user_info: { id },
     },
   ] = useCookies([PUBLIC_USER_INFO]);
-  const { data, isLoading } = useContacts(id);
+  const { data, isLoading } = useContacts(id);  
+  console.log(data);
+  
 
   const { mutate: updateContact } = useUpdateContact(() => {
     client.invalidateQueries(QUERY_CONTACTS);
@@ -87,8 +91,11 @@ export const ContactTable: FC = () => {
   };
 
   const handleCreateContact = (record: IContact) => {
+
     insertContact({
       ...record,
+      companyName: 'ABC company (Sample)',
+      birth: record.birth ? record.birth.format(DEFAULT) : ''
     });
   };
 

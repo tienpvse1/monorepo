@@ -3,11 +3,8 @@ import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.ent
 import {
   Badge,
   Button,
-  Col,
   Descriptions,
   PageHeader,
-  Row,
-  Space,
   Tag,
 } from 'antd';
 import moment from 'moment';
@@ -20,19 +17,19 @@ export const OpportunityTitleDetails: React.FC<
   OpportunityTitleDetailsProps
 > = ({ opportunity }) => {
   return (
-    <>
-      <Badge.Ribbon
-        text='Won'
-        color='green'
-        style={{
-          marginRight: '20px',
-          marginTop: '8px',
-          display: opportunity.pipelineColumn.isWon ? 'flex' : 'none',
-          alignItems: 'center',
-          height: '26px',
-          fontSize: '20px',
-        }}
-      >
+    <Badge.Ribbon
+      text='Won'
+      color='green'
+      style={{
+        marginRight: '20px',
+        marginTop: '8px',
+        display: opportunity.pipelineColumn.isWon ? 'flex' : 'none',
+        alignItems: 'center',
+        height: '26px',
+        fontSize: '20px',
+      }}
+    >
+      <div className="container-title-details">
         <PageHeader
           className='site-page-header'
           onBack={() => window.history.back()}
@@ -87,7 +84,7 @@ export const OpportunityTitleDetails: React.FC<
             </Descriptions.Item>
           </Descriptions>
         </PageHeader>
-      </Badge.Ribbon>
-    </>
+      </div>
+    </Badge.Ribbon>
   );
 };
