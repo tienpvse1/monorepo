@@ -1,4 +1,3 @@
-import { SelectBoxPrefix } from '@components/signup/select-box-prefix-phone'
 import { isEmail, isPhoneNumber, isRequired } from '@constance/rules-of-input-antd'
 import { Col, DatePicker, Form, Input, Select } from 'antd'
 
@@ -20,8 +19,6 @@ export const ContactInfoForm = () => {
           rules={[isRequired('Email is required'), isEmail]}>
           <Input />
         </Form.Item>
-
-       
         <Form.Item
           name="address"
           label="Address"

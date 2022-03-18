@@ -31,6 +31,10 @@ export const PipelineSale: React.FC<PipelineSaleProps> = ({ }) => {
 
   useEffect(() => {
     setPipeLine(data);
+    return () => {
+      // @ts-ignore
+      setPipeLine({});
+    };
   }, [data]);
 
   return (

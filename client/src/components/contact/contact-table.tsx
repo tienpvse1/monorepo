@@ -25,6 +25,8 @@ import { useInsertContact } from '@modules/contact/mutation/contact.post';
 import { message } from 'antd';
 import { useCookies } from 'react-cookie';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
+import { dateFormat } from "@constance/date-format";
+const { DEFAULT } = dateFormat;
 
 const rowSelection = {
   onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
@@ -87,8 +89,13 @@ export const ContactTable: FC = () => {
   };
 
   const handleCreateContact = (record: IContact) => {
+    
     insertContact({
       ...record,
+      // company: {
+      //   name: 'ABC company (Sample)'
+      // },
+      birth: record.birth.format(DEFAULT)
     });
   };
 

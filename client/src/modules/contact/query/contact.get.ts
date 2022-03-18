@@ -1,4 +1,4 @@
-import { Axios, instance } from '@axios';
+import { instance } from '@axios';
 import { controllers } from '@constance/controllers';
 import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { useQuery } from 'react-query';
@@ -63,6 +63,7 @@ export const getContactsById = async (contactId: string) => {
       { field: 'account' },
       { field: 'company' },
       { field: 'account.team' },
+      { field: 'pipelineItems' }
     ],
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);

@@ -46,17 +46,16 @@ export const PageDetailsTitle: React.FC<PageDetailsTitleProps> = ({ contact }) =
         }
       >
         <Descriptions size='small' column={3}>
-          <Descriptions.Item label='Contact Owner'>
-            Tien Phan
-          </Descriptions.Item>
-
-          <Descriptions.Item label='Phone'>
-            {/* {moment(new Date(contact.createdAt)).fromNow()} */}
-            {contact.phone}
-          </Descriptions.Item>
           <Descriptions.Item label='Email'>
             {contact.email}
           </Descriptions.Item>
+          <Descriptions.Item label='Phone'>
+            {contact.phone}
+          </Descriptions.Item>
+          <Descriptions.Item label='Contact Owner'>
+            {contact.account.email}
+          </Descriptions.Item>
+
           <Descriptions.Item label='Company'>
             AABC company
           </Descriptions.Item>
