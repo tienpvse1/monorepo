@@ -31,7 +31,7 @@ export const ContactInfoDetails: React.FC<ContactInfoDetailsProps> = ({
         </Col>
         <Col span={12}>
           <MyForm label='Phone'>{contact.phone}</MyForm>
-          <MyForm label='Company'>{contact.company.name}</MyForm>
+          <MyForm label='Company'>{contact.company?.name}</MyForm>
           <MyForm label='Birth'>
             {contact.birth
               ? moment(contact.birth).format(BIRTH).toString()

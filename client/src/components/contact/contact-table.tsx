@@ -43,6 +43,9 @@ export const ContactTable: FC = () => {
     },
   ] = useCookies([PUBLIC_USER_INFO]);
   const { data, isLoading } = useContacts(id);  
+  console.log(data);
+  
+
   const { mutate: updateContact } = useUpdateContact(() => {
     client.invalidateQueries(QUERY_CONTACTS);
     message.success('Save successfully !');
