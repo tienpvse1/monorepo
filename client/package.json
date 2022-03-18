@@ -43,7 +43,6 @@
     "react-error-boundary": "^3.1.4",
     "react-facebook-login": "^4.1.1",
     "react-google-button": "^0.7.2",
-    "react-loading": "^2.0.3",
     "react-lottie": "^1.2.3",
     "react-query": "^3.34.7",
     "react-router-dom": "^6.2.1",

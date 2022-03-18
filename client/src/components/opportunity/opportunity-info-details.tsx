@@ -22,7 +22,7 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
               ? 'Unassigned'
               : `${opportunity.account.firstName} ${opportunity.account.lastName}`}
           </MyForm>
-          <MyForm label='Sale Team'>Team ABC (Sample)</MyForm>
+          <MyForm label='Sale Team'>{opportunity.account.team.name}</MyForm>
           <MyForm label='Close Date'>{opportunity.expectedClosing}</MyForm>
         </Col>
         <Col span={12}>

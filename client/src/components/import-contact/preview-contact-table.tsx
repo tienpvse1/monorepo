@@ -34,6 +34,7 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
   const handleSaveData = (contactData: CreateContactDto[]) => {
     const data = {
       bulk: contactData.map((item) => {
+        // @ts-ignore
         const { id, ...rest } = item;
         return rest;
       }),
@@ -125,6 +126,7 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
         <Column title='Birth' dataIndex='birth' key='birth' />
         <Column title='Email' dataIndex='email' key='email' />
         <Column title='Birth' dataIndex='birth' key='birth' />
+        <Column title='Company' dataIndex='companyName' key='companyName' />
         <Column
           title='Type'
           dataIndex='type'

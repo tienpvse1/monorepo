@@ -6,6 +6,7 @@ import {
   CrownOutlined,
   FieldTimeOutlined,
   FundOutlined,
+  LineChartOutlined,
   SolutionOutlined,
   UserOutlined,
   WalletOutlined,
@@ -26,7 +27,7 @@ interface MenuProp {
   icon: ReactNode;
 }
 
-export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
+export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -46,7 +47,6 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
       icon: <BranchesOutlined style={style} />,
     },
     {
-
       key: 'forecast',
       label: 'Forecast',
       style,
@@ -94,6 +94,13 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
       style,
       onClick: () => navigate('/schedule'),
       icon: <CalendarOutlined style={style} />,
+    },
+    {
+      key: 'statistic',
+      label: 'Statistic',
+      style,
+      onClick: () => navigate('/statistic'),
+      icon: <LineChartOutlined style={style} />,
     },
     {
       key: 'email',

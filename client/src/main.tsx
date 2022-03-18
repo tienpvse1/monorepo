@@ -14,13 +14,13 @@ import 'primeicons/primeicons.css';
 render(
   <StrictMode>
     <AbilityProvider>
-      <ErrorBoundary FallbackComponent={ErrorPage}>
-        <CookiesProvider>
-          <BrowserRouter>
-              <App />
-          </BrowserRouter>
-        </CookiesProvider>
-      </ErrorBoundary>
+      <BrowserRouter>
+        <ErrorBoundary FallbackComponent={ErrorPage}>
+          <CookiesProvider>
+            <App />
+          </CookiesProvider>
+        </ErrorBoundary>
+      </BrowserRouter>
     </AbilityProvider>
   </StrictMode>,
   document.getElementById('root')

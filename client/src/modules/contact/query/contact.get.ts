@@ -51,9 +51,22 @@ export const getContactsEmailLike = async (searchKey: string) => {
 };
 
 export const getContactsById = async (contactId: string) => {
-  const { instance } = new Axios();
-  const { data } = await instance.get<IContact>(`${CONTACT}/${contactId}`);
-  return data;
+  const query = RequestQueryBuilder.create({
+    filter: [
+      {
+        field: 'id',
+        operator: '$eq',
+        value: contactId,
+      },
+    ],
+    join: [
+      { field: 'account' },
+      { field: 'company' },
+      { field: 'account.team' },
+    ],
+  }).query(false);
+  const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
+  return data[0];
 };
 
 export const useContactsWithEmailLike = (queryKey: string) =>
