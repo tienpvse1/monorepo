@@ -1,27 +1,23 @@
-import { instance } from '@axios';
 import { Loading } from '@components/loading/loading';
-import { envVars } from '@env/var.env';
-import { useIdle } from '@mantine/hooks';
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { useNavigate, useRoutes } from 'react-router-dom';
+import { useRoutes } from 'react-router-dom';
 import './constance/color';
 import { route } from './pages/route-map';
 import './stylesheets/App.scss';
 export const client = new QueryClient();
 function App() {
   const elements = useRoutes(route);
-  const navigate = useNavigate();
-  console.log(envVars.VITE_BE_DOMAIN);
+  // const navigate = useNavigate();
 
-  const idle = useIdle(10000 * 60 * 30, { initialState: false });
+  // const idle = useIdle(10000 * 60 * 30, { initialState: false });
 
-  useEffect(() => {
-    if (idle) {
-      instance.post('auth/logout');
-      navigate('/login');
-    }
-  }, [idle]);
+  // useEffect(() => {
+  //   if (idle) {
+  //     instance.post('auth/logout');
+  //     navigate('/login');
+  //   }
+  // }, [idle]);
 
   return (
     <QueryClientProvider client={client}>

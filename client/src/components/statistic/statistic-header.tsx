@@ -1,17 +1,21 @@
-import { RetweetOutlined } from '@ant-design/icons';
 import {
-  Button,
-  Descriptions,
-  PageHeader,
-  Row,
-  Statistic,
-  Tag,
-  Tooltip,
-} from 'antd';
+  BarChartOutlined,
+  LineChartOutlined,
+  PieChartOutlined,
+  RetweetOutlined,
+} from '@ant-design/icons';
+import { Button, Descriptions, PageHeader, Radio, Tag, Tooltip } from 'antd';
+import { Dispatch, SetStateAction } from 'react';
 
-interface StatisticHeaderProps {}
+interface StatisticHeaderProps {
+  chartType: 'vertical' | 'pie' | 'line';
+  setChartType: Dispatch<SetStateAction<'vertical' | 'pie' | 'line'>>;
+}
 
-export const StatisticHeader: React.FC<StatisticHeaderProps> = ({}) => {
+export const StatisticHeader: React.FC<StatisticHeaderProps> = ({
+  chartType,
+  setChartType,
+}) => {
   return (
     <>
       <PageHeader
@@ -33,7 +37,7 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = ({}) => {
               display: 'flex',
               alignItems: 'center',
             }}
-            label='Type'
+            label='Target'
           >
             <Tag color={'error'}>Contact</Tag>
             <Tooltip title='change'>
@@ -44,6 +48,30 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = ({}) => {
             2022-08-10
           </Descriptions.Item>
           <Descriptions.Item label='Calculate to'>2022-10-10</Descriptions.Item>
+          <Descriptions.Item
+            style={{
+              paddingTop: 10,
+            }}
+            label='Type'
+          >
+            <Radio.Group
+              style={{
+                transform: 'translateY(-3px )',
+              }}
+              defaultValue={chartType}
+              onChange={(e) => setChartType(e.target.value)}
+            >
+              <Radio.Button value='vertical'>
+                <BarChartOutlined />
+              </Radio.Button>
+              <Radio.Button value='pie'>
+                <PieChartOutlined />
+              </Radio.Button>
+              <Radio.Button value='line'>
+                <LineChartOutlined />
+              </Radio.Button>
+            </Radio.Group>
+          </Descriptions.Item>
           <Descriptions.Item label='Remarks'>
             113 Nguyễn xí, P26, Vietnam
           </Descriptions.Item>
