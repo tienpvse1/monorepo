@@ -1,4 +1,4 @@
-import LoadingComponent from 'react-loading';
+import { Spin } from 'antd';
 
 interface LoadingProps {
   coverHeight?: string | number;
@@ -23,11 +23,12 @@ export const Loading: React.FC<LoadingProps> = ({
         alignItems: 'center',
       }}
     >
-      <LoadingComponent
-        type='spin'
-        color='red'
-        height={loadingHeight}
-        width={loadingWidth}
+      <Spin
+        size='large'
+        style={{
+          height: loadingHeight,
+          width: loadingWidth,
+        }}
       />
     </div>
   );

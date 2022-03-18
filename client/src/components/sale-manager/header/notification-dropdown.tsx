@@ -1,73 +1,52 @@
-import React, { CSSProperties, ReactNode } from 'react';
-import { BellOutlined } from '@ant-design/icons';
 import { INotification } from '@modules/notification/entity/notification.entity';
-import NoticeIcon from 'ant-design-pro/lib/NoticeIcon';
-import 'ant-design-pro/dist/ant-design-pro.css';
+import { Avatar, Badge, Comment, Tooltip } from 'antd';
+import moment from 'moment';
+
 interface NotificationDropdownProps {
-  notifications: INotification[];
+  data: INotification[];
 }
 
-const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
-  notifications,
+export const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
+  data,
 }) => {
-  const transformNotification = (): {
-    avatar?: string | React.ReactNode;
-    title?: ReactNode;
-    description?: ReactNode;
-    datetime?: ReactNode;
-    extra?: ReactNode;
-    style?: CSSProperties;
-  }[] => {
-    return notifications.map((item) => ({
-      avatar: item.sender.photo,
-      datetime: new Date(item.createdAt).toDateString(),
-      description: item.description,
-      title: item.name,
-    }));
-  };
   return (
     <div
       style={{
-        textAlign: 'right',
-        boxShadow: '0 1px 4px rgba(0,21,41,.12)',
-        background: 'white',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      <NoticeIcon
-        className='notice-icon'
-        bell={
-          <BellOutlined
-            style={{
-              fontSize: 23,
-              color: 'rgba(0,0,0,0.7)',
-            }}
+      {data.map((notification) => (
+        <Badge
+          dot={!notification.seen}
+          style={{
+            display: 'block',
+          }}
+          key={notification.id}
+        >
+          <Comment
+            author={`${notification.sender.firstName} ${notification.sender.lastName}`}
+            avatar={
+              <Avatar
+                src={notification.sender.photo}
+                alt={`${notification.sender.firstName} ${notification.sender.lastName}`}
+              />
+            }
+            content={notification.description}
+            datetime={
+              <Tooltip
+                title={moment(new Date(notification.createdAt)).format(
+                  'YYYY-MM-DD HH:mm:ss'
+                )}
+              >
+                <span>
+                  {moment(new Date(notification.createdAt)).fromNow()}
+                </span>
+              </Tooltip>
+            }
           />
-        }
-        count={notifications.filter((item) => !item.seen).length}
-      >
-        <NoticeIcon.Tab
-          onClick={() => console.log('')}
-          onClear={() => console.log('')}
-          locale=''
-          onViewMore={() => console.log('')}
-          list={transformNotification()}
-          title='notification'
-          emptyText='No notification'
-          emptyImage='https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg'
-        />
-        <NoticeIcon.Tab
-          onClick={() => console.log('')}
-          onClear={() => console.log('')}
-          locale=''
-          onViewMore={() => console.log('')}
-          list={[]}
-          title='message'
-          emptyText='No message'
-          emptyImage='https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg'
-        />
-      </NoticeIcon>
+        </Badge>
+      ))}
     </div>
   );
 };
-
-export default NotificationDropdown;

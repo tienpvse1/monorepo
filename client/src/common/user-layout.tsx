@@ -1,4 +1,4 @@
-import { MenuSiderUser } from '@components/layout/menu/user-menu';
+import { UserSideMenu } from '@components/layout/menu/user-menu';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { Role } from '@interfaces/type-roles';
 import { useCookies } from 'react-cookie';
@@ -17,7 +17,7 @@ const LayoutUser = () => {
   return (
     <AppLayout
       content={<Outlet />}
-      menuSider={<MenuSiderUser style={{ fontSize: 17 }} />}
+      menuSider={<UserSideMenu style={{ fontSize: 17 }} />}
     />
   );
 };

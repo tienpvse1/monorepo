@@ -5,14 +5,14 @@ import {
 } from '@ant-design/icons';
 import HeaderDrawer from '@components/header/header-drawer';
 import { Loading } from '@components/loading/loading';
-import NotificationDropdown from '@components/sale-manager/header/notification-dropdown';
+import { NotificationDropdown } from '@components/sale-manager/header/notification-dropdown';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { envVars } from '@env/var.env';
 import { useSocket } from '@hooks/socket';
 import { INotification } from '@modules/notification/entity/notification.entity';
 import { getNotifications } from '@modules/notification/query/notification.get';
 import { useUpdateSession } from '@modules/session/mutation/session.patch';
-import { Avatar, Dropdown, Tooltip } from 'antd';
+import { Avatar, Badge, Dropdown, Tooltip } from 'antd';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { io } from 'socket.io-client';
@@ -61,8 +61,23 @@ export const HeaderApp = () => {
         }}
       >
         <Tooltip title='Notification'>
-          {/* <NotificationDropdown notifications={notifications} /> */}
-          <BellOutlined style={{ fontSize: 23, color: 'rgba(0,0,0,0.7)' }} />
+          <Dropdown
+            trigger={['click']}
+            overlayStyle={{
+              backgroundColor: 'white',
+              padding: '10px 20px',
+              border: '1px solid rgba(0,0,0,0.1)',
+            }}
+            placement='bottomCenter'
+            arrow
+            overlay={<NotificationDropdown data={notifications} />}
+          >
+            <Badge count={notifications.filter((item) => !item.seen).length}>
+              <BellOutlined
+                style={{ fontSize: 23, color: 'rgba(0,0,0,0.7)' }}
+              />
+            </Badge>
+          </Dropdown>
         </Tooltip>
         <Tooltip title='Tasks'>
           <UnorderedListOutlined
