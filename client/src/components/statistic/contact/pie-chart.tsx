@@ -7,7 +7,11 @@ interface PieChartProps {
 }
 
 const DoughnutChart: React.FC<PieChartProps> = ({ data, options }) => {
-  return <Doughnut {...{ data, options }} />;
+  return (
+    <Doughnut
+      {...{ data: { ...data, labels: ['Company', 'Contact'] }, options }}
+    />
+  );
 };
 
 export default DoughnutChart;
