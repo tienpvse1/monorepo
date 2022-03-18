@@ -24,6 +24,17 @@ const getContacts = async (accountId: string) => {
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
   return data;
 };
+const getAllContacts = async () => {
+  const query = RequestQueryBuilder.create({
+    join: [
+      {
+        field: 'account'
+      }
+    ]
+  }).query(false);
+  const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
+  return data;
+};
 
 export const getContactsEmailLike = async (searchKey: string) => {
   const queryBuilder = RequestQueryBuilder.create();
@@ -59,6 +70,9 @@ export const useContacts = (accountId: string) =>
   useQuery([QUERY_CONTACTS, accountId], () => getContacts(accountId), {
     enabled: Boolean(accountId),
   });
+  
+export const useQueryAllContacts = () =>
+  useQuery([QUERY_CONTACTS], () => getAllContacts());
 
 export const useQueryContactsById = (contactId: string) =>
   useQuery(QUERY_CONTACTS_BY_ID, () => getContactsById(contactId));

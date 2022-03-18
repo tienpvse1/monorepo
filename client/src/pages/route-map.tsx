@@ -25,8 +25,11 @@ const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/pipeline'));
 const ViewOpportunityDetails = lazy(
   () => import('@pages/view-opportunity-details')
 );
-const OpportunitiesContainer = lazy(
-  () => import('@components/opportunity/opportunity-container')
+const SalesOpportunityList = lazy(
+  () => import('@components/sale/sales-opportunity-list')
+);
+const AllOpportunityList = lazy(
+  () => import('@components/admin/all-opportunity-list')
 );
 const CompanyContainer = lazy(
   () => import('@components/company/company-container')
@@ -34,6 +37,7 @@ const CompanyContainer = lazy(
 const ViewCompanyDetails = lazy(() => import('@pages/view-company-details'));
 
 const PipelineAdmin = lazy(() => import('@components/admin/pipeline-admin'));
+const AccountantLayout = lazy(() => import('@common/accountant-layout'));
 
 export const route: RouteObject[] = [
   {
@@ -101,7 +105,7 @@ export const route: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <OpportunitiesContainer />,
+            element: <SalesOpportunityList />,
           },
           {
             path: 'view-details/:id',
@@ -155,6 +159,46 @@ export const route: RouteObject[] = [
         path: '/sale-manager/details/:id',
         element: <ViewOpportunityDetails />,
       },
+    ],
+  },
+  {
+    path: '/accountant',
+    element: <AccountantLayout />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: 'pipeline',
+        element: <PipelineAdmin />,
+      },
+      {
+        path: 'forecast',
+        element: <ForecastKanban />
+      },
+      {
+        path: 'schedule',
+        element: <Schedule />,
+      },
+      {
+        path: 'email',
+        element: <EmailCompose />,
+      },
+      {
+        path: 'opportunities',
+        element: <Opportunities />,
+        children: [
+          {
+            index: true,
+            element: <AllOpportunityList />,
+          },
+          {
+            path: 'view-details/:id',
+            element: <ViewOpportunityDetails />,
+          },
+        ],
+      }
     ],
   },
   {
