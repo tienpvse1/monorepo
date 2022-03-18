@@ -1,6 +1,6 @@
 import { envVars } from "@env/var.env"
 import { IContact } from "@modules/contact/entity/contact.entity"
-import { Button, Col, Descriptions, PageHeader, Row, Space, Tag } from "antd"
+import { Button, Descriptions, PageHeader, Tag } from "antd"
 
 interface PageDetailsTitleProps {
   contact: IContact;

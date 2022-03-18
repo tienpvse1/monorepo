@@ -3,11 +3,8 @@ import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.ent
 import {
   Badge,
   Button,
-  Col,
   Descriptions,
   PageHeader,
-  Row,
-  Space,
   Tag,
 } from 'antd';
 import moment from 'moment';

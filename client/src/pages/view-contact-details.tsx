@@ -7,7 +7,8 @@ import { ContactInfoTabs } from '@components/contact/contact-info-tabs';
 const ViewContactDetails = () => {
   const params = useParams();
   const { data } = useQueryContactsById(params.id);
-
+  console.log("contact:", data);
+  
   return (
     <>
       {data ?
