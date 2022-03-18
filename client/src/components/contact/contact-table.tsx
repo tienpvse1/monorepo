@@ -42,8 +42,7 @@ export const ContactTable: FC = () => {
       public_user_info: { id },
     },
   ] = useCookies([PUBLIC_USER_INFO]);
-  const { data, isLoading } = useContacts(id);
-
+  const { data, isLoading } = useContacts(id);  
   const { mutate: updateContact } = useUpdateContact(() => {
     client.invalidateQueries(QUERY_CONTACTS);
     message.success('Save successfully !');
@@ -89,13 +88,11 @@ export const ContactTable: FC = () => {
   };
 
   const handleCreateContact = (record: IContact) => {
-    
+
     insertContact({
       ...record,
-      // company: {
-      //   name: 'ABC company (Sample)'
-      // },
-      birth: record.birth.format(DEFAULT)
+      companyName: 'ABC company (Sample)',
+      birth: record.birth ? record.birth.format(DEFAULT) : ''
     });
   };
 

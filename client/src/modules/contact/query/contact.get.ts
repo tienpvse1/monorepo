@@ -12,7 +12,10 @@ export const QUERY_CONTACTS_BY_ID = 'query-contact-by-id';
 
 const getContacts = async (accountId: string) => {
   const query = RequestQueryBuilder.create({
-    join: [{ field: 'account' }],
+    join: [
+      { field: 'account' },
+      { field: 'company' }
+    ],
     filter: [
       {
         field: 'account.id',
@@ -84,7 +87,7 @@ export const useContacts = (accountId: string) =>
   useQuery([QUERY_CONTACTS, accountId], () => getContacts(accountId), {
     enabled: Boolean(accountId),
   });
-  
+
 export const useQueryAllContacts = () =>
   useQuery([QUERY_CONTACTS], () => getAllContacts());
 

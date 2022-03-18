@@ -12,8 +12,6 @@ const SalesOpportunityList = () => {
   ] = useCookies([PUBLIC_USER_INFO]);
   const { data, isLoading } = useQueryPipelineByAccountId(id);
   const { data: contact } = useContacts(id);
-  console.log("contacttt:", contact);
-  
   return (
     <div className="opportunities-container">
       <OpportunitiesTable
