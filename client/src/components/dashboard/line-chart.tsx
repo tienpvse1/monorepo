@@ -1,5 +1,6 @@
+import { useOpportunityWithOrder } from '@modules/opportunity-history/query/opportunity-history.get';
 import { useStages } from '@modules/pipeline-column/query/pipeline-column.get';
-import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
+import { getMonthToShow, isIn } from '@util/date';
 import {
   BarElement,
   CategoryScale,
@@ -14,11 +15,8 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
-import { Spin } from 'antd';
-import { getMonthToShow, isIn } from '@util/date';
-import { useOpportunityWithOrder } from '@modules/opportunity-history/query/opportunity-history.get';
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -36,14 +34,9 @@ interface ChartInterface {
   width: number | string;
 }
 
-interface ColumnData {
-  id: string;
-  data: IPipelineItem[];
-}
 export const LineChart: React.FC<ChartInterface> = ({ height, width }) => {
   const { data: opportunityHistory } = useOpportunityWithOrder();
   const { data: stages } = useStages();
-  console.log(opportunityHistory);
   const monthToShow = getMonthToShow();
   const ref = useRef<ChartJS<'line'>>();
   const labels = stages.map(({ name, id }) => ({ name, id }));

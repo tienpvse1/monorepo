@@ -2,35 +2,44 @@ import { ICardData } from '@components/dashboard/data';
 import { DashboardHeader } from '@components/dashboard/header';
 import { LineChart } from '@components/dashboard/line-chart';
 import { Loading } from '@components/loading/loading';
+import { usePipelineItems } from '@modules/pipeline-items/query/pipeline-item.get';
+import { useSaleAccounts } from '@modules/account/get/account.get';
+import { isIn } from '@util/date';
 import { Calendar } from 'antd';
+import moment from 'moment';
 import { Suspense, useState } from 'react';
 
 interface SaleManagerDashboardProps {}
 
 const SaleManagerDashboard: React.FC<SaleManagerDashboardProps> = ({}) => {
+  const { data: pipelineItems } = usePipelineItems();
+  const { data: sales } = useSaleAccounts(true);
   const [data, setData] = useState<(ICardData & { index: number })[]>([
     {
       index: 0,
-      title: 'Total Opportunity',
-      total: 59,
-      updateStatus: 'since yesterday',
+      title: 'Total Opportunities',
+      total: pipelineItems.filter((item) =>
+        isIn(item.createdAt.toString(), moment().month(new Date().getMonth()))
+      ).length,
+      updateStatus: 'since last month',
       variance: 9,
     },
     {
       index: 1,
-      title: 'Total Opportunity',
+      title: 'Sold courses',
       total: 59,
-      updateStatus: 'since yesterday',
+      updateStatus: 'since last month',
       variance: 9,
     },
     {
       index: 2,
-      title: 'Total Opportunity',
-      total: 59,
-      updateStatus: 'since yesterday',
+      title: 'Total sales',
+      total: sales.length,
+      updateStatus: 'up-to-dated',
       variance: 9,
     },
   ]);
+
   return (
     <div>
       <>

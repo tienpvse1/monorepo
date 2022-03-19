@@ -69,6 +69,8 @@ export const getAllPipelineItem = async () => {
   const { data } = await instance.get<IPipelineItem[]>(
     `${PIPELINE_ITEM}?${queryBuilder}`
   );
+  console.log('fetched');
+
   return data;
 };
 
@@ -78,8 +80,8 @@ export const usePipelineItem = (id: string) =>
     enabled: Boolean(id),
   });
 
-export const useQueryAllPipelineItem = () =>
-  useQuery([GET_PIPELINE_ITEM_BY_ACCOUNT], () => getAllPipelineItem(), {
+export const usePipelineItems = () =>
+  useQuery([GET_PIPELINE_ITEM_BY_ACCOUNT], getAllPipelineItem, {
     suspense: true,
   });
 
