@@ -30,7 +30,7 @@ export const AccountList: React.FC<AccountListProps> = ({
       name: string;
       photo: string;
     }[]
-  >([]);
+  >(data);
   const handleSearch = (value: string) => {
     const searchResult = data.filter((item) =>
       item.name.toLowerCase().includes(value.toLowerCase())
@@ -63,7 +63,7 @@ export const AccountList: React.FC<AccountListProps> = ({
             optionFilterProp='children'
             onSearch={handleSearch}
           >
-            {result.map((item, index) => (
+            {result?.map((item, index) => (
               <Select.Option key={index} value={item.id}>
                 {item.name}
               </Select.Option>

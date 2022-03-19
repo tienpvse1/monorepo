@@ -50,14 +50,16 @@ export const KanbanColumnHeader: React.FC<KanbanColumnHeaderProps> = ({
           }}
         >
           {data.pipelineItems ? data.pipelineItems.length : 0}/10{' '}
-          <PlusOutlined
-            style={{
-              backgroundColor: 'rgba(0,0,0,0.07)',
-              padding: 5,
-              borderRadius: 2,
-              marginLeft: 7,
-            }}
-          />
+          <Tooltip title='add an opportunity'>
+            <PlusOutlined
+              style={{
+                backgroundColor: 'rgba(0,0,0,0.07)',
+                padding: 5,
+                borderRadius: 2,
+                marginLeft: 7,
+              }}
+            />
+          </Tooltip>
         </span>
       </div>
     </div>
