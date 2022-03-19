@@ -5,6 +5,7 @@ interface LoadingProps {
   coverWidth?: string | number;
   loadingHeight?: number | string;
   loadingWidth?: number | string;
+  size?: 'large' | 'small' | 'default';
 }
 
 export const Loading: React.FC<LoadingProps> = ({
@@ -12,6 +13,7 @@ export const Loading: React.FC<LoadingProps> = ({
   coverWidth = '100vw',
   loadingHeight = 75,
   loadingWidth = 75,
+  size = 'large',
 }) => {
   return (
     <div
@@ -24,7 +26,7 @@ export const Loading: React.FC<LoadingProps> = ({
       }}
     >
       <Spin
-        size='large'
+        size={size}
         style={{
           height: loadingHeight,
           width: loadingWidth,

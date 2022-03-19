@@ -3,6 +3,7 @@ import { Loading } from '@components/loading/loading';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useCompanies } from '@modules/company/query/company.get';
 import { useContacts } from '@modules/contact/query/contact.get';
+import { getMonthToShow, isIn } from '@util/date';
 import { Spin } from 'antd';
 import {
   ArcElement,
@@ -38,16 +39,7 @@ interface ChartInterface {
 }
 
 const Chart: React.FC<ChartInterface> = ({ chartType, setChartType }) => {
-  const currentMonth = new Date().getMonth();
-  const currentYear = new Date().getFullYear();
-  const monthsToShow = [
-    moment(new Date(currentYear, currentMonth, 0)).subtract(4, 'M'),
-    moment(new Date(currentYear, currentMonth, 0)).subtract(3, 'M'),
-    moment(new Date(currentYear, currentMonth, 0)).subtract(2, 'M'),
-    moment(new Date(currentYear, currentMonth, 0)).subtract(1, 'M'),
-    moment(new Date(currentYear, currentMonth, 0)),
-    moment(new Date(currentYear, currentMonth, 0)).add(1, 'M'),
-  ];
+  const monthsToShow = getMonthToShow();
   const [
     {
       public_user_info: { id: accountId },
@@ -65,9 +57,7 @@ const Chart: React.FC<ChartInterface> = ({ chartType, setChartType }) => {
         label: 'Company',
         data: monthsToShow.map((month) => {
           return companies.filter((company) =>
-            moment(company.createdAt)
-              .add(1, 'M')
-              .isBetween(month, month.clone().add(1, 'M'))
+            isIn(company.createdAt.toString(), month)
           ).length;
         }),
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
@@ -75,11 +65,9 @@ const Chart: React.FC<ChartInterface> = ({ chartType, setChartType }) => {
       {
         label: 'Contact',
         data: monthsToShow.map((month) => {
-          const result = contacts.filter((contact) => {
-            return moment(contact.createdAt)
-              .add(1, 'M')
-              .isBetween(month, month.clone().add(1, 'M'));
-          }).length;
+          const result = contacts.filter((contact) =>
+            isIn(contact.createdAt.toString(), month)
+          ).length;
 
           return result;
           // return contacts.length;

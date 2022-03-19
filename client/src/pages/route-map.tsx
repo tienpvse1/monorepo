@@ -6,6 +6,7 @@ import Statistic from './statistic';
 const HomePage = lazy(() => import('@pages/home'));
 const Contact = lazy(() => import('@pages/contact'));
 const LoginPage = lazy(() => import('@pages/login'));
+const Company = lazy(() => import('@pages/company'));
 const AdminPage = lazy(() => import('@pages/admin'));
 const Product = lazy(() => import('@pages/product'));
 const Schedule = lazy(() => import('@pages/schedule'));
@@ -17,10 +18,10 @@ const AddContact = lazy(() => import('@pages/import-contact'));
 const AdminLayout = lazy(() => import('@common/admin-layout'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
-const Company = lazy(() => import('@pages/company'));
 const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
 const ContactContainer = lazy(() => import('@components/contact/contact'));
+const SaleManagerDashboard = lazy(() => import('./sale-manager/dashboard'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
 const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/pipeline'));
 const ViewOpportunityDetails = lazy(
@@ -153,8 +154,12 @@ export const route: RouteObject[] = [
     element: <SaleManagerLayout />,
     children: [
       {
-        index: true,
+        path: '/sale-manager/sale-manage',
         element: <SaleManage />,
+      },
+      {
+        path: '/sale-manager/',
+        element: <SaleManagerDashboard />,
       },
       {
         path: '/sale-manager/pipeline',

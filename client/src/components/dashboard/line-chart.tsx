@@ -1,5 +1,6 @@
-import { PUBLIC_USER_INFO } from '@constance/cookie';
-import { useMyStages } from '@modules/pipeline-column/query/pipeline-column.get';
+import { useOpportunityWithOrder } from '@modules/opportunity-history/query/opportunity-history.get';
+import { useStages } from '@modules/pipeline-column/query/pipeline-column.get';
+import { getMonthToShow, isIn } from '@util/date';
 import {
   BarElement,
   CategoryScale,
@@ -10,14 +11,12 @@ import {
   LinearScale,
   LineElement,
   PointElement,
+  ScatterDataPoint,
   Title,
   Tooltip,
 } from 'chart.js';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
-import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
-
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -30,81 +29,82 @@ ChartJS.register(
   BarElement
 );
 
-export const options = {
-  responsive: true,
-};
-
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
 interface ChartInterface {
   height: number | string;
   width: number | string;
 }
+
 export const LineChart: React.FC<ChartInterface> = ({ height, width }) => {
-  const navigate = useNavigate();
-  const [data, setData] = useState<ChartData<'line', number[], string>>({
-    labels,
-    datasets: [],
-  });
-  const chartRef = useRef<ChartJS<'line', number[], string>>(null);
-  const [
-    {
-      public_user_info: { id },
-    },
-    ,
-    removeCookie,
-  ] = useCookies([PUBLIC_USER_INFO]);
-  const { data: stages, isError } = useMyStages(id);
-
-  if (isError) {
-    removeCookie('public_user_info');
-    navigate('/login');
-  }
-
-  useEffect(() => {
-    if (chartRef.current) {
-      // @ts-ignore
-      var canvas = chartRef.current.canvas;
-      var ctx = canvas.getContext('2d');
+  const { data: opportunityHistory } = useOpportunityWithOrder();
+  const { data: stages } = useStages();
+  const monthToShow = getMonthToShow();
+  const ref = useRef<ChartJS<'line'>>();
+  const labels = stages.map(({ name, id }) => ({ name, id }));
+  const options = {
+    responsive: true,
+  };
+  // @ts-ignore
+  const generateData = (): ChartData<
+    'line',
+    (number | ScatterDataPoint)[],
+    unknown
+  > => {
+    // @ts-ignore
+    if (ref.current) {
+      var ctx = ref.current.canvas.getContext('2d');
       var gradient = ctx.createLinearGradient(0, 0, 0, 200);
       gradient.addColorStop(0, 'rgb(238, 9, 121, 0.8)');
       gradient.addColorStop(1, 'rgba(255, 106, 0, 0.1)');
 
-      setData({
-        labels,
-        datasets: [
-          {
-            fill: 'start',
+      return {
+        labels: monthToShow.map((item) => item.format('MMMM YYYY')),
+        datasets: labels.map((label) => {
+          return {
+            fill: false,
             backgroundColor: gradient,
-            data: labels.map(() => Math.random() * 50),
+            data: monthToShow.map((month) => {
+              return opportunityHistory.filter(
+                (history) =>
+                  isIn(history.createdAt.toString(), month) &&
+                  history.newStage.id === label.id
+              ).length;
+            }),
             borderColor: 'rgb(255, 99, 132)',
-          },
-        ],
-      });
+            label: label.name,
+          };
+        }),
+      };
+    } else {
+      return {
+        datasets: [],
+        labels: [],
+      };
     }
-  }, [chartRef]);
+  };
+
   return (
     <div>
       <div style={{ height, width, marginTop: 20 }}>
         <Line
-          ref={chartRef}
+          ref={ref}
           options={{
             ...options,
             maintainAspectRatio: false,
             plugins: {
               legend: {
-                display: false,
+                display: true,
+                position: 'bottom',
               },
               title: {
                 position: 'bottom',
                 display: true,
-                text: 'Chart.js Line Chart',
+                text: 'Opportunity analysis by stages and time',
               },
             },
           }}
           width={10}
           height={5}
-          data={data}
+          data={generateData()}
         />
       </div>
       <div style={{ height, width, marginTop: 20 }}>

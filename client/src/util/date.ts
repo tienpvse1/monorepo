@@ -1,3 +1,5 @@
+import moment, { Moment } from 'moment';
+
 export const getHistoryDate = (historyDate: Date) => {
   const date = new Date(historyDate);
   const hour =
@@ -20,4 +22,21 @@ export const convert2 = (str: string) => {
   const hours = ('0' + date.getHours()).slice(-2);
   const minutes = ('0' + date.getMinutes()).slice(-2);
   return [date.getFullYear(), mnth, day, hours, minutes].join('-');
+};
+
+export const getMonthToShow = () => {
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+  return [
+    moment(new Date(currentYear, currentMonth, 0)).subtract(4, 'M'),
+    moment(new Date(currentYear, currentMonth, 0)).subtract(3, 'M'),
+    moment(new Date(currentYear, currentMonth, 0)).subtract(2, 'M'),
+    moment(new Date(currentYear, currentMonth, 0)).subtract(1, 'M'),
+    moment(new Date(currentYear, currentMonth, 0)),
+    moment(new Date(currentYear, currentMonth, 0)).add(1, 'M'),
+  ];
+};
+
+export const isIn = (date: string, month: Moment) => {
+  return moment(date).add(1, 'M').isBetween(month, month.clone().add(1, 'M'));
 };
