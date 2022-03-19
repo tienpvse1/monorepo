@@ -1,8 +1,9 @@
 import { ICardData } from '@components/dashboard/data';
 import { DashboardHeader } from '@components/dashboard/header';
 import { LineChart } from '@components/dashboard/line-chart';
+import { Loading } from '@components/loading/loading';
 import { Calendar } from 'antd';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 
 interface SaleManagerDashboardProps {}
 
@@ -48,7 +49,9 @@ const SaleManagerDashboard: React.FC<SaleManagerDashboardProps> = ({}) => {
               }}
             >
               <DashboardHeader setData={setData} data={data} />
-              <LineChart height={230} width={'100%'} />
+              <Suspense fallback={<Loading size='default' />}>
+                <LineChart height={230} width={'100%'} />
+              </Suspense>
             </div>
             <div style={{ marginTop: 20 }}>
               <div
