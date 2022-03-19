@@ -3,7 +3,6 @@ import {
   LineChartOutlined,
   PieChartOutlined,
 } from '@ant-design/icons';
-import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { PageHeader as RootHeader, Radio, Row, Statistic, Tag } from 'antd';
 import { nanoid } from 'nanoid';
 interface PageHeaderProps {
