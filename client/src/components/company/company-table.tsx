@@ -8,17 +8,23 @@ import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { CompanyTitleTable } from "@components/company/company-title-table";
 import { CreateModal } from "@components/modal/create-modal";
 import { CreateCompanyForm } from "./create-company-form";
+import { useCompanies } from "@modules/company/query/company.get";
+import moment from "moment";
+import { dateFormat } from "@constance/date-format";
+const { CRUD_AT } = dateFormat;
 
 export const CompanyTable = () => {
-  const data = [{
-    id: '1vxza',
-    name: 'Company name',
-    email: 'company@gmail.com',
-    phone: '0902750631',
-    companyOwner: 'ChuongNguyen',
-    city: 'TPHCM',
-    country: 'Viet Nam'
-  }]
+  // const data = [{
+  //   id: '1vxza',
+  //   name: 'Company name',
+  //   email: 'company@gmail.com',
+  //   phone: '0902750631',
+  //   companyOwner: 'ChuongNguyen',
+  //   city: 'TPHCM',
+  //   country: 'Viet Nam'
+  // }]
+  const { data } = useCompanies();
+
   const [form] = Form.useForm<any>();
   const [isEditing, toggleEditing] = useToggle();
   const [isOpenModal, toggleCreateModal] = useToggle();
@@ -80,22 +86,7 @@ export const CompanyTable = () => {
               />
             )}
           />
-          <Column
-            title="Email"
-            dataIndex="email"
-            key="email"
-            render={(_, record: any) => (
-              <EditableCell
-                linkTo={`view-details/`}
-                dataIndex='email'
-                nameForm='email'
-                editing={isEditing}
-                editingIndex={editingIndex}
-                recordIndex={record.id}
-                record={record}
-              />
-            )}
-          />
+
           <Column
             title="Phone"
             dataIndex="phone"
@@ -113,7 +104,8 @@ export const CompanyTable = () => {
             )}
 
           />
-          <Column
+
+          {/* <Column
             title="Company Owner"
             dataIndex="companyOwner"
             key="companyOwner"
@@ -128,8 +120,8 @@ export const CompanyTable = () => {
                 record={record}
               />
             )}
+          /> */}
 
-          />
           <Column
             title="City"
             dataIndex="city"
@@ -163,6 +155,15 @@ export const CompanyTable = () => {
               />
             )}
 
+          />
+
+          <Column
+            title="Created at"
+            dataIndex="createdAt"
+            key="createdAt"
+            render={(_, record: any) => (
+              <span>{moment(record.createdAt).format(CRUD_AT)}</span>
+            )}
           />
 
           <Column title="Actions" dataIndex="actions" key="actions" width={150}

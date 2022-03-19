@@ -1,3 +1,4 @@
+import { SelectBoxDistrict } from '@components/signup/select-box-district'
 import { Col, Form, Input } from 'antd'
 
 export const CompanyAddressForm = () => {
@@ -9,6 +10,12 @@ export const CompanyAddressForm = () => {
           label="Address"
         >
           <Input.TextArea />
+        </Form.Item>
+        <Form.Item
+          name="habitualResidence"
+          label="Habitual Residence"
+        >
+          <SelectBoxDistrict />
         </Form.Item>
         <Form.Item
           name={['addresses', 'city']}
@@ -46,6 +53,7 @@ export const CompanyAddressForm = () => {
         >
           <Input maxLength={14} />
         </Form.Item>
+        
       </Col>
     </>
   )
