@@ -22,7 +22,7 @@ export class CreateCompanyDto {
   @IsString()
   country: string;
   @IsOptional()
-  @IsPostalCode()
+  @IsPostalCode('any')
   postalCode: string;
   @IsOptional()
   taxId: string;

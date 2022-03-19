@@ -5,12 +5,12 @@ import {
 } from '@ant-design/icons';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { PageHeader as RootHeader, Radio, Row, Statistic, Tag } from 'antd';
+import { nanoid } from 'nanoid';
 interface PageHeaderProps {
   setView: React.Dispatch<
     React.SetStateAction<'kanban' | 'lineChart' | 'pieChart'>
   >;
   view: 'kanban' | 'lineChart' | 'pieChart';
-  data: IPipelineItem[][];
 }
 
 export const PageHeader: React.FC<PageHeaderProps> = ({ setView, view }) => {
@@ -19,10 +19,12 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ setView, view }) => {
       <RootHeader
         onBack={() => window.history.back()}
         title='Forecast'
+        key={nanoid(6)}
         tags={<Tag color='blue'>Running</Tag>}
         subTitle='opportunities revenue forecast'
         extra={[
           <Radio.Group
+            key={nanoid()}
             options={[
               {
                 label: (
