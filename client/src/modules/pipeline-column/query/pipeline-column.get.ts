@@ -17,6 +17,9 @@ export const getStages = async () => {
       {
         field: 'pipelineItems.schedules',
       },
+      {
+        field: 'pipelineItems.account',
+      },
     ],
   }).query(false);
   const { data } = await instance.get<IPipelineColumn[]>(
@@ -58,13 +61,13 @@ export const getStagesInfo = async () => {
 
 export const useStages = () =>
   useQuery([GET_STAGES_BY_PIPELINE_ID], getStages, {
-    suspense: true
+    suspense: true,
   });
 
 export const useQueryStagesInfo = () =>
   useQuery([GET_STAGES_INFO], getStagesInfo, {
-    suspense: true
-  })
+    suspense: true,
+  });
 export const useMyStages = (accountId: string) =>
   useQuery([GET_MY_STAGES, accountId], () => getMyStages(accountId), {
     retry: false,
