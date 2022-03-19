@@ -5,7 +5,7 @@ import { controllers } from '../../../constance/controllers';
 import { useQuery } from 'react-query';
 const { ACCOUNT } = controllers;
 
-export const GET_ACCOUNT_BY_SALE_ROLE = "get-account-by-sale-role";
+export const GET_ACCOUNT_BY_SALE_ROLE = 'get-account-by-sale-role';
 export const QUERY_SALE_ACCOUNTS = 'query-sale-accounts';
 export const getUser = async () => {
   const { instance } = new Axios();
@@ -40,6 +40,6 @@ export const getAccountById = async (id: string) => {
 };
 
 export const useQueryAccountBySaleRole = () =>
-  useQuery(GET_ACCOUNT_BY_SALE_ROLE, () => getSaleAccounts())
-export const useSaleAccounts = () =>
-  useQuery(QUERY_SALE_ACCOUNTS, getSaleAccounts);
+  useQuery(GET_ACCOUNT_BY_SALE_ROLE, () => getSaleAccounts());
+export const useSaleAccounts = (suspense = false) =>
+  useQuery(QUERY_SALE_ACCOUNTS, getSaleAccounts, { suspense });

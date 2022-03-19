@@ -1,3 +1,26 @@
 .timeline-icon {
     font-size: 24px;
 }
+
+.time-line-opportunity {
+    .ant-timeline-item-label {
+        position: absolute !important;
+        top: -7.001px !important;
+        width: calc(30% - 12px) !important;
+        text-align: center !important;
+    }
+    .ant-timeline-item-tail {
+        left: 27% !important;
+    }
+    .ant-timeline.ant-timeline-label {
+        .ant-timeline-item-head {
+            left: 27% !important;
+        }
+    }
+    .ant-timeline-item-content {
+        left: calc(32% - 4px) !important;
+        width: calc(80% - 14px) !important;
+        text-align: left !important;
+        margin: 0 0 0 2px !important;
+    }
+}

@@ -1,6 +1,9 @@
+import { OpportunityHistoryType } from '@modules/opportunity-history/entity/opportunity-history.entity';
+import { usePostOpportunityHistory } from '@modules/opportunity-history/mutation/opportunity-history.post';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import { useChangePipeline } from '@modules/pipeline/mutation/pipeline.update';
 import { abstractReIndex } from '@util/array';
+import { startFireworks } from '@util/firework';
 import { Dispatch, SetStateAction } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import '../../../stylesheets/kanban.css';
@@ -12,8 +15,9 @@ interface KanbanProps {
 
 export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
   const { mutate } = useChangePipeline();
+  const { mutateAsync: mutateOpportunityHistory } = usePostOpportunityHistory();
   const handleDragEnd = (e: DropResult) => {
-    const { destination, source, type } = e;
+    const { destination, source, type, draggableId } = e;
     const copied = [...data];
     if (!destination) return;
 
@@ -42,6 +46,14 @@ export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
       });
       const reIndexed = abstractReIndex(result, 'pipelineItems');
       console.log(reIndexed);
+      if (destColumn.isWon) startFireworks();
+      mutateOpportunityHistory({
+        newStageID: destination.droppableId,
+        oldStageId: source.droppableId,
+        description: `moved from ${sourceColumn.name} to ${destColumn.name}`,
+        pipelineItemId: draggableId,
+        type: OpportunityHistoryType.CHANGE_STATE,
+      });
       mutate({
         pipelineColumns: reIndexed,
         id: 'hard-coded-id',

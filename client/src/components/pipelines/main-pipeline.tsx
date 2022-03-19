@@ -2,28 +2,22 @@ import { EmptyComponent } from '@components/empty';
 import { PageTitlePipeline } from '@components/pipelines/page-title';
 import { PipeLineColumn } from '@components/pipelines/pipeline-column';
 import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-horizontal';
-// import { useSocket } from '@hooks/socket';
-// import { useHandleDnD } from '@hooks/useHandleDnD';
 import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-// import {
-//   GET_PIPELINE_DESIGN,
-//   useGetPipeLineUser,
-// } from '@modules/pipeline/query/pipeline.get';
-// import { GET_STAGES_BY_PIPELINE_ID } from '@modules/pipeline-column/query/pipeline-column.get';
 import { sortPipeline } from '@util/sort';
-import { Button } from 'antd';
-// import { useEffect } from 'react';
+import { Button, Form } from 'antd';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-// import { connect } from 'socket.io-client';
-// import { envVars } from '@env/var.env';
-// import { useQueryClient } from 'react-query';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { CreateColumnModal } from './pipeline-column/create-column-modal';
 import { CreateModal } from '@components/modal/create-modal';
 import { VerificationForm } from '@components/accountant/verification-form';
-
-// const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
+import { PUBLIC_USER_INFO } from '@constance/cookie';
+import { useCookies } from 'react-cookie';
+import { useChangeStage } from '@modules/pipeline-items/mutation/pipeline-items.update';
+import { useQueryClient } from 'react-query';
+import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-item.get';
+import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
+import { startFireworks } from '@util/firework';
 
 interface MainPipelineProps {
   data: IPipeline;
@@ -37,38 +31,20 @@ interface MainPipelineProps {
     draggableId: string) => void,
 }
 
-export const MainPipeline: React.FC<MainPipelineProps> = ({ 
+export const MainPipeline: React.FC<MainPipelineProps> = ({
   data,
   newPipeLine,
   handleMoveColumn,
   handleMoveItemColumn,
-  handleMoveItemsBetweenColumns,
-
- }) => {
+  handleMoveItemsBetweenColumns
+}) => {
+  const [form] = Form.useForm<any>();
   const [visible, setModalCreateStage] = useToggle();
   const [isVisible, toggleModalChangeStageWon] = useToggle();
-  // const queryClient = useQueryClient();
-
-  const stageWon = data?.pipelineColumns.find((stage) => stage.isWon === true)
-
-  // const {
-  //   newPipeLine,
-  //   isError,
-  //   setPipeLine,
-  //   handleMoveColumn,
-  //   handleMoveItemColumn,
-  //   handleMoveItemsBetweenColumns,
-  // } = useHandleDnD(data);
-
-  // useSocket<IPipeline, any>({
-  //   event: 'pipeline-updated',
-  //   socket,
-  //   onReceive: (data) => setPipeLine(data)
-  // });
-
-  // useEffect(() => {
-  //   setPipeLine(data);
-  // }, [data, isError]);
+  const queryClient = useQueryClient();
+  const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
+  const { mutate } = useChangeStage();
+  const stageWon = data?.pipelineColumns?.find((stage) => stage.isWon === true)
 
   if (data !== undefined) {
     sortPipeline(data);
@@ -77,8 +53,37 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
   const totalColumn = data?.pipelineColumns.length || 1;
   const widthOfItem = 333;
 
-  const handleChangeStageWon = (record: any) => {
 
+  const handleIsRoleAdmin = () => {
+    return public_user_info.role.name === 'admin' ? true : false
+  }
+
+  const handleChangeStageWon = async () => {
+    const record = await form.validateFields();
+    mutate(
+      {
+        id: record.draggableId,
+        newStageId: record.newStageId,
+        oldStageId: record.oldStageId,
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries(GET_PIPELINE_ITEM_BY_ID);
+          queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
+          toggleModalChangeStageWon();
+          startFireworks();
+        },
+      }
+    );
+  }
+
+  const handleToggleModalChangeStageWon = (oldStageId: string, newStageId: string, draggableId: string) => {
+    form.setFieldsValue({
+      oldStageId,
+      newStageId,
+      draggableId
+    })
+    toggleModalChangeStageWon();
   }
 
   const onDragEnd = (result: DropResult) => {
@@ -107,8 +112,8 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
         return;
       }
 
-      if (finishColumn === stageWon.name) {
-        toggleModalChangeStageWon();
+      if (finishColumn === stageWon.id) {
+        handleToggleModalChangeStageWon(startColumn, stageWon.id, draggableId);
         return;
       }
 
@@ -125,7 +130,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
 
   return (
     <>
-      <PageTitlePipeline setModalCreateStage={setModalCreateStage} />
+      <PageTitlePipeline isRoleAdmin={handleIsRoleAdmin()} setModalCreateStage={setModalCreateStage} />
       {data?.pipelineColumns.length == 0 ? (
         <EmptyComponent
           imageStyle={{ height: 200 }}
@@ -157,19 +162,20 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
                       )
                     )}
                     {providedColumns.placeholder}
-                    <div className='shadow-column-create'>
-                      <Button
-                        onClick={setModalCreateStage}
-                        style={{
-                          width: '300px',
-                          height: '80px',
-                          fontSize: '15px',
-                        }}
-                        type='dashed'
-                      >
-                        Add a stage column
-                      </Button>
-                    </div>
+                    {handleIsRoleAdmin() &&
+                      <div className='shadow-column-create'>
+                        <Button
+                          onClick={setModalCreateStage}
+                          style={{
+                            width: '300px',
+                            height: '80px',
+                            fontSize: '15px',
+                          }}
+                          type='dashed'
+                        >
+                          Add a stage column
+                        </Button>
+                      </div>}
                   </div>
                 </>
               )}
@@ -188,9 +194,15 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
         width={900}
         isOpenModal={isVisible}
         toggleCreateModal={toggleModalChangeStageWon}
-        callback={handleChangeStageWon}
+        hasSubmitMethod={handleChangeStageWon}
+        hasForm={true}
       >
-        <VerificationForm />
+        <Form
+          form={form}
+          layout='vertical'
+        >
+          <VerificationForm />
+        </Form>
       </CreateModal>
     </>
   );

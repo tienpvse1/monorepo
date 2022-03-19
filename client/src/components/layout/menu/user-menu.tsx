@@ -2,11 +2,11 @@
 import {
   BranchesOutlined,
   CalendarOutlined,
-  CodeSandboxOutlined,
   ContactsOutlined,
   CrownOutlined,
   FieldTimeOutlined,
   FundOutlined,
+  LineChartOutlined,
   SolutionOutlined,
   UserOutlined,
   WalletOutlined,
@@ -14,7 +14,6 @@ import {
 import { Menu } from 'antd';
 import { ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-const { SubMenu } = Menu;
 
 interface MenuSiderUserProps {
   style: object;
@@ -28,7 +27,7 @@ interface MenuProp {
   icon: ReactNode;
 }
 
-export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
+export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -48,7 +47,6 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
       icon: <BranchesOutlined style={style} />,
     },
     {
-
       key: 'forecast',
       label: 'Forecast',
       style,
@@ -98,23 +96,27 @@ export const MenuSiderUser = ({ style }: MenuSiderUserProps) => {
       icon: <CalendarOutlined style={style} />,
     },
     {
+      key: 'statistic',
+      label: 'Statistic',
+      style,
+      onClick: () => navigate('/statistic'),
+      icon: <LineChartOutlined style={style} />,
+    },
+    {
       key: 'email',
-      label: (
-        <>
-          <img
-            src={'https://cdn-icons-png.flaticon.com/512/732/732200.png'}
-            height={20}
-            width={20}
-            style={{
-              marginRight: 10,
-            }}
-          />
-          Gmail
-        </>
-      ),
+      label: 'Email',
       style,
       onClick: () => navigate('/email'),
-      icon: null,
+      icon: (
+        <img
+          src={'https://cdn-icons-png.flaticon.com/512/732/732200.png'}
+          height={20}
+          width={20}
+          style={{
+            marginRight: 10,
+          }}
+        />
+      ),
     },
   ];
 

@@ -8,7 +8,6 @@ const { PIPELINE } = controllers;
 
 export const actionPutPipeline = async ({
   id,
-  infoChangeStage,
   ...rest
 }: IPipeline) => {
   const { instance } = new Axios();

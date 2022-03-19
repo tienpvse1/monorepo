@@ -5,14 +5,16 @@ import {
 } from '@ant-design/icons';
 import { useBooleanToggle } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { Avatar, Card, Tooltip } from 'antd';
+import { Avatar, Card, Dropdown, Tooltip } from 'antd';
 import { useState } from 'react';
 import {
   Draggable,
   DroppableProvided,
   DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
+import { useNavigate } from 'react-router-dom';
 import { AccountList } from './account-list';
+import { DetailDropdown } from './drop-down';
 
 export const KanBanItem = (
   provided: DroppableProvided,
@@ -21,6 +23,7 @@ export const KanBanItem = (
 ) => {
   const [currentId, setCurrentId] = useState<string>('');
   const [value, toggle] = useBooleanToggle(false);
+  const navigate = useNavigate();
   const handleAssignClick = (id: string) => {
     // mutate({
     //   accountId,
@@ -28,6 +31,10 @@ export const KanBanItem = (
     // });
     setCurrentId(id);
     toggle();
+  };
+
+  const onViewMore = (opportunityId: string) => {
+    navigate(`/sale-manager/details/${opportunityId}`);
   };
   return (
     <div
@@ -63,8 +70,18 @@ export const KanBanItem = (
                       onClick={() => handleAssignClick(item.id)}
                     />
                   </Tooltip>,
-                  <Tooltip placement='bottom' title='More'>
-                    <EllipsisOutlined key='ellipsis' />
+                  <Tooltip placement='bottom' title='More' arrowContent>
+                    <Dropdown
+                      trigger={['click']}
+                      overlay={
+                        <DetailDropdown
+                          pipelineItemId={item.id}
+                          onViewMore={onViewMore}
+                        />
+                      }
+                    >
+                      <EllipsisOutlined key='ellipsis' />
+                    </Dropdown>
                   </Tooltip>,
                 ]}
               >

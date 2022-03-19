@@ -6,7 +6,7 @@ import { IPipelineItem } from '../entity/pipeline-items.entity';
 
 const { PIPELINE_ITEM } = controllers;
 export const GET_PIPELINE_ITEM_BY_ID = 'get-pipeline-item-by-id';
-export const GET_PIPELINE_ITEM_BY_ACCOUNT_ID = 'get-pipeline-item-by-account-id';
+export const GET_PIPELINE_ITEM_BY_ACCOUNT = 'get-pipeline-item-by-account';
 
 export const getPipelineId = async (id: string) => {
   const queryBuilder = RequestQueryBuilder.create({
@@ -16,8 +16,9 @@ export const getPipelineId = async (id: string) => {
       { field: 'opportunityRevenue' },
       { field: 'opportunityRevenue.product' },
       { field: 'account' },
+      { field: 'account.team' },
       { field: 'contact' },
-      { field: 'schedules' }
+      { field: 'schedules' },
     ],
     filter: [
       {
@@ -39,7 +40,7 @@ export const getPipelineByAccountID = async (accountId: string) => {
     join: [
       { field: 'pipelineColumn' },
       { field: 'account' },
-      { field: 'contact' }
+      { field: 'contact' },
     ],
     filter: [
       {
@@ -61,27 +62,30 @@ export const getAllPipelineItem = async () => {
     join: [
       { field: 'pipelineColumn' },
       { field: 'account' },
-      { field: 'contact' }
+      { field: 'contact' },
     ],
   }).query(false);
 
   const { data } = await instance.get<IPipelineItem[]>(
     `${PIPELINE_ITEM}?${queryBuilder}`
   );
+  console.log('fetched');
+
   return data;
 };
 
 export const usePipelineItem = (id: string) =>
   useQuery([GET_PIPELINE_ITEM_BY_ID, id], () => getPipelineId(id), {
     suspense: true,
+    enabled: Boolean(id),
   });
 
-export const useQueryAllPipelineItem = () =>
-  useQuery([GET_PIPELINE_ITEM_BY_ACCOUNT_ID], () => getAllPipelineItem(), {
+export const usePipelineItems = () =>
+  useQuery([GET_PIPELINE_ITEM_BY_ACCOUNT], getAllPipelineItem, {
     suspense: true,
   });
 
-
 export const useQueryPipelineByAccountId = (accountId: string) =>
-  useQuery([GET_PIPELINE_ITEM_BY_ACCOUNT_ID, accountId],
-    () => getPipelineByAccountID(accountId))
+  useQuery([GET_PIPELINE_ITEM_BY_ACCOUNT, accountId], () =>
+    getPipelineByAccountID(accountId)
+  );

@@ -17,6 +17,7 @@ import { useCreateSchedule } from '@modules/schedule/mutation/schedule.post';
 import { client } from '../../../App';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { useNavigate } from 'react-router-dom';
+import { IconLost } from './icon-lost';
 const Planned = lazy(() => import('@components/schedule/planned'));
 const { Meta } = Card;
 
@@ -30,10 +31,13 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
   const { mutate } = useCreateSchedule();
   const { mutate: removePipelineItems } = useDeletePipelineItems();
   const onDeletePipeLineItem = () => removePipelineItems(cardData.id);
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
   const handleViewDetailClick = () => {
     navigate(`/opportunities/view-details/${cardData.id}`)
   };
+
+  console.log("changed");
+
 
   const handleSubmit = (value: any) => {
     const schedule: ICreateScheduleDto = {
@@ -64,7 +68,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
         title={
           <>
             <span style={{ fontWeight: 500 }}>
-              <CrownFilled style={{ color: '#FBC02D' }}/>
+              <CrownFilled style={{ color: '#FBC02D' }} />
               {` ${cardData.name}`}
             </span>
             {/* <Tag color={'blue'} style={{ marginLeft: 10, borderRadius: 5 }}>
@@ -115,8 +119,9 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
                       style={{ fontSize: 18, cursor: 'pointer', color: cardData.schedules?.length > 0 ? 'green' : '' }}
                     />
                   </Dropdown>
+                  <IconLost />
 
-                  <Tag style={{ marginLeft: 10, borderRadius: 5 }}>
+                  <Tag style={{ marginLeft: 5, borderRadius: 5 }}>
                     Modified 2h ago
                   </Tag>
                 </Space>
@@ -128,7 +133,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
       </Card>
       <CreateModal
         width={500}
-        title='Schedule Activity 2'
+        title='Schedule Activity'
         isOpenModal={value}
         toggleCreateModal={() => toggle()}
         callback={(record) => handleSubmit(record)}

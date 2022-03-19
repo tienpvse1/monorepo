@@ -1,10 +1,12 @@
 import SaleManagerLayout from '@common/sale-manager-layout';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
+import Statistic from './statistic';
 
 const HomePage = lazy(() => import('@pages/home'));
 const Contact = lazy(() => import('@pages/contact'));
 const LoginPage = lazy(() => import('@pages/login'));
+const Company = lazy(() => import('@pages/company'));
 const AdminPage = lazy(() => import('@pages/admin'));
 const Product = lazy(() => import('@pages/product'));
 const Schedule = lazy(() => import('@pages/schedule'));
@@ -16,26 +18,28 @@ const AddContact = lazy(() => import('@pages/import-contact'));
 const AdminLayout = lazy(() => import('@common/admin-layout'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
-const Company = lazy(() => import('@pages/company'));
 const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
 const ContactContainer = lazy(() => import('@components/contact/contact'));
+const SaleManagerDashboard = lazy(() => import('./sale-manager/dashboard'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
 const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/pipeline'));
 const ViewOpportunityDetails = lazy(
   () => import('@pages/view-opportunity-details')
 );
-const OpportunitiesContainer = lazy(
-  () => import('@components/opportunity/opportunity-container')
+const SalesOpportunityList = lazy(
+  () => import('@components/sale/sales-opportunity-list')
+);
+const AllOpportunityList = lazy(
+  () => import('@components/admin/all-opportunity-list')
 );
 const CompanyContainer = lazy(
   () => import('@components/company/company-container')
-); 
-const ViewCompanyDetails = lazy(
-  () => import('@pages/view-company-details')
-); 
+);
+const ViewCompanyDetails = lazy(() => import('@pages/view-company-details'));
 
-const PipelineAdmin = lazy(() => import('@components/admin/pipeline-admin'))
+const PipelineAdmin = lazy(() => import('@components/admin/pipeline-admin'));
+const AccountantLayout = lazy(() => import('@common/accountant-layout'));
 
 export const route: RouteObject[] = [
   {
@@ -78,6 +82,10 @@ export const route: RouteObject[] = [
         element: <Schedule />,
       },
       {
+        path: 'statistic',
+        element: <Statistic />,
+      },
+      {
         path: 'email',
         element: <EmailCompose />,
       },
@@ -103,7 +111,7 @@ export const route: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <OpportunitiesContainer />,
+            element: <SalesOpportunityList />,
           },
           {
             path: 'view-details/:id',
@@ -117,13 +125,13 @@ export const route: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <CompanyContainer />
+            element: <CompanyContainer />,
           },
           {
             path: 'view-details/',
-            element: <ViewCompanyDetails />
-          }
-        ]
+            element: <ViewCompanyDetails />,
+          },
+        ],
       },
     ],
   },
@@ -137,8 +145,8 @@ export const route: RouteObject[] = [
       },
       {
         path: 'pipeline',
-        element: <PipelineAdmin />
-      }
+        element: <PipelineAdmin />,
+      },
     ],
   },
   {
@@ -146,13 +154,61 @@ export const route: RouteObject[] = [
     element: <SaleManagerLayout />,
     children: [
       {
-        index: true,
+        path: '/sale-manager/sale-manage',
         element: <SaleManage />,
+      },
+      {
+        path: '/sale-manager/',
+        element: <SaleManagerDashboard />,
       },
       {
         path: '/sale-manager/pipeline',
         element: <SaleManagerPipeline />,
       },
+      {
+        path: '/sale-manager/details/:id',
+        element: <ViewOpportunityDetails />,
+      },
+    ],
+  },
+  {
+    path: '/accountant',
+    element: <AccountantLayout />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: 'pipeline',
+        element: <PipelineAdmin />,
+      },
+      {
+        path: 'forecast',
+        element: <ForecastKanban />
+      },
+      {
+        path: 'schedule',
+        element: <Schedule />,
+      },
+      {
+        path: 'email',
+        element: <EmailCompose />,
+      },
+      {
+        path: 'opportunities',
+        element: <Opportunities />,
+        children: [
+          {
+            index: true,
+            element: <AllOpportunityList />,
+          },
+          {
+            path: 'view-details/:id',
+            element: <ViewOpportunityDetails />,
+          },
+        ],
+      }
     ],
   },
   {

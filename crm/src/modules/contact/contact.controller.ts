@@ -39,6 +39,8 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
       noteWorthies: {},
       pipelineItems: {},
       account: {},
+      company: {},
+      'account.team': {},
     },
   },
   routes: {

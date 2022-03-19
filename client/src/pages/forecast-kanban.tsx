@@ -29,7 +29,7 @@ const ForecastKanban: React.FC<ForecastKanban> = ({}) => {
 
   return (
     <div>
-      <PageHeader data={data} setView={setView} view={view} />
+      <PageHeader setView={setView} view={view} />
       <Is condition={view === 'kanban'}>
         <Kanban data={data} setData={setData} />
       </Is>

@@ -15,7 +15,13 @@ export const SaleManagerMenu: React.FC<SaleManagerMenuProps> = ({}) => {
       selectedKeys={''}
       mode='inline'
     >
-      <Menu.Item onClick={onMenuClick('/sale-manager/')} key={'sale-manage'}>
+      <Menu.Item onClick={onMenuClick('/sale-manager/')} key={''}>
+        Dashboard
+      </Menu.Item>
+      <Menu.Item
+        onClick={onMenuClick('/sale-manager/sale-manage')}
+        key={'sale-manage'}
+      >
         Sale Manage
       </Menu.Item>
       <Menu.Item

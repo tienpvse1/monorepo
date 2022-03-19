@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import { UnauthorizePage } from './unauthorize';
+import { Navigate } from 'react-router-dom';
 
 interface ErrorPageProps {
   error: any;
 }
 export const ErrorPage: React.FC<ErrorPageProps> = ({ error }) => {
-  console.log(error);
-  if (error.message == 'Unauthorize') return <UnauthorizePage />;
-  else return <div>Error occur</div>;
+  // if (error.message == 'Unauthorize') return <UnauthorizePage />;
+  // return <Navigate to={'/login'} />;
+  return <h1>Error</h1>;
 };

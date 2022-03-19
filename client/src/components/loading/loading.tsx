@@ -1,10 +1,11 @@
-import LoadingComponent from 'react-loading';
+import { Spin } from 'antd';
 
 interface LoadingProps {
   coverHeight?: string | number;
   coverWidth?: string | number;
   loadingHeight?: number | string;
   loadingWidth?: number | string;
+  size?: 'large' | 'small' | 'default';
 }
 
 export const Loading: React.FC<LoadingProps> = ({
@@ -12,6 +13,7 @@ export const Loading: React.FC<LoadingProps> = ({
   coverWidth = '100vw',
   loadingHeight = 75,
   loadingWidth = 75,
+  size = 'large',
 }) => {
   return (
     <div
@@ -23,11 +25,12 @@ export const Loading: React.FC<LoadingProps> = ({
         alignItems: 'center',
       }}
     >
-      <LoadingComponent
-        type='spin'
-        color='red'
-        height={loadingHeight}
-        width={loadingWidth}
+      <Spin
+        size={size}
+        style={{
+          height: loadingHeight,
+          width: loadingWidth,
+        }}
       />
     </div>
   );

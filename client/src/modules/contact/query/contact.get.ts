@@ -1,4 +1,4 @@
-import { Axios, instance } from '@axios';
+import { instance } from '@axios';
 import { controllers } from '@constance/controllers';
 import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { useQuery } from 'react-query';
@@ -12,7 +12,10 @@ export const QUERY_CONTACTS_BY_ID = 'query-contact-by-id';
 
 const getContacts = async (accountId: string) => {
   const query = RequestQueryBuilder.create({
-    join: [{ field: 'account' }],
+    join: [
+      { field: 'account' },
+      { field: 'company' }
+    ],
     filter: [
       {
         field: 'account.id',
@@ -20,6 +23,17 @@ const getContacts = async (accountId: string) => {
         value: accountId,
       },
     ],
+  }).query(false);
+  const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
+  return data;
+};
+const getAllContacts = async () => {
+  const query = RequestQueryBuilder.create({
+    join: [
+      {
+        field: 'account'
+      }
+    ]
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
   return data;
@@ -40,9 +54,23 @@ export const getContactsEmailLike = async (searchKey: string) => {
 };
 
 export const getContactsById = async (contactId: string) => {
-  const { instance } = new Axios();
-  const { data } = await instance.get<IContact>(`${CONTACT}/${contactId}`);
-  return data;
+  const query = RequestQueryBuilder.create({
+    filter: [
+      {
+        field: 'id',
+        operator: '$eq',
+        value: contactId,
+      },
+    ],
+    join: [
+      { field: 'account' },
+      { field: 'company' },
+      { field: 'account.team' },
+      { field: 'pipelineItems' }
+    ],
+  }).query(false);
+  const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
+  return data[0];
 };
 
 export const useContactsWithEmailLike = (queryKey: string) =>
@@ -59,6 +87,9 @@ export const useContacts = (accountId: string) =>
   useQuery([QUERY_CONTACTS, accountId], () => getContacts(accountId), {
     enabled: Boolean(accountId),
   });
+
+export const useQueryAllContacts = () =>
+  useQuery([QUERY_CONTACTS], () => getAllContacts());
 
 export const useQueryContactsById = (contactId: string) =>
   useQuery(QUERY_CONTACTS_BY_ID, () => getContactsById(contactId));

@@ -2,31 +2,30 @@ import { MainPipeline } from '@components/pipelines/main-pipeline';
 import { envVars } from '@env/var.env';
 import { useSocket } from '@hooks/socket';
 import { useHandleDnD } from '@hooks/useHandleDnD';
-import { getStages, GET_STAGES_BY_PIPELINE_ID } from '@modules/pipeline-column/query/pipeline-column.get';
+import { getStages } from '@modules/pipeline-column/query/pipeline-column.get';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
+import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { connect } from 'socket.io-client';
-import { abstractSort } from '@util/array';
-
 const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 
-interface PipelineProps { }
+interface PipelineAdminProps { }
 
-const PipelineAdmin: React.FC<PipelineProps> = ({ }) => {
-  // const { data: Stages } = useStages();
-  const { data: Stages } = useQuery([GET_STAGES_BY_PIPELINE_ID], getStages, {
+const PipelineAdmin: React.FC<PipelineAdminProps> = ({ }) => {
+  const { data: stages } = useQuery(GET_PIPELINE_DESIGN, getStages, {
     suspense: true,
     staleTime: Infinity
   });
 
+  // TODO: this is still hard code
   const pipeline: IPipeline = {
     id: "QIECTiuvzY",
     createdAt: null,
     updatedAt: null,
     deletedAt: null,
     name: "pipeline 1",
-    pipelineColumns: Stages
+    pipelineColumns: stages
   }
 
   const {
@@ -39,30 +38,26 @@ const PipelineAdmin: React.FC<PipelineProps> = ({ }) => {
 
   useSocket({
     event: 'manager-pipeline-updated',
+    socket,
     onReceive: ({ pipelineColumns }: IPipeline) => {
       if (pipelineColumns) {
-        abstractSort(pipelineColumns, 'pipelineItems');
         setPipeLine({
           ...pipeline,
           pipelineColumns
         });
       }
-    },
-    socket,
+    }
   });
 
   useEffect(() => {
+    const ac = new AbortController();
     setPipeLine(pipeline);
-  }, [Stages]);
-
-  // useEffect(() => {
-  //   getStages().then((data) => {
-  //     setPipeLine({
-  //       ...pipeline,
-  //       pipelineColumns: data
-  //     });
-  //   });
-  // }, [data, isError]);
+    return () => {
+      // @ts-ignore
+      setPipeLine({});
+      ac.abort();
+    };
+  }, [stages]);
 
   return (
     <MainPipeline
@@ -72,7 +67,6 @@ const PipelineAdmin: React.FC<PipelineProps> = ({ }) => {
       handleMoveItemColumn={handleMoveItemColumn}
       handleMoveItemsBetweenColumns={handleMoveItemsBetweenColumns}
     />
-    // <h1>123</h1>
   );
 };
 

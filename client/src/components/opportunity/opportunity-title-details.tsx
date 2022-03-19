@@ -1,76 +1,90 @@
-import { envVars } from "@env/var.env"
-import { IPipelineItem } from "@modules/pipeline-items/entity/pipeline-items.entity";
-import { Button, Col, Row, Space } from "antd"
+import { envVars } from '@env/var.env';
+import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
+import {
+  Badge,
+  Button,
+  Descriptions,
+  PageHeader,
+  Tag,
+} from 'antd';
+import moment from 'moment';
 
 interface OpportunityTitleDetailsProps {
   opportunity?: IPipelineItem;
 }
 
-export const OpportunityTitleDetails: React.FC<OpportunityTitleDetailsProps> = ({ opportunity }) => {
+export const OpportunityTitleDetails: React.FC<
+  OpportunityTitleDetailsProps
+> = ({ opportunity }) => {
   return (
-    <>
+    <Badge.Ribbon
+      text='Won'
+      color='green'
+      style={{
+        marginRight: '20px',
+        marginTop: '8px',
+        display: opportunity.pipelineColumn.isWon ? 'flex' : 'none',
+        alignItems: 'center',
+        height: '26px',
+        fontSize: '20px',
+      }}
+    >
       <div className="container-title-details">
-        <Row style={{ alignItems: 'center' }}>
-          <Col span={12}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <img
-                src={`${envVars.VITE_BE_DOMAIN}/files/crown.png`}
-                width={47}
-                height={47}
-              />
-              <div style={{ marginLeft: '10px' }}>
-                <span style={{
-                  fontSize: '16px',
-                  color: 'rgba(0,0,0,0.7)',
-                }}
+        <PageHeader
+          className='site-page-header'
+          onBack={() => window.history.back()}
+          extra={
+            <>
+              {!opportunity.pipelineColumn.isWon && (
+                <Button
+                  className='button-ant-custom-style'
+                  type='primary'
+                  size='middle'
                 >
-                  Opportunity
-                </span>
-
-                <div style={{ fontSize: '20px', fontWeight: '700' }}>
-                  {opportunity.name}
-                </div>
-              </div>
-            </div>
-          </Col>
-          <Col span={12}>
-            <Space style={{ float: 'right' }}>
-              <Button
-                className='button-ant-custom-style'
-                type='primary'
-                size='middle'
+                  Lost
+                </Button>
+              )}
+            </>
+          }
+          title={
+            <>
+              <span
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                }}
               >
-                Edit All
-              </Button>
-            </Space>
-          </Col>
-        </Row>
-        <Row style={{ marginTop: '15px' }}>
-          <table className="mini-table-details">
-            <tbody>
-              <tr>
-                <th>Title</th>
-                <th>Amount</th>
-                <th>Close Date</th>
-                <th>Opportunity Owner</th>
-              </tr>
-              <tr>
-                <td>
-                  {opportunity.title}
-                </td>
-                {/* //TODO this is still hard code */}
-                <td>16.000.000 đ</td>
-                <td>
-                  {opportunity.expectedClosing}
-                </td>
+                <img
+                  src={`${envVars.VITE_BE_DOMAIN}/files/crown.png`}
+                  width={47}
+                  height={47}
+                />
+                <span>
+                  {opportunity.name} <br />
+                  <Tag color={'cyan'}>Opportunity</Tag>
+                </span>
+              </span>
+            </>
+          }
+        >
+          <Descriptions size='small' column={3}>
+            <Descriptions.Item label='Serve by'>
+              {opportunity.account.firstName} {opportunity.account.lastName}
+            </Descriptions.Item>
 
-                {/* //TODO this is still hard code */}
-                <td>chuongnguyen</td>
-              </tr>
-            </tbody>
-          </table>
-        </Row>
+            <Descriptions.Item label='Created at'>
+              {moment(new Date(opportunity.createdAt)).fromNow()}
+            </Descriptions.Item>
+            <Descriptions.Item label='Expected revenue'>
+              160k$
+            </Descriptions.Item>
+            <Descriptions.Item label='Expected closing'>
+              {moment(new Date(opportunity.expectedClosing)).fromNow()}
+            </Descriptions.Item>
+          </Descriptions>
+        </PageHeader>
       </div>
-    </>
-  )
-}
+    </Badge.Ribbon>
+  );
+};

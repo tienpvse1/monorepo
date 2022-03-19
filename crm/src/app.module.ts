@@ -34,13 +34,14 @@ import { PipelineItemModule } from './modules/pipeline-module/pipeline-item/pipe
 import { PipelineModule } from './modules/pipeline-module/pipeline/pipeline.module';
 import { ProductAccountModule } from './modules/product-account/product-account.module';
 import { ProductModule } from './modules/product/product.module';
+import { ReasonModule } from './modules/reason/reason.module';
 import { RoleModule } from './modules/role/role.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
 import { SessionModule } from './modules/session/session.module';
 import { SubjectModule } from './modules/subject/subject.module';
 import { TagModule } from './modules/tag/tag.module';
 import { TeamModule } from './modules/team/team.module';
-import { ReasonModule } from './modules/reason/reason.module';
+import { WebhookModule } from './modules/webhook/webhook.module';
 
 @Module({
   imports: [
@@ -81,6 +82,7 @@ import { ReasonModule } from './modules/reason/reason.module';
     SubjectModule,
     NotificationModule,
     ReasonModule,
+    WebhookModule,
   ],
   providers: [GlobalModule],
 })
