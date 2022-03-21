@@ -11,18 +11,13 @@ import { CreateCompanyForm } from "./create-company-form";
 import { useCompanies } from "@modules/company/query/company.get";
 import moment from "moment";
 import { dateFormat } from "@constance/date-format";
+import { useCreateCompany } from "@modules/company/mutation/company.post";
+import { message } from 'antd';
 const { CRUD_AT } = dateFormat;
 
 export const CompanyTable = () => {
-  // const data = [{
-  //   id: '1vxza',
-  //   name: 'Company name',
-  //   email: 'company@gmail.com',
-  //   phone: '0902750631',
-  //   companyOwner: 'ChuongNguyen',
-  //   city: 'TPHCM',
-  //   country: 'Viet Nam'
-  // }]
+  const { mutate: createCompany } = useCreateCompany();
+
   const { data } = useCompanies();
 
   const [form] = Form.useForm<any>();
@@ -45,13 +40,24 @@ export const CompanyTable = () => {
     form.setFieldsValue({
       name: record.name,
       email: record.email,
-      phone: record.phone,
+      mobile: record.mobile,
       city: record.city,
       country: record.country
     })
   };
-  const handleCreateCompany = () => {
-
+  const handleCreateCompany = (record: any) => {
+    const { residence, region, address, city, country, ...rest } = record;
+    createCompany({
+      ...rest,
+      state: region === 'VN' ? residence[1] : address,
+      city: region === 'VN' ? residence[0] : city,
+      country: region === 'VN' ? region : country,
+      type: 'company',
+    }, {
+      onSuccess: () => {
+        message.success('Create new company successfully!');
+      }
+    })
   }
 
   return (
@@ -89,13 +95,13 @@ export const CompanyTable = () => {
 
           <Column
             title="Phone"
-            dataIndex="phone"
-            key="phone"
+            dataIndex="mobile"
+            key="mobile"
             render={(_, record: any) => (
               <EditableCell
                 linkTo={`view-details/`}
-                dataIndex='phone'
-                nameForm='phone'
+                dataIndex='mobile'
+                nameForm='mobile'
                 editing={isEditing}
                 editingIndex={editingIndex}
                 recordIndex={record.id}
