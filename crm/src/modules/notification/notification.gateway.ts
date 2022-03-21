@@ -44,8 +44,9 @@ export class NotificationGateway {
       .save();
 
     this.service.repository.create({});
-    this.server
-      .to(receiver.session.notificationId)
-      .emit(SocketSendEvent.SEND_NOTIFICATION, notification);
+    if (receiver.session)
+      this.server
+        .to(receiver.session.notificationId)
+        .emit(SocketSendEvent.SEND_NOTIFICATION, notification);
   }
 }
