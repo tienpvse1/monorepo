@@ -43,8 +43,6 @@ export const ContactTable: FC = () => {
     },
   ] = useCookies([PUBLIC_USER_INFO]);
   const { data, isLoading } = useContacts(id);  
-  console.log(data);
-  
 
   const { mutate: updateContact } = useUpdateContact(() => {
     client.invalidateQueries(QUERY_CONTACTS);
@@ -90,11 +88,11 @@ export const ContactTable: FC = () => {
     }
   };
 
-  const handleCreateContact = (record: IContact) => {
+  const handleCreateContact = (record: any) => {
 
     insertContact({
       ...record,
-      companyName: 'ABC company (Sample)',
+      companyName: record.company,
       birth: record.birth ? record.birth.format(DEFAULT) : ''
     });
   };

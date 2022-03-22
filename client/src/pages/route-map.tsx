@@ -128,7 +128,7 @@ export const route: RouteObject[] = [
             element: <CompanyContainer />,
           },
           {
-            path: 'view-details/',
+            path: 'view-details/:id',
             element: <ViewCompanyDetails />,
           },
         ],
