@@ -6,11 +6,13 @@ import {
 import HeaderDrawer from '@components/header/header-drawer';
 import { Loading } from '@components/loading/loading';
 import { NotificationDropdown } from '@components/sale-manager/header/notification-dropdown';
+import { NotificationTime } from '@components/sale-manager/header/notification-timer';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { envVars } from '@env/var.env';
 import { useSocket } from '@hooks/socket';
 import { INotification } from '@modules/notification/entity/notification.entity';
 import { getNotifications } from '@modules/notification/query/notification.get';
+import { useUpcomingEvents } from '@modules/schedule/query/schedule.get';
 import { useUpdateSession } from '@modules/session/mutation/session.patch';
 import { Avatar, Badge, Dropdown, Tooltip } from 'antd';
 import { lazy, Suspense, useEffect, useState } from 'react';
@@ -25,6 +27,16 @@ export const HeaderApp = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const toggleDrawer = () => setShowDrawer(!showDrawer);
   const [notifications, setNotifications] = useState<INotification[]>([]);
+  const [
+    {
+      public_user_info: { id },
+    },
+  ] = useCookies([PUBLIC_USER_INFO]);
+  const currentDate = { ...new Date() } as Date;
+  const { data: schedules } = useUpcomingEvents({
+    accountId: id,
+    date: currentDate,
+  });
   useEffect(() => {
     mutate({
       notificationId: socket.id,
@@ -34,10 +46,13 @@ export const HeaderApp = () => {
     );
   }, []);
 
+  const pushNotification = (notification: INotification) => {
+    setNotifications((prev) => [...prev, notification]);
+  };
+
   useSocket({
     event: 'send-notification',
-    onReceive: (data: INotification) =>
-      setNotifications((prev) => [...prev, data]),
+    onReceive: pushNotification,
     socket,
   });
   return (
@@ -52,6 +67,14 @@ export const HeaderApp = () => {
         paddingRight: 50,
       }}
     >
+      {schedules &&
+        schedules.map((schedule) => (
+          <NotificationTime
+            data={schedule}
+            key={schedule.id}
+            pushNotification={pushNotification}
+          />
+        ))}
       <HeaderDrawer handleClose={toggleDrawer} visible={showDrawer} />
       <div
         style={{

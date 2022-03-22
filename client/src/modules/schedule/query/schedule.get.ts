@@ -58,7 +58,9 @@ const getMySchedulesByMonth = async (id: string, month: number) => {
   const { data } = await instance.get<ISchedule[]>(`${SCHEDULE}?${query}`);
   return data;
 };
-
+/**
+ * get upcoming event in date
+ */
 export const getUpcomingEvents = async ({
   accountId,
   date,
