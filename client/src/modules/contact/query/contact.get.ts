@@ -12,10 +12,7 @@ export const QUERY_CONTACTS_BY_ID = 'query-contact-by-id';
 
 const getContacts = async (accountId: string) => {
   const query = RequestQueryBuilder.create({
-    join: [
-      { field: 'account' },
-      { field: 'company' }
-    ],
+    join: [{ field: 'account' }, { field: 'company' }],
     filter: [
       {
         field: 'account.id',
@@ -31,9 +28,9 @@ const getAllContacts = async () => {
   const query = RequestQueryBuilder.create({
     join: [
       {
-        field: 'account'
-      }
-    ]
+        field: 'account',
+      },
+    ],
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
   return data;
@@ -66,7 +63,7 @@ export const getContactsById = async (contactId: string) => {
       { field: 'account' },
       { field: 'company' },
       { field: 'account.team' },
-      { field: 'pipelineItems' }
+      { field: 'pipelineItems' },
     ],
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
@@ -89,7 +86,9 @@ export const useContacts = (accountId: string) =>
   });
 
 export const useQueryAllContacts = () =>
-  useQuery([QUERY_CONTACTS], () => getAllContacts());
+  useQuery([QUERY_CONTACTS], () => getAllContacts(), {
+    placeholderData: [],
+  });
 
 export const useQueryContactsById = (contactId: string) =>
   useQuery(QUERY_CONTACTS_BY_ID, () => getContactsById(contactId));
