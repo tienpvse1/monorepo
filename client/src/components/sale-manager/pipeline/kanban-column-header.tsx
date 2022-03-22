@@ -1,4 +1,6 @@
+import { PlusOutlined } from '@ant-design/icons';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
+import { Progress, Tooltip } from 'antd';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 
 interface KanbanColumnHeaderProps {
@@ -10,6 +12,14 @@ export const KanbanColumnHeader: React.FC<KanbanColumnHeaderProps> = ({
   data,
   handleDrag,
 }) => {
+  const schedulePercents =
+    Math.round(
+      (data.pipelineItems.filter(
+        (item) => item.schedules != null && item.schedules.length > 0
+      ).length /
+        data.pipelineItems.length) *
+        100
+    ) || 0;
   return (
     <div
       style={{
@@ -18,13 +28,9 @@ export const KanbanColumnHeader: React.FC<KanbanColumnHeaderProps> = ({
       }}
       {...handleDrag}
     >
-      <div
-        style={{
-          height: '3px',
-          backgroundColor: 'green',
-          marginBottom: '5px',
-        }}
-      ></div>
+      <Tooltip title={`${schedulePercents}% has been schedule`}>
+        <Progress percent={schedulePercents} status='active' />
+      </Tooltip>
       <div
         style={{
           boxShadow:
@@ -43,7 +49,17 @@ export const KanbanColumnHeader: React.FC<KanbanColumnHeaderProps> = ({
             color: 'rgba(0,0,0,0.6)',
           }}
         >
-          {data.pipelineItems ? data.pipelineItems.length : 0}/10
+          {data.pipelineItems ? data.pipelineItems.length : 0}/10{' '}
+          <Tooltip title='add an opportunity'>
+            <PlusOutlined
+              style={{
+                backgroundColor: 'rgba(0,0,0,0.07)',
+                padding: 5,
+                borderRadius: 2,
+                marginLeft: 7,
+              }}
+            />
+          </Tooltip>
         </span>
       </div>
     </div>

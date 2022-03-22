@@ -1,7 +1,6 @@
 import { INotification } from '@modules/notification/entity/notification.entity';
 import { Avatar, Badge, Comment, Tooltip } from 'antd';
 import moment from 'moment';
-
 interface NotificationDropdownProps {
   data: INotification[];
 }

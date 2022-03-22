@@ -46,6 +46,7 @@
     "react-lottie": "^1.2.3",
     "react-query": "^3.34.7",
     "react-router-dom": "^6.2.1",
+    "react-timer-hook": "^3.0.5",
     "react-transition-group": "^4.4.2",
     "rxjs": "^7.5.4",
     "sass": "^1.48.0",

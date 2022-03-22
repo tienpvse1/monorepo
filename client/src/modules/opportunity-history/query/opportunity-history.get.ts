@@ -43,6 +43,7 @@ export const getOpportunityHistory = async (opportunityId: string) => {
     filter: [
       { field: 'pipelineItem.id', operator: '$eq', value: opportunityId },
     ],
+    sort: [{ field: 'createdAt', order: 'DESC' }],
     join: ['pipelineItem'],
   }).query();
   const { data } = await instance.get<IOpportunityHistory[]>(
