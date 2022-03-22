@@ -1,19 +1,15 @@
 import { PUBLIC_USER_INFO } from '@constance/cookie';
-import {
-  isEmail,
-  isPhoneNumber,
-  isRequired,
-} from '@constance/rules-of-input-antd';
-import { IContact } from '@modules/contact/entity/contact.entity';
-import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
+import { isRequired } from '@constance/rules-of-input-antd';
+// import { IContact } from '@modules/contact/entity/contact.entity';
+// import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
 import { useContacts } from '@modules/contact/query/contact.get';
 import { ICreatePipelineItemsDto } from '@modules/pipeline-items/dto/create-pipeline-items.dto';
 import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { Button, Card, Form, Input, InputNumber, Select } from 'antd';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useCookies } from 'react-cookie';
-import { SelectBoxProduct } from '@components/product/select-box-product';
+import { SelectBoxCourse } from '@components/course/select-box-Course';
 import { SelectBoxContact } from '@components/contact/select-box-contact';
 import { useQueryClient } from 'react-query';
 
@@ -27,7 +23,7 @@ interface SubmittedObject {
   email: string;
   mobile?: any;
   quantity: number;
-  productId: string;
+  courseId: string;
   pipelineColumnId: string;
 }
 
@@ -36,35 +32,32 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
   toggleClose,
 }) => {
   const { mutate: createNewItems } = usePostPipelineItems();
-  const { mutate: updateContact } = useUpdateContact();
+  // const { mutate: updateContact } = useUpdateContact();
   const [
     {
       public_user_info: { id },
     },
   ] = useCookies([PUBLIC_USER_INFO]);
   const { data } = useContacts(id);
-  const [infoContact, setInfoContact] = useState<IContact>();
+  // const [infoContact, setInfoContact] = useState<IContact>();
   const [form] = Form.useForm<SubmittedObject>();
   const queryClient = useQueryClient();
 
   const handleSubmit = (value: SubmittedObject) => {
-    const { quantity, productId, name, contactId, email, mobile } = value;
+    const { quantity, courseId, name, contactId } = value;
     const data: ICreatePipelineItemsDto = {
       columnId: pipelineColumnID,
       contactId,
-      name
+      name,
+      opportunityRevenue: {
+        courseId,
+        quantity
+      }
     };
     createNewItems(data, {
       onSuccess: () => {
-        // if (infoContact.email !== email || infoContact.mobile !== mobile) {
-        //   updateContact({
-        //     id: infoContact.id,
-        //     email,
-        //     mobile,
-        //   });
-        // }
         toggleClose();
-        queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
+        queryClient.refetchQueries(GET_PIPELINE_DESIGN);
       },
     });
   };
@@ -74,7 +67,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
       return contact.id == contactIdSelected;
     });
 
-    setInfoContact(contactSelected);
+    // setInfoContact(contactSelected);
 
     form.setFieldsValue({
       name: `${contactSelected.name}'s opportunity`
@@ -114,15 +107,15 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
 
           <Form.Item
             label='Company'
-            name='email'
-            // rules={[isEmail, isRequired('Company is required')]}
+            name='company'
+          // rules={[isRequired('Company is required')]}
           >
             <Select>
 
             </Select>
           </Form.Item>
 
-          <SelectBoxProduct />
+          <SelectBoxCourse />
 
           <Form.Item
             label='Expected sold quantity'
