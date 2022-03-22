@@ -92,4 +92,6 @@ export const useQueryAllContacts = () =>
   useQuery([QUERY_CONTACTS], () => getAllContacts());
 
 export const useQueryContactsById = (contactId: string) =>
-  useQuery(QUERY_CONTACTS_BY_ID, () => getContactsById(contactId));
+  useQuery(QUERY_CONTACTS_BY_ID, () => getContactsById(contactId), {
+    enabled: Boolean(contactId)
+  });

@@ -7,21 +7,67 @@ import { CompanyInfoDetails } from "./company-info-details";
 import { CompanyAddressForm } from "./company-address-form";
 import { CompanyAddressDetails } from "./company-address-details";
 import { CompanyAdditionalForm } from "./company-additional-form";
-export const CompanyDetails = () => {
+import { ICompany } from "@modules/company/entity/company.entity";
+import { useState } from "react";
+import { useUpdateCompany } from "@modules/company/mutation/company.patch";
+import { useQueryClient } from "react-query";
+import { QUERY_COMPANY_DETAILS } from "@modules/company/query/company.get";
+import { message } from "antd";
+import moment from "moment";
+import { dateFormat } from "@constance/date-format";
+const { CRUD_AT } = dateFormat;
+
+interface CompanyDetailsProps {
+  company: ICompany;
+}
+
+export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
+  company
+}) => {
+  const { mutate: updateCompany } = useUpdateCompany();
+  const queryClient = useQueryClient();
+
   const [isEditingForm1, toggleEditForm1] = useToggle();
   const [isEditingForm2, toggleEditForm2] = useToggle();
   const [isEditingForm3, toggleEditForm3] = useToggle();
+
+  const [regionOther, setRegionOther] = useState(true);
+
   const [form] = Form.useForm<any>();
 
   const handleToggleEditForm1 = () => {
     toggleEditForm1();
-
+    form.setFieldsValue({
+      name: company.name,
+      mobile: company.mobile,
+      type: company.type
+    })
   };
 
   const handleToggleEditForm2 = () => {
-    toggleEditForm2();
+    if (company.country === 'Other') {
+      setRegionOther(false);
+      form.setFieldsValue({
+        region: 'Other',
+        city: company.city,
+        postalCode: company.postalCode,
+        country: company.country,
+        website: company.website,
+        taxId: company.taxId
+      })
+      toggleEditForm2();
+      return;
+    }
 
+    form.setFieldsValue({
+      residence: [company.city, company.state],
+      postalCode: company.postalCode,
+      website: company.website,
+      taxId: company.taxId
+    })
+    toggleEditForm2();
   };
+
   const handleToggleEditForm3 = () => {
     toggleEditForm3();
 
@@ -29,10 +75,17 @@ export const CompanyDetails = () => {
 
   const handleSubmitForm1 = async () => {
     try {
-      // const value = await form.validateFields();
-
-
-      toggleEditForm1();
+      const value = await form.validateFields();
+      updateCompany({
+        id: company.id,
+        ...value
+      }, {
+        onSuccess: () => {
+          queryClient.invalidateQueries(QUERY_COMPANY_DETAILS);
+          toggleEditForm1();
+          message.success('Saved successfully!');
+        }
+      })
     } catch (error) {
       return;
     }
@@ -40,9 +93,21 @@ export const CompanyDetails = () => {
 
   const handleSubmitForm2 = async () => {
     try {
-      // const value = await form.validateFields();
-
-      toggleEditForm2();
+      const value = await form.validateFields();
+      const { residence, region, address, city, country, ...rest } = value;
+      updateCompany({
+        ...rest,
+        id: company.id,
+        state: region === 'VN' ? residence[1] : address,
+        city: region === 'VN' ? residence[0] : city,
+        country: region === 'VN' ? region : country,
+      }, {
+        onSuccess: () => {
+          queryClient.invalidateQueries(QUERY_COMPANY_DETAILS);
+          toggleEditForm2();
+          message.success('Saved successfully!');
+        }
+      })
     } catch (error) {
       return;
     }
@@ -74,14 +139,14 @@ export const CompanyDetails = () => {
           </Row>
         ) : (
           <EditButtonHover toggleEditForm={handleToggleEditForm1}>
-            <CompanyInfoDetails />
+            <CompanyInfoDetails company={company} />
           </EditButtonHover>
         )}
 
         <Row className='title-form-content'>Address Information</Row>
         {isEditingForm2 ? (
           <Row gutter={[24, 0]}>
-            <CompanyAddressForm />
+            <CompanyAddressForm defaultToggle={regionOther} />
             <Col style={{ textAlign: 'right' }} span={24}>
               <Space>
                 <Button onClick={() => handleSubmitForm2()} type='primary'>
@@ -93,9 +158,10 @@ export const CompanyDetails = () => {
           </Row>
         ) : (
           <EditButtonHover toggleEditForm={handleToggleEditForm2}>
-            <CompanyAddressDetails />
+            <CompanyAddressDetails company={company} />
           </EditButtonHover>
         )}
+
         <Row className='title-form-content'>Addition Information</Row>
         {isEditingForm3 ? (
           <Row gutter={[24, 0]}>
@@ -124,14 +190,12 @@ export const CompanyDetails = () => {
         <Row>
           <Col span={12}>
             <MyForm label='Created At'>
-              {/* {moment(contact.createdAt).format(CRUD_AT)} */}
-              2022-03-11, 9:59 pm
+              {moment(company.createdAt).format(CRUD_AT)}
             </MyForm>
           </Col>
           <Col span={12}>
             <MyForm label='Last Modified At'>
-              {/* {moment(contact.updatedAt).format(CRUD_AT)} */}
-              2022-03-11, 9:59 pm
+              {moment(company.updatedAt).format(CRUD_AT)}
             </MyForm>
           </Col>
         </Row>

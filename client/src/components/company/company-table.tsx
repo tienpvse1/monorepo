@@ -8,17 +8,24 @@ import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { CompanyTitleTable } from "@components/company/company-title-table";
 import { CreateModal } from "@components/modal/create-modal";
 import { CreateCompanyForm } from "./create-company-form";
-import { useCompanies } from "@modules/company/query/company.get";
+import { QUERY_COMPANIES, useCompanies } from "@modules/company/query/company.get";
 import moment from "moment";
 import { dateFormat } from "@constance/date-format";
 import { useCreateCompany } from "@modules/company/mutation/company.post";
 import { message } from 'antd';
+import { useUpdateCompany } from "@modules/company/mutation/company.patch";
+import { useQueryClient } from "react-query";
+import { useDeleteCompany } from "@modules/company/mutation/company.delete";
 const { CRUD_AT } = dateFormat;
 
 export const CompanyTable = () => {
-  const { mutate: createCompany } = useCreateCompany();
+  const queryClient = useQueryClient();
 
-  const { data } = useCompanies();
+  const { data, isLoading } = useCompanies();
+
+  const { mutate: createCompany } = useCreateCompany();
+  const { mutate: updateCompany } = useUpdateCompany();
+  const { mutate: deleteCompany } = useDeleteCompany();
 
   const [form] = Form.useForm<any>();
   const [isEditing, toggleEditing] = useToggle();
@@ -55,16 +62,35 @@ export const CompanyTable = () => {
       type: 'company',
     }, {
       onSuccess: () => {
-        message.success('Create new company successfully!');
+        queryClient.invalidateQueries(QUERY_COMPANIES);
+        message.success('Create new company successfully');
       }
     })
+  }
+
+  const handleSave = async (id: string) => {
+    try {
+      const record = await form.validateFields();
+      updateCompany({
+        id,
+        ...record
+      }, {
+        onSuccess: () => {
+          queryClient.invalidateQueries(QUERY_COMPANIES);
+          message.success('Saved successfully');
+          toggleEditing();
+        }
+      })
+    } catch (error) {
+      return;
+    }
   }
 
   return (
     <>
       <Form form={form}>
         <Table
-          // loading={isLoading}
+          loading={isLoading}
           dataSource={data}
           tableLayout='fixed'
           rowSelection={{
@@ -82,7 +108,7 @@ export const CompanyTable = () => {
             key="name"
             render={(_, record: any) => (
               <EditableCell
-                linkTo={`view-details/`}
+                linkTo={`view-details/${record.id}`}
                 dataIndex='name'
                 nameForm='name'
                 editing={isEditing}
@@ -99,7 +125,7 @@ export const CompanyTable = () => {
             key="mobile"
             render={(_, record: any) => (
               <EditableCell
-                linkTo={`view-details/`}
+                linkTo={`view-details/${record.id}`}
                 dataIndex='mobile'
                 nameForm='mobile'
                 editing={isEditing}
@@ -134,7 +160,7 @@ export const CompanyTable = () => {
             key="city"
             render={(_, record: any) => (
               <EditableCell
-                linkTo={`view-details/`}
+                linkTo={`view-details/${record.id}`}
                 dataIndex='city'
                 nameForm='city'
                 editing={isEditing}
@@ -151,7 +177,7 @@ export const CompanyTable = () => {
             key="country"
             render={(_, record: any) => (
               <EditableCell
-                linkTo={`view-details/`}
+                linkTo={`view-details/${record.id}`}
                 dataIndex='country'
                 nameForm='country'
                 editing={isEditing}
@@ -177,7 +203,7 @@ export const CompanyTable = () => {
               <Space size='small' style={{ width: '100%' }}>
                 {isEditing && record.id === editingIndex ? (
                   <>
-                    <Button type='link' onClick={() => { }}>
+                    <Button type='link' onClick={() => handleSave(record.id)}>
                       Save
                     </Button>
                     <Popconfirm
@@ -201,7 +227,12 @@ export const CompanyTable = () => {
 
                     <Button
                       type='default'
-                      onClick={() => showDeleteConfirm(() => { })}
+                      onClick={() => showDeleteConfirm(() => deleteCompany(record.id, {
+                        onSuccess: () => {
+                          queryClient.invalidateQueries(QUERY_COMPANIES);
+                          message.success('Deleted company successfully!');
+                        }
+                      }))}
                       shape='round'
                       danger
                     >

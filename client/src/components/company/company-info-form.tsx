@@ -30,7 +30,7 @@ export const CompanyInfoForm = () => {
       <Col span={12}>
         <Form.Item
           name="mobile"
-          label="Telephone"
+          label="Phone Number"
         >
           <Input />
         </Form.Item>

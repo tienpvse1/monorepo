@@ -1,12 +1,18 @@
 import { SelectBoxDistrict } from '@components/signup/select-box-district'
-import { isTaxId } from '@constance/rules-of-input-antd';
+import { isPostalCode, isTaxId } from '@constance/rules-of-input-antd';
 import { useToggle } from '@hooks/useToggle';
 import { Col, Form, Input, Select } from 'antd'
 import { useState } from 'react';
 const { Option } = Select;
 
-export const CompanyAddressForm = () => {
-  const [visible, setVisible] = useToggle(true);
+interface CompanyAddressFormProps {
+  defaultToggle?: boolean
+}
+
+export const CompanyAddressForm: React.FC<CompanyAddressFormProps> = ({
+  defaultToggle = true
+}) => {
+  const [visible, setVisible] = useToggle(defaultToggle);
   const [country, setCountry] = useState<string>('VN');
   return (
     <>
@@ -44,9 +50,10 @@ export const CompanyAddressForm = () => {
           <Form.Item
             name="postalCode"
             label="Postal Code"
+            rules={[isPostalCode]}
             style={{ width: 'calc(70% - 10px)', marginRight: '10px' }}
           >
-            <Input />
+            <Input maxLength={5}/>
           </Form.Item>
           {!visible && <Form.Item
             name='country'

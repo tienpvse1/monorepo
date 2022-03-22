@@ -12,7 +12,6 @@ import { isRequired } from "@constance/rules-of-input-antd";
 import { CreateModal } from '@components/modal/create-modal';
 import { CreateOpportunityForm } from "./create-opportunity-form";
 import { Link } from "react-router-dom";
-import { SelectBoxContact } from "@components/contact/select-box-contact";
 import moment from "moment";
 import { useUpdatePipelineItem } from "@modules/pipeline-items/mutation/pipeline-items.update";
 import { message } from 'antd'
@@ -156,22 +155,11 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             dataIndex="contactName"
             key="contactName"
             render={(_, record: IPipelineItem) => (
-              <EditableCell
-                linkTo={`view-details/${record.id}`}
-                dataIndex='name'
-                selectBox={
-                  <SelectBoxContact
-                    formStyle={{ margin: 0 }}
-                    label=""
-                    data={dataSelectBoxContact}
-                  />
-                }
-                nameForm='contactName'
-                editing={false}
-                editingIndex={editingIndex}
-                recordIndex={record.id}
-                record={record.contact}
-              />
+              <>
+                <Link className="my-link" to={`view-details/${record.id}`} >
+                  {record.contact.name}
+                </Link>
+              </>
             )}
 
           />
@@ -182,22 +170,11 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             key="accountId"
             width={175}
             render={(_, record: IPipelineItem) => (
-              <EditableCell
-                linkTo={`view-details/${record.id}`}
-                dataIndex='phone'
-                nameForm='phone'
-                customChildren={
-                  <>
-                    <Link className="my-link" to={`view-details/${record.id}`} >
-                      {record.account.firstName}{record.account.lastName}
-                    </Link>
-                  </>
-                }
-                editing={false}
-                editingIndex={editingIndex}
-                recordIndex={record.id}
-                record={record.contact}
-              />
+              <>
+                <Link className="my-link" to={`view-details/${record.id}`} >
+                  {record.account.firstName}{record.account.lastName}
+                </Link>
+              </>
             )}
           />
 

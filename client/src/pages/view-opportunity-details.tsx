@@ -8,11 +8,15 @@ import { OpportunityStep } from '@components/opportunity/opportunity-step';
 import { OpportunityCardImage } from '@components/opportunity/opportunity-card-image';
 const ViewOpportunityDetails = () => {
   const params = useParams();
-  const { data } = usePipelineItem(params.id);
+  const { data, isLoading } = usePipelineItem(params.id);
+
+  // TODO: this skeleton still hard code
+  if(isLoading)
+    return <div>this is skeleton</div>;
 
   return (
     <>
-      {data ? (
+      {data &&
         <>
           <OpportunityTitleDetails opportunity={data} />
           <Row className='container-page'>
@@ -37,11 +41,8 @@ const ViewOpportunityDetails = () => {
               </div>
             </Col>
           </Row>
-          {/* <OpportunityDetails pipelineItemId={params.id} /> */}
         </>
-      ) : (
-        <div>this is skeleton</div>
-      )}
+      }
     </>
   );
 };

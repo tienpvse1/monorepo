@@ -1,7 +1,14 @@
 import { envVars } from '@env/var.env'
+import { ICompany } from '@modules/company/entity/company.entity'
 import { Button, Descriptions, PageHeader, Tag } from 'antd'
 
-export const CompanyTitleDetails = () => {
+interface CompanyTitleDetailsProps {
+  company: ICompany;
+}
+
+export const CompanyTitleDetails: React.FC<CompanyTitleDetailsProps> = ({
+  company
+}) => {
   return (
     <div className="container-title-details">
       <PageHeader
@@ -33,7 +40,7 @@ export const CompanyTitleDetails = () => {
                 height={47}
               />
               <span>
-                Company AABC (Sample) <br />
+                {company.name} <br />
                 <Tag color={'volcano'}>Company</Tag>
               </span>
             </span>
@@ -42,16 +49,16 @@ export const CompanyTitleDetails = () => {
       >
         <Descriptions size='small' column={3}>
           <Descriptions.Item label='Type'>
-            Type 1
+            {company.type}
           </Descriptions.Item>
           <Descriptions.Item label='Phone'>
-            0909070655
+            {company.mobile}
           </Descriptions.Item>
           <Descriptions.Item label='Email'>
             company@gmail.com
           </Descriptions.Item>
           <Descriptions.Item label='Company name'>
-            AABC company
+            {company.name}
           </Descriptions.Item>
         </Descriptions>
       </PageHeader>
