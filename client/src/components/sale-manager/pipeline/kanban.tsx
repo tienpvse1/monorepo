@@ -4,9 +4,10 @@ import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column
 import { useChangePipeline } from '@modules/pipeline/mutation/pipeline.update';
 import { abstractReIndex } from '@util/array';
 import { startFireworks } from '@util/firework';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import '../../../stylesheets/kanban.css';
+import { CreateOpportunity } from './drawer';
 import { KanbanColumn } from './kanban-column';
 interface KanbanProps {
   data: IPipelineColumn[];
@@ -15,6 +16,8 @@ interface KanbanProps {
 
 export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
   const { mutate } = useChangePipeline();
+  const [currentColumn, setCurrentColumn] =
+    useState<Partial<IPipelineColumn>>(undefined);
   const { mutateAsync: mutateOpportunityHistory } = usePostOpportunityHistory();
   const handleDragEnd = (e: DropResult) => {
     const { destination, source, type, draggableId } = e;
@@ -76,7 +79,9 @@ export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
       setData(reIndexed);
     }
   };
-
+  const closeDrawer = () => {
+    setCurrentColumn(null);
+  };
   return (
     <div
       style={{
@@ -85,9 +90,18 @@ export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {
         minHeight: 600,
       }}
     >
+      {currentColumn && (
+        <CreateOpportunity
+          visible={currentColumn != undefined}
+          column={currentColumn}
+          toggle={closeDrawer}
+        />
+      )}
       <DragDropContext onDragEnd={(e) => handleDragEnd(e)}>
         <Droppable direction='horizontal' droppableId='kanban-table'>
-          {(provided, snapshot) => KanbanColumn(provided, data, snapshot)}
+          {(provided, snapshot) =>
+            KanbanColumn(provided, data, setCurrentColumn, snapshot)
+          }
         </Droppable>
       </DragDropContext>
     </div>

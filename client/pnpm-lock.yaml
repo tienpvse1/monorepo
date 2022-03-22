@@ -34,6 +34,7 @@ specifiers:
   eslint-plugin-prettier: ^4.0.0
   eslint-plugin-react: ^7.28.0
   framer-motion: ^5.5.6
+  fuse.js: ^6.5.3
   http-status-codes: ^2.2.0
   lodash: ^4.17.21
   moment: ^2.29.1
@@ -85,6 +86,7 @@ dependencies:
   dexie: 3.2.1
   dexie-react-hooks: 1.1.1_cd4aac9a596d91421339a593582dcd09
   framer-motion: 5.6.0_react-dom@17.0.2+react@17.0.2
+  fuse.js: 6.5.3
   http-status-codes: 2.2.0
   lodash: 4.17.21
   moment: 2.29.1
@@ -3382,6 +3384,11 @@ packages:
   /functional-red-black-tree/1.0.1:
     resolution: {integrity: sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=}
     dev: true
+
+  /fuse.js/6.5.3:
+    resolution: {integrity: sha512-sA5etGE7yD/pOqivZRBvUBd/NaL2sjAu6QuSaFoe1H2BrJSkH/T/UXAJ8CdXdw7DvY3Hs8CXKYkDWX7RiP5KOg==}
+    engines: {node: '>=10'}
+    dev: false
 
   /gensync/1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}

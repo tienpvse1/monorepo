@@ -1,16 +1,19 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import { Progress, Tooltip } from 'antd';
+import { Dispatch, SetStateAction } from 'react';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 
 interface KanbanColumnHeaderProps {
   data: Partial<IPipelineColumn>;
   handleDrag: DraggableProvidedDragHandleProps;
+  setCurrentColumn: Dispatch<SetStateAction<Partial<IPipelineColumn>>>;
 }
 
 export const KanbanColumnHeader: React.FC<KanbanColumnHeaderProps> = ({
   data,
   handleDrag,
+  setCurrentColumn,
 }) => {
   const schedulePercents =
     Math.round(
@@ -57,6 +60,10 @@ export const KanbanColumnHeader: React.FC<KanbanColumnHeaderProps> = ({
                 padding: 5,
                 borderRadius: 2,
                 marginLeft: 7,
+              }}
+              onClick={() => {
+                console.log(data);
+                setCurrentColumn(data);
               }}
             />
           </Tooltip>

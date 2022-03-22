@@ -1,9 +1,13 @@
-import { Axios } from '@axios';
+import { Axios, instance } from '@axios';
 import { controllers } from '@constance/controllers';
 import { handleMutationResponse } from '@modules/base/base.handler';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { useMutation } from 'react-query';
-import { ICreatePipelineItemsDto } from '../dto/create-pipeline-items.dto';
+import {
+  ICreatePipelineItemForManager,
+  ICreatePipelineItemsDto,
+} from '../dto/create-pipeline-items.dto';
+import { IPipelineItem } from '../entity/pipeline-items.entity';
 
 const { PIPELINE_ITEM } = controllers;
 
@@ -16,7 +20,19 @@ export const postPipelineItems = async (
   return data;
 };
 
+export const createPipelineItemForManager = async (
+  pipelineItem: ICreatePipelineItemForManager
+) => {
+  const { data } = await instance.post<IPipelineItem>(
+    `${PIPELINE_ITEM}/manager`,
+    pipelineItem
+  );
+  return data;
+};
+
 export const usePostPipelineItems = () =>
   useMutation(postPipelineItems, {
-    ...handleMutationResponse(GET_PIPELINE_DESIGN)
+    ...handleMutationResponse(GET_PIPELINE_DESIGN),
   });
+export const useCreatePipelineItemForManager = () =>
+  useMutation(createPipelineItemForManager);

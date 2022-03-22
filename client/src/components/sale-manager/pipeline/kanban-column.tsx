@@ -1,4 +1,5 @@
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
+import { Dispatch, SetStateAction } from 'react';
 import {
   Draggable,
   Droppable,
@@ -11,6 +12,7 @@ import { KanBanItem } from './kanban-item';
 export const KanbanColumn = (
   e: DroppableProvided,
   columns: IPipelineColumn[],
+  setCurrentColumn: Dispatch<SetStateAction<Partial<IPipelineColumn>>>,
   _snapshot?: DroppableStateSnapshot
 ) => {
   return (
@@ -33,6 +35,7 @@ export const KanbanColumn = (
               <KanbanColumnHeader
                 handleDrag={provided.dragHandleProps}
                 data={column}
+                setCurrentColumn={setCurrentColumn}
               />
               <Droppable droppableId={column.id} type='column'>
                 {(provided, snapshot) =>
