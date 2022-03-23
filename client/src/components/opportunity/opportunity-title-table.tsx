@@ -7,9 +7,10 @@ import { envVars } from '@env/var.env';
 
 interface OpportunityTitleTableProps {
   toggleCreateModal: () => void;
+  setDataOpportunity?: (value: []) => void;
 }
 
-export const OpportunityTitleTable: React.FC<OpportunityTitleTableProps> = ({ toggleCreateModal }) => {
+export const OpportunityTitleTable: React.FC<OpportunityTitleTableProps> = ({ toggleCreateModal, setDataOpportunity }) => {
   return (
     <>
       <div style={{ padding: '10px' }}>
@@ -52,7 +53,7 @@ export const OpportunityTitleTable: React.FC<OpportunityTitleTableProps> = ({ to
           </Col>
           <Col span={18} style={{ textAlign: 'center' }}>
             <Space style={{ float: 'right', marginTop: '10px' }}>
-              <SearchBar width={300} placeholder='Search this list...' />
+              <SearchBar setDataOpportunity={setDataOpportunity} width={300} placeholder='Search this list...' />
               <Select placeholder="Group by" style={{ width: 120 }}>
                 <Option value="salesPerson">All leads</Option>
               </Select>

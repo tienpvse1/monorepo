@@ -26,6 +26,7 @@ interface OpportunitiesTableProps {
   dataSource: IPipelineItem[];
   isLoading: boolean;
   dataSelectBoxContact: IContact[];
+  setDataOpportunity?: (value: []) => void;
 }
 
 interface SubmitFormCreateOpportunity {
@@ -43,8 +44,8 @@ interface SubmitFormCreateOpportunity {
 
 export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
   dataSource,
-  dataSelectBoxContact,
-  isLoading
+  isLoading,
+  setDataOpportunity
 }) => {
   const { mutate: updateOpportunity } = useUpdatePipelineItem();
   const { mutate: createOpportunity } = usePostPipelineItems();
@@ -127,7 +128,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             type: 'checkbox',
             ...rowSelection,
           }}
-          title={() => <OpportunityTitleTable toggleCreateModal={toggleCreateModal} />}
+          title={() => <OpportunityTitleTable setDataOpportunity={setDataOpportunity} toggleCreateModal={toggleCreateModal} />}
           pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
           size={'small'}
           rowKey={(record) => record.id}
