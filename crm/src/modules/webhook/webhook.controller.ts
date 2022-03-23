@@ -9,16 +9,22 @@ import {
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Public } from 'src/common/decorators/public.decorator';
 import { InternalServerEvent } from 'src/constance/event';
+import { ReceivedEmailDto } from './dto/create-webhook.dto';
+import { WebhookService } from './webhook.service';
 
 @Controller('webhook')
 @Public()
 export class WebhookController {
-  constructor(private eventEmitter: EventEmitter2) {}
+  constructor(
+    private eventEmitter: EventEmitter2,
+    private service: WebhookService,
+  ) {}
   @Post()
   @HttpCode(HttpStatus.OK)
-  create(@Body() body: any) {
+  async create(@Body() body: ReceivedEmailDto) {
     this.eventEmitter.emit(InternalServerEvent.WEBHOOK_SENT_EVENT, body);
-    return body;
+    const result = await this.service.saveToDataBase(body);
+    return result;
   }
 
   @Patch('')

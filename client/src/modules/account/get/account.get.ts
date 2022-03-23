@@ -17,7 +17,10 @@ export const getUser = async () => {
 
 export const getSaleAccounts = async () => {
   const query = RequestQueryBuilder.create({
-    join: [{ field: 'role' }],
+    join: [
+      { field: 'team' },
+      { field: 'role' },
+    ],
     filter: [
       {
         field: 'role.name',
@@ -31,6 +34,7 @@ export const getSaleAccounts = async () => {
     id: item.id,
     name: `${item.firstName} ${item.lastName}`,
     photo: item.photo,
+    ...item
   }));
 };
 
@@ -41,5 +45,6 @@ export const getAccountById = async (id: string) => {
 
 export const useQueryAccountBySaleRole = () =>
   useQuery(GET_ACCOUNT_BY_SALE_ROLE, () => getSaleAccounts());
+
 export const useSaleAccounts = (suspense = false) =>
   useQuery(QUERY_SALE_ACCOUNTS, getSaleAccounts, { suspense });

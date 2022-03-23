@@ -20,7 +20,7 @@ const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
 const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
-const ContactContainer = lazy(() => import('@components/contact/contact'));
+const SalesContactList = lazy(() => import('@components/sale/sales-contact-list'));
 const SaleManagerDashboard = lazy(() => import('./sale-manager/dashboard'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
 const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/pipeline'));
@@ -30,16 +30,21 @@ const ViewOpportunityDetails = lazy(
 const SalesOpportunityList = lazy(
   () => import('@components/sale/sales-opportunity-list')
 );
-const AllOpportunityList = lazy(
-  () => import('@components/admin/all-opportunity-list')
+const ListOfAllOpportunity = lazy(
+  () => import('@components/admin/list-of-all-opportunity')
 );
-const CompanyContainer = lazy(
-  () => import('@components/company/company-container')
+const ListOfAllCompany = lazy(
+  () => import('@components/admin/list-of-all-company')
+);
+const SalesCompanyList = lazy(
+  () => import('@components/sale/sales-company-list')
 );
 const ViewCompanyDetails = lazy(() => import('@pages/view-company-details'));
 
 const PipelineAdmin = lazy(() => import('@components/admin/pipeline-admin'));
 const AccountantLayout = lazy(() => import('@common/accountant-layout'));
+
+const ListOfAllContact = lazy(() => import('@components/admin/list-of-all-contacts'));
 
 export const route: RouteObject[] = [
   {
@@ -65,7 +70,7 @@ export const route: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <ContactContainer />,
+            element: <SalesContactList />,
           },
           {
             path: 'view-details/:id',
@@ -125,7 +130,7 @@ export const route: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <CompanyContainer />,
+            element: <SalesCompanyList />,
           },
           {
             path: 'view-details/:id',
@@ -154,20 +159,70 @@ export const route: RouteObject[] = [
     element: <SaleManagerLayout />,
     children: [
       {
-        path: '/sale-manager/sale-manage',
-        element: <SaleManage />,
-      },
-      {
-        path: '/sale-manager/',
+        index: true,
         element: <SaleManagerDashboard />,
       },
       {
-        path: '/sale-manager/pipeline',
+        path: 'sale-manage',
+        element: <SaleManage />,
+      },
+      {
+        path: 'pipeline',
         element: <SaleManagerPipeline />,
       },
       {
-        path: '/sale-manager/details/:id',
-        element: <ViewOpportunityDetails />,
+        path: 'company',
+        element: <Company />,
+        children: [
+          {
+            index: true,
+            element: <ListOfAllCompany />,
+          },
+          {
+            path: 'view-details/:id',
+            element: <ViewCompanyDetails />,
+          },
+        ],
+      },
+      {
+        path: 'contact',
+        element: <Contact />,
+        children: [
+          {
+            index: true,
+            element: <ListOfAllContact />,
+          },
+          {
+            path: 'view-details/:id',
+            element: <ViewContactDetails />,
+          },
+        ],
+      },
+      {
+        path: 'opportunities',
+        element: <Opportunities />,
+        children: [
+          {
+            index: true,
+            element: <ListOfAllOpportunity />,
+          },
+          {
+            path: 'view-details/:id',
+            element: <ViewOpportunityDetails />,
+          },
+        ],
+      },
+      {
+        path: 'forecast',
+        element: <ForecastKanban />
+      },
+      {
+        path: 'schedule',
+        element: <Schedule />,
+      },
+      {
+        path: 'email',
+        element: <EmailCompose />,
       },
     ],
   },
@@ -201,7 +256,7 @@ export const route: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <AllOpportunityList />,
+            element: <ListOfAllOpportunity />,
           },
           {
             path: 'view-details/:id',

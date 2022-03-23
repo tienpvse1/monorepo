@@ -35,7 +35,7 @@ export const KanBanItem = (
   };
 
   const onViewMore = (opportunityId: string) => {
-    navigate(`/sale-manager/details/${opportunityId}`);
+    navigate(`/sale-manager/opportunities/view-details/${opportunityId}`);
   };
   return (
     <div

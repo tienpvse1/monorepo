@@ -27,6 +27,12 @@ import {
 } from 'typeorm';
 @Entity()
 export class Account extends BaseEntity {
+  @Column()
+  @Index({
+    unique: true,
+  })
+  username: string;
+
   @Column({ name: 'first_name', nullable: true })
   firstName: string;
 
