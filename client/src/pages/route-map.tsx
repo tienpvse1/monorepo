@@ -166,8 +166,30 @@ export const route: RouteObject[] = [
         element: <SaleManagerPipeline />,
       },
       {
-        path: '/sale-manager/details/:id',
-        element: <ViewOpportunityDetails />,
+        path: 'opportunities',
+        element: <Opportunities />,
+        children: [
+          {
+            index: true,
+            element: <AllOpportunityList />,
+          },
+          {
+            path: 'view-details/:id',
+            element: <ViewOpportunityDetails />,
+          },
+        ],
+      },
+      {
+        path: 'forecast',
+        element: <ForecastKanban />
+      },
+      {
+        path: 'schedule',
+        element: <Schedule />,
+      },
+      {
+        path: 'email',
+        element: <EmailCompose />,
       },
     ],
   },
