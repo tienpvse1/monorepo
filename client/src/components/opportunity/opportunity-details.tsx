@@ -20,6 +20,9 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
   const [isEditingForm2, toggleEditForm2] = useToggle();
   const { mutate: updateOpportunity } = useUpdatePipelineItem();
 
+  console.log("data1:", data);
+  
+
   const [form] = Form.useForm();
 
   const handleToggleEditForm1 = () => {
@@ -29,6 +32,7 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
       expectedClosing: data.expectedClosing ? moment(data.expectedClosing) : '',
       expectedRevenue: data.expectedRevenue,
       contactId: data.contact.id,
+      saleTeam: data.account.team?.id,
       salePerson: data.account.id
     });
   };
@@ -94,7 +98,7 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
       <Form form={form} layout='vertical'>
         {isEditingForm1 ? (
           <Row gutter={[24, 0]}>
-            <OpportunityInfoForm showStageInput={false} />
+            <OpportunityInfoForm team={data.account.team} showStageInput={false} />
             <Col style={{ textAlign: 'right' }} span={24}>
               <Space>
                 <Button onClick={() => handleSubmitForm1()} type='primary'>

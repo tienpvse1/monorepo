@@ -38,7 +38,7 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
       email: contact.email,
       birth: contact.birth ? moment(contact.birth) : '',
       phone: contact.phone,
-      company: contact.company.name
+      companyName: contact.company.name
     });
   };
 
