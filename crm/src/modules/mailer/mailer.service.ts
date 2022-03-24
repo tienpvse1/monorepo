@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
-import { CRUDService } from 'src/base/base.service';
+import { BaseService } from 'src/base/nestjsx.service';
 import { getCustomRepository } from 'typeorm';
 import { AccountRepository } from '../account/account.repository';
 import { AccountService } from '../account/account.service';
@@ -11,9 +11,9 @@ import { CreateMailerDto } from './dto/create-mailer.dto';
 import { Email } from './entities/mailer.entity';
 import { EmailRepository } from './mailer.repository';
 @Injectable()
-export class EmailService extends CRUDService<Email, EmailRepository> {
+export class EmailService extends BaseService<Email> {
   constructor(
-    @InjectRepository(EmailRepository) repository: EmailRepository,
+    @InjectRepository(Email) repository: EmailRepository,
     private accountService: AccountService,
     private config: ConfigService,
   ) {

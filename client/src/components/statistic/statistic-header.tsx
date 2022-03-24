@@ -14,12 +14,13 @@ import { useNavigate } from 'react-router-dom';
 interface StatisticHeaderProps {}
 
 export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
-  const [chartType, setChartType] = useState<'contacts' | 'email' | 'line'>(
-    'contacts'
-  );
+  const [chartType, setChartType] = useState<
+    'contacts' | 'email' | 'sent-email'
+  >('contacts');
   const navigate = useNavigate();
-  const handleMenuItemClicked = (path: 'contacts' | 'email' | 'line') => {
-    setChartType(path), navigate(`/statistic/${path}`);
+  const handleMenuItemClicked = (path: 'contacts' | 'email' | 'sent-email') => {
+    setChartType(path),
+      navigate(`/statistic/${path === 'contacts' ? '' : path}`);
   };
   return (
     <>
@@ -55,12 +56,12 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
                       <Tag color={'volcano'}>Contacts</Tag>
                     </Menu.Item>
                     <Menu.Item onClick={() => handleMenuItemClicked('email')}>
-                      <Tag color={'purple'}>Email</Tag>
+                      <Tag color={'purple'}>Received email</Tag>
                     </Menu.Item>
                     <Menu.Item
-                      onClick={() => handleMenuItemClicked('contacts')}
+                      onClick={() => handleMenuItemClicked('sent-email')}
                     >
-                      <Tag color={'blue'}>Other</Tag>
+                      <Tag color={'blue'}>Sent emails</Tag>
                     </Menu.Item>
                   </Menu>
                 }

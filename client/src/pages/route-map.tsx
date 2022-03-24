@@ -27,6 +27,9 @@ const SaleManagerDashboard = lazy(() => import('./sale-manager/dashboard'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
 const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/pipeline'));
 const ContactsChart = lazy(() => import('@components/statistic/chart'));
+const SentEmailStatistic = lazy(
+  () => import('@components/statistic/sent-email-statistic')
+);
 const ViewOpportunityDetails = lazy(
   () => import('@pages/view-opportunity-details')
 );
@@ -102,6 +105,10 @@ export const route: RouteObject[] = [
           {
             path: '/statistic/email',
             element: <h1>Email statistic</h1>,
+          },
+          {
+            path: '/statistic/sent-email',
+            element: <SentEmailStatistic />,
           },
         ],
       },
