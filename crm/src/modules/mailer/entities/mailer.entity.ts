@@ -8,7 +8,7 @@ export enum EmailType {
 }
 @Entity({ name: 'email' })
 export class Email extends BaseEntity {
-  @Column()
+  @Column({ nullable: true })
   ip: string;
 
   @Column({ name: 'receiver_email' })

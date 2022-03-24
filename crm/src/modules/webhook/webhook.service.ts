@@ -16,6 +16,7 @@ export class WebhookService {
   ) {}
 
   async isReceive(dto: ReceivedEmailDto) {
+    if (!dto.data.from) return false;
     const account = await this.accountService.findOneWithoutError({
       where: { email: dto.data.from.address },
     });
@@ -60,22 +61,28 @@ export class WebhookService {
   }
   // an sale send contact an email
   async saveAsSentToDatabase(dto: ReceivedEmailDto) {
+    console.log('sending an email');
+
+    if (!dto.data.to) return;
     const contactRepository = getCustomRepository(ContactRepository);
     const emailRepository = getCustomRepository(EmailRepository);
     const [contact, account] = await Promise.all([
       contactRepository.findOneItem({
-        where: { email: dto.data.from.address },
+        where: { email: dto.data.to[0].address },
       }),
       this.accountService.findOneItem({
-        where: { email: dto.account },
+        where: { username: dto.account },
       }),
     ]);
-    return emailRepository.createItem({
+
+    const result = await emailRepository.createItem({
       account,
       body: dto.data.text.html,
       subject: dto.data.subject,
       receiverEmail: contact.email,
       type: EmailType.SEND,
     });
+
+    return result;
   }
 }

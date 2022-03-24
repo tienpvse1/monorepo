@@ -24,7 +24,8 @@ export class WebhookController {
   @Post()
   @HttpCode(HttpStatus.OK)
   async create(@Body() body: ReceivedEmailDto) {
-    const isReceiveEmail = this.service.isReceive(body);
+    const isReceiveEmail = await this.service.isReceive(body);
+
     this.eventEmitter.emit(InternalServerEvent.WEBHOOK_SENT_EVENT, body);
     if (body.event === 'messageNew' && isReceiveEmail) {
       const result = await this.service.saveAsInboxToDataBase(body);
