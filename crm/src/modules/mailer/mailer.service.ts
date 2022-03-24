@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
 import { CRUDService } from 'src/base/base.service';
-import { getIp } from 'src/util/ip';
 import { getCustomRepository } from 'typeorm';
 import { AccountRepository } from '../account/account.repository';
 import { AccountService } from '../account/account.service';
@@ -43,7 +42,7 @@ export class EmailService extends CRUDService<Email, EmailRepository> {
     const urlString = `${this.config.get<string>('email.serverUrl')}account/${
       account.username
     }/submit?access_token=${this.config.get<string>(
-      'EMAIL_SERVER_ACCESS_TOKEN',
+      'email.serverAccessToken',
     )}`;
 
     await axios.post(urlString, {
@@ -62,11 +61,7 @@ export class EmailService extends CRUDService<Email, EmailRepository> {
       sendAt: new Date(),
       deliveryAttempts: 10,
     });
-    const newEmail = this.repository.create({
-      account,
-      ip: getIp(ip),
-      receiverEmail: email.value,
-    });
-    return newEmail.save();
+
+    return email;
   }
 }

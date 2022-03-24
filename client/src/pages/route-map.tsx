@@ -20,10 +20,13 @@ const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
 const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
-const SalesContactList = lazy(() => import('@components/sale/sales-contact-list'));
+const SalesContactList = lazy(
+  () => import('@components/sale/sales-contact-list')
+);
 const SaleManagerDashboard = lazy(() => import('./sale-manager/dashboard'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
 const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/pipeline'));
+const ContactsChart = lazy(() => import('@components/statistic/chart'));
 const ViewOpportunityDetails = lazy(
   () => import('@pages/view-opportunity-details')
 );
@@ -44,7 +47,9 @@ const ViewCompanyDetails = lazy(() => import('@pages/view-company-details'));
 const PipelineAdmin = lazy(() => import('@components/admin/pipeline-admin'));
 const AccountantLayout = lazy(() => import('@common/accountant-layout'));
 
-const ListOfAllContact = lazy(() => import('@components/admin/list-of-all-contacts'));
+const ListOfAllContact = lazy(
+  () => import('@components/admin/list-of-all-contacts')
+);
 
 export const route: RouteObject[] = [
   {
@@ -89,6 +94,16 @@ export const route: RouteObject[] = [
       {
         path: 'statistic',
         element: <Statistic />,
+        children: [
+          {
+            index: true,
+            element: <ContactsChart />,
+          },
+          {
+            path: '/statistic/email',
+            element: <h1>Email statistic</h1>,
+          },
+        ],
       },
       {
         path: 'email',
@@ -214,7 +229,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'forecast',
-        element: <ForecastKanban />
+        element: <ForecastKanban />,
       },
       {
         path: 'schedule',
@@ -240,7 +255,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'forecast',
-        element: <ForecastKanban />
+        element: <ForecastKanban />,
       },
       {
         path: 'schedule',
@@ -263,7 +278,7 @@ export const route: RouteObject[] = [
             element: <ViewOpportunityDetails />,
           },
         ],
-      }
+      },
     ],
   },
   {
