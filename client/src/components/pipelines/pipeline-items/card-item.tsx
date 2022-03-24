@@ -36,9 +36,6 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
     navigate(`/opportunities/view-details/${cardData.id}`)
   };
 
-  console.log("changed");
-
-
   const handleSubmit = (value: any) => {
     const schedule: ICreateScheduleDto = {
       ...value,

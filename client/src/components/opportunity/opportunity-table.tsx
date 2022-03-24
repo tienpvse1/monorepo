@@ -39,6 +39,7 @@ interface SubmitFormCreateOpportunity {
   productId: string;
   quantity: number;
   saleTeam: number;
+  courseId: string;
 }
 
 export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
@@ -97,7 +98,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
   }
 
   const handleCreateOpportunity = (record: SubmitFormCreateOpportunity) => {
-    const { name, columnId, contactId, internalNotes, internalDescription, productId, quantity } = record;
+    const { name, columnId, contactId, internalNotes, internalDescription, courseId, quantity } = record;
     createOpportunity({
       name,
       columnId,
@@ -105,7 +106,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
       internalNotes,
       internalDescription,
       opportunityRevenue: {
-        productId,
+        courseId,
         quantity
       }
     }, {

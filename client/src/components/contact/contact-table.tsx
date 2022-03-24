@@ -91,7 +91,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
 
     insertContact({
       ...record,
-      companyName: record.company,
+      companyName: record.companyName,
       birth: record.birth ? record.birth.format(DEFAULT) : ''
     });
   };
