@@ -24,7 +24,7 @@ export const convert2 = (str: string) => {
   return [date.getFullYear(), mnth, day, hours, minutes].join('-');
 };
 
-export const getMonthToShow = () => {
+export const getMonthToShow = (): Moment[] => {
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
   return [

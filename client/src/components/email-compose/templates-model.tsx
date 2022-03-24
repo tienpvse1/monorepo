@@ -1,4 +1,8 @@
 import { IEmailTemplate } from '@modules/email-temlate/entity/email-template.entity';
+import {
+  findAllTemplates,
+  useTemplates,
+} from '@modules/email-temlate/query/email-template.get';
 import { openNotification } from '@util/notification';
 import { Modal } from 'antd';
 import { Dispatch, SetStateAction } from 'react';
@@ -7,7 +11,6 @@ import { TemplateSelection } from './templates-selection';
 
 interface ITemplateModel {
   modal: string;
-  templates: IEmailTemplate[];
   handleLoad: (id: string) => void;
   setModal: Dispatch<SetStateAction<string>>;
   design: Design;
@@ -15,11 +18,11 @@ interface ITemplateModel {
 
 export const MyModal: React.FC<ITemplateModel> = ({
   modal,
-  templates,
   handleLoad,
   setModal,
   design,
 }) => {
+  const { data } = useTemplates();
   const handleClose = () => {
     setModal('');
     openNotification('success', 'Your email have updated successfully');
@@ -31,7 +34,7 @@ export const MyModal: React.FC<ITemplateModel> = ({
         visible={modal === 'selectTemplate'}
         onCancel={() => setModal('false')}
       >
-        {templates.map((template) => (
+        {data.map((template) => (
           <p
             style={{ cursor: 'pointer' }}
             key={template.id}

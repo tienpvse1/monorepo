@@ -20,4 +20,8 @@ export const appConfig = () => ({
     googleUsername: process.env.GOOGLE_USERNAME || '',
     googlePassword: process.env.GOOGLE_PASSWORD || '',
   },
+  email: {
+    serverUrl: process.env.EMAIL_SERVER_URL || '',
+    serverAccessToken: process.env.EMAIL_SERVER_ACCESS_TOKEN || '',
+  },
 });

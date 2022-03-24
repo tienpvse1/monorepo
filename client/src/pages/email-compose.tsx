@@ -13,8 +13,8 @@ import {
 } from '@modules/email-temlate/query/email-template.get';
 import { useSendEmail } from '@modules/email/mutate/email.post';
 import { openNotification } from '@util/notification';
-import { AutoComplete, Button, Input, Modal } from 'antd';
-import { useRef, useState } from 'react';
+import { AutoComplete, Button, Input, Modal, Spin } from 'antd';
+import { Suspense, useRef, useState } from 'react';
 import EmailEditor, { Design } from 'react-email-editor';
 import { useQuery } from 'react-query';
 const EmailCompose: React.FC = () => {
@@ -31,7 +31,6 @@ const EmailCompose: React.FC = () => {
     }
   );
   const emailEditorRef = useRef<EmailEditor>(null);
-  const [templates, setTemplates] = useState<IEmailTemplate[]>([]);
   const [to, setTo] = useState('');
   const [design, setDesign] = useState<Design>();
   const [subject, setSubject] = useState('');
@@ -76,9 +75,6 @@ const EmailCompose: React.FC = () => {
   // when user choose an template form modal
   // its template from database will be apply to the database
   const loadTemplates = async () => {
-    const data = await findAllTemplates();
-
-    setTemplates(data);
     setCurrentModal('selectTemplate');
   };
 
@@ -92,13 +88,14 @@ const EmailCompose: React.FC = () => {
 
   return (
     <>
-      <MyModal
-        templates={templates}
-        modal={currentModal}
-        handleLoad={handleLoad}
-        setModal={setCurrentModal}
-        design={design!}
-      />
+      <Suspense fallback={<Spin size='default' />}>
+        <MyModal
+          modal={currentModal}
+          handleLoad={handleLoad}
+          setModal={setCurrentModal}
+          design={design!}
+        />
+      </Suspense>
       <AutoComplete
         style={{ width: '100%' }}
         onChange={(e) => {
@@ -166,7 +163,7 @@ const EmailCompose: React.FC = () => {
         }}
         type='primary'
         danger
-        disabled={to.length > 0}
+        disabled={to.length <= 0}
         loading={isLoading}
       >
         Send

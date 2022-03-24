@@ -6,6 +6,7 @@ import { Contact } from 'src/modules/contact/entities/contact.entity';
 import { EmailTemplate } from 'src/modules/email-template/entities/email-template.entity';
 import { File } from 'src/modules/file/entities/file.entity';
 import { History } from 'src/modules/history/entities/history.entity';
+import { Inbox } from 'src/modules/inbox/entities/inbox.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
 import { Notification } from 'src/modules/notification/entities/notification.entity';
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
@@ -84,9 +85,11 @@ export class Account extends BaseEntity {
   @OneToMany(() => EmailTemplate, (emailTemplates) => emailTemplates.account)
   emailTemplates: EmailTemplate[];
 
-  // an account here act as the sender of an email
   @OneToMany(() => Email, (email) => email.account)
   emails: Email[];
+
+  @OneToMany(() => Inbox, (inbox) => inbox.receiver)
+  inboxEmails: Inbox[];
 
   @OneToMany(() => History, (history) => history.account)
   histories: History[];
