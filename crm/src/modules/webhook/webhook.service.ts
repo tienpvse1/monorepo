@@ -61,8 +61,6 @@ export class WebhookService {
   }
   // an sale send contact an email
   async saveAsSentToDatabase(dto: ReceivedEmailDto) {
-    console.log('sending an email');
-
     if (!dto.data.to) return;
     const contactRepository = getCustomRepository(ContactRepository);
     const emailRepository = getCustomRepository(EmailRepository);
