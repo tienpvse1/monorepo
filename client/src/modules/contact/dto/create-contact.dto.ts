@@ -10,4 +10,6 @@ export interface IImportedContact {
   address: string;
   internalNotes: string;
 }
-export interface CreateContactDto extends Partial<IContact> {}
+export interface CreateContactDto extends Partial<IContact> {
+  companyName: string;
+}

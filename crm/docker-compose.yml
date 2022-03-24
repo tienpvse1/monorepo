@@ -50,5 +50,8 @@ services:
       FE_REDIRECT_URL: http://tienpvse.xyz/
       GOOGLE_USERNAME: good66612@gmail.com
       GOOGLE_PASSWORD: Username666
+      #email server
+      EMAIL_SERVER_URL: http://165.22.59.245/v1/
+      EMAIL_SERVER_ACCESS_TOKEN: 2e9621c17de303ce003439e98174698dbf24002bff6878584769f7428bf7d844
     ports:
       - 80:8080

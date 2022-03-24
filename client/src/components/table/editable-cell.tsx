@@ -13,15 +13,12 @@ interface EditableCellProps extends HTMLAttributes<HTMLElement> {
   record: any;
   rules?: Rule[];
   linkTo?: string;
-  customChildren?: React.ReactNode;
   nameForm: string;
-  selectBox?: React.ReactNode
 }
 
 export const EditableCell: React.FC<EditableCellProps> = ({
   editing,
   dataIndex,
-  customChildren,
   title,
   inputType = 'text',
   recordIndex,
@@ -30,7 +27,6 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   record,
   rules = [],
   nameForm,
-  selectBox,
   linkTo = ''
 }) => {
 
@@ -47,12 +43,11 @@ export const EditableCell: React.FC<EditableCellProps> = ({
   return (
     <>
       {editing && recordIndex === editingIndex ? (
-        selectBox ? selectBox :
-          <Form.Item name={nameForm} style={{ margin: 0 }} rules={rules}>
-            {inputNode}
-          </Form.Item>
+        <Form.Item name={nameForm} style={{ margin: 0 }} rules={rules}>
+          {inputNode}
+        </Form.Item>
       ) : (
-        customChildren ? customChildren : <Link className="my-link" to={linkTo} >{record[dataIndex]}</Link>
+        <Link className="my-link" to={linkTo} >{record[dataIndex]}</Link>
       )}
     </>
   );

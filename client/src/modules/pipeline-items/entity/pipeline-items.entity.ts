@@ -38,4 +38,5 @@ export interface IOpportunityRevenue {
   quantity?: number;
   product?: IProduct;
   productId?: string;
+  courseId?: string;
 }

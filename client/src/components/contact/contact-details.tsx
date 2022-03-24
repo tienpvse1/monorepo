@@ -21,7 +21,7 @@ interface ContactDetailsProps {
 export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
   const [isEditingForm1, toggleEditForm1] = useToggle();
   const [isEditingForm2, toggleEditForm2] = useToggle();
-  const [form] = Form.useForm<IContact>();
+  const [form] = Form.useForm<any>();
 
   const queryClient = useQueryClient();
 
@@ -37,7 +37,8 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
       name: contact.name,
       email: contact.email,
       birth: contact.birth ? moment(contact.birth) : '',
-      phone: contact.phone
+      phone: contact.phone,
+      companyName: contact.company.name
     });
   };
 

@@ -18,8 +18,11 @@ export class Course extends BaseEntity {
   @Index({ unique: true })
   code: string;
 
+  @Column({ type: 'float' })
+  price: number;
+
   @Column({ type: 'boolean', default: false, name: 'is_enable' })
-  isEnable: string;
+  isEnable: boolean;
 
   @OneToMany(() => Subject, (subject) => subject.course, { cascade: true })
   subjects: Subject[];

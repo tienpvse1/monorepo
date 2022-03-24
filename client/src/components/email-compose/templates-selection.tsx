@@ -1,7 +1,7 @@
 import { CloseOutlined, InboxOutlined, PlusOutlined } from '@ant-design/icons';
 import { useUpdateEmailTemplate } from '@modules/email-temlate/mutation/email-template.patch';
 import { usePostEmailTemplate } from '@modules/email-temlate/mutation/email-template.post';
-import { useGetAllTemplates } from '@modules/email-temlate/query/email-template.get';
+import { useTemplates } from '@modules/email-temlate/query/email-template.get';
 import { Button, Input, Spin } from 'antd';
 import { KeyboardEvent, useState } from 'react';
 import { Design } from 'react-email-editor';
@@ -15,7 +15,7 @@ export const TemplateSelection: React.FC<TemplateSelectionProps> = ({
   onClose,
 }) => {
   const [clicked, setClicked] = useState(false);
-  const { data, isLoading } = useGetAllTemplates();
+  const { data, isLoading } = useTemplates();
   const updateEmail = useUpdateEmailTemplate();
   const { mutate } = usePostEmailTemplate();
   const toggleClicked = () => setClicked(!clicked);

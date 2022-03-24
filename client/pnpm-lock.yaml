@@ -34,6 +34,7 @@ specifiers:
   eslint-plugin-prettier: ^4.0.0
   eslint-plugin-react: ^7.28.0
   framer-motion: ^5.5.6
+  fuse.js: ^6.5.3
   http-status-codes: ^2.2.0
   lodash: ^4.17.21
   moment: ^2.29.1
@@ -53,6 +54,7 @@ specifiers:
   react-lottie: ^1.2.3
   react-query: ^3.34.7
   react-router-dom: ^6.2.1
+  react-timer-hook: ^3.0.5
   react-transition-group: ^4.4.2
   rxjs: ^7.5.4
   sass: ^1.48.0
@@ -84,6 +86,7 @@ dependencies:
   dexie: 3.2.1
   dexie-react-hooks: 1.1.1_cd4aac9a596d91421339a593582dcd09
   framer-motion: 5.6.0_react-dom@17.0.2+react@17.0.2
+  fuse.js: 6.5.3
   http-status-codes: 2.2.0
   lodash: 4.17.21
   moment: 2.29.1
@@ -103,6 +106,7 @@ dependencies:
   react-lottie: 1.2.3_react@17.0.2
   react-query: 3.34.16_react-dom@17.0.2+react@17.0.2
   react-router-dom: 6.2.2_react-dom@17.0.2+react@17.0.2
+  react-timer-hook: 3.0.5_react-dom@17.0.2+react@17.0.2
   react-transition-group: 4.4.2_react-dom@17.0.2+react@17.0.2
   rxjs: 7.5.4
   sass: 1.49.9
@@ -3381,6 +3385,11 @@ packages:
     resolution: {integrity: sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=}
     dev: true
 
+  /fuse.js/6.5.3:
+    resolution: {integrity: sha512-sA5etGE7yD/pOqivZRBvUBd/NaL2sjAu6QuSaFoe1H2BrJSkH/T/UXAJ8CdXdw7DvY3Hs8CXKYkDWX7RiP5KOg==}
+    engines: {node: '>=10'}
+    dev: false
+
   /gensync/1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
     engines: {node: '>=6.9.0'}
@@ -5204,6 +5213,16 @@ packages:
     dependencies:
       history: 5.3.0
       react: 17.0.2
+    dev: false
+
+  /react-timer-hook/3.0.5_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-n+98SdmYvui2ne3KyWb3Ldu4k0NYQa3g/VzW6VEIfZJ8GAk/jJsIY700M8Nd2vNSTj05c7wKyQfJBqZ0x7zfiA==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /react-transition-group/4.4.2_react-dom@17.0.2+react@17.0.2:

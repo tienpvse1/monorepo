@@ -7,15 +7,18 @@ import {
   Post,
   UsePipes,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { User } from 'src/common/decorators/user.decorator';
+import { InternalServerEvent } from 'src/constance/event';
 import { AUTHORIZATION } from 'src/constance/swagger';
 import { AssignAccountToOpportunityDto } from './dto/assign-account.dto';
 import {
   CreatePipelineItemDto,
   CreateSinglePipelineItemDto,
+  CreateSinglePipelineItemManagerDto,
 } from './dto/create-pipeline-item.dto';
 import {
   ChangeStageDto,
@@ -24,7 +27,7 @@ import {
 import { PipelineItem } from './entities/pipeline-item.entity';
 import { GenerateNestedIdPipe } from './generate-nested-id.pipe';
 import { PipelineItemService } from './pipeline-item.service';
-
+import { InternalSendNotificationPayload } from 'src/modules/notification/dto/internal-send-notification.dto';
 @Controller('pipeline-item')
 @ApiBearerAuth(AUTHORIZATION)
 @ApiTags('pipeline item')
@@ -63,7 +66,10 @@ import { PipelineItemService } from './pipeline-item.service';
   },
 })
 export class PipelineItemController {
-  constructor(public service: PipelineItemService) {}
+  constructor(
+    public service: PipelineItemService,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
   @Post()
   @UsePipes(GenerateNestedIdPipe)
@@ -74,6 +80,25 @@ export class PipelineItemController {
     @User('id') accountId: string,
   ) {
     this.service.createPipelineItem(item, accountId);
+
+    return item;
+  }
+  @Post('manager')
+  @UsePipes(GenerateNestedIdPipe)
+  @HistoryLog('Add a new opportunity for manager')
+  @ApiBody({ type: CreateSinglePipelineItemManagerDto })
+  addOpportunityForManager(
+    @Body() { accountId, ...item }: CreateSinglePipelineItemManagerDto,
+    @User('id') managerId: string,
+  ) {
+    this.service.createPipelineItem(item, accountId);
+    const payload: InternalSendNotificationPayload = {
+      description: 'assigned you to an opportunity',
+      name: 'Assignment',
+      receiverId: accountId,
+      senderId: managerId,
+    };
+    this.eventEmitter.emit(InternalServerEvent.SEND_NOTIFICATION, payload);
 
     return item;
   }

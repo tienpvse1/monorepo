@@ -1,12 +1,6 @@
 import { envVars } from '@env/var.env';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import {
-  Badge,
-  Button,
-  Descriptions,
-  PageHeader,
-  Tag,
-} from 'antd';
+import { Badge, Button, Descriptions, PageHeader, Tag } from 'antd';
 import moment from 'moment';
 
 interface OpportunityTitleDetailsProps {
@@ -29,7 +23,7 @@ export const OpportunityTitleDetails: React.FC<
         fontSize: '20px',
       }}
     >
-      <div className="container-title-details">
+      <div className='container-title-details'>
         <PageHeader
           className='site-page-header'
           onBack={() => window.history.back()}
@@ -70,7 +64,7 @@ export const OpportunityTitleDetails: React.FC<
         >
           <Descriptions size='small' column={3}>
             <Descriptions.Item label='Serve by'>
-              {opportunity.account.firstName} {opportunity.account.lastName}
+              {opportunity.account?.firstName} {opportunity.account?.lastName}
             </Descriptions.Item>
 
             <Descriptions.Item label='Created at'>

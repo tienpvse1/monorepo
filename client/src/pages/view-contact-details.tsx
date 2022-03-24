@@ -6,12 +6,15 @@ import { useParams } from 'react-router-dom'
 import { ContactInfoTabs } from '@components/contact/contact-info-tabs';
 const ViewContactDetails = () => {
   const params = useParams();
-  const { data } = useQueryContactsById(params.id);
-  console.log("contact:", data);
-  
+  const { data, isLoading } = useQueryContactsById(params.id);
+
+  // TODO: this skeleton still hard code
+  if (isLoading)
+    return <div>this is skeleton....</div>;
+
   return (
     <>
-      {data ?
+      {data &&
         <>
           <PageDetailsTitle contact={data} />
           <Row gutter={[0, 0]}>
@@ -58,9 +61,7 @@ const ViewContactDetails = () => {
               </div>
             </Col>
           </Row>
-        </> :
-        // TODO: this skeleton still hard code
-        <div>this is skeleton....</div>
+        </>
       }
     </>
   )

@@ -10,5 +10,6 @@ import { AccountModule } from '../account/account.module';
   controllers: [NotificationController],
   providers: [NotificationService, NotificationGateway],
   imports: [TypeOrmModule.forFeature([Notification]), AccountModule],
+  exports: [NotificationService],
 })
 export class NotificationModule {}

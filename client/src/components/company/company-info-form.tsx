@@ -1,4 +1,4 @@
-import { Col, Form, Input, Select, DatePicker } from 'antd';
+import { Col, Form, Input, Select } from 'antd';
 import { isRequired, isEmail } from '@constance/rules-of-input-antd';
 export const CompanyInfoForm = () => {
   return (
@@ -26,18 +26,11 @@ export const CompanyInfoForm = () => {
 
           </Select>
         </Form.Item>
-        <Form.Item
-          name="dateOfIncorporation"
-          label="Date of incorporation"
-        >
-          <DatePicker style={{ width: '100%' }} />
-        </Form.Item>
-
       </Col>
       <Col span={12}>
         <Form.Item
-          name="phone"
-          label="Telephone"
+          name="mobile"
+          label="Phone Number"
         >
           <Input />
         </Form.Item>
@@ -49,14 +42,7 @@ export const CompanyInfoForm = () => {
 
           </Select>
         </Form.Item>
-        <Form.Item
-          name="tag"
-          label="Tags"
-        >
-          <Select>
-
-          </Select>
-        </Form.Item>
+       
       </Col>
     </>
   )

@@ -1,30 +1,37 @@
 import { Col, Row } from 'antd'
 import { MyForm } from '@components/form/my-form';
+import { ICompany } from '@modules/company/entity/company.entity';
 
-export const CompanyAddressDetails = () => {
+interface CompanyAddressDetailsProps {
+  company: ICompany;
+}
+
+export const CompanyAddressDetails: React.FC<CompanyAddressDetailsProps> = ({
+  company
+}) => {
   return (
     <>
       <Row>
-        <Col span={12}>
-          <MyForm label="Address">
-            Company address
-          </MyForm>
-          <MyForm label="City">
-            Company city
+        <Col style={{ height: '100%' }} span={12}>
+          <MyForm
+            customStyle={{ height: '100%' }}
+            label='Address'
+          >
+            {`${company.state || ''}, ${company.city || ''}`}
           </MyForm>
           <MyForm label="Postal Code">
-            7000000
+            {company.postalCode}
           </MyForm>
           <MyForm label="Country">
-            Viet Nam
+            {company.country}
           </MyForm>
         </Col>
         <Col span={12}>
           <MyForm label='Website'>
-            company.com
+            {company.website}
           </MyForm>
           <MyForm label='TaxID'>
-            0123456789
+            {company.taxId}
           </MyForm>
         </Col>
       </Row>

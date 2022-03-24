@@ -30,10 +30,9 @@ const getContacts = async (accountId: string) => {
 const getAllContacts = async () => {
   const query = RequestQueryBuilder.create({
     join: [
-      {
-        field: 'account'
-      }
-    ]
+      { field: 'account' },
+      { field: 'company' },
+    ],
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
   return data;
@@ -66,7 +65,7 @@ export const getContactsById = async (contactId: string) => {
       { field: 'account' },
       { field: 'company' },
       { field: 'account.team' },
-      { field: 'pipelineItems' }
+      { field: 'pipelineItems' },
     ],
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
@@ -89,7 +88,11 @@ export const useContacts = (accountId: string) =>
   });
 
 export const useQueryAllContacts = () =>
-  useQuery([QUERY_CONTACTS], () => getAllContacts());
+  useQuery([QUERY_CONTACTS], () => getAllContacts(), {
+    placeholderData: [],
+  });
 
 export const useQueryContactsById = (contactId: string) =>
-  useQuery(QUERY_CONTACTS_BY_ID, () => getContactsById(contactId));
+  useQuery(QUERY_CONTACTS_BY_ID, () => getContactsById(contactId), {
+    enabled: Boolean(contactId)
+  });

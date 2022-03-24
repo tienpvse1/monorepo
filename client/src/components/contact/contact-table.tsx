@@ -4,11 +4,10 @@ import { useDeleteContact } from '@modules/contact/mutation/contact.delete';
 import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
 import {
   QUERY_CONTACTS,
-  useContacts,
 } from '@modules/contact/query/contact.get';
 import { Button, Form, Popconfirm, Space, Table, Tag } from 'antd';
 import Column from 'antd/lib/table/Column';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { client } from '../../App';
 import { ContactHeader } from './contact-header';
 import { EditableCell } from '../table/editable-cell';
@@ -23,8 +22,6 @@ import {
 } from '@constance/rules-of-input-antd';
 import { useInsertContact } from '@modules/contact/mutation/contact.post';
 import { message } from 'antd';
-import { useCookies } from 'react-cookie';
-import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { dateFormat } from "@constance/date-format";
 const { DEFAULT } = dateFormat;
 
@@ -36,15 +33,15 @@ const rowSelection = {
   }),
 };
 
-export const ContactTable: FC = () => {
-  const [
-    {
-      public_user_info: { id },
-    },
-  ] = useCookies([PUBLIC_USER_INFO]);
-  const { data, isLoading } = useContacts(id);  
-  console.log(data);
-  
+interface ContactTableProps {
+  dataSource: IContact[];
+  isLoading: boolean;
+}
+
+export const ContactTable: React.FC<ContactTableProps> = ({
+  dataSource,
+  isLoading
+}) => {
 
   const { mutate: updateContact } = useUpdateContact(() => {
     client.invalidateQueries(QUERY_CONTACTS);
@@ -90,11 +87,11 @@ export const ContactTable: FC = () => {
     }
   };
 
-  const handleCreateContact = (record: IContact) => {
+  const handleCreateContact = (record: any) => {
 
     insertContact({
       ...record,
-      companyName: 'ABC company (Sample)',
+      companyName: record.companyName,
       birth: record.birth ? record.birth.format(DEFAULT) : ''
     });
   };
@@ -111,7 +108,7 @@ export const ContactTable: FC = () => {
           }}
           title={() => <ContactHeader toggleCreateModal={toggleCreateModal} />}
           pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
-          dataSource={data}
+          dataSource={dataSource}
           size={'small'}
           rowKey={(record) => record.id}
         >

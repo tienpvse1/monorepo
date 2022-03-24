@@ -1,21 +1,27 @@
+import { RetweetOutlined } from '@ant-design/icons';
 import {
-  BarChartOutlined,
-  LineChartOutlined,
-  PieChartOutlined,
-  RetweetOutlined,
-} from '@ant-design/icons';
-import { Button, Descriptions, PageHeader, Radio, Tag, Tooltip } from 'antd';
-import { Dispatch, SetStateAction } from 'react';
+  Button,
+  Descriptions,
+  Dropdown,
+  Menu,
+  PageHeader,
+  Tag,
+  Tooltip,
+} from 'antd';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-interface StatisticHeaderProps {
-  chartType: 'vertical' | 'pie' | 'line';
-  setChartType: Dispatch<SetStateAction<'vertical' | 'pie' | 'line'>>;
-}
+interface StatisticHeaderProps {}
 
-export const StatisticHeader: React.FC<StatisticHeaderProps> = ({
-  chartType,
-  setChartType,
-}) => {
+export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
+  const [chartType, setChartType] = useState<
+    'contacts' | 'email' | 'sent-email'
+  >('contacts');
+  const navigate = useNavigate();
+  const handleMenuItemClicked = (path: 'contacts' | 'email' | 'sent-email') => {
+    setChartType(path),
+      navigate(`/statistic/${path === 'contacts' ? '' : path}`);
+  };
   return (
     <>
       <PageHeader
@@ -39,39 +45,35 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = ({
             }}
             label='Target'
           >
-            <Tag color={'error'}>Contact</Tag>
+            <Tag color={'error'}>{chartType}</Tag>
             <Tooltip title='change'>
-              <RetweetOutlined />
+              <Dropdown
+                overlay={
+                  <Menu onSelect={(e) => navigate(`/statistic/${e.key}`)}>
+                    <Menu.Item
+                      onClick={() => handleMenuItemClicked('contacts')}
+                    >
+                      <Tag color={'volcano'}>Contacts</Tag>
+                    </Menu.Item>
+                    <Menu.Item onClick={() => handleMenuItemClicked('email')}>
+                      <Tag color={'purple'}>Received email</Tag>
+                    </Menu.Item>
+                    <Menu.Item
+                      onClick={() => handleMenuItemClicked('sent-email')}
+                    >
+                      <Tag color={'blue'}>Sent emails</Tag>
+                    </Menu.Item>
+                  </Menu>
+                }
+              >
+                <RetweetOutlined />
+              </Dropdown>
             </Tooltip>
           </Descriptions.Item>
           <Descriptions.Item label='Calculate from'>
             2022-08-10
           </Descriptions.Item>
           <Descriptions.Item label='Calculate to'>2022-10-10</Descriptions.Item>
-          <Descriptions.Item
-            style={{
-              paddingTop: 10,
-            }}
-            label='Type'
-          >
-            <Radio.Group
-              style={{
-                transform: 'translateY(-3px )',
-              }}
-              defaultValue={chartType}
-              onChange={(e) => setChartType(e.target.value)}
-            >
-              <Radio.Button value='vertical'>
-                <BarChartOutlined />
-              </Radio.Button>
-              <Radio.Button value='pie'>
-                <PieChartOutlined />
-              </Radio.Button>
-              <Radio.Button value='line'>
-                <LineChartOutlined />
-              </Radio.Button>
-            </Radio.Group>
-          </Descriptions.Item>
           <Descriptions.Item label='Remarks'>
             113 Nguyễn xí, P26, Vietnam
           </Descriptions.Item>

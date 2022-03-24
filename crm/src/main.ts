@@ -18,7 +18,12 @@ async function bootstrap() {
   // app.use(compression());
   // enable cross sharing origin
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost'],
+    origin: [
+      'http://localhost:3000',
+      'http://localhost',
+      'http://localhost:3001',
+      'http://165.22.59.245/',
+    ],
     credentials: true,
   });
 

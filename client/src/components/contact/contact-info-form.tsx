@@ -1,5 +1,6 @@
+import { SelectBoxCompany } from '@components/company/select-box-company'
 import { isEmail, isPhoneNumber, isRequired } from '@constance/rules-of-input-antd'
-import { Col, DatePicker, Form, Input, Select } from 'antd'
+import { Col, DatePicker, Form, Input } from 'antd'
 
 export const ContactInfoForm = () => {
   return (
@@ -36,14 +37,9 @@ export const ContactInfoForm = () => {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          name="company"
-          label="Company"
-        >
-          <Select>
+        
+        <SelectBoxCompany />
 
-          </Select>
-        </Form.Item>
         <Form.Item
           name="birth"
           label="Birth"

@@ -53,7 +53,7 @@ export const PageDetailsTitle: React.FC<PageDetailsTitleProps> = ({ contact }) =
             {contact.phone}
           </Descriptions.Item>
           <Descriptions.Item label='Contact Owner'>
-            {contact.account.email}
+            {contact.account?.email}
           </Descriptions.Item>
 
           <Descriptions.Item label='Company'>

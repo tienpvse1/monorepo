@@ -49,10 +49,41 @@ export class CreateSinglePipelineItemDto {
 
   opportunityRevenue: CreateOpportunityRevenueDto;
 }
+export class CreateSinglePipelineItemManagerDto {
+  @Length(1)
+  name: string;
+
+  @Length(10)
+  accountId: string;
+
+  @Length(10)
+  contactId: string;
+
+  @Length(10)
+  columnId: string;
+
+  @IsNumber()
+  @IsOptional()
+  expectedRevenue?: number;
+
+  @IsNumber()
+  @IsOptional()
+  priority?: number;
+
+  @IsOptional()
+  expectedClosing?: Date;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
+
+  opportunityRevenue: CreateOpportunityRevenueDto;
+}
 export class ParsedCreateSinglePipelineItemDto {
   name: string;
   index: number;
   column: PipelineColumn;
+  accountId: string;
 
   expectedClosing?: Date;
   description?: string;

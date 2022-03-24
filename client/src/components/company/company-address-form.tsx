@@ -1,36 +1,68 @@
-import { Col, Form, Input } from 'antd'
+import { SelectBoxDistrict } from '@components/signup/select-box-district'
+import { isPostalCode, isTaxId } from '@constance/rules-of-input-antd';
+import { useToggle } from '@hooks/useToggle';
+import { Col, Form, Input, Select } from 'antd'
+import { useState } from 'react';
+const { Option } = Select;
 
-export const CompanyAddressForm = () => {
+interface CompanyAddressFormProps {
+  defaultToggle?: boolean
+}
+
+export const CompanyAddressForm: React.FC<CompanyAddressFormProps> = ({
+  defaultToggle = true
+}) => {
+  const [visible, setVisible] = useToggle(defaultToggle);
+  const [country, setCountry] = useState<string>('VN');
   return (
     <>
       <Col span={12}>
         <Form.Item
-          name={['addresses', 'address']}
+          name='region'
+          label="Region"
+          initialValue={'VN'}
+        >
+          <Select onChange={setVisible} onSelect={(value) => {
+            if (value === 'Other')
+              setCountry('');
+            else
+              setCountry('VN');
+          }}>
+            <Option key={'VN'}>Viet Nam</Option>
+            <Option key={'Other'}>Other</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item
+          name='address'
           label="Address"
         >
-          <Input.TextArea />
+          <Input.TextArea showCount maxLength={150} />
         </Form.Item>
-        <Form.Item
-          name={['addresses', 'city']}
-          label="City"
-        >
-          <Input />
-        </Form.Item>
+        {visible ? <SelectBoxDistrict /> :
+          <Form.Item
+            name='city'
+            label="City"
+          >
+            <Input />
+          </Form.Item>}
         <Input.Group compact>
           <Form.Item
             name="postalCode"
             label="Postal Code"
+            rules={[isPostalCode]}
             style={{ width: 'calc(70% - 10px)', marginRight: '10px' }}
           >
-            <Input />
+            <Input maxLength={5}/>
           </Form.Item>
-          <Form.Item
-            name={['addresses', 'country']}
+          {!visible && <Form.Item
+            name='country'
             label="Country"
+            initialValue={country}
             style={{ width: '30%' }}
           >
             <Input />
-          </Form.Item>
+          </Form.Item>}
         </Input.Group>
       </Col>
       <Col span={12}>
@@ -43,9 +75,11 @@ export const CompanyAddressForm = () => {
         <Form.Item
           name="taxId"
           label="Tax ID"
+          rules={[isTaxId]}
         >
-          <Input maxLength={14} />
+          <Input maxLength={13} />
         </Form.Item>
+
       </Col>
     </>
   )

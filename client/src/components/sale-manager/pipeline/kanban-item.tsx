@@ -3,6 +3,7 @@ import {
   EllipsisOutlined,
   UserSwitchOutlined,
 } from '@ant-design/icons';
+import { imagePlaceHolderUrl } from '@constance/image';
 import { useBooleanToggle } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { Avatar, Card, Dropdown, Tooltip } from 'antd';
@@ -34,7 +35,7 @@ export const KanBanItem = (
   };
 
   const onViewMore = (opportunityId: string) => {
-    navigate(`/sale-manager/details/${opportunityId}`);
+    navigate(`/sale-manager/opportunities/view-details/${opportunityId}`);
   };
   return (
     <div
@@ -65,11 +66,6 @@ export const KanBanItem = (
                   <Tooltip title='Lose this opportunity' placement='bottom'>
                     <DeleteOutlined />
                   </Tooltip>,
-                  <Tooltip placement='bottom' title='Assign'>
-                    <UserSwitchOutlined
-                      onClick={() => handleAssignClick(item.id)}
-                    />
-                  </Tooltip>,
                   <Tooltip placement='bottom' title='More' arrowContent>
                     <Dropdown
                       trigger={['click']}
@@ -83,13 +79,33 @@ export const KanBanItem = (
                       <EllipsisOutlined key='ellipsis' />
                     </Dropdown>
                   </Tooltip>,
+                  <>
+                    {item.account ? (
+                      <Tooltip
+                        placement='bottom'
+                        title={item.account.firstName}
+                        arrowContent
+                      >
+                        <Avatar
+                          src={
+                            item.account.photo
+                              ? item.account.photo
+                              : imagePlaceHolderUrl
+                          }
+                          size='small'
+                        />
+                      </Tooltip>
+                    ) : (
+                      <Tooltip placement='bottom' title='Assign'>
+                        <UserSwitchOutlined
+                          onClick={() => handleAssignClick(item.id)}
+                        />
+                      </Tooltip>
+                    )}
+                  </>,
                 ]}
               >
-                <div
-                  style={{
-                    display: 'flex',
-                  }}
-                >
+                <div style={{}}>
                   <Card.Meta
                     title={item.name}
                     description='This is the description'

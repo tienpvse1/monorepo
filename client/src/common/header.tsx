@@ -6,25 +6,41 @@ import {
 import HeaderDrawer from '@components/header/header-drawer';
 import { Loading } from '@components/loading/loading';
 import { NotificationDropdown } from '@components/sale-manager/header/notification-dropdown';
+import { NotificationTime } from '@components/sale-manager/header/notification-timer';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { envVars } from '@env/var.env';
 import { useSocket } from '@hooks/socket';
+import { ReceivedEmailDto } from '@modules/notification/dto/create-webhook.dto';
 import { INotification } from '@modules/notification/entity/notification.entity';
 import { getNotifications } from '@modules/notification/query/notification.get';
+import { useUpcomingEvents } from '@modules/schedule/query/schedule.get';
 import { useUpdateSession } from '@modules/session/mutation/session.patch';
 import { Avatar, Badge, Dropdown, Tooltip } from 'antd';
+import { nanoid } from 'nanoid';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { io } from 'socket.io-client';
-
+import { EMAIL_BOT } from '@constance/crm-bot';
+import { IAccount } from '@interfaces/account';
 const DropDown = lazy(() => import('@components/header/dropdown'));
 const socket = io(`${envVars.VITE_BE_DOMAIN}/notification`);
+
 export const HeaderApp = () => {
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
   const { mutate } = useUpdateSession();
   const [showDrawer, setShowDrawer] = useState(false);
   const toggleDrawer = () => setShowDrawer(!showDrawer);
   const [notifications, setNotifications] = useState<INotification[]>([]);
+  const [
+    {
+      public_user_info: { id },
+    },
+  ] = useCookies([PUBLIC_USER_INFO]);
+  const currentDate = { ...new Date() } as Date;
+  const { data: schedules } = useUpcomingEvents({
+    accountId: id,
+    date: currentDate,
+  });
   useEffect(() => {
     mutate({
       notificationId: socket.id,
@@ -34,11 +50,37 @@ export const HeaderApp = () => {
     );
   }, []);
 
+  const pushNotification = (notification: INotification) => {
+    setNotifications((prev) => [...prev, notification]);
+  };
+
   useSocket({
     event: 'send-notification',
-    onReceive: (data: INotification) =>
-      setNotifications((prev) => [...prev, data]),
+    onReceive: pushNotification,
     socket,
+  });
+  useSocket({
+    event: 'webhook-sent-event',
+    onReceive: (data: ReceivedEmailDto) => {
+      console.log(data);
+      setNotifications((prev) => {
+        return [
+          {
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            description: `${data.data.from.address} sent you an email`,
+            id: nanoid(5),
+            name: 'Gmail',
+            receiver: public_user_info,
+            seen: false,
+            sender: EMAIL_BOT as IAccount,
+            deletedAt: null,
+          },
+          ...prev,
+        ];
+      });
+    },
+    socket: socket,
   });
   return (
     <div
@@ -52,6 +94,14 @@ export const HeaderApp = () => {
         paddingRight: 50,
       }}
     >
+      {schedules &&
+        schedules.map((schedule) => (
+          <NotificationTime
+            data={schedule}
+            key={schedule.id}
+            pushNotification={pushNotification}
+          />
+        ))}
       <HeaderDrawer handleClose={toggleDrawer} visible={showDrawer} />
       <div
         style={{

@@ -1,77 +1,40 @@
-import { Cascader } from 'antd';
+import { useQueryProvinces } from '@modules/provinces/query/provinces.get';
+import { Cascader, Form } from 'antd';
 
 export const SelectBoxDistrict = () => {
-  const childrenDistrict = [
-    {
-      value: 13,
-      label: 'Quận Bình Tân',
-    },
-    {
-      value: 14,
-      label: 'Quận Bình Thạnh',
-    },
-    {
-      value: 15,
-      label: 'Quận Gò Vấp',
-    },
-    {
-      value: 16,
-      label: 'Quận Phú Nhuận',
-    },
-    {
-      value: 17,
-      label: 'Quận Tân Bình',
-    },
-    {
-      value: 18,
-      label: 'Quận Tân Phú',
+
+  const { data: provinceData } = useQueryProvinces();
+
+  const cityData = provinceData && provinceData.map((province) => {
+    return {
+      value: province.name,
+      label: province.name,
+      children: province.districts.map((district) => {
+        return {
+          value: district.name,
+          label: district.name
+        }
+      })
     }
-  ];
-
-  for (let index = 12; index > 0; index--) {
-    childrenDistrict.unshift({
-      value: index,
-      label: `Quận ${index}`,
-    });
-  }
-
-  const district = [
-    {
-      value: 'district',
-      label: 'Quận',
-      children: childrenDistrict,
-    },
-    {
-      value: 'district2',
-      label: 'Huyện',
-      children: [
-        {
-          value: '19',
-          label: 'Huyện Bình Chánh',
-        },
-        {
-          value: '20',
-          label: 'Huyện Cần Giờ',
-        },
-        {
-          value: '21',
-          label: 'Huyện Củ Chi',
-        },
-        {
-          value: '22',
-          label: 'Huyện Hóc Môn',
-        },
-        {
-          value: '23',
-          label: 'Huyện Nhà Bè',
-        },
-      ],
-    },
-  ];
+  })
+  // const filter = (inputValue, path) => {
+  //   return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+  // }
 
   return (
-    <>
-      <Cascader placeholder='Quận/Huyện' options={district} />
-    </>
+    <Form.Item
+      name="residence"
+      label="Habitual Residence"
+      style={{width: '100%'}}
+      rules={[
+        { type: 'array' }
+      ]}
+    >
+      <Cascader
+        placeholder='Select City / State ...'
+        options={cityData}
+      // showSearch={{ filter }}
+      />
+    </Form.Item>
   );
 };

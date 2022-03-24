@@ -42,6 +42,8 @@ import { SubjectModule } from './modules/subject/subject.module';
 import { TagModule } from './modules/tag/tag.module';
 import { TeamModule } from './modules/team/team.module';
 import { WebhookModule } from './modules/webhook/webhook.module';
+import { InboxModule } from './modules/inbox/inbox.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -83,8 +85,10 @@ import { WebhookModule } from './modules/webhook/webhook.module';
     NotificationModule,
     ReasonModule,
     WebhookModule,
+    InboxModule,
   ],
   providers: [GlobalModule],
+  controllers: [AppController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

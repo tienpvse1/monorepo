@@ -16,7 +16,7 @@ export const SelectBoxStage = () => {
           label='Stage'
           required
           rules={[isRequired('Stage is required')]}
-          initialValue={pipelineColumns[0].id}
+          initialValue={pipelineColumns[0]?.id}
         >
           <Select>
             {pipelineColumns?.map((column) => (
