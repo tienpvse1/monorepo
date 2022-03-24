@@ -36,7 +36,7 @@ export class HistoryInterceptor implements NestInterceptor {
       },
       relations: ['account', 'account.team'],
     });
-    if (!session) return;
+    if (!session || !session.account) return;
     const account = await accountRepository.findOneItem({
       where: { id: session.account.id },
       relations: ['role'],
