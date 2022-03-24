@@ -53,7 +53,7 @@ export const OpportunityTitleTable: React.FC<OpportunityTitleTableProps> = ({ to
           </Col>
           <Col span={18} style={{ textAlign: 'center' }}>
             <Space style={{ float: 'right', marginTop: '10px' }}>
-              <SearchBar setDataOpportunity={setDataOpportunity} width={300} placeholder='Search this list...' />
+              <SearchBar setData={setDataOpportunity} width={300} placeholder='Search this list...' />
               <Select placeholder="Group by" style={{ width: 120 }}>
                 <Option value="salesPerson">All leads</Option>
               </Select>

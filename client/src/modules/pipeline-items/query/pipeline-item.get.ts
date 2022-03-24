@@ -73,6 +73,23 @@ export const getAllPipelineItem = async () => {
 
   return data;
 };
+export const searchPipelineItem = async () => {
+  const queryBuilder = RequestQueryBuilder.create({
+    search: {
+      $or: [
+        {
+          
+        }
+      ]
+    }
+  }).query(false);
+
+  const { data } = await instance.get<IPipelineItem[]>(
+    `${PIPELINE_ITEM}?${queryBuilder}`
+  );
+
+  return data;
+};
 
 export const usePipelineItem = (id: string) =>
   useQuery([GET_PIPELINE_ITEM_BY_ID, id], () => getPipelineId(id), {

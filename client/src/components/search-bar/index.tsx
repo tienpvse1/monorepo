@@ -6,10 +6,10 @@ import { useEffect, useRef, useState } from 'react';
 interface SearchBarProps {
   placeholder: string;
   width?: number;
-  setDataOpportunity?: (value: []) => void;
+  setData?: (value: []) => void;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ placeholder, width, setDataOpportunity }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({ placeholder, width, setData }) => {
   const [value, setValue] = useState('');
   const [debounced] = useDebouncedValue(value, 400);
   const isMounted = useRef(false)
@@ -17,7 +17,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ placeholder, width, setDat
   useEffect(() => {
     if (isMounted.current) {
       console.log('call api:', debounced);
-      setDataOpportunity([]);
+      setData([]);
     } else {
       isMounted.current = true;
     }
