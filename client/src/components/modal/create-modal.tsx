@@ -28,6 +28,7 @@ export const CreateModal: React.FC<CreateModalProps> = ({
     const record = await form.validateFields();
     callback(record);
     toggleCreateModal();
+    form.resetFields();
   };
 
   return (
