@@ -36,11 +36,13 @@ const rowSelection = {
 interface ContactTableProps {
   dataSource: IContact[];
   isLoading: boolean;
+  setDataContact: (value: []) => void;
 }
 
 export const ContactTable: React.FC<ContactTableProps> = ({
   dataSource,
-  isLoading
+  isLoading,
+  setDataContact
 }) => {
 
   const { mutate: updateContact } = useUpdateContact(() => {
@@ -82,6 +84,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
         id,
         ...record,
       });
+      form.resetFields();
     } catch (error) {
       return;
     }
@@ -98,7 +101,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
 
   return (
     <>
-      <Form form={form}>
+      <Form className='form-123123' form={form}>
         <Table
           loading={isLoading}
           tableLayout='fixed'
@@ -106,7 +109,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             type: 'checkbox',
             ...rowSelection,
           }}
-          title={() => <ContactHeader toggleCreateModal={toggleCreateModal} />}
+          title={() => <ContactHeader setDataContact={setDataContact} toggleCreateModal={toggleCreateModal} />}
           pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
           dataSource={dataSource}
           size={'small'}

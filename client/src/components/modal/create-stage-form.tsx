@@ -14,7 +14,8 @@ export const ModalFormCreateStageColumn: React.FC<
     <>
       <Modal
         visible={visible}
-        title='Add a column'
+        title='Create a stage'
+        bodyStyle={{height: '180px'}}
         okText='Create'
         cancelText='Cancel'
         onCancel={onCancel}
@@ -38,7 +39,7 @@ export const ModalFormCreateStageColumn: React.FC<
         >
           <Form.Item
             name='name'
-            label='Column name'
+            label='Stage name'
             rules={[
               { required: true, message: 'Please input the name of column!' },
             ]}

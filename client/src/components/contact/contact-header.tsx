@@ -5,12 +5,14 @@ const { Option } = Select;
 import { useNavigate } from 'react-router-dom';
 import { ButtonFilter } from './button-filter';
 import { envVars } from '@env/var.env';
+import { searchContacts } from '@modules/contact/query/contact.get';
 
 interface ContactHeaderProps {
   toggleCreateModal: () => void;
+  setDataContact: (value: []) => void;
 }
 
-export const ContactHeader: React.FC<ContactHeaderProps> = ({ toggleCreateModal }) => {
+export const ContactHeader: React.FC<ContactHeaderProps> = ({ toggleCreateModal, setDataContact }) => {
   const navigate = useNavigate();
   const handleImportClick = () => {
     navigate('/import-contact');
@@ -67,7 +69,12 @@ export const ContactHeader: React.FC<ContactHeaderProps> = ({ toggleCreateModal 
         </Col>
         <Col span={18} style={{ textAlign: 'center' }}>
           <Space style={{ float: 'right', marginTop: '10px' }}>
-            <SearchBar width={300} placeholder='Search this list...' />
+            <SearchBar
+              setData={setDataContact}
+              width={300}
+              placeholder='Search for name, email or phone'
+              getApi={searchContacts}
+            />
             <Select placeholder="Group by" style={{ width: 120 }}>
               <Option value="salesPerson">All contact</Option>
               <Option value="salesTeam">My contact</Option>
