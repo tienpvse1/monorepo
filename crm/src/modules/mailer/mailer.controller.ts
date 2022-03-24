@@ -1,4 +1,3 @@
-import { MailerService as RootService } from '@nestjs-modules/mailer';
 import { Body, Controller, Ip, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -11,10 +10,7 @@ import { EmailService } from './mailer.service';
 @ApiTags('email')
 @ApiBearerAuth(AUTHORIZATION)
 export class MailerController {
-  constructor(
-    private readonly mailerService: EmailService,
-    private readonly rootService: RootService,
-  ) {}
+  constructor(private readonly mailerService: EmailService) {}
 
   @Post('send')
   @HistoryLog('send an email')
@@ -23,12 +19,6 @@ export class MailerController {
     @Ip() ip: string,
     @User('id') senderId: string,
   ) {
-    this.rootService.sendMail({
-      to: email.to,
-      subject: email.subject,
-      html: email.value,
-    });
-
-    return this.mailerService.addEmailToDB(email, ip, senderId);
+    return this.mailerService.sendEmail(email, ip, senderId);
   }
 }

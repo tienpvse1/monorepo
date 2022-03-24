@@ -7,6 +7,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/common/decorators/public.decorator';
 import { InternalServerEvent } from 'src/constance/event';
 import { ReceivedEmailDto } from './dto/create-webhook.dto';
@@ -14,6 +15,7 @@ import { WebhookService } from './webhook.service';
 
 @Controller('webhook')
 @Public()
+@ApiTags('webhook')
 export class WebhookController {
   constructor(
     private eventEmitter: EventEmitter2,

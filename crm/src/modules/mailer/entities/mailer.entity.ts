@@ -6,7 +6,7 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 export class Email extends BaseEntity {
   @Column()
   ip: string;
-  @Column()
+  @Column({ type: 'longtext' })
   receiverEmail: string;
 
   @ManyToOne(() => Account, (account) => account.emails)

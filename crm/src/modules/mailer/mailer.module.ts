@@ -6,10 +6,14 @@ import { ConfigService } from '@nestjs/config';
 import { ConfigModule } from '../config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EmailRepository } from './mailer.repository';
+import { HttpModule } from '@nestjs/axios';
+import { AccountModule } from '../account/account.module';
 @Module({
   controllers: [MailerController],
   providers: [EmailService],
   imports: [
+    HttpModule,
+    AccountModule,
     TypeOrmModule.forFeature([EmailRepository]),
     RootMailer.forRootAsync({
       imports: [ConfigModule],
