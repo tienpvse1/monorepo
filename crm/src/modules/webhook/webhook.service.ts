@@ -1,26 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { CreateWebhookDto } from './dto/create-webhook.dto';
-import { UpdateWebhookDto } from './dto/update-webhook.dto';
+import { AccountService } from '../account/account.service';
+import { NotificationService } from '../notification/notification.service';
+import { ReceivedEmailDto } from './dto/create-webhook.dto';
 
 @Injectable()
 export class WebhookService {
-  create(createWebhookDto: CreateWebhookDto) {
-    return 'This action adds a new webhook';
-  }
+  constructor(
+    private notificationService: NotificationService,
+    private accountService: AccountService,
+  ) {}
 
-  findAll() {
-    return `This action returns all webhook`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} webhook`;
-  }
-
-  update(id: number, updateWebhookDto: UpdateWebhookDto) {
-    return `This action updates a #${id} webhook`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} webhook`;
+  async saveToDataBase(dto: ReceivedEmailDto) {
+    const [sender, receiver] = await Promise.all([
+      this.accountService.findOneItem({
+        where: { username: 'gmail' },
+      }),
+      this.accountService.findOneItem({ where: { username: dto.account } }),
+    ]);
+    const result = await this.notificationService.createItem({
+      description: `${dto.data.sender.address} sent you an email`,
+      name: 'Gmail',
+      receiver,
+      sender,
+      seen: false,
+    });
+    return result;
   }
 }

@@ -8,7 +8,7 @@ import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { CompanyTitleTable } from "@components/company/company-title-table";
 import { CreateModal } from "@components/modal/create-modal";
 import { CreateCompanyForm } from "./create-company-form";
-import { QUERY_COMPANIES, useCompanies } from "@modules/company/query/company.get";
+import { QUERY_COMPANIES } from "@modules/company/query/company.get";
 import moment from "moment";
 import { dateFormat } from "@constance/date-format";
 import { useCreateCompany } from "@modules/company/mutation/company.post";
@@ -16,12 +16,19 @@ import { message } from 'antd';
 import { useUpdateCompany } from "@modules/company/mutation/company.patch";
 import { useQueryClient } from "react-query";
 import { useDeleteCompany } from "@modules/company/mutation/company.delete";
+import { ICompany } from "@modules/company/entity/company.entity";
 const { CRUD_AT } = dateFormat;
 
-export const CompanyTable = () => {
-  const queryClient = useQueryClient();
+interface CompanyTableProps {
+  dataSource: ICompany[];
+  isLoading: boolean;
+}
 
-  const { data, isLoading } = useCompanies();
+export const CompanyTable: React.FC<CompanyTableProps> = ({
+  dataSource,
+  isLoading
+}) => {
+  const queryClient = useQueryClient();
 
   const { mutate: createCompany } = useCreateCompany();
   const { mutate: updateCompany } = useUpdateCompany();
@@ -91,7 +98,7 @@ export const CompanyTable = () => {
       <Form form={form}>
         <Table
           loading={isLoading}
-          dataSource={data}
+          dataSource={dataSource}
           tableLayout='fixed'
           rowSelection={{
             type: 'checkbox',
