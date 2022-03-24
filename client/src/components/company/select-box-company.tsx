@@ -9,7 +9,7 @@ export const SelectBoxCompany = () => {
   return (
     <>
       <Form.Item
-        name="company"
+        name="companyName"
         label="Company"
         rules={[isRequired('Company is required')]}
       >
