@@ -30,7 +30,7 @@ export class WebhookService {
       const inboxRepository = getCustomRepository(InboxRepository);
       const contactRepository = getCustomRepository(ContactRepository);
       const [sender, receiver, gmailBot] = await Promise.all([
-        contactRepository.findOneItem({
+        contactRepository.findOne({
           where: { email: dto.data.from.address },
         }),
         this.accountService.findOneItem({
@@ -40,6 +40,25 @@ export class WebhookService {
           where: { username: 'gmail' },
         }),
       ]);
+
+      if (!sender) {
+        const [result] = await Promise.all([
+          this.notificationService.createItem({
+            description: `${dto.data.sender.address} sent you an email`,
+            name: 'Gmail',
+            receiver,
+            sender: gmailBot,
+            seen: false,
+          }),
+          inboxRepository.createItem({
+            receiver,
+            body: dto.data.text.html,
+            subject: dto.data.subject,
+            isAnonymous: true,
+          }),
+        ]);
+        return result;
+      }
 
       const [result] = await Promise.all([
         this.notificationService.createItem({
