@@ -38,9 +38,12 @@ export class PipelineGateway extends BaseGateway<any> {
   }
   @OnEvent(InternalServerEvent.PIPELINE_UPDATED)
   async handlePipelineUpdatedForManager() {
-    const payload = await this.service.repository.find({
-      relations: ['pipelineItems'],
-    });
+    const payload = await this.service.repository
+      .createQueryBuilder('pipelineColumn')
+      .leftJoinAndSelect('pipelineColumn.pipelineItems', 'pipelineItem')
+      .leftJoinAndSelect('pipelineItem.account', 'account')
+      .leftJoinAndSelect('pipelineItem.schedules', 'schedule')
+      .getMany();
 
     const reindexed = sortColumns(payload);
 
