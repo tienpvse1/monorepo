@@ -1,7 +1,7 @@
 interface EmailStatisticProps {}
 
-const EmailStatistic: React.FC<EmailStatisticProps> = ({}) => {
+const DealStatistic: React.FC<EmailStatisticProps> = ({}) => {
   return <div></div>;
 };
 
-export default EmailStatistic;
+export default DealStatistic;

@@ -15,10 +15,10 @@ interface StatisticHeaderProps {}
 
 export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
   const [chartType, setChartType] = useState<
-    'contacts' | 'email' | 'sent-email'
+    'contacts' | 'deal' | 'sent-email'
   >('contacts');
   const navigate = useNavigate();
-  const handleMenuItemClicked = (path: 'contacts' | 'email' | 'sent-email') => {
+  const handleMenuItemClicked = (path: 'contacts' | 'deal' | 'sent-email') => {
     setChartType(path),
       navigate(`/statistic/${path === 'contacts' ? '' : path}`);
   };
@@ -55,8 +55,8 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
                     >
                       <Tag color={'volcano'}>Contacts</Tag>
                     </Menu.Item>
-                    <Menu.Item onClick={() => handleMenuItemClicked('email')}>
-                      <Tag color={'purple'}>Received email</Tag>
+                    <Menu.Item onClick={() => handleMenuItemClicked('deal')}>
+                      <Tag color={'purple'}>Deals</Tag>
                     </Menu.Item>
                     <Menu.Item
                       onClick={() => handleMenuItemClicked('sent-email')}

@@ -158,7 +158,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             render={(_, record: IPipelineItem) => (
               <>
                 <Link className="my-link" to={`view-details/${record.id}`} >
-                  {record.contact.name}
+                  {record.contact?.name}
                 </Link>
               </>
             )}
