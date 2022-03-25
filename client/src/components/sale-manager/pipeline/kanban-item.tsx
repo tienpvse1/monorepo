@@ -7,7 +7,7 @@ import { imagePlaceHolderUrl } from '@constance/image';
 import { useBooleanToggle } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useLoseOpportunity } from '@modules/pipeline-items/mutation/pipeline-item.patch';
-import { Avatar, Card, Dropdown, Popconfirm, Tooltip } from 'antd';
+import { Avatar, Badge, Card, Dropdown, Popconfirm, Tooltip } from 'antd';
 import { useState } from 'react';
 import {
   Draggable,
@@ -119,8 +119,34 @@ export const KanBanItem = (
               >
                 <div style={{}}>
                   <Card.Meta
-                    title={item.name}
-                    description='This is the description'
+                    title={
+                      <Tooltip
+                        title={`priority: ${
+                          item.priority === 2
+                            ? 'high'
+                            : item.priority === 1
+                            ? 'medium'
+                            : 'low'
+                        }`}
+                      >
+                        <Badge
+                          dot
+                          color={
+                            item.priority === 2
+                              ? 'red'
+                              : item.priority === 1
+                              ? 'yellow'
+                              : 'blue'
+                          }
+                          text={item.name}
+                        />
+                      </Tooltip>
+                    }
+                    description={
+                      <div>
+                        <div>contact: {item.contact?.name}</div>
+                      </div>
+                    }
                     avatar={
                       <Avatar
                         src={
