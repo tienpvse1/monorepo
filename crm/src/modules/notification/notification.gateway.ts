@@ -53,7 +53,7 @@ export class NotificationGateway {
 
   @OnEvent(InternalServerEvent.WEBHOOK_SENT_EVENT)
   async transactionMade(payload: ReceivedEmailDto) {
-    const account = await this.accountService.findOneItem({
+    const account = await this.accountService.findOneWithoutError({
       where: {
         username: payload.account,
       },
