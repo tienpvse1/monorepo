@@ -20,6 +20,9 @@ export class Email extends BaseEntity {
   @Column()
   subject: string;
 
+  @Column({ type: 'boolean', default: false, name: 'is_anonymous' })
+  isAnonymous: boolean;
+
   @Column({
     name: 'email_type',
     type: 'enum',
