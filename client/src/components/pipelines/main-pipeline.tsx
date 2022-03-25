@@ -112,7 +112,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
         return;
       }
 
-      if (finishColumn === stageWon.id) {
+      if (finishColumn === stageWon?.id) {
         handleToggleModalChangeStageWon(startColumn, stageWon.id, draggableId);
         return;
       }

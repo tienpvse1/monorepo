@@ -22,11 +22,13 @@ const { CRUD_AT } = dateFormat;
 interface CompanyTableProps {
   dataSource: ICompany[];
   isLoading: boolean;
+  setDataCompany: (value: []) => void;
 }
 
 export const CompanyTable: React.FC<CompanyTableProps> = ({
   dataSource,
-  isLoading
+  isLoading,
+  setDataCompany
 }) => {
   const queryClient = useQueryClient();
 
@@ -104,7 +106,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
             type: 'checkbox',
             ...rowSelection,
           }}
-          title={() => <CompanyTitleTable toggleCreateModal={toggleCreateModal} />}
+          title={() => <CompanyTitleTable setDataCompany={setDataCompany} toggleCreateModal={toggleCreateModal} />}
           pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
           size={'small'}
           rowKey={(record) => record.id}
@@ -124,6 +126,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
                 record={record}
               />
             )}
+            sorter={(a, b) => ('' + a.name).localeCompare(b.name)}
           />
 
           <Column
@@ -176,7 +179,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
                 record={record}
               />
             )}
-
+            sorter={(a, b) => ('' + a.city).localeCompare(b.city)}
           />
           <Column
             title="Country"
@@ -193,7 +196,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
                 record={record}
               />
             )}
-
+            sorter={(a, b) => ('' + a.country).localeCompare(b.country)}
           />
 
           <Column
@@ -203,6 +206,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
             render={(_, record: any) => (
               <span>{moment(record.createdAt).format(CRUD_AT)}</span>
             )}
+            sorter={(a, b) => moment(a.createdAt).diff(moment(b.createdAt))}
           />
 
           <Column title="Actions" dataIndex="actions" key="actions" width={150}

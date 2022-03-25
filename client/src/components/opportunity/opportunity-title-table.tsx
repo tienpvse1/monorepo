@@ -1,15 +1,18 @@
 import { PlusOutlined } from '@ant-design/icons'
-import { ButtonFilter } from '@components/contact/button-filter';
 import { SearchBar } from '@components/search-bar'
-import { Button, Col, Row, Select, Space } from 'antd'
-const { Option } = Select;
+import { Button, Col, Row, Space } from 'antd'
 import { envVars } from '@env/var.env';
+import { searchPipelineItem } from '@modules/pipeline-items/query/pipeline-item.get';
 
 interface OpportunityTitleTableProps {
   toggleCreateModal: () => void;
+  setDataOpportunity?: (value: []) => void;
 }
 
-export const OpportunityTitleTable: React.FC<OpportunityTitleTableProps> = ({ toggleCreateModal }) => {
+export const OpportunityTitleTable: React.FC<OpportunityTitleTableProps> = ({
+  toggleCreateModal,
+  setDataOpportunity
+}) => {
   return (
     <>
       <div style={{ padding: '10px' }}>
@@ -52,11 +55,12 @@ export const OpportunityTitleTable: React.FC<OpportunityTitleTableProps> = ({ to
           </Col>
           <Col span={18} style={{ textAlign: 'center' }}>
             <Space style={{ float: 'right', marginTop: '10px' }}>
-              <SearchBar width={300} placeholder='Search this list...' />
-              <Select placeholder="Group by" style={{ width: 120 }}>
-                <Option value="salesPerson">All leads</Option>
-              </Select>
-              <ButtonFilter />
+              <SearchBar
+                setData={setDataOpportunity}
+                width={400}
+                placeholder='Search for name, contact name or sales person'
+                getApi={searchPipelineItem}
+              />
             </Space>
           </Col>
         </Row>

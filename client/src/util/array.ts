@@ -2,9 +2,9 @@ import { ITeam } from '@modules/team/entity/team.entity';
 import { SchemaOf } from 'yup';
 
 export const removeDuplicate = <T>(array: T[], field: keyof T) => {
-  const items = array.filter(
+  const items = array?.filter(
     (value, index, self) =>
-      index === self.findIndex((t) => t[field] === value[field])
+      index === self?.findIndex((t) => t[field] === value[field])
   );
 
   return items;
