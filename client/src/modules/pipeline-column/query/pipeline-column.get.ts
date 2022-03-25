@@ -6,7 +6,7 @@ import { useQuery } from 'react-query';
 import { IPipelineColumn } from '../entity/pipeline-column.entity';
 
 const { PIPELINE_COLUMN } = controllers;
-export const GET_STAGES = 'get-stages-by-pipeline-id';
+export const GET_STAGES = 'get-stages';
 export const GET_STAGES_INFO = 'get-stages-info';
 export const GET_MY_STAGES = 'get-my-stages';
 export const getStages = async () => {
@@ -19,7 +19,17 @@ export const getStages = async () => {
         field: 'pipelineItems.schedules',
       },
       {
+        field: 'pipelineItems.contact',
+      },
+      {
         field: 'pipelineItems.account',
+      },
+    ],
+    filter: [
+      {
+        field: 'pipelineItems.isLose',
+        operator: '$eq',
+        value: false,
       },
     ],
   }).query(false);
@@ -34,6 +44,9 @@ export const getMyStages = async (accountId: string) => {
     join: [
       {
         field: 'pipelineItems',
+      },
+      {
+        field: 'pipelineItems.contact',
       },
       {
         field: 'pipelineItems.account',

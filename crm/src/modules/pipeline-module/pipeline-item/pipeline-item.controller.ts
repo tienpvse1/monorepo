@@ -129,4 +129,10 @@ export class PipelineItemController {
       isLose: true,
     });
   }
+  @Patch('restore/:id')
+  restore(@Param('id') id: string) {
+    return this.service.update(id, {
+      isLose: false,
+    });
+  }
 }
