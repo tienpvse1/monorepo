@@ -31,6 +31,38 @@ export const getCompanyById = async (companyId: string) => {
   return data[0];
 };
 
+export const searchCompany = async (text: string) => {
+  const query = RequestQueryBuilder.create({
+    search: {
+      $or: [
+        {
+          name: {
+            $cont: text
+          },
+        },
+        {
+          mobile: {
+            $cont: text
+          },
+        },
+        {
+          city: {
+            $cont: text
+          }
+        },
+        {
+          country: {
+            $cont: text
+          }
+        }
+      ]
+    },
+
+  }).query(false);
+  const { data } = await instance.get<ICompany[]>(`${COMPANY}?${query}`);
+  return data;
+};
+
 export const useCompanies = () => useQuery(QUERY_COMPANIES, getCompanies);
 
 export const useQueryCompanyById = (companyId: string) =>

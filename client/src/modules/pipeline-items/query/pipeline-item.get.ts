@@ -73,12 +73,29 @@ export const getAllPipelineItem = async () => {
 
   return data;
 };
-export const searchPipelineItem = async () => {
+export const searchPipelineItem = async (text: string) => {
   const queryBuilder = RequestQueryBuilder.create({
+    join: [
+      { field: 'pipelineColumn' },
+      { field: 'account' },
+      { field: 'contact' },
+    ],
     search: {
       $or: [
         {
-          
+          name: {
+            $cont: text
+          },
+        },
+        {
+          'contact.name': {
+            $cont: text
+          }
+        },
+        {
+          'account.firstName': {
+            $cont: text
+          }
         }
       ]
     }

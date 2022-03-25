@@ -4,13 +4,17 @@ import { SearchBar } from '@components/search-bar'
 import { Button, Col, Row, Select, Space } from 'antd'
 const { Option } = Select;
 import { envVars } from '@env/var.env';
+import { searchPipelineItem } from '@modules/pipeline-items/query/pipeline-item.get';
 
 interface OpportunityTitleTableProps {
   toggleCreateModal: () => void;
   setDataOpportunity?: (value: []) => void;
 }
 
-export const OpportunityTitleTable: React.FC<OpportunityTitleTableProps> = ({ toggleCreateModal, setDataOpportunity }) => {
+export const OpportunityTitleTable: React.FC<OpportunityTitleTableProps> = ({
+  toggleCreateModal,
+  setDataOpportunity
+}) => {
   return (
     <>
       <div style={{ padding: '10px' }}>
@@ -53,7 +57,12 @@ export const OpportunityTitleTable: React.FC<OpportunityTitleTableProps> = ({ to
           </Col>
           <Col span={18} style={{ textAlign: 'center' }}>
             <Space style={{ float: 'right', marginTop: '10px' }}>
-              <SearchBar setData={setDataOpportunity} width={300} placeholder='Search this list...' />
+              <SearchBar
+                setData={setDataOpportunity}
+                width={300}
+                placeholder='Search for name, contact name or sales person...'
+                getApi={searchPipelineItem}
+              />
               <Select placeholder="Group by" style={{ width: 120 }}>
                 <Option value="salesPerson">All leads</Option>
               </Select>

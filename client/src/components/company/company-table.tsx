@@ -22,11 +22,13 @@ const { CRUD_AT } = dateFormat;
 interface CompanyTableProps {
   dataSource: ICompany[];
   isLoading: boolean;
+  setDataCompany: (value: []) => void;
 }
 
 export const CompanyTable: React.FC<CompanyTableProps> = ({
   dataSource,
-  isLoading
+  isLoading,
+  setDataCompany
 }) => {
   const queryClient = useQueryClient();
 
@@ -104,7 +106,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
             type: 'checkbox',
             ...rowSelection,
           }}
-          title={() => <CompanyTitleTable toggleCreateModal={toggleCreateModal} />}
+          title={() => <CompanyTitleTable setDataCompany={setDataCompany} toggleCreateModal={toggleCreateModal} />}
           pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
           size={'small'}
           rowKey={(record) => record.id}
