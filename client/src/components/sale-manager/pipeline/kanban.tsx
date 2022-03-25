@@ -1,17 +1,18 @@
 import { OpportunityHistoryType } from '@modules/opportunity-history/entity/opportunity-history.entity';
 import { usePostOpportunityHistory } from '@modules/opportunity-history/mutation/opportunity-history.post';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
+import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { useChangePipeline } from '@modules/pipeline/mutation/pipeline.update';
 import { abstractReIndex } from '@util/array';
 import { startFireworks } from '@util/firework';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import '../../../stylesheets/kanban.css';
 import { CreateOpportunity } from './drawer';
 import { KanbanColumn } from './kanban-column';
 interface KanbanProps {
   data: IPipelineColumn[];
-  setData: Dispatch<SetStateAction<IPipelineColumn[]>>;
+  setData: (pipeline: IPipelineColumn[]) => void;
 }
 
 export const Kanban: React.FC<KanbanProps> = ({ data, setData }) => {

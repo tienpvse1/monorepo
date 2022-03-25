@@ -122,4 +122,17 @@ export class PipelineItemController {
   delete(@Param('id') id: string) {
     return this.service.softDelete(id, { relations: ['reason'] });
   }
+
+  @Patch('lose/:id')
+  lose(@Param('id') id: string) {
+    return this.service.update(id, {
+      isLose: true,
+    });
+  }
+  @Patch('restore/:id')
+  restore(@Param('id') id: string) {
+    return this.service.update(id, {
+      isLose: false,
+    });
+  }
 }

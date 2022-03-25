@@ -11,6 +11,12 @@ export class Inbox extends BaseEntity {
   @Column({ type: 'longtext' })
   body: string;
 
+  @Column({ name: 'is_anonymous', default: false })
+  isAnonymous: boolean;
+
+  /**
+   * relations
+   */
   @ManyToOne(() => Account, (account) => account.inboxEmails)
   @JoinColumn({ name: 'account_id' })
   receiver: Account;

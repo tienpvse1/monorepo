@@ -6,7 +6,8 @@ import {
 import { imagePlaceHolderUrl } from '@constance/image';
 import { useBooleanToggle } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { Avatar, Card, Dropdown, Tooltip } from 'antd';
+import { useLoseOpportunity } from '@modules/pipeline-items/mutation/pipeline-item.patch';
+import { Avatar, Card, Dropdown, Popconfirm, Tooltip } from 'antd';
 import { useState } from 'react';
 import {
   Draggable,
@@ -16,7 +17,8 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { AccountList } from './account-list';
 import { DetailDropdown } from './drop-down';
-
+import { client } from '../../../App';
+import { GET_STAGES } from '@modules/pipeline-column/query/pipeline-column.get';
 export const KanBanItem = (
   provided: DroppableProvided,
   pipelineItems: IPipelineItem[],
@@ -24,6 +26,7 @@ export const KanBanItem = (
 ) => {
   const [currentId, setCurrentId] = useState<string>('');
   const [value, toggle] = useBooleanToggle(false);
+  const { mutate } = useLoseOpportunity();
   const navigate = useNavigate();
   const handleAssignClick = (id: string) => {
     // mutate({
@@ -36,6 +39,10 @@ export const KanBanItem = (
 
   const onViewMore = (opportunityId: string) => {
     navigate(`/sale-manager/opportunities/view-details/${opportunityId}`);
+  };
+
+  const handleLose = (id: string) => {
+    mutate({ id }, { onSuccess: () => client.invalidateQueries(GET_STAGES) });
   };
   return (
     <div
@@ -64,7 +71,12 @@ export const KanBanItem = (
                 }}
                 actions={[
                   <Tooltip title='Lose this opportunity' placement='bottom'>
-                    <DeleteOutlined />
+                    <Popconfirm
+                      title='Are you sure lose this opportunity?'
+                      onConfirm={() => handleLose(item.id)}
+                    >
+                      <DeleteOutlined />
+                    </Popconfirm>
                   </Tooltip>,
                   <Tooltip placement='bottom' title='More' arrowContent>
                     <Dropdown
@@ -112,7 +124,9 @@ export const KanBanItem = (
                     avatar={
                       <Avatar
                         src={
-                          item.photo ? item.photo : 'https://i.pravatar.cc/200'
+                          item.contact.photo
+                            ? item.contact.photo
+                            : imagePlaceHolderUrl
                         }
                       />
                     }

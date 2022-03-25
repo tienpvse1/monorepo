@@ -1,4 +1,5 @@
 import { RetweetOutlined } from '@ant-design/icons';
+import { getMonthToShow } from '@util/date';
 import {
   Button,
   Descriptions,
@@ -15,13 +16,14 @@ interface StatisticHeaderProps {}
 
 export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
   const [chartType, setChartType] = useState<
-    'contacts' | 'email' | 'sent-email'
+    'contacts' | 'deal' | 'sent-email'
   >('contacts');
   const navigate = useNavigate();
-  const handleMenuItemClicked = (path: 'contacts' | 'email' | 'sent-email') => {
+  const handleMenuItemClicked = (path: 'contacts' | 'deal' | 'sent-email') => {
     setChartType(path),
       navigate(`/statistic/${path === 'contacts' ? '' : path}`);
   };
+  const monthToShow = getMonthToShow();
   return (
     <>
       <PageHeader
@@ -55,8 +57,8 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
                     >
                       <Tag color={'volcano'}>Contacts</Tag>
                     </Menu.Item>
-                    <Menu.Item onClick={() => handleMenuItemClicked('email')}>
-                      <Tag color={'purple'}>Received email</Tag>
+                    <Menu.Item onClick={() => handleMenuItemClicked('deal')}>
+                      <Tag color={'purple'}>Deals</Tag>
                     </Menu.Item>
                     <Menu.Item
                       onClick={() => handleMenuItemClicked('sent-email')}
@@ -71,9 +73,11 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
             </Tooltip>
           </Descriptions.Item>
           <Descriptions.Item label='Calculate from'>
-            2022-08-10
+            {monthToShow[0].format('DD MMMM YYYY')}
           </Descriptions.Item>
-          <Descriptions.Item label='Calculate to'>2022-10-10</Descriptions.Item>
+          <Descriptions.Item label='Calculate to'>
+            {monthToShow[monthToShow.length - 1].format('DD MMMM YYYY')}
+          </Descriptions.Item>
           <Descriptions.Item label='Remarks'>
             113 Nguyễn xí, P26, Vietnam
           </Descriptions.Item>

@@ -89,3 +89,11 @@ export const useQueryPipelineByAccountId = (accountId: string) =>
   useQuery([GET_PIPELINE_ITEM_BY_ACCOUNT, accountId], () =>
     getPipelineByAccountID(accountId)
   );
+export const useMyPipelineItems = (accountId: string) =>
+  useQuery(
+    [GET_PIPELINE_ITEM_BY_ACCOUNT, accountId],
+    () => getPipelineByAccountID(accountId),
+    {
+      enabled: Boolean(accountId),
+    }
+  );
