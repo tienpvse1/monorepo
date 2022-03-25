@@ -1,6 +1,4 @@
 import { PUBLIC_USER_INFO } from '@constance/cookie';
-import { useMySentEmails } from '@modules/email/query/email.query';
-import { useMyInboxEmails } from '@modules/inbox/query/inbox.get';
 import { useMyPipelineItems } from '@modules/pipeline-items/query/pipeline-item.get';
 import { getMonthToShow, isIn } from '@util/date';
 import {
@@ -32,7 +30,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Email Statistic',
+      text: 'Deal statistic',
     },
   },
 };
@@ -78,7 +76,7 @@ const DealStatistic: React.FC<EmailStatisticProps> = ({}) => {
         data: labels.map((month) => {
           return 0.5;
         }),
-        backgroundColor: 'rgba(125, 58, 12, 0.5)',
+        backgroundColor: 'rgba(125, 58, 193, 0.5)',
       },
     ],
   };

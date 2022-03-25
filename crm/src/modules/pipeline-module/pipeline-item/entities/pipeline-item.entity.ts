@@ -34,6 +34,12 @@ export class PipelineItem extends BaseEntity {
   @Column({ type: 'longtext', nullable: true })
   description: string;
 
+  @Column({ type: 'boolean', default: false, name: 'is_lose' })
+  isLose: boolean;
+
+  /**
+   * relations
+   */
   @OneToOne(
     () => OpportunityRevenue,
     (opportunityRevenue) => opportunityRevenue.pipelineItem,

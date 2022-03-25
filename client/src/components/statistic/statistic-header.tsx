@@ -1,4 +1,5 @@
 import { RetweetOutlined } from '@ant-design/icons';
+import { getMonthToShow } from '@util/date';
 import {
   Button,
   Descriptions,
@@ -22,6 +23,7 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
     setChartType(path),
       navigate(`/statistic/${path === 'contacts' ? '' : path}`);
   };
+  const monthToShow = getMonthToShow();
   return (
     <>
       <PageHeader
@@ -71,9 +73,11 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
             </Tooltip>
           </Descriptions.Item>
           <Descriptions.Item label='Calculate from'>
-            2022-08-10
+            {monthToShow[0].format('DD MMMM YYYY')}
           </Descriptions.Item>
-          <Descriptions.Item label='Calculate to'>2022-10-10</Descriptions.Item>
+          <Descriptions.Item label='Calculate to'>
+            {monthToShow[monthToShow.length - 1].format('DD MMMM YYYY')}
+          </Descriptions.Item>
           <Descriptions.Item label='Remarks'>
             113 Nguyễn xí, P26, Vietnam
           </Descriptions.Item>
