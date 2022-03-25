@@ -1,6 +1,7 @@
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useMySentEmails } from '@modules/email/query/email.query';
 import { useMyInboxEmails } from '@modules/inbox/query/inbox.get';
+import { useMyPipelineItems } from '@modules/pipeline-items/query/pipeline-item.get';
 import { getMonthToShow, isIn } from '@util/date';
 import {
   BarElement,
@@ -37,40 +38,50 @@ export const options = {
 };
 
 const labels = getMonthToShow();
-interface SentEmailStatisticProps {}
 
-const SentEmailStatistic: React.FC<SentEmailStatisticProps> = ({}) => {
+interface EmailStatisticProps {}
+
+const DealStatistic: React.FC<EmailStatisticProps> = ({}) => {
   const [
     {
       public_user_info: { id },
     },
   ] = useCookies([PUBLIC_USER_INFO]);
-  const { data: sentEmails } = useMySentEmails(id);
-  const { data: inboxEmails } = useMyInboxEmails(id);
+  const { data: pipelineItems } = useMyPipelineItems(id);
   const data = {
     labels: labels.map((item) => item.format('MMMM YYYY')),
     datasets: [
       {
-        label: 'Send',
+        label: 'On proposing',
         data: labels.map((month) => {
-          return sentEmails?.filter((email) =>
-            isIn(email.createdAt.toString(), month)
+          return pipelineItems?.filter(
+            (item) =>
+              isIn(item.createdAt.toString(), month) &&
+              !item.pipelineColumn.isWon
           ).length;
         }),
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
-        label: 'Receive',
+        label: 'Won',
         data: labels.map((month) => {
-          return inboxEmails?.filter((email) =>
-            isIn(email.createdAt.toString(), month)
+          return pipelineItems?.filter(
+            (item) =>
+              isIn(item.createdAt.toString(), month) &&
+              item.pipelineColumn.isWon
           ).length;
         }),
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       },
+      {
+        label: 'Lost',
+        data: labels.map((month) => {
+          return 0.5;
+        }),
+        backgroundColor: 'rgba(125, 58, 12, 0.5)',
+      },
     ],
   };
-
   return (
     <div style={{ height: 450 }}>
       <Bar options={{ ...options, maintainAspectRatio: false }} data={data} />
@@ -78,4 +89,4 @@ const SentEmailStatistic: React.FC<SentEmailStatisticProps> = ({}) => {
   );
 };
 
-export default SentEmailStatistic;
+export default DealStatistic;

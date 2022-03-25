@@ -20,7 +20,7 @@ const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
 const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
 const DealStatistic = lazy(
-  () => import('@components/statistic/email-statistic')
+  () => import('@components/statistic/deal-statistic')
 );
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
 const SalesContactList = lazy(
