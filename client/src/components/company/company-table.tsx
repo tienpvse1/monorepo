@@ -126,6 +126,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
                 record={record}
               />
             )}
+            sorter={(a, b) => ('' + a.name).localeCompare(b.name)}
           />
 
           <Column
@@ -178,7 +179,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
                 record={record}
               />
             )}
-
+            sorter={(a, b) => ('' + a.city).localeCompare(b.city)}
           />
           <Column
             title="Country"
@@ -195,7 +196,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
                 record={record}
               />
             )}
-
+            sorter={(a, b) => ('' + a.country).localeCompare(b.country)}
           />
 
           <Column
@@ -205,6 +206,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
             render={(_, record: any) => (
               <span>{moment(record.createdAt).format(CRUD_AT)}</span>
             )}
+            sorter={(a, b) => moment(a.createdAt).diff(moment(b.createdAt))}
           />
 
           <Column title="Actions" dataIndex="actions" key="actions" width={150}

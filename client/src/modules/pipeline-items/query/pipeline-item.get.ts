@@ -49,6 +49,7 @@ export const getPipelineByAccountID = async (accountId: string) => {
         value: accountId,
       },
     ],
+    sort: [{ field: 'createdAt', order: 'DESC' }]
   }).query(false);
 
   const { data } = await instance.get<IPipelineItem[]>(
@@ -64,6 +65,7 @@ export const getAllPipelineItem = async () => {
       { field: 'account' },
       { field: 'contact' },
     ],
+    sort: [{ field: 'createdAt', order: 'DESC' }]
   }).query(false);
 
   const { data } = await instance.get<IPipelineItem[]>(

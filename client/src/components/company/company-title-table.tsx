@@ -1,8 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons'
-import { ButtonFilter } from '@components/contact/button-filter';
 import { SearchBar } from '@components/search-bar'
-import { Button, Col, Row, Select, Space } from 'antd'
-const { Option } = Select;
+import { Button, Col, Row, Space } from 'antd'
 import { envVars } from '@env/var.env';
 import { searchCompany } from '@modules/company/query/company.get';
 
@@ -58,15 +56,11 @@ export const CompanyTitleTable: React.FC<CompanyTitleTableProps> = ({
           <Col span={18} style={{ textAlign: 'center' }}>
             <Space style={{ float: 'right', marginTop: '10px' }}>
               <SearchBar
-                width={300}
-                placeholder='Search for name, phone, city or country...'
+                width={400}
+                placeholder='Search for name, phone, city or country'
                 setData={setDataCompany}
                 getApi={searchCompany}
               />
-              <Select placeholder="Group by" style={{ width: 120 }}>
-                <Option value="salesPerson">All leads</Option>
-              </Select>
-              <ButtonFilter />
             </Space>
           </Col>
         </Row>

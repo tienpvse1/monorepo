@@ -9,7 +9,11 @@ export const QUERY_COMPANIES = 'query-companies';
 export const QUERY_COMPANY_DETAILS = 'query-company-details';
 
 export const getCompanies = async () => {
-  const { data } = await instance.get<ICompany[]>(COMPANY);
+  const query = RequestQueryBuilder.create({
+    sort: [{ field: 'createdAt', order: 'DESC' }]
+  }).query(false);
+
+  const { data } = await instance.get<ICompany[]>(`${COMPANY}?${query}`);
   return data;
 };
 

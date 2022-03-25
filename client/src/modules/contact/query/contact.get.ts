@@ -33,6 +33,7 @@ const getAllContacts = async () => {
       { field: 'account' },
       { field: 'company' },
     ],
+    sort: [{ field: 'createdAt', order: 'DESC' }]
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
   return data;

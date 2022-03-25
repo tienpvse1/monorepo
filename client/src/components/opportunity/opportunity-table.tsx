@@ -19,8 +19,9 @@ import { usePostPipelineItems } from "@modules/pipeline-items/mutation/pipeline-
 import { useQueryClient } from "react-query";
 import { useDeletePipelineItems } from "@modules/pipeline-items/mutation/pipeline-items.delete";
 import { IContact } from "@modules/contact/entity/contact.entity";
-// import { dateFormat } from "@constance/date-format";
-// const { DEFAULT } = dateFormat;
+import { removeDuplicate } from "@util/array";
+import { dateFormat } from "@constance/date-format";
+const { DEFAULT } = dateFormat;
 
 interface OpportunitiesTableProps {
   dataSource: IPipelineItem[];
@@ -48,11 +49,16 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
   isLoading,
   setDataOpportunity
 }) => {
+
+  const stageFilter = dataSource?.map((opportunity) => ({
+    text: opportunity.pipelineColumn?.name,
+    value: opportunity.pipelineColumn?.name
+  }))
+
   const { mutate: updateOpportunity } = useUpdatePipelineItem();
   const { mutate: createOpportunity } = usePostPipelineItems();
   const { mutate: removePipelineItems } = useDeletePipelineItems();
   const queryClient = useQueryClient();
-
 
   const [isOpenModal, toggleCreateModal] = useToggle();
   const [isEditing, toggleEditing] = useToggle();
@@ -84,8 +90,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
       updateOpportunity({
         id,
         name: record.name,
-        // expectedClosing: record.expectedClosing ? record.expectedClosing.format(DEFAULT) : '',
-        // contactId: record.contactId
+        expectedClosing: record.expectedClosing ? record.expectedClosing.format(DEFAULT) : '',
       }, {
         onSuccess: () => {
           message.success('Saved successfully !');
@@ -129,7 +134,10 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             type: 'checkbox',
             ...rowSelection,
           }}
-          title={() => <OpportunityTitleTable setDataOpportunity={setDataOpportunity} toggleCreateModal={toggleCreateModal} />}
+          title={() => <OpportunityTitleTable
+            setDataOpportunity={setDataOpportunity}
+            toggleCreateModal={toggleCreateModal}
+          />}
           pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
           size={'small'}
           rowKey={(record) => record.id}
@@ -150,8 +158,9 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                 rules={[isRequired('Name is required')]}
               />
             )}
-
+            sorter={(a, b) => ('' + a.name).localeCompare(b.name)}
           />
+
           <Column
             title="Contact Name"
             dataIndex="contactName"
@@ -163,6 +172,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                 </Link>
               </>
             )}
+            sorter={(a, b) => ('' + a.contact.name).localeCompare(b.contact.name)}
 
           />
 
@@ -174,10 +184,12 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             render={(_, record: IPipelineItem) => (
               <>
                 <Link className="my-link" to={`view-details/${record.id}`} >
-                  {record.account.firstName}{record.account.lastName}
+                  {record.account.username}
                 </Link>
               </>
             )}
+            sorter={(a, b) => ('' + a.account.username).localeCompare(b.account.username)}
+
           />
 
           <Column
@@ -198,6 +210,8 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                 rules={[isRequired('Name is required')]}
               />
             )}
+            sorter={(a, b) => a.expectedRevenue - b.expectedRevenue}
+
           />
 
           <Column
@@ -216,6 +230,9 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                 record={record.pipelineColumn}
               />
             )}
+            filters={removeDuplicate(stageFilter, 'value')}
+            //@ts-ignore
+            onFilter={(value, record) => record.pipelineColumn.name.indexOf(value) === 0}
           />
 
           <Column
@@ -235,6 +252,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                 record={record}
               />
             )}
+            sorter={(a, b) => moment(a.expectedClosing).diff(moment(b.expectedClosing))}
           />
 
           <Column title="Actions" dataIndex="actions" key="actions" width={125}

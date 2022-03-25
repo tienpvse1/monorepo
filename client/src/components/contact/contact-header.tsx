@@ -1,9 +1,7 @@
 import { PlusOutlined, ImportOutlined } from '@ant-design/icons';
 import { SearchBar } from '@components/search-bar';
-import { Col, Row, Button, Space, Select } from 'antd';
-const { Option } = Select;
+import { Col, Row, Button, Space } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { ButtonFilter } from './button-filter';
 import { envVars } from '@env/var.env';
 import { searchContacts } from '@modules/contact/query/contact.get';
 
@@ -71,15 +69,10 @@ export const ContactHeader: React.FC<ContactHeaderProps> = ({ toggleCreateModal,
           <Space style={{ float: 'right', marginTop: '10px' }}>
             <SearchBar
               setData={setDataContact}
-              width={300}
-              placeholder='Search for name, email or phone'
+              width={400}
+              placeholder='Search for name, email or phone number'
               getApi={searchContacts}
             />
-            <Select placeholder="Group by" style={{ width: 120 }}>
-              <Option value="salesPerson">All contact</Option>
-              <Option value="salesTeam">My contact</Option>
-            </Select>
-            <ButtonFilter />
           </Space>
         </Col>
       </Row>
