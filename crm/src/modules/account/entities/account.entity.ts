@@ -73,9 +73,12 @@ export class Account extends BaseEntity {
   @OneToMany(() => Team, (team) => team.createdBy)
   createdTeams: Team[];
 
-  // account can be assign to sell product to any opportunity by sale manager
+  // account can be assigned to sell product to any opportunity by sale manager
   @OneToMany(() => PipelineItem, (pipeline) => pipeline.account)
   pipelineItems: PipelineItem[];
+
+  @OneToMany(() => PipelineItem, (pipeline) => pipeline.createBy)
+  createdPipelineItems: PipelineItem[];
 
   // an account can upload multiple files
   @OneToMany(() => File, (pipeline) => pipeline.account)
