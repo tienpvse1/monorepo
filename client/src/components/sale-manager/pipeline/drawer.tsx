@@ -3,7 +3,10 @@ import { useSaleAccounts } from '@modules/account/get/account.get';
 import { useQueryAllContacts } from '@modules/contact/query/contact.get';
 import { useCourses } from '@modules/course/query/course.get';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import { useStages } from '@modules/pipeline-column/query/pipeline-column.get';
+import {
+  GET_STAGES,
+  useStages,
+} from '@modules/pipeline-column/query/pipeline-column.get';
 import { useCreatePipelineItemForManager } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { ICreatePipelineItemForManager } from '@modules/pipeline-items/dto/create-pipeline-items.dto';
 import {
@@ -24,6 +27,7 @@ import {
 
 import { CheckOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import { client } from '../../../App';
 
 interface CreateOpportunityProps {
   visible: boolean;
@@ -63,23 +67,21 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
           message: 'Success',
           description: 'New deal has been created successfully',
           icon: <CheckOutlined color='' />,
-          onClick: () => {
-            console.log('Notification Clicked!');
-          },
+          onClick: () => {},
         });
+        client.invalidateQueries(GET_STAGES);
+        onClose();
       },
       onError: () => {
         notification.success({
           message: 'Failed',
           description: "Opportunity's creation failed",
           icon: <CheckOutlined color='' />,
-          onClick: () => {
-            console.log('Notification Clicked!');
-          },
+          onClick: () => {},
         });
+        onClose();
       },
     });
-    onClose();
     // mutate(payload);
   };
   return (
@@ -207,21 +209,19 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
                       .includes(input.toLowerCase());
                   }}
                 >
-                  {sales
-                    ?.filter((_item, index) => index < 5)
-                    .map((sale) => (
-                      <Select.Option key={sale.id} value={sale.id}>
-                        <Avatar
-                          size={'small'}
-                          src={sale.photo ? sale.photo : imagePlaceHolderUrl}
-                          style={{
-                            marginRight: 10,
-                          }}
-                          alt={sale.name}
-                        />
-                        {sale.name}
-                      </Select.Option>
-                    ))}
+                  {sales?.map((sale) => (
+                    <Select.Option key={sale.id} value={sale.id}>
+                      <Avatar
+                        size={'small'}
+                        src={sale.photo ? sale.photo : imagePlaceHolderUrl}
+                        style={{
+                          marginRight: 10,
+                        }}
+                        alt={sale.name}
+                      />
+                      {sale.name}
+                    </Select.Option>
+                  ))}
                 </Select>
               </Form.Item>
             </Col>

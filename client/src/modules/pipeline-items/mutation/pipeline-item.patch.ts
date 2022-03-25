@@ -2,6 +2,7 @@ import { instance } from '@axios';
 import { controllers } from '@constance/controllers';
 import { useMutation } from 'react-query';
 import { IUpdateExpectedClosing } from '../dto/update-pipeline-items.dto';
+import { IPipelineItem } from '../entity/pipeline-items.entity';
 
 export interface AssignAccountDto {
   id: string;
@@ -10,6 +11,19 @@ export interface AssignAccountDto {
 const { PIPELINE_ITEM } = controllers;
 export const assignAccount = async (dto: AssignAccountDto) => {
   const { data } = await instance.patch(`${PIPELINE_ITEM}/assign`, dto);
+  return data;
+};
+
+export const loseOpportunity = async ({ id }: { id: string }) => {
+  const { data } = await instance.patch<IPipelineItem>(
+    `${PIPELINE_ITEM}/lose/${id}`
+  );
+  return data;
+};
+export const restoreOpportunity = async ({ id }: { id: string }) => {
+  const { data } = await instance.patch<IPipelineItem>(
+    `${PIPELINE_ITEM}/restore/${id}`
+  );
   return data;
 };
 export const updateExpectedClosing = async ({
@@ -25,3 +39,6 @@ export const updateExpectedClosing = async ({
 export const useAssignAccount = () => useMutation(assignAccount);
 export const useUpdateExpectedClosing = () =>
   useMutation(updateExpectedClosing);
+
+export const useLoseOpportunity = () => useMutation(loseOpportunity);
+export const useRestoreOpportunity = () => useMutation(restoreOpportunity);

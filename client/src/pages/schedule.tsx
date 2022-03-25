@@ -27,6 +27,7 @@ const Schedule: React.FC<ScheduleProps> = ({}) => {
   }, [currentMonth]);
 
   const onSelect = (date: Moment) => {
+    console.log('then this');
     const items = data.filter((item) => {
       const currentDate = new Date(item.dueDate);
       return (
@@ -49,7 +50,10 @@ const Schedule: React.FC<ScheduleProps> = ({}) => {
       {!isLoading ? (
         <>
           <Calendar
-            onPanelChange={(e) => setCurrentMonth(e.month())}
+            onPanelChange={(e) => {
+              console.log('this get called');
+              setCurrentMonth(e.month());
+            }}
             onSelect={(e) => onSelect(e)}
             dateCellRender={(moment) => (
               <DateRenderer data={data} value={moment} />

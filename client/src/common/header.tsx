@@ -45,13 +45,24 @@ export const HeaderApp = () => {
     mutate({
       notificationId: socket.id,
     });
-    getNotifications(public_user_info.id).then((data) =>
-      setNotifications(data)
-    );
+    getNotifications(public_user_info.id).then((data) => {
+      data.sort(
+        (b, a) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+      setNotifications(data);
+    });
   }, []);
 
   const pushNotification = (notification: INotification) => {
-    setNotifications((prev) => [...prev, notification]);
+    setNotifications((prev) => {
+      const result = [...prev, notification];
+      result.sort(
+        (b, a) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+      return result;
+    });
   };
 
   useSocket({
