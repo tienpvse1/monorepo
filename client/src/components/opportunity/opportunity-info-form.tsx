@@ -1,6 +1,6 @@
 import { isQuantity, isRequired } from '@constance/rules-of-input-antd'
+import { SelectBoxCourse } from '@components/course/select-box-Course';
 import { Col, DatePicker, Form, Input, InputNumber } from 'antd'
-import { SelectBoxProduct } from '@components/product/select-box-product';
 import { SelectBoxContact } from '@components/contact/select-box-contact';
 import { useCookies } from 'react-cookie';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
@@ -55,7 +55,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({ showSt
           <Input />
         </Form.Item>
 
-        <SelectBoxProduct />
+        <SelectBoxCourse />
 
         <Form.Item
           name="quantity"

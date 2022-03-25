@@ -1,4 +1,4 @@
-import { Axios } from '@axios';
+import { instance } from '@axios';
 import { controllers } from '@constance/controllers';
 import { useQuery } from 'react-query';
 import { IEmailTemplate } from '../entity/email-template.entity';
@@ -8,15 +8,13 @@ export const FETCH_TEMPLATE_KEY = 'fetch-template';
 export const FETCH_TEMPLATES_KEY = 'fetch-templates';
 
 export const getTemplateById = async (id: string = '') => {
-  const { instance } = new Axios();
   const { data } = await instance.get(`${EMAIL_TEMPLATE}/${id}`);
-  return data.data as IEmailTemplate;
+  return data as IEmailTemplate;
 };
 
 export const findAllTemplates = async () => {
-  const { instance } = new Axios();
   const { data } = await instance.get(`${EMAIL_TEMPLATE}`);
-  return data.data as IEmailTemplate[];
+  return data as IEmailTemplate[];
 };
 
 export const useGetTemplateById = (id: string) =>
@@ -24,5 +22,5 @@ export const useGetTemplateById = (id: string) =>
     enabled: !!id,
   });
 
-export const useGetAllTemplates = () =>
-  useQuery(FETCH_TEMPLATES_KEY, findAllTemplates);
+export const useTemplates = () =>
+  useQuery(FETCH_TEMPLATES_KEY, findAllTemplates, { suspense: true });
