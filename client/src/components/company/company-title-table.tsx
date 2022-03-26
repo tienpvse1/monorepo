@@ -1,15 +1,18 @@
 import { PlusOutlined } from '@ant-design/icons'
-import { ButtonFilter } from '@components/contact/button-filter';
 import { SearchBar } from '@components/search-bar'
-import { Button, Col, Row, Select, Space } from 'antd'
-const { Option } = Select;
+import { Button, Col, Row, Space } from 'antd'
 import { envVars } from '@env/var.env';
+import { searchCompany } from '@modules/company/query/company.get';
 
 interface CompanyTitleTableProps {
   toggleCreateModal: () => void;
+  setDataCompany: (value: []) => void;
 }
 
-export const CompanyTitleTable: React.FC<CompanyTitleTableProps> = ({ toggleCreateModal }) => {
+export const CompanyTitleTable: React.FC<CompanyTitleTableProps> = ({
+  toggleCreateModal,
+  setDataCompany
+}) => {
   return (
     <>
       <div style={{ padding: '10px' }}>
@@ -52,11 +55,12 @@ export const CompanyTitleTable: React.FC<CompanyTitleTableProps> = ({ toggleCrea
           </Col>
           <Col span={18} style={{ textAlign: 'center' }}>
             <Space style={{ float: 'right', marginTop: '10px' }}>
-              <SearchBar width={300} placeholder='Search this list...' />
-              <Select placeholder="Group by" style={{ width: 120 }}>
-                <Option value="salesPerson">All leads</Option>
-              </Select>
-              <ButtonFilter />
+              <SearchBar
+                width={400}
+                placeholder='Search for name, phone, city or country'
+                setData={setDataCompany}
+                getApi={searchCompany}
+              />
             </Space>
           </Col>
         </Row>

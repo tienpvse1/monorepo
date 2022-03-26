@@ -9,7 +9,11 @@ export const QUERY_COMPANIES = 'query-companies';
 export const QUERY_COMPANY_DETAILS = 'query-company-details';
 
 export const getCompanies = async () => {
-  const { data } = await instance.get<ICompany[]>(COMPANY);
+  const query = RequestQueryBuilder.create({
+    sort: [{ field: 'createdAt', order: 'DESC' }]
+  }).query(false);
+
+  const { data } = await instance.get<ICompany[]>(`${COMPANY}?${query}`);
   return data;
 };
 
@@ -29,6 +33,38 @@ export const getCompanyById = async (companyId: string) => {
   }).query(false);
   const { data } = await instance.get<ICompany[]>(`${COMPANY}?${query}`);
   return data[0];
+};
+
+export const searchCompany = async (text: string) => {
+  const query = RequestQueryBuilder.create({
+    search: {
+      $or: [
+        {
+          name: {
+            $cont: text
+          },
+        },
+        {
+          mobile: {
+            $cont: text
+          },
+        },
+        {
+          city: {
+            $cont: text
+          }
+        },
+        {
+          country: {
+            $cont: text
+          }
+        }
+      ]
+    },
+
+  }).query(false);
+  const { data } = await instance.get<ICompany[]>(`${COMPANY}?${query}`);
+  return data;
 };
 
 export const useCompanies = () => useQuery(QUERY_COMPANIES, getCompanies);
