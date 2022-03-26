@@ -1,26 +1,21 @@
 import { isQuantity, isRequired } from '@constance/rules-of-input-antd'
 import { SelectBoxCourse } from '@components/course/select-box-Course';
 import { Col, DatePicker, Form, Input, InputNumber } from 'antd'
-import { SelectBoxContact } from '@components/contact/select-box-contact';
-import { useCookies } from 'react-cookie';
-import { PUBLIC_USER_INFO } from '@constance/cookie';
-import { useContacts } from '@modules/contact/query/contact.get';
 import { SelectBoxStage } from '@components/opportunity/select-box-stage';
-import { SelectBoxSalePerson } from '@components/sale/select-box-sale-person';
-import { ITeam } from '@modules/team/entity/team.entity';
+import { SelectBoxGroup } from '@components/pipelines/pipeline-items/select-box-group';
+import { IContact } from '@modules/contact/entity/contact.entity';
 
 interface OpportunityInfoFormProps {
   showStageInput?: boolean;
-  team?: ITeam;
+  contact?: IContact;
+  disabledCompany?: boolean;
 }
 
-export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({ showStageInput = true, team }) => {
-  const [
-    {
-      public_user_info: { id, role },
-    },
-  ] = useCookies([PUBLIC_USER_INFO]);
-  const { data } = useContacts(id);
+export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
+  showStageInput = true,
+  contact,
+  disabledCompany = false
+}) => {
 
   return (
     <>
@@ -33,9 +28,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({ showSt
           <Input />
         </Form.Item>
 
-        <SelectBoxContact rule={[isRequired('Contact is required')]} data={data} />
-
-        {role.name === 'sale_manager' && <SelectBoxSalePerson team={team}/>}
+        <SelectBoxGroup disabledCompany={disabledCompany} contact={contact} />
 
         <Form.Item
           name="expectedClosing"

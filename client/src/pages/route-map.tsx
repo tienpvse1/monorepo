@@ -81,7 +81,7 @@ export const route: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <SalesContactList />,
+            element: <ListOfAllContact />,
           },
           {
             path: 'view-details/:id',

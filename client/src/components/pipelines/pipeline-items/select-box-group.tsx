@@ -2,19 +2,34 @@ import { isRequired } from "@constance/rules-of-input-antd";
 import { useCompanies } from "@modules/company/query/company.get";
 import { IContact } from "@modules/contact/entity/contact.entity";
 import { Form, Select } from "antd"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const { Option } = Select;
-export const SelectBoxGroup = () => {
+
+interface SelectBoxGroupProps {
+  handleSelect?: (value: string) => void;
+  contact?: IContact;
+  disabledCompany?: boolean
+}
+
+export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
+  handleSelect,
+  contact,
+  disabledCompany = false
+}) => {
 
   const [dataContact, setDataContact] = useState<IContact[]>([]);
   const { data: companies } = useCompanies();
 
-  console.log("companies:", companies);
-  
+  useEffect(() => {
+    if (contact) {
+      const data = companies?.find((value) => value.id === contact?.company?.id)
+      setDataContact(data?.contacts);
+    }
+  }, [companies])
 
   const handleSelected = (companyId: string) => {
-    const contacts = companies?.find((value) => companyId === value.id);
-    setDataContact(contacts.contacts)
+    const data = companies?.find((value) => companyId === value.id);
+    setDataContact(data.contacts)
   }
   return (
     <>
@@ -24,6 +39,7 @@ export const SelectBoxGroup = () => {
         rules={[isRequired('Company is required')]}
       >
         <Select
+          disabled={disabledCompany}
           showSearch
           onSelect={handleSelected}
           placeholder='Select a company'
@@ -49,6 +65,7 @@ export const SelectBoxGroup = () => {
         rules={[isRequired('Contact is required')]}
       >
         <Select
+          onSelect={handleSelect}
           showSearch
           placeholder='Select a contact'
           optionFilterProp='children'

@@ -21,6 +21,8 @@ import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipelin
 import { IContact } from '@modules/contact/entity/contact.entity';
 import { removeDuplicate } from '@util/array';
 import { dateFormat } from '@constance/date-format';
+import { useCookies } from 'react-cookie';
+import { PUBLIC_USER_INFO } from '@constance/cookie';
 const { DEFAULT } = dateFormat;
 
 interface OpportunitiesTableProps {
@@ -54,6 +56,12 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
     value: opportunity.pipelineColumn?.name,
   }));
 
+  const [
+    {
+      public_user_info: { id },
+    },
+  ] = useCookies([PUBLIC_USER_INFO]);
+
   const { mutate: updateOpportunity } = useUpdatePipelineItem();
   const { mutate: createOpportunity } = usePostPipelineItems();
   const { mutate: removePipelineItems } = useDeletePipelineItems();
@@ -65,7 +73,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
   const [form] = Form.useForm<any>();
 
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {},
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
     getCheckboxProps: (record: any) => ({
       disabled: record.name === 'Disabled User',
       name: record.name,
@@ -130,7 +138,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
       },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries(GET_PIPELINE_ITEM_BY_ACCOUNT);
+          queryClient.refetchQueries([GET_PIPELINE_ITEM_BY_ACCOUNT, id]);
           message.success('Created opportunity successfully !');
         },
       }
@@ -201,7 +209,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             render={(_, record: IPipelineItem) => (
               <>
                 <Link className='my-link' to={`view-details/${record.id}`}>
-                  {record.account.username}
+                  {record.account.firstName} {record.account.lastName}
                 </Link>
               </>
             )}

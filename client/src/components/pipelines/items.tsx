@@ -9,7 +9,6 @@ interface PipelineItemsProps {
   pipelineColumn: IPipelineColumn;
   showCreateItemForm: boolean;
   setShowCreateItemForm: () => void;
-  isRoleAccountant?: boolean;
   isWonStage?: boolean
 }
 const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
@@ -21,14 +20,13 @@ export const PipelineItems: React.FC<PipelineItemsProps> = ({
   pipelineColumn,
   setShowCreateItemForm,
   showCreateItemForm,
-  isRoleAccountant,
   isWonStage
 }) => {
 
   return (
     <>
       <Droppable
-        isDropDisabled={!isRoleAccountant && isWonStage && true}
+        isDropDisabled={isWonStage && true}
         droppableId={pipelineColumn.id}
         type='task'
       >

@@ -88,7 +88,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
           onFinish={(value) => handleSubmit(value)}
         >
 
-          <SelectBoxGroup />
+          <SelectBoxGroup handleSelect={handleSelect} />
 
           <Form.Item
             label='Opportunity'

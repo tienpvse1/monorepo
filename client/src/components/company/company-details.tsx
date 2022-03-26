@@ -60,7 +60,8 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
     }
 
     form.setFieldsValue({
-      residence: [company.city, company.state],
+      state: company.state,
+      cityId: company.city.id,
       postalCode: company.postalCode,
       website: company.website,
       taxId: company.taxId
@@ -94,12 +95,12 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
   const handleSubmitForm2 = async () => {
     try {
       const value = await form.validateFields();
-      const { residence, region, address, city, country, ...rest } = value;
+      const { region, address, cityId, country, city, state, ...rest } = value;
       updateCompany({
         ...rest,
         id: company.id,
-        state: region === 'VN' ? residence[1] : address,
-        city: region === 'VN' ? residence[0] : city,
+        state: region === 'VN' ? state : address,
+        cityId: region === 'VN' ? cityId : city,
         country: region === 'VN' ? region : country,
       }, {
         onSuccess: () => {
@@ -114,7 +115,9 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
   };
   const handleSubmitForm3 = async () => {
     try {
-      // const value = await form.validateFields();
+      const value = await form.validateFields();
+      console.log("record:", value);
+
 
       toggleEditForm3();
     } catch (error) {
@@ -146,7 +149,7 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
         <Row className='title-form-content'>Address Information</Row>
         {isEditingForm2 ? (
           <Row gutter={[24, 0]}>
-            <CompanyAddressForm defaultToggle={regionOther} />
+            <CompanyAddressForm cityName={company.city.admin_name} defaultToggle={regionOther} />
             <Col style={{ textAlign: 'right' }} span={24}>
               <Space>
                 <Button onClick={() => handleSubmitForm2()} type='primary'>

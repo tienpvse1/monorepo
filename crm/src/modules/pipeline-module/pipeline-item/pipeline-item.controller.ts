@@ -62,6 +62,7 @@ import { InternalSendNotificationPayload } from 'src/modules/notification/dto/in
       reason: {},
       'account.team': {},
       'opportunityRevenue.product': {},
+      'contact.company': {},
     },
   },
 })

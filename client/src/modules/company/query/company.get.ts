@@ -12,7 +12,7 @@ export const getCompanies = async () => {
   const query = RequestQueryBuilder.create({
     join: [
       { field: 'contacts' },
-      { field: 'account' },
+      { field: 'city' },
     ],
     sort: [{ field: 'createdAt', order: 'DESC' }]
   }).query(false);
@@ -33,6 +33,7 @@ export const getCompanyById = async (companyId: string) => {
     join: [
       { field: 'account' },
       { field: 'contacts' },
+      { field: 'city' },
     ]
   }).query(false);
   const { data } = await instance.get<ICompany[]>(`${COMPANY}?${query}`);

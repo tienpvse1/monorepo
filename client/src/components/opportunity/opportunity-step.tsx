@@ -19,9 +19,6 @@ interface OpportunityStepProps {
 export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
   const { data: pipelineColumns } = useStages();
 
-  console.log("pipelineColumns:", pipelineColumns);
-  
-
   const handleDisableAfterWon = () => {
     let result: boolean = false;
     pipelineColumns.forEach((value) => {
@@ -31,9 +28,6 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
 
     return result;
   }
-  // const handleDisableRoleSale = (columnStageIsWon: boolean) => {
-  //   return columnStageIsWon && public_user_info.role.name === 'sale' && true;
-  // }
 
   const [disabled, setDisabled] = useState<boolean>(handleDisableAfterWon());
 

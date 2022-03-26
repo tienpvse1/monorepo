@@ -15,6 +15,7 @@ export const actionPutPipeline = async ({
 
   return data;
 };
+
 export const updatePipeline = async ({
   id,
   ...rest

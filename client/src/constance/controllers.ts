@@ -21,4 +21,5 @@ export enum controllers {
   COURSE = 'course',
   INBOX = 'inbox',
   EMAIL = 'email',
+  CITY = 'city'
 }

@@ -9,6 +9,8 @@ import moment from "moment";
 import { dateFormat } from "@constance/date-format";
 import { OpportunityAdditionalForm } from "./opportunity-additional-form";
 import { useUpdatePipelineItem } from "@modules/pipeline-items/mutation/pipeline-items.update";
+import { OpportunityInfoTeam } from "./opportunity-info-team";
+import { OpportunityTeamForm } from "./opportunity-team-form";
 const { CRUD_AT } = dateFormat;
 
 interface OpportunityDetailsProps {
@@ -18,11 +20,9 @@ interface OpportunityDetailsProps {
 export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) => {
   const [isEditingForm1, toggleEditForm1] = useToggle();
   const [isEditingForm2, toggleEditForm2] = useToggle();
+  const [isEditingForm3, toggleEditForm3] = useToggle();
+
   const { mutate: updateOpportunity } = useUpdatePipelineItem();
-
-  console.log("alvL:", data);
-  
-
   const [form] = Form.useForm();
 
   const handleToggleEditForm1 = () => {
@@ -32,14 +32,20 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
       expectedClosing: data.expectedClosing ? moment(data.expectedClosing) : '',
       expectedRevenue: data.expectedRevenue,
       contactId: data.contact.id,
-      saleTeam: data.account.team?.id,
-      salePerson: data.account.id
+      companyName: data.contact.company.id
     });
   };
   const handleToggleEditForm2 = () => {
     toggleEditForm2();
     form.setFieldsValue({
       internalDescription: data.internalDescription
+    });
+  };
+  const handleToggleEditForm3 = () => {
+    toggleEditForm3();
+    form.setFieldsValue({
+      saleTeam: data.account.team.id,
+      salePerson: data.account.id
     });
   };
 
@@ -93,12 +99,22 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
       return;
     }
   };
+
+  const handleSubmitForm3 = async () => {
+    try {
+      const value = await form.validateFields();
+
+
+    } catch (error) {
+      return;
+    }
+  };
   return (
     <>
       <Form form={form} layout='vertical'>
         {isEditingForm1 ? (
           <Row gutter={[24, 0]}>
-            <OpportunityInfoForm team={data.account.team} showStageInput={false} />
+            <OpportunityInfoForm disabledCompany={true} contact={data.contact} showStageInput={false} />
             <Col style={{ textAlign: 'right' }} span={24}>
               <Space>
                 <Button onClick={() => handleSubmitForm1()} type='primary'>
@@ -111,6 +127,24 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
         ) : (
           <EditButtonHover toggleEditForm={handleToggleEditForm1}>
             <OpportunityInfoDetails opportunity={data} />
+          </EditButtonHover>
+        )}
+
+        <Row className='title-form-content'>Team Information</Row>
+        {isEditingForm3 ? (
+          <Row gutter={[24, 0]}>
+            <OpportunityTeamForm team={data.account.team} />
+            <Col style={{ textAlign: 'right' }} span={24}>
+              <Space>
+                <Button onClick={() => handleSubmitForm3()} type='primary'>
+                  Save
+                </Button>
+                <Button onClick={toggleEditForm3}>Cancel</Button>
+              </Space>
+            </Col>
+          </Row>) : (
+          <EditButtonHover toggleEditForm={handleToggleEditForm3}>
+            <OpportunityInfoTeam opportunity={data} />
           </EditButtonHover>
         )}
 

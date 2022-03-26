@@ -1,9 +1,8 @@
-import { LockOutlined, PlusOutlined } from '@ant-design/icons';
-import { ThemeColor } from '@constance/color';
+import { PlusOutlined } from '@ant-design/icons';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import { Button, Tooltip } from 'antd';
+import { Button, } from 'antd';
 import { Draggable } from 'react-beautiful-dnd';
 import { useCookies } from 'react-cookie';
 import { PipelineItems } from './items';
@@ -26,19 +25,16 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
   const handleIsRoleAdmin = () => {
     return public_user_info.role.name === 'admin' ? true : false
   }
-  const handleIsRoleAccountant = () => {
-    return public_user_info.role.name === 'accountant' ? true : false
-  }
 
   return (
-    <Draggable isDragDisabled={!handleIsRoleAdmin()} draggableId={pipelineColumn.id} index={index}>
+    <Draggable isDragDisabled={!handleIsRoleAdmin()} draggableId={pipelineColumn.id} index={index} >
       {(providedColumn) => (
         <div
           className='wrapper-draggable-pipeline-column'
           ref={providedColumn.innerRef}
           {...providedColumn.draggableProps}
         >
-          {!handleIsRoleAccountant() && pipelineColumn.isWon &&
+          {/* {!handleIsRoleAccountant() && pipelineColumn.isWon &&
             <div className="lock-component">
               <Tooltip title="Unauthorized" color={ThemeColor.primaryColor} key={'lock'}>
                 <div className="lock">
@@ -52,7 +48,7 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
                   }} />
                 </div>
               </Tooltip>
-            </div>}
+            </div>} */}
 
           <div
             {...providedColumn.dragHandleProps}
@@ -88,7 +84,6 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
             showCreateItemForm={showCreateItemForm}
             setShowCreateItemForm={setShowCreateItemForm}
             pipelineColumn={pipelineColumn}
-            isRoleAccountant={handleIsRoleAccountant()}
             isWonStage={pipelineColumn.isWon}
           />
         </div>

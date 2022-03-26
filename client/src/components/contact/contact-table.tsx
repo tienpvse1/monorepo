@@ -196,7 +196,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             width={120}
             render={(_, record: IContact) => (
               <Link className="my-link" to={`view-details/${record?.id}`} >
-                {record?.account?.username}
+                {record?.account?.firstName} {record?.account?.lastName}
               </Link>
             )}
           />

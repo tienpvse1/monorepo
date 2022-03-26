@@ -18,6 +18,7 @@ export const getPipelineId = async (id: string) => {
       { field: 'account' },
       { field: 'account.team' },
       { field: 'contact' },
+      { field: 'contact.company' },
       { field: 'schedules' },
     ],
     filter: [

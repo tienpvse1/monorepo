@@ -26,13 +26,13 @@ export const getStages = async () => {
         field: 'pipelineItems.account',
       },
     ],
-    filter: [
-      {
-        field: 'pipelineItems.isLose',
-        operator: '$eq',
-        value: false,
-      },
-    ],
+    // filter: [
+    //   {
+    //     field: 'pipelineItems.isLose',
+    //     operator: '$eq',
+    //     value: false,
+    //   },
+    // ],
   }).query(false);
   const { data } = await instance.get<IPipelineColumn[]>(
     `${PIPELINE_COLUMN}?${query}`
