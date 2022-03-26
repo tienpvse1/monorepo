@@ -1,5 +1,5 @@
 import { Loading } from '@components/loading/loading';
-import { Circle, GoogleApiWrapper, Map, Marker } from 'google-maps-react';
+import { Circle, GoogleApiWrapper, Map } from 'google-maps-react';
 
 interface MapStatisticProps {
   google: any;
