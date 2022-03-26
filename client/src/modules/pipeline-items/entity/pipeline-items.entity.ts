@@ -32,6 +32,7 @@ export interface IPipelineItem extends IBase {
   contact: IContact;
   schedules: ISchedule[];
   opportunityRevenue: IOpportunityRevenue;
+  isLose: boolean;
 }
 
 export interface IOpportunityRevenue {

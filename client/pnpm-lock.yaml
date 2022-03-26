@@ -35,6 +35,7 @@ specifiers:
   eslint-plugin-react: ^7.28.0
   framer-motion: ^5.5.6
   fuse.js: ^6.5.3
+  google-maps-react: ^2.0.6
   http-status-codes: ^2.2.0
   lodash: ^4.17.21
   moment: ^2.29.1
@@ -87,6 +88,7 @@ dependencies:
   dexie-react-hooks: 1.1.1_cd4aac9a596d91421339a593582dcd09
   framer-motion: 5.6.0_react-dom@17.0.2+react@17.0.2
   fuse.js: 6.5.3
+  google-maps-react: 2.0.6_react-dom@17.0.2+react@17.0.2
   http-status-codes: 2.2.0
   lodash: 4.17.21
   moment: 2.29.1
@@ -3472,6 +3474,16 @@ packages:
       merge2: 1.4.1
       slash: 3.0.0
     dev: true
+
+  /google-maps-react/2.0.6_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-M8Eo9WndfQEfxcmm6yRq03qdJgw1x6rQmJ9DN+a+xPQ3K7yNDGkVDbinrf4/8vcox7nELbeopbm4bpefKewWfQ==}
+    peerDependencies:
+      react: ~0.14.8 || ^15.0.0 || ^16.0.0
+      react-dom: ~0.14.8 || ^15.0.0 || ^16.0.0
+    dependencies:
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
 
   /graphlib/2.1.8:
     resolution: {integrity: sha512-jcLLfkpoVGmH7/InMC/1hIvOPSUh38oJtGhvrOFGzioE1DZ+0YW16RgmOJhHiuWTvGiJQ9Z1Ik43JvkRPRvE+A==}

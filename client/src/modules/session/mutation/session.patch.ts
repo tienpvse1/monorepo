@@ -9,4 +9,4 @@ export const updateSession = async (dto: IUpdateSessionDto) => {
   return data;
 };
 
-export const useUpdateSession = () => useMutation(updateSession);
+export const useUpdateSession = () => useMutation(updateSession, { retry: 1 });
