@@ -3,6 +3,7 @@ import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 import Statistic from './statistic';
 
+const MapStatistic = lazy(() => import('./map-statistic'));
 const HomePage = lazy(() => import('@pages/home'));
 const Contact = lazy(() => import('@pages/contact'));
 const LoginPage = lazy(() => import('@pages/login'));
@@ -118,6 +119,19 @@ export const route: RouteObject[] = [
       {
         path: 'email',
         element: <EmailCompose />,
+      },
+      {
+        path: 'map-statistic',
+        element: (
+          <MapStatistic
+            locations={[
+              {
+                lat: 10.8033,
+                lng: 106.6967,
+              },
+            ]}
+          />
+        ),
       },
       {
         path: 'forecast',

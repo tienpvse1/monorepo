@@ -187,14 +187,44 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     if (!account.pipelineItems) account.pipelineItems = [];
     account.pipelineItems.push(pipelineItem);
     const result = await account.save();
+    this.sendAssignMessage(managerId, accountId);
+    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
+    return result;
+  }
+
+  async reassign(id: string, accountId: string, managerId: string) {
+    const accountRepository = getCustomRepository(AccountRepository);
+    const [pipelineItem, account] = await Promise.all([
+      this.findOneItem({ where: { id }, relations: ['account'] }),
+      accountRepository.findOneItem({
+        where: { id: accountId },
+      }),
+    ]);
+    this.sendUnassignMessage(managerId, pipelineItem.account.id);
+    pipelineItem.account = account;
+    const result = await pipelineItem.save();
+    this.sendAssignMessage(managerId, accountId);
+    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
+    return result;
+  }
+
+  sendUnassignMessage(managerId: string, accountId: string) {
     const payload: InternalSendNotificationPayload = {
       name: 'Assignment',
-      description: 'Just assign you an opportunity',
+      description: 'Unassigned you an opportunity',
       receiverId: accountId,
       senderId: managerId,
     };
     this.eventEmitter.emit(InternalServerEvent.SEND_NOTIFICATION, payload);
-    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
-    return result;
+  }
+
+  sendAssignMessage(managerId: string, accountId: string) {
+    const payload: InternalSendNotificationPayload = {
+      name: 'Assignment',
+      description: 'Assigned you an opportunity',
+      receiverId: accountId,
+      senderId: managerId,
+    };
+    this.eventEmitter.emit(InternalServerEvent.SEND_NOTIFICATION, payload);
   }
 }

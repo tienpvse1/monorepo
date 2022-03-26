@@ -117,6 +117,14 @@ export class PipelineItemController {
   ) {
     return this.service.assignAccount(id, accountId, managerId);
   }
+  @Patch('reassign')
+  @HistoryLog('Reassign an opportunity')
+  reassignAccount(
+    @Body() { id, accountId }: AssignAccountToOpportunityDto,
+    @User('id') managerId: string,
+  ) {
+    return this.service.reassign(id, accountId, managerId);
+  }
 
   @Delete(':id')
   @HistoryLog('Deleted an opportunity')
