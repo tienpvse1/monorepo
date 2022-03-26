@@ -1,4 +1,5 @@
 import { IBase } from '@interfaces/base';
+import { IContact } from '@modules/contact/entity/contact.entity';
 
 export interface ICompany extends IBase {
   name: string;
@@ -10,6 +11,7 @@ export interface ICompany extends IBase {
   taxId: string;
   website: string;
   type: string;
+  contacts?: IContact[];
 }
 
 

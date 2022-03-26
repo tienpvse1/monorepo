@@ -17,16 +17,17 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
           <MyForm label='Organization / Contact'>
             {opportunity.contact.name}
           </MyForm>
+          <MyForm label='Stage'>{opportunity.pipelineColumn.name}</MyForm>
           <MyForm label='Sale Team'>{opportunity.account?.team?.name}</MyForm>
           <MyForm label='Sale Person'>
             {!opportunity.account
               ? 'Unassigned'
               : `${opportunity.account?.username}`}
           </MyForm>
-          <MyForm label='Close Date'>{opportunity.expectedClosing}</MyForm>
+
         </Col>
         <Col span={12}>
-          <MyForm label='Stage'>{opportunity.pipelineColumn.name}</MyForm>
+
           <MyForm label='Expected Revenue'>
             {opportunity.expectedRevenue}
           </MyForm>
@@ -36,6 +37,7 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
           <MyForm label='Expected sold quantity'>
             {/* {opportunity.opportunityRevenue.quantity} */}
           </MyForm>
+          <MyForm label='Close Date'>{opportunity.expectedClosing}</MyForm>
         </Col>
       </Row>
     </>

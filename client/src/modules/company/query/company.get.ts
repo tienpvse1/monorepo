@@ -10,6 +10,10 @@ export const QUERY_COMPANY_DETAILS = 'query-company-details';
 
 export const getCompanies = async () => {
   const query = RequestQueryBuilder.create({
+    join: [
+      { field: 'contacts' },
+      { field: 'account' },
+    ],
     sort: [{ field: 'createdAt', order: 'DESC' }]
   }).query(false);
 

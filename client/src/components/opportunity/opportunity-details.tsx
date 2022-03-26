@@ -20,6 +20,9 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
   const [isEditingForm2, toggleEditForm2] = useToggle();
   const { mutate: updateOpportunity } = useUpdatePipelineItem();
 
+  console.log("alvL:", data);
+  
+
   const [form] = Form.useForm();
 
   const handleToggleEditForm1 = () => {

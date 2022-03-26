@@ -1,4 +1,3 @@
-import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useStages } from '@modules/pipeline-column/query/pipeline-column.get';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useChangeStage } from '@modules/pipeline-items/mutation/pipeline-items.update';
@@ -6,7 +5,6 @@ import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { qualifyStage } from '@util/stage';
 import { Form, Steps } from 'antd';
-import { useCookies } from 'react-cookie';
 import { client } from '../../App';
 import { CreateModal } from '@components/modal/create-modal';
 import { VerificationForm } from '@components/accountant/verification-form';
@@ -21,6 +19,9 @@ interface OpportunityStepProps {
 export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
   const { data: pipelineColumns } = useStages();
 
+  console.log("pipelineColumns:", pipelineColumns);
+  
+
   const handleDisableAfterWon = () => {
     let result: boolean = false;
     pipelineColumns.forEach((value) => {
@@ -30,14 +31,13 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
 
     return result;
   }
-  const handleDisableRoleSale = (columnStageIsWon: boolean) => {
-    return columnStageIsWon && public_user_info.role.name === 'sale' && true;
-  }
+  // const handleDisableRoleSale = (columnStageIsWon: boolean) => {
+  //   return columnStageIsWon && public_user_info.role.name === 'sale' && true;
+  // }
 
   const [disabled, setDisabled] = useState<boolean>(handleDisableAfterWon());
 
   const { mutate } = useChangeStage();
-  const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
   const [form] = Form.useForm<any>();
   const [isVisible, toggleModalChangeStageWon] = useToggle();
 
@@ -85,7 +85,7 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
       >
         {pipelineColumns?.map((column, index) => (
           <Step
-            disabled={disabled || handleDisableRoleSale(column.isWon)}
+            disabled={disabled}
             key={column.id}
             status={qualifyStage(index, data.pipelineColumn.index)}
             title={column.name}
