@@ -46,16 +46,15 @@ export const PageDetailsTitle: React.FC<PageDetailsTitleProps> = ({ contact }) =
         }
       >
         <Descriptions size='small' column={3}>
+          <Descriptions.Item label='Created by'>
+            {contact.account?.username}
+          </Descriptions.Item>
           <Descriptions.Item label='Email'>
             {contact.email}
           </Descriptions.Item>
           <Descriptions.Item label='Phone'>
             {contact.phone}
           </Descriptions.Item>
-          <Descriptions.Item label='Contact Owner'>
-            {contact.account?.email}
-          </Descriptions.Item>
-
           <Descriptions.Item label='Company'>
             AABC company
           </Descriptions.Item>

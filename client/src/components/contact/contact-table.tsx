@@ -5,7 +5,7 @@ import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
 import {
   QUERY_CONTACTS,
 } from '@modules/contact/query/contact.get';
-import { Button, Form, Popconfirm, Space, Table, Tag } from 'antd';
+import { Button, Form, Popconfirm, Space, Table } from 'antd';
 import Column from 'antd/lib/table/Column';
 import { useState } from 'react';
 import { client } from '../../App';
@@ -23,6 +23,7 @@ import {
 import { useInsertContact } from '@modules/contact/mutation/contact.post';
 import { message } from 'antd';
 import { dateFormat } from "@constance/date-format";
+import { Link } from 'react-router-dom';
 const { DEFAULT } = dateFormat;
 
 const rowSelection = {
@@ -36,11 +37,13 @@ const rowSelection = {
 interface ContactTableProps {
   dataSource: IContact[];
   isLoading: boolean;
+  setDataContact: (value: []) => void;
 }
 
 export const ContactTable: React.FC<ContactTableProps> = ({
   dataSource,
-  isLoading
+  isLoading,
+  setDataContact
 }) => {
 
   const { mutate: updateContact } = useUpdateContact(() => {
@@ -82,6 +85,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
         id,
         ...record,
       });
+      form.resetFields();
     } catch (error) {
       return;
     }
@@ -98,7 +102,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
 
   return (
     <>
-      <Form form={form}>
+      <Form className='form-123123' form={form}>
         <Table
           loading={isLoading}
           tableLayout='fixed'
@@ -106,7 +110,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             type: 'checkbox',
             ...rowSelection,
           }}
-          title={() => <ContactHeader toggleCreateModal={toggleCreateModal} />}
+          title={() => <ContactHeader setDataContact={setDataContact} toggleCreateModal={toggleCreateModal} />}
           pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
           dataSource={dataSource}
           size={'small'}
@@ -129,6 +133,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
                 rules={[isRequired('Name is required')]}
               />
             )}
+            sorter={(a, b) => ('' + a.name).localeCompare(b.name)}
           />
           <Column
             title='Email'
@@ -147,6 +152,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
                 rules={[isRequired('Address is required'), isEmail]}
               />
             )}
+            sorter={(a, b) => ('' + a.email).localeCompare(b.email)}
           />
           <Column
             title='Phone Number'
@@ -184,14 +190,14 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             )}
           />
           <Column
-            title='Type'
-            dataIndex='type'
-            key='type'
+            title='Created By'
+            dataIndex='username'
+            key='username'
             width={120}
-            render={(text) => (
-              <span>
-                <Tag color={'gold'}>{text ? text.toUpperCase() : 'NORMAL'}</Tag>
-              </span>
+            render={(_, record: IContact) => (
+              <Link className="my-link" to={`view-details/${record?.id}`} >
+                {record?.account?.username}
+              </Link>
             )}
           />
           <Column

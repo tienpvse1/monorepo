@@ -4,6 +4,7 @@ import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { ITeam } from '@modules/team/entity/team.entity';
 
 export interface IAccount extends IBase {
+  username: string;
   avatar: string;
   firstName: string;
   lastName: string;

@@ -49,6 +49,7 @@ export const getPipelineByAccountID = async (accountId: string) => {
         value: accountId,
       },
     ],
+    sort: [{ field: 'createdAt', order: 'DESC' }]
   }).query(false);
 
   const { data } = await instance.get<IPipelineItem[]>(
@@ -64,12 +65,47 @@ export const getAllPipelineItem = async () => {
       { field: 'account' },
       { field: 'contact' },
     ],
+    sort: [{ field: 'createdAt', order: 'DESC' }]
   }).query(false);
 
   const { data } = await instance.get<IPipelineItem[]>(
     `${PIPELINE_ITEM}?${queryBuilder}`
   );
   console.log('fetched');
+
+  return data;
+};
+export const searchPipelineItem = async (text: string) => {
+  const queryBuilder = RequestQueryBuilder.create({
+    join: [
+      { field: 'pipelineColumn' },
+      { field: 'account' },
+      { field: 'contact' },
+    ],
+    search: {
+      $or: [
+        {
+          name: {
+            $cont: text
+          },
+        },
+        {
+          'contact.name': {
+            $cont: text
+          }
+        },
+        {
+          'account.firstName': {
+            $cont: text
+          }
+        }
+      ]
+    }
+  }).query(false);
+
+  const { data } = await instance.get<IPipelineItem[]>(
+    `${PIPELINE_ITEM}?${queryBuilder}`
+  );
 
   return data;
 };

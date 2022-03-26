@@ -20,9 +20,6 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
   const [isEditingForm2, toggleEditForm2] = useToggle();
   const { mutate: updateOpportunity } = useUpdatePipelineItem();
 
-  console.log("data1:", data);
-  
-
   const [form] = Form.useForm();
 
   const handleToggleEditForm1 = () => {
@@ -56,20 +53,20 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
         }
       });
 
-      // updateOpportunity({
-      //   id: data.id,
-      //   contactId: value.contactId,
-      //   name: value.name,
-      //   opportunityRevenue: {
-      //     productId: value.productId,
-      //     quantity: value.quantity
-      //   }
-      // }, {
-      //   onSuccess: () => {
-      //     message.success('Saved successfully !');
-      //     toggleEditForm1();
-      //   }
-      // })
+      updateOpportunity({
+        id: data.id,
+        contactId: value.contactId,
+        name: value.name,
+        opportunityRevenue: {
+          courseId: value.courseId,
+          quantity: value.quantity
+        }
+      }, {
+        onSuccess: () => {
+          message.success('Saved successfully !');
+          toggleEditForm1();
+        }
+      })
 
     } catch (error) {
       return;
