@@ -89,8 +89,7 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     item.pipelineColumn = column;
     return item.save();
   }
-
-  async createPipelineItem(
+  async createPipelineItemForSale(
     dto: CreateSinglePipelineItemDto,
     accountId: string,
   ) {
@@ -124,6 +123,51 @@ export class PipelineItemService extends BaseService<PipelineItem> {
         contact,
         pipelineColumn,
         opportunityRevenue: revenue,
+        createBy: account,
+      })
+      .save();
+
+    return createdPipelineItem;
+  }
+
+  async createPipelineItem(
+    dto: CreateSinglePipelineItemDto,
+    accountId: string,
+    managerId: string,
+  ) {
+    const { columnId, contactId, opportunityRevenue, ...rest } = dto;
+
+    const contactRepository = getCustomRepository(ContactRepository);
+    const accountRepository = getCustomRepository(AccountRepository);
+    const columnRepository = getCustomRepository(PipelineColumnRepository);
+    const courseRepository = getCustomRepository(CourseRepository);
+    const revenueRepository = getRepository(OpportunityRevenue);
+
+    const [account, manager, contact, pipelineColumn, course] =
+      await Promise.all([
+        accountRepository.findOneItem({ where: { id: accountId } }),
+        accountRepository.findOneItem({ where: { id: managerId } }),
+        contactRepository.findOneItem({ where: { id: contactId } }),
+        columnRepository.findOneItem({ where: { id: columnId } }),
+        courseRepository.findOneItem({
+          where: { id: opportunityRevenue.courseId },
+        }),
+      ]);
+    const revenue = await revenueRepository
+      .create({
+        quantity: opportunityRevenue.quantity,
+        course,
+      })
+      .save();
+
+    const createdPipelineItem = await this.repository
+      .create({
+        ...rest,
+        account,
+        contact,
+        pipelineColumn,
+        opportunityRevenue: revenue,
+        createBy: manager,
       })
       .save();
 

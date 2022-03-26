@@ -62,14 +62,15 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
       },
     };
     mutate(payload, {
-      onSuccess: () => {
+      onSuccess: async () => {
         notification.success({
           message: 'Success',
           description: 'New deal has been created successfully',
           icon: <CheckOutlined color='' />,
           onClick: () => {},
         });
-        client.invalidateQueries(GET_STAGES);
+      },
+      onSettled: async () => {
         onClose();
       },
       onError: () => {
@@ -91,7 +92,6 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
         width={720}
         onClose={onClose}
         visible={visible}
-        destroyOnClose
         bodyStyle={{ paddingBottom: 80 }}
         extra={
           <Space>

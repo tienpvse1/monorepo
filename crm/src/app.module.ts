@@ -45,6 +45,7 @@ import { WebhookModule } from './modules/webhook/webhook.module';
 import { InboxModule } from './modules/inbox/inbox.module';
 import { AppController } from './app.controller';
 import { AppService } from 'src/app.service';
+import { CityModule } from './modules/city/city.module';
 
 @Module({
   imports: [
@@ -87,6 +88,7 @@ import { AppService } from 'src/app.service';
     ReasonModule,
     WebhookModule,
     InboxModule,
+    CityModule,
   ],
   providers: [GlobalModule, AppService],
   controllers: [AppController],
