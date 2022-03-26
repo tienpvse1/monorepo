@@ -1,7 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
 import { envVars } from '../env/var.env';
 const baseURL = envVars.VITE_BE_BASE_URL;
-
+const feDomain = envVars.VITE_FE_DOMAIN;
+import { StatusCodes } from 'http-status-codes';
 export class Axios {
   instance: AxiosInstance;
 
@@ -18,6 +19,14 @@ export class Axios {
         return response.data;
       },
       function (error) {
+        console.log(error.response.status);
+        if (
+          error.response.status === StatusCodes.UNAUTHORIZED ||
+          error.response.status === StatusCodes.FORBIDDEN
+        ) {
+          window.location.href = `${feDomain}/login`;
+        }
+
         // // Any status codes that falls outside the range of 2xx cause this function to trigger
         // // Do something with response error
         // const statusCode = error.response.status;
