@@ -25,17 +25,13 @@ export const getStages = async () => {
         field: 'pipelineItems.account',
       },
     ],
-    filter: [
-      {
-        field: 'pipelineItems.isLose',
-        operator: '$eq',
-        value: false,
-      },
-    ],
   }).query(false);
   const { data } = await instance.get<IPipelineColumn[]>(
     `${PIPELINE_COLUMN}?${query}`
   );
+  for (const column of data) {
+    column.pipelineItems = column.pipelineItems.filter((item) => !item.isLose);
+  }
   abstractSort(data, 'pipelineItems');
   return data;
 };

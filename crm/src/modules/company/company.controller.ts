@@ -1,4 +1,4 @@
-import { Controller, Delete, Param } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -29,7 +29,7 @@ import { Company } from './entities/company.entity';
     },
   },
   routes: {
-    exclude: ['deleteOneBase'],
+    exclude: ['deleteOneBase', 'createOneBase'],
   },
 })
 @ApiTags('company')
@@ -40,5 +40,9 @@ export class CompanyController {
   @HistoryLog('deleted an company')
   delete(@Param('id') id: string) {
     return this.service.softDelete(id);
+  }
+  @Post()
+  create(@Body() dto: CreateCompanyDto) {
+    return this.service.create(dto);
   }
 }

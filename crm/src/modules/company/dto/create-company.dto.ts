@@ -4,20 +4,21 @@ import {
   IsPostalCode,
   IsString,
   IsUrl,
+  Length,
 } from 'class-validator';
 
 export class CreateCompanyDto {
   @IsString()
   name: string;
+  @Length(10)
+  cityId: string;
   @IsPhoneNumber('VN')
   @IsOptional()
   mobile: string;
   @IsOptional()
   @IsString()
   state: string;
-  @IsOptional()
-  @IsString()
-  city: string;
+
   @IsOptional()
   @IsString()
   country: string;

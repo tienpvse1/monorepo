@@ -5,7 +5,7 @@ import {
   DroppableProvided,
   DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
-
+import { Is } from '@common/is';
 export const KanBanItem = (
   provided: DroppableProvided,
   accounts: IAccount[],
@@ -43,7 +43,18 @@ export const KanBanItem = (
                 >
                   <Card.Meta
                     title={`${account.firstName} ${account.lastName}`}
-                    description='This is the description'
+                    description={
+                      <div>
+                        <Is
+                          condition={
+                            account.team != null && account.team != undefined
+                          }
+                        >
+                          <div>team: {account.team?.name}</div>
+                        </Is>
+                        <div>{account.email}</div>
+                      </div>
+                    }
                     avatar={
                       <Avatar
                         src={

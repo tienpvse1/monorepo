@@ -6,6 +6,7 @@ import {
   CrownOutlined,
   FieldTimeOutlined,
   FundOutlined,
+  GlobalOutlined,
   LineChartOutlined,
   SolutionOutlined,
   UserOutlined,
@@ -101,6 +102,13 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       style,
       onClick: () => navigate('/statistic'),
       icon: <LineChartOutlined style={style} />,
+    },
+    {
+      key: 'map-statistic',
+      label: 'Geographic statistic',
+      style,
+      onClick: () => navigate('/map-statistic'),
+      icon: <GlobalOutlined style={style} />,
     },
     {
       key: 'email',

@@ -89,8 +89,7 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     item.pipelineColumn = column;
     return item.save();
   }
-
-  async createPipelineItem(
+  async createPipelineItemForSale(
     dto: CreateSinglePipelineItemDto,
     accountId: string,
   ) {
@@ -124,6 +123,51 @@ export class PipelineItemService extends BaseService<PipelineItem> {
         contact,
         pipelineColumn,
         opportunityRevenue: revenue,
+        createBy: account,
+      })
+      .save();
+
+    return createdPipelineItem;
+  }
+
+  async createPipelineItem(
+    dto: CreateSinglePipelineItemDto,
+    accountId: string,
+    managerId: string,
+  ) {
+    const { columnId, contactId, opportunityRevenue, ...rest } = dto;
+
+    const contactRepository = getCustomRepository(ContactRepository);
+    const accountRepository = getCustomRepository(AccountRepository);
+    const columnRepository = getCustomRepository(PipelineColumnRepository);
+    const courseRepository = getCustomRepository(CourseRepository);
+    const revenueRepository = getRepository(OpportunityRevenue);
+
+    const [account, manager, contact, pipelineColumn, course] =
+      await Promise.all([
+        accountRepository.findOneItem({ where: { id: accountId } }),
+        accountRepository.findOneItem({ where: { id: managerId } }),
+        contactRepository.findOneItem({ where: { id: contactId } }),
+        columnRepository.findOneItem({ where: { id: columnId } }),
+        courseRepository.findOneItem({
+          where: { id: opportunityRevenue.courseId },
+        }),
+      ]);
+    const revenue = await revenueRepository
+      .create({
+        quantity: opportunityRevenue.quantity,
+        course,
+      })
+      .save();
+
+    const createdPipelineItem = await this.repository
+      .create({
+        ...rest,
+        account,
+        contact,
+        pipelineColumn,
+        opportunityRevenue: revenue,
+        createBy: manager,
       })
       .save();
 
@@ -143,14 +187,44 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     if (!account.pipelineItems) account.pipelineItems = [];
     account.pipelineItems.push(pipelineItem);
     const result = await account.save();
+    this.sendAssignMessage(managerId, accountId);
+    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
+    return result;
+  }
+
+  async reassign(id: string, accountId: string, managerId: string) {
+    const accountRepository = getCustomRepository(AccountRepository);
+    const [pipelineItem, account] = await Promise.all([
+      this.findOneItem({ where: { id }, relations: ['account'] }),
+      accountRepository.findOneItem({
+        where: { id: accountId },
+      }),
+    ]);
+    this.sendUnassignMessage(managerId, pipelineItem.account.id);
+    pipelineItem.account = account;
+    const result = await pipelineItem.save();
+    this.sendAssignMessage(managerId, accountId);
+    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
+    return result;
+  }
+
+  sendUnassignMessage(managerId: string, accountId: string) {
     const payload: InternalSendNotificationPayload = {
       name: 'Assignment',
-      description: 'Just assign you an opportunity',
+      description: 'Unassigned you an opportunity',
       receiverId: accountId,
       senderId: managerId,
     };
     this.eventEmitter.emit(InternalServerEvent.SEND_NOTIFICATION, payload);
-    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
-    return result;
+  }
+
+  sendAssignMessage(managerId: string, accountId: string) {
+    const payload: InternalSendNotificationPayload = {
+      name: 'Assignment',
+      description: 'Assigned you an opportunity',
+      receiverId: accountId,
+      senderId: managerId,
+    };
+    this.eventEmitter.emit(InternalServerEvent.SEND_NOTIFICATION, payload);
   }
 }

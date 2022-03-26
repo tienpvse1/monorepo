@@ -64,7 +64,7 @@ export const OpportunityTitleDetails: React.FC<
         >
           <Descriptions size='small' column={3}>
             <Descriptions.Item label='Serve by'>
-              {opportunity.account?.firstName} {opportunity.account?.lastName}
+              {opportunity.account?.username}
             </Descriptions.Item>
 
             <Descriptions.Item label='Created at'>
