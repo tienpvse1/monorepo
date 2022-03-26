@@ -54,6 +54,10 @@ export class PipelineItem extends BaseEntity {
   @JoinColumn({ name: 'account_id' })
   account: Account;
 
+  @ManyToOne(() => Account, (account) => account.createdPipelineItems)
+  @JoinColumn({ name: 'creator_id' })
+  createBy: Account;
+
   @ManyToOne(() => Contact, (contact) => contact.pipelineItems)
   @JoinColumn({ name: 'contact_id' })
   contact: Contact;

@@ -79,7 +79,7 @@ export class PipelineItemController {
     @Body() item: CreateSinglePipelineItemDto,
     @User('id') accountId: string,
   ) {
-    this.service.createPipelineItem(item, accountId);
+    this.service.createPipelineItemForSale(item, accountId);
 
     return item;
   }
@@ -87,11 +87,11 @@ export class PipelineItemController {
   @UsePipes(GenerateNestedIdPipe)
   @HistoryLog('Add a new opportunity for manager')
   @ApiBody({ type: CreateSinglePipelineItemManagerDto })
-  addOpportunityForManager(
+  async addOpportunityForManager(
     @Body() { accountId, ...item }: CreateSinglePipelineItemManagerDto,
     @User('id') managerId: string,
   ) {
-    this.service.createPipelineItem(item, accountId);
+    await this.service.createPipelineItem(item, accountId, managerId);
     const payload: InternalSendNotificationPayload = {
       description: 'assigned you to an opportunity',
       name: 'Assignment',
@@ -99,6 +99,7 @@ export class PipelineItemController {
       senderId: managerId,
     };
     this.eventEmitter.emit(InternalServerEvent.SEND_NOTIFICATION, payload);
+    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
 
     return item;
   }

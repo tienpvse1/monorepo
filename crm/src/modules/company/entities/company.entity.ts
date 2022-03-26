@@ -1,7 +1,15 @@
 import { BaseEntity } from 'src/base/entity.base';
+import { City } from 'src/modules/city/entities/city.entity';
 import { Contact } from 'src/modules/contact/entities/contact.entity';
 import { Tag } from 'src/modules/tag/entities/tag.entity';
-import { Column, Entity, Index, ManyToMany, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 @Entity()
 export class Company extends BaseEntity {
@@ -14,8 +22,7 @@ export class Company extends BaseEntity {
 
   @Column({ nullable: true })
   state: string;
-  @Column({ nullable: true })
-  city: string;
+
   @Column({ nullable: true })
   country: string;
 
@@ -29,6 +36,12 @@ export class Company extends BaseEntity {
 
   @Column({ nullable: true, name: 'contact_type' })
   type: string;
+
+  /**
+   * relations
+   */
+  @ManyToOne(() => City, (city) => city.companies)
+  city: City;
 
   @ManyToMany(() => Tag, (tag) => tag.companies, { cascade: ['insert'] })
   tags: Tag[];
