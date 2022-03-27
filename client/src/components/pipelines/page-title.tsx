@@ -1,7 +1,8 @@
-import { FilterOutlined, MoreOutlined, PlusOutlined } from '@ant-design/icons';
+import { FilterOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { WrapperRowTitle } from '@components/layout/title-pages/wrapper-row-title';
 import { SearchBar } from '@components/search-bar';
 import { Button, Col, Row, Select, Space } from 'antd';
+import { useNavigate } from 'react-router-dom';
 const { Option } = Select;
 
 interface PageTitlePipelineProps {
@@ -13,7 +14,9 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
   setModalCreateStage,
   isRoleAdmin
 }) => {
-  const handleChange = (value: any) => { };
+
+  const navigate = useNavigate();
+
   return (
     <>
       <WrapperRowTitle
@@ -44,7 +47,6 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
               <Select
                 placeholder='Group by'
                 style={{ width: 120 }}
-                onChange={handleChange}
               >
                 <Option value='salesPerson'>Sales Person</Option>
                 <Option value='salesTeam'>Sales Team</Option>
@@ -52,8 +54,13 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
               <Button className='button-filter-pipeline'>
                 <FilterOutlined />
               </Button>
-              <Button className='button-more-pipeline'>
-                <MoreOutlined />
+              <Button
+                onClick={() => navigate('opportunities-lost') }
+                type='primary'
+                icon={<DeleteOutlined />}
+                className='button-more-pipeline'
+              >
+                Opportunities Lost
               </Button>
             </Space>
           </div>
