@@ -19,7 +19,11 @@ export class Contact extends BaseEntity {
 
   @Column({ nullable: true })
   email: string;
-  @Column({ nullable: true })
+  @Column({
+    default:
+      'https://www.mona.uwi.edu/modlang/sites/default/files/modlang/male-avatar-placeholder.png',
+    type: 'varchar',
+  })
   photo: string;
 
   @Column({ nullable: true })
