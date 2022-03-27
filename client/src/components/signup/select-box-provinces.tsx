@@ -19,6 +19,12 @@ export const SelectBoxProvinces: React.FC<SelectBoxProvincesProps> = ({ cityName
   const isMounted = useRef(false);
 
   useEffect(() => {
+    //Disable auto fill address of chrome
+    //@ts-ignore
+    document.getElementById('cityName').autocomplete = 'no';
+    //@ts-ignore
+    document.getElementById('cityId').autocomplete = 'no';
+
     if (isMounted.current) {
       searchCity(debounced).then((data) => setDataCity(data));
     } else {
@@ -39,6 +45,7 @@ export const SelectBoxProvinces: React.FC<SelectBoxProvincesProps> = ({ cityName
   return (
     <>
       <Input.Group compact>
+
         <Form.Item
           name="cityName"
           label="City"
@@ -57,6 +64,7 @@ export const SelectBoxProvinces: React.FC<SelectBoxProvincesProps> = ({ cityName
             ))}
           </Select>
         </Form.Item>
+
         <Form.Item
           name='cityId'
           label="State"
