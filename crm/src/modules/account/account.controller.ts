@@ -12,6 +12,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { IsPassthrough } from 'src/common/decorators/passthrough.decorator';
+import { Public } from 'src/common/decorators/public.decorator';
 import { HasRoles } from 'src/common/decorators/role/decorator';
 import { Roles } from 'src/constance';
 import { AUTHORIZATION } from 'src/constance/swagger';
@@ -75,5 +76,11 @@ export class AccountController {
   @HistoryLog('Deleted an account')
   delete(@Param('id') id: string) {
     return this.service.softDelete(id);
+  }
+  @Public()
+  @Post('/verify')
+  @HistoryLog('Deleted an account')
+  verifyAndCreate(@Body() body: CreateAccountDto) {
+    return this.service.createAccount(body);
   }
 }

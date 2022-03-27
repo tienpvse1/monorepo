@@ -8,6 +8,8 @@ import {
 } from 'class-validator';
 
 export class CreateAccountDto {
+  @Length(6)
+  username: string;
   @Length(2, 100)
   @IsOptional()
   firstName: string;
