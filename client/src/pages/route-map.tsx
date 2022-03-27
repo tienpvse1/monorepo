@@ -24,9 +24,6 @@ const DealStatistic = lazy(
   () => import('@components/statistic/deal-statistic')
 );
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
-const SalesContactList = lazy(
-  () => import('@components/sale/sales-contact-list')
-);
 const SaleManagerDashboard = lazy(() => import('./sale-manager/dashboard'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
 const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/pipeline'));

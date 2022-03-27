@@ -11,6 +11,12 @@ import { OpportunityAdditionalForm } from "./opportunity-additional-form";
 import { useUpdatePipelineItem } from "@modules/pipeline-items/mutation/pipeline-items.update";
 import { OpportunityInfoTeam } from "./opportunity-info-team";
 import { OpportunityTeamForm } from "./opportunity-team-form";
+import { useReassignAccount } from "@modules/pipeline-items/mutation/pipeline-item.patch";
+import { useQueryClient } from "react-query";
+import { GET_PIPELINE_ITEM_BY_ID } from "@modules/pipeline-items/query/pipeline-item.get";
+import { useParams } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { PUBLIC_USER_INFO } from "@constance/cookie";
 const { CRUD_AT } = dateFormat;
 
 interface OpportunityDetailsProps {
@@ -21,9 +27,17 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
   const [isEditingForm1, toggleEditForm1] = useToggle();
   const [isEditingForm2, toggleEditForm2] = useToggle();
   const [isEditingForm3, toggleEditForm3] = useToggle();
+  const queryClient = useQueryClient();
+  const [form] = Form.useForm();
+  const params = useParams();
+  const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
+
+  const isRoleManager = () => {
+    return public_user_info.role.name === 'sale_manager';
+  }
 
   const { mutate: updateOpportunity } = useUpdatePipelineItem();
-  const [form] = Form.useForm();
+  const { mutate: reassignAccount } = useReassignAccount();
 
   const handleToggleEditForm1 = () => {
     toggleEditForm1();
@@ -52,16 +66,6 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
   const handleSubmitForm1 = async () => {
     try {
       const value = await form.validateFields();
-      console.log({
-        id: data.id,
-        contactId: value.contactId,
-        name: value.name,
-        opportunityRevenue: {
-          productId: value.productId,
-          quantity: value.quantity
-        }
-      });
-
       updateOpportunity({
         id: data.id,
         contactId: value.contactId,
@@ -102,8 +106,17 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
 
   const handleSubmitForm3 = async () => {
     try {
-      const value = await form.validateFields();
-
+      const { salePerson } = await form.validateFields();
+      reassignAccount({
+        id: data.id,
+        accountId: salePerson
+      }, {
+        onSuccess: () => {
+          message.success('Saved successfully !');
+          queryClient.refetchQueries([GET_PIPELINE_ITEM_BY_ID, params.id]);
+          toggleEditForm3();
+        }
+      })
 
     } catch (error) {
       return;
@@ -130,23 +143,7 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
           </EditButtonHover>
         )}
 
-        <Row className='title-form-content'>Team Information</Row>
-        {isEditingForm3 ? (
-          <Row gutter={[24, 0]}>
-            <OpportunityTeamForm team={data.account.team} />
-            <Col style={{ textAlign: 'right' }} span={24}>
-              <Space>
-                <Button onClick={() => handleSubmitForm3()} type='primary'>
-                  Save
-                </Button>
-                <Button onClick={toggleEditForm3}>Cancel</Button>
-              </Space>
-            </Col>
-          </Row>) : (
-          <EditButtonHover toggleEditForm={handleToggleEditForm3}>
-            <OpportunityInfoTeam opportunity={data} />
-          </EditButtonHover>
-        )}
+
 
         <Row className='title-form-content'>Additional Information</Row>
         {isEditingForm2 ? (
@@ -169,6 +166,24 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
                 </MyForm>
               </Col>
             </Row>
+          </EditButtonHover>
+        )}
+
+        <Row className='title-form-content'>Team Information</Row>
+        {isEditingForm3 ? (
+          <Row gutter={[24, 0]}>
+            <OpportunityTeamForm team={data.account.team} />
+            <Col style={{ textAlign: 'right' }} span={24}>
+              <Space>
+                <Button onClick={() => handleSubmitForm3()} type='primary'>
+                  Save
+                </Button>
+                <Button onClick={toggleEditForm3}>Cancel</Button>
+              </Space>
+            </Col>
+          </Row>) : (
+          <EditButtonHover disabled={!isRoleManager()} toggleEditForm={handleToggleEditForm3}>
+            <OpportunityInfoTeam opportunity={data} />
           </EditButtonHover>
         )}
 

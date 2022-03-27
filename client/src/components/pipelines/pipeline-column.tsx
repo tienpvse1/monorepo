@@ -72,7 +72,7 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
             <span>15.000.000 đ</span>
           </div>
 
-          {!handleIsRoleAdmin() &&
+          {!handleIsRoleAdmin() && !pipelineColumn.isWon &&
             <Button
               onClick={setShowCreateItemForm}
               style={{ marginTop: '10px', width: '100%', border: 'none' }}

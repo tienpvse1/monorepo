@@ -118,7 +118,7 @@ export const usePipelineItem = (id: string) =>
   });
 
 export const usePipelineItems = () =>
-  useQuery([GET_PIPELINE_ITEM_BY_ACCOUNT], getAllPipelineItem, {
+  useQuery(GET_PIPELINE_ITEM_BY_ACCOUNT, getAllPipelineItem, {
     suspense: true,
   });
 

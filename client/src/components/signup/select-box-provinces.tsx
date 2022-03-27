@@ -19,7 +19,7 @@ export const SelectBoxProvinces: React.FC<SelectBoxProvincesProps> = ({ cityName
   const isMounted = useRef(false);
 
   useEffect(() => {
-    //Disable auto fill address of chrome
+    //Disable auto fill city of chrome
     //@ts-ignore
     document.getElementById('cityName').autocomplete = 'no';
     //@ts-ignore
