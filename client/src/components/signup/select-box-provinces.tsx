@@ -1,3 +1,4 @@
+import { isRequired } from '@constance/rules-of-input-antd';
 import { useDebouncedValue } from '@mantine/hooks';
 import { IProvinces } from '@modules/provinces/entity/provinces.entity';
 import { getStateByCity, searchCity } from '@modules/provinces/query/provinces.get';
@@ -42,6 +43,7 @@ export const SelectBoxProvinces: React.FC<SelectBoxProvincesProps> = ({ cityName
           name="cityName"
           label="City"
           style={{ width: 'calc(50% - 10px)', marginRight: '10px' }}
+          rules={[isRequired('City is required')]}
         >
           <Select
             showSearch
@@ -59,6 +61,7 @@ export const SelectBoxProvinces: React.FC<SelectBoxProvincesProps> = ({ cityName
           name='cityId'
           label="State"
           style={{ width: '50%' }}
+          rules={[isRequired('State is required')]}
         >
           <Select
             showSearch
