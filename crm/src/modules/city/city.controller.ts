@@ -1,4 +1,5 @@
 import { Body, Controller, Post, UsePipes } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { ParsedData } from './city.pipe';
 import { CityService } from './city.service';
@@ -26,6 +27,7 @@ import { City } from './entities/city.entity';
     exclude: ['createManyBase'],
   },
 })
+@ApiTags('city')
 export class CityController {
   constructor(readonly service: CityService) {}
 
