@@ -9,9 +9,6 @@ const ViewCompanyDetails = () => {
   const params = useParams();
   const { data, isLoading } = useQueryCompanyById(params.id);
 
-  console.log(data);
-  
-
   // TODO: this skeleton still hard code
   if (isLoading)
     return <div>this is skeleton</div>

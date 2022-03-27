@@ -1,18 +1,20 @@
 import { SelectBoxProvinces } from '@components/signup/select-box-provinces'
 import { isPostalCode, isTaxId } from '@constance/rules-of-input-antd';
 import { useToggle } from '@hooks/useToggle';
-import { Col, Form, Input, Select } from 'antd'
+import { Col, Form, FormInstance, Input, Select } from 'antd'
 import { useState } from 'react';
 const { Option } = Select;
 
 interface CompanyAddressFormProps {
   defaultToggle?: boolean
   cityName?: string;
+  form?: FormInstance<any>;
 }
 
 export const CompanyAddressForm: React.FC<CompanyAddressFormProps> = ({
   defaultToggle = true,
-  cityName
+  cityName,
+  form
 }) => {
   const [visible, setVisible] = useToggle(defaultToggle);
   const [country, setCountry] = useState<string>('VN');
@@ -41,7 +43,7 @@ export const CompanyAddressForm: React.FC<CompanyAddressFormProps> = ({
         >
           <Input.TextArea showCount maxLength={150} />
         </Form.Item>
-        {visible ? <SelectBoxProvinces cityName={cityName} /> :
+        {visible ? <SelectBoxProvinces form={form} cityName={cityName} /> :
           <Form.Item
             name='city'
             label="City"

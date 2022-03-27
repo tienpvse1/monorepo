@@ -60,7 +60,7 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
     }
 
     form.setFieldsValue({
-      state: company.state,
+      cityName: company.city.admin_name,
       cityId: company.city.id,
       postalCode: company.postalCode,
       website: company.website,
@@ -149,7 +149,11 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
         <Row className='title-form-content'>Address Information</Row>
         {isEditingForm2 ? (
           <Row gutter={[24, 0]}>
-            <CompanyAddressForm cityName={company.city.admin_name} defaultToggle={regionOther} />
+            <CompanyAddressForm
+              form={form}
+              cityName={company.city.admin_name}
+              defaultToggle={regionOther}
+            />
             <Col style={{ textAlign: 'right' }} span={24}>
               <Space>
                 <Button onClick={() => handleSubmitForm2()} type='primary'>
