@@ -2,12 +2,12 @@ import { MyForm } from '@components/form/my-form';
 import { Button, Col, Form, Row, Space } from 'antd';
 import { EditButtonHover } from '@components/page-details/edit-button-hover';
 import { ContactInfoDetails } from './contact-info-details';
-import { AddressInfoDetails } from './address-info-details';
+// import { AddressInfoDetails } from './address-info-details';
 import { ContactInfoForm } from './contact-info-form';
 import { useToggle } from '@hooks/useToggle';
 import { IContact } from '@modules/contact/entity/contact.entity';
 import moment from 'moment';
-import { AddressInfoForm } from './address-info-form';
+// import { AddressInfoForm } from './address-info-form';
 import { dateFormat } from '@constance/date-format';
 const { CRUD_AT, BIRTH } = dateFormat;
 import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
@@ -20,7 +20,7 @@ interface ContactDetailsProps {
 }
 export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
   const [isEditingForm1, toggleEditForm1] = useToggle();
-  const [isEditingForm2, toggleEditForm2] = useToggle();
+  // const [isEditingForm2, toggleEditForm2] = useToggle();
   const [form] = Form.useForm<any>();
 
   const queryClient = useQueryClient();
@@ -38,19 +38,20 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
       email: contact.email,
       birth: contact.birth ? moment(contact.birth) : '',
       phone: contact.phone,
+      jobPosition: contact.jobPosition,
       companyName: contact.company.name
     });
   };
 
-  const handleToggleEditForm2 = () => {
-    toggleEditForm2();
-    form.setFieldsValue({
-      // postalCode: contact.postalCode,
-      jobPosition: contact.jobPosition,
-      // website: contact.website,
-      // taxId: contact.taxId,
-    });
-  };
+  // const handleToggleEditForm2 = () => {
+  //   toggleEditForm2();
+  //   form.setFieldsValue({
+  //     // postalCode: contact.postalCode,
+  //     jobPosition: contact.jobPosition,
+  //     // website: contact.website,
+  //     // taxId: contact.taxId,
+  //   });
+  // };
 
   const handleSubmitForm1 = async () => {
     try {
@@ -67,18 +68,18 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
     }
   };
 
-  const handleSubmitForm2 = async () => {
-    try {
-      const value = await form.validateFields();
-      mutate({
-        ...value,
-        id: contact.id,
-      });
-      toggleEditForm2();
-    } catch (error) {
-      return;
-    }
-  };
+  // const handleSubmitForm2 = async () => {
+  //   try {
+  //     const value = await form.validateFields();
+  //     mutate({
+  //       ...value,
+  //       id: contact.id,
+  //     });
+  //     toggleEditForm2();
+  //   } catch (error) {
+  //     return;
+  //   }
+  // };
 
   return (
     <>

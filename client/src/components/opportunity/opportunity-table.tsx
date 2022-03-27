@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { useToggle } from '@hooks/useToggle';
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { OpportunityTitleTable } from '@components/opportunity/opportunity-title-table';
-import { GET_PIPELINE_ITEM_BY_ACCOUNT } from '@modules/pipeline-items/query/pipeline-item.get';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { isRequired } from '@constance/rules-of-input-antd';
 import { CreateModal } from '@components/modal/create-modal';
@@ -18,18 +17,15 @@ import { message } from 'antd';
 import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { useQueryClient } from 'react-query';
 import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.delete';
-import { IContact } from '@modules/contact/entity/contact.entity';
 import { removeDuplicate } from '@util/array';
 import { dateFormat } from '@constance/date-format';
-import { useCookies } from 'react-cookie';
-import { PUBLIC_USER_INFO } from '@constance/cookie';
 const { DEFAULT } = dateFormat;
 
 interface OpportunitiesTableProps {
   dataSource: IPipelineItem[];
   isLoading: boolean;
-  dataSelectBoxContact: IContact[];
   setDataOpportunity?: (value: []) => void;
+  queryKey?: string | [any, any];
 }
 
 interface SubmitFormCreateOpportunity {
@@ -44,23 +40,19 @@ interface SubmitFormCreateOpportunity {
   quantity: number;
   saleTeam: number;
   courseId: string;
+  priority: number;
 }
 
 export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
   dataSource,
   isLoading,
   setDataOpportunity,
+  queryKey
 }) => {
   const stageFilter = dataSource?.map((opportunity) => ({
     text: opportunity.pipelineColumn?.name,
     value: opportunity.pipelineColumn?.name,
   }));
-
-  const [
-    {
-      public_user_info: { id },
-    },
-  ] = useCookies([PUBLIC_USER_INFO]);
 
   const { mutate: updateOpportunity } = useUpdatePipelineItem();
   const { mutate: createOpportunity } = usePostPipelineItems();
@@ -123,6 +115,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
       internalDescription,
       courseId,
       quantity,
+      priority
     } = record;
     createOpportunity(
       {
@@ -131,6 +124,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
         contactId,
         internalNotes,
         internalDescription,
+        priority,
         opportunityRevenue: {
           courseId,
           quantity,
@@ -138,7 +132,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
       },
       {
         onSuccess: () => {
-          queryClient.refetchQueries([GET_PIPELINE_ITEM_BY_ACCOUNT, id]);
+          queryClient.refetchQueries(queryKey);
           message.success('Created opportunity successfully !');
         },
       }
@@ -321,9 +315,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                         showDeleteConfirm(() =>
                           removePipelineItems(record.id, {
                             onSuccess: () => {
-                              queryClient.invalidateQueries(
-                                GET_PIPELINE_ITEM_BY_ACCOUNT
-                              );
+                              queryClient.invalidateQueries(queryKey);
                               message.success(
                                 'Deleted opportunity successfully !'
                               );

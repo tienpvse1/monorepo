@@ -1,12 +1,9 @@
-import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { isRequired } from '@constance/rules-of-input-antd';
-import { useContacts } from '@modules/contact/query/contact.get';
 import { ICreatePipelineItemsDto } from '@modules/pipeline-items/dto/create-pipeline-items.dto';
 import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { Button, Card, Form, Input, InputNumber } from 'antd';
 import { FC } from 'react';
-import { useCookies } from 'react-cookie';
 import { SelectBoxCourse } from '@components/course/select-box-Course';
 import { useQueryClient } from 'react-query';
 import { SelectBoxGroup } from './select-box-group';
@@ -30,12 +27,6 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
   toggleClose,
 }) => {
   const { mutate: createNewItems } = usePostPipelineItems();
-  const [
-    {
-      public_user_info: { id },
-    },
-  ] = useCookies([PUBLIC_USER_INFO]);
-  const { data } = useContacts(id);
   const [form] = Form.useForm<SubmittedObject>();
   const queryClient = useQueryClient();
 
@@ -53,20 +44,22 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
     createNewItems(data, {
       onSuccess: () => {
         queryClient.refetchQueries(GET_PIPELINE_DESIGN);
+        console.log("refecth:", GET_PIPELINE_DESIGN);
+        
         toggleClose();
       },
     });
   };
 
-  const handleSelect = (contactIdSelected: string) => {
-    const contactSelected = data?.find((contact) => {
-      return contact.id == contactIdSelected;
-    });
+  // const handleSelect = (contactIdSelected: string) => {
+  //   const contactSelected = data?.find((contact) => {
+  //     return contact.id == contactIdSelected;
+  //   });
 
-    form.setFieldsValue({
-      name: `${contactSelected.name}'s opportunity`
-    });
-  };
+  //   form.setFieldsValue({
+  //     name: `${contactSelected.name}'s opportunity`
+  //   });
+  // };
 
   return (
     <>
@@ -88,7 +81,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
           onFinish={(value) => handleSubmit(value)}
         >
 
-          <SelectBoxGroup handleSelect={handleSelect} />
+          <SelectBoxGroup />
 
           <Form.Item
             label='Opportunity'

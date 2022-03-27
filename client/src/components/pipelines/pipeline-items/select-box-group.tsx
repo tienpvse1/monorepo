@@ -6,13 +6,11 @@ import { useEffect, useState } from "react";
 const { Option } = Select;
 
 interface SelectBoxGroupProps {
-  handleSelect?: (value: string) => void;
   contact?: IContact;
   disabledCompany?: boolean
 }
 
 export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
-  handleSelect,
   contact,
   disabledCompany = false
 }) => {
@@ -65,7 +63,7 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
         rules={[isRequired('Contact is required')]}
       >
         <Select
-          onSelect={handleSelect}
+          // onSelect={handleSelect}
           showSearch
           placeholder='Select a contact'
           optionFilterProp='children'

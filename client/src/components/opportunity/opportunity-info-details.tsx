@@ -1,6 +1,6 @@
 import { MyForm } from '@components/form/my-form';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { Col, Row } from 'antd';
+import { Badge, Col, Row } from 'antd';
 
 interface OpportunityInfoDetailsProps {
   opportunity: IPipelineItem;
@@ -9,6 +9,20 @@ interface OpportunityInfoDetailsProps {
 export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
   opportunity,
 }) => {
+
+  const handlePriority = (value: number) => {
+    let node = <Badge color={'blue'} text='Low' />;
+    switch (value) {
+      case 1:
+        node = <Badge color={'yellow'} text='Medium' />;
+        break;
+      case 2:
+        node = <Badge color={'red'} text='Important' />;
+        break;
+    }
+    return node;
+  }
+
   return (
     <>
       <Row>
@@ -21,6 +35,9 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
           <MyForm label='Close Date'>{opportunity.expectedClosing}</MyForm>
         </Col>
         <Col span={12}>
+          <MyForm label='Priority'>
+            {handlePriority(opportunity.priority)}
+          </MyForm>
 
           <MyForm label='Expected Revenue'>
             {opportunity.expectedRevenue}

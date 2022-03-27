@@ -1,6 +1,6 @@
 import { isQuantity, isRequired } from '@constance/rules-of-input-antd'
 import { SelectBoxCourse } from '@components/course/select-box-Course';
-import { Col, DatePicker, Form, Input, InputNumber } from 'antd'
+import { Badge, Col, DatePicker, Form, Input, InputNumber, Select } from 'antd'
 import { SelectBoxStage } from '@components/opportunity/select-box-stage';
 import { SelectBoxGroup } from '@components/pipelines/pipeline-items/select-box-group';
 import { IContact } from '@modules/contact/entity/contact.entity';
@@ -38,6 +38,19 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
         </Form.Item>
       </Col>
       <Col span={12}>
+        <Form.Item name='priority' label='Priority' initialValue={1}>
+          <Select>
+            <Select.Option value={2}>
+              <Badge color={'red'} text='Important' />
+            </Select.Option>
+            <Select.Option value={1}>
+              <Badge color={'yellow'} text='Medium' />
+            </Select.Option>
+            <Select.Option value={0}>
+              <Badge color={'blue'} text='Low' />
+            </Select.Option>
+          </Select>
+        </Form.Item>
 
         {showStageInput && <SelectBoxStage />}
 

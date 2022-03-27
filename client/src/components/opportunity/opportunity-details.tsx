@@ -46,7 +46,8 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
       expectedClosing: data.expectedClosing ? moment(data.expectedClosing) : '',
       expectedRevenue: data.expectedRevenue,
       contactId: data.contact.id,
-      companyName: data.contact.company.id
+      companyName: data.contact.company.id,
+      priority: data.priority
     });
   };
   const handleToggleEditForm2 = () => {
@@ -142,8 +143,6 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
             <OpportunityInfoDetails opportunity={data} />
           </EditButtonHover>
         )}
-
-
 
         <Row className='title-form-content'>Additional Information</Row>
         {isEditingForm2 ? (

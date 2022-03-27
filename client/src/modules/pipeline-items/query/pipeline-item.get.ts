@@ -7,6 +7,7 @@ import { IPipelineItem } from '../entity/pipeline-items.entity';
 const { PIPELINE_ITEM } = controllers;
 export const GET_PIPELINE_ITEM_BY_ID = 'get-pipeline-item-by-id';
 export const GET_PIPELINE_ITEM_BY_ACCOUNT = 'get-pipeline-item-by-account';
+export const GET_ALL_PIPELINE_ITEM = 'get-all-pipeline-item';
 
 export const getPipelineId = async (id: string) => {
   const queryBuilder = RequestQueryBuilder.create({
@@ -118,7 +119,7 @@ export const usePipelineItem = (id: string) =>
   });
 
 export const usePipelineItems = () =>
-  useQuery(GET_PIPELINE_ITEM_BY_ACCOUNT, getAllPipelineItem, {
+  useQuery(GET_ALL_PIPELINE_ITEM, getAllPipelineItem, {
     suspense: true,
   });
 
