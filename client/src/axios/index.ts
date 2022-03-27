@@ -5,8 +5,9 @@ const feDomain = envVars.VITE_FE_DOMAIN;
 import { StatusCodes } from 'http-status-codes';
 export class Axios {
   instance: AxiosInstance;
-
-  constructor() {
+  handleError = true;
+  constructor(handleError: boolean = true) {
+    this.handleError = handleError;
     this.instance = axios.create({
       baseURL,
       withCredentials: true,
@@ -21,8 +22,9 @@ export class Axios {
       ({ response: { status } }) => {
         console.log(status);
         if (
-          status === StatusCodes.UNAUTHORIZED ||
-          status === StatusCodes.FORBIDDEN
+          this.handleError &&
+          (status === StatusCodes.UNAUTHORIZED ||
+            status === StatusCodes.FORBIDDEN)
         ) {
           window.location.href = `${feDomain}/login`;
         }
@@ -32,3 +34,4 @@ export class Axios {
 }
 
 export const { instance } = new Axios();
+export const { instance: noErrorInstance } = new Axios(false);

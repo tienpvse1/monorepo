@@ -83,13 +83,6 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       icon: <WalletOutlined style={style} />,
     },
     {
-      key: 'customer',
-      label: 'Customer',
-      style,
-      onClick: () => navigate('/customer'),
-      icon: <UserOutlined style={style} />,
-    },
-    {
       key: 'schedule',
       label: 'Schedule',
       style,
