@@ -113,7 +113,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
                   >
                     <ClockCircleOutlined
                       onClick={() => toggleDropdown()}
-                      style={{ fontSize: 18, cursor: 'pointer', color: cardData.schedules?.length > 0 ? 'green' : '' }}
+                      style={{ fontSize: 18, cursor: 'pointer', color: cardData.schedules?.length > 0 ? '#FFB300' : '' }}
                     />
                   </Dropdown>
                   <IconLost />

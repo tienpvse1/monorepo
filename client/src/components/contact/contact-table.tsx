@@ -24,6 +24,10 @@ import { useInsertContact } from '@modules/contact/mutation/contact.post';
 import { message } from 'antd';
 import { dateFormat } from "@constance/date-format";
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { PUBLIC_USER_INFO } from '@constance/cookie';
+import { removeDuplicate } from '@util/array';
+
 const { DEFAULT } = dateFormat;
 
 const rowSelection = {
@@ -58,6 +62,19 @@ export const ContactTable: React.FC<ContactTableProps> = ({
     client.invalidateQueries(QUERY_CONTACTS);
     message.success('Create new successfully !');
   });
+
+  const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
+
+  const accountFilter = dataSource?.filter((value) => value.account.id !== public_user_info.id)
+  const accountFormat = accountFilter?.map((value) => ({
+    text: `${value.account.firstName} ${value.account.lastName}`,
+    value: `${value.account.firstName} ${value.account.lastName}`
+  }))
+  const account = removeDuplicate(accountFormat, 'value');
+  account?.unshift({
+    text: 'My contacts',
+    value: `${public_user_info.firstName} ${public_user_info.lastName}`
+  })
 
   const [form] = Form.useForm<IContact>();
   const [isEditing, toggleEditing] = useToggle();
@@ -102,7 +119,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
 
   return (
     <>
-      <Form className='form-123123' form={form}>
+      <Form form={form}>
         <Table
           loading={isLoading}
           tableLayout='fixed'
@@ -199,6 +216,14 @@ export const ContactTable: React.FC<ContactTableProps> = ({
                 {record?.account?.firstName} {record?.account?.lastName}
               </Link>
             )}
+            filters={account}
+            defaultFilteredValue={[`${public_user_info.firstName} ${public_user_info.lastName}`]}
+            filterSearch={true}
+            onFilter={(value, record) => {
+              let fullName = `${record.account?.firstName} ${record.account?.lastName}`
+              return fullName.indexOf(value as string) === 0
+            }
+            }
           />
           <Column
             title='Action'
