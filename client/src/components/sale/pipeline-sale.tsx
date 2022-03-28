@@ -15,6 +15,10 @@ interface PipelineSaleProps { }
 const PipelineSale: React.FC<PipelineSaleProps> = ({ }) => {
   const { data } = useGetPipeLineUser();
   const queryClient = useQueryClient();
+
+  //filter opportunity is lose = false
+  data?.pipelineColumns.map(column => column.pipelineItems = column.pipelineItems.filter(item => !item.isLose))
+
   const {
     newPipeLine,
     setPipeLine,
