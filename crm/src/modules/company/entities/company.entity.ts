@@ -1,15 +1,7 @@
 import { BaseEntity } from 'src/base/entity.base';
 import { City } from 'src/modules/city/entities/city.entity';
 import { Contact } from 'src/modules/contact/entities/contact.entity';
-import { Tag } from 'src/modules/tag/entities/tag.entity';
-import {
-  Column,
-  Entity,
-  Index,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity()
 export class Company extends BaseEntity {
