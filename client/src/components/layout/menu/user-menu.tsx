@@ -9,6 +9,7 @@ import {
   GlobalOutlined,
   LineChartOutlined,
   SolutionOutlined,
+  TagOutlined,
   UserOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
@@ -118,6 +119,13 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
           }}
         />
       ),
+    },
+    {
+      key: 'tag',
+      label: 'Tags',
+      style,
+      onClick: () => navigate('/tag'),
+      icon: <TagOutlined style={style} />,
     },
   ];
 
