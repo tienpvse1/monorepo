@@ -9,6 +9,7 @@ import {
   GlobalOutlined,
   LineChartOutlined,
   SolutionOutlined,
+  TagOutlined,
   UserOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
@@ -83,13 +84,6 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       icon: <WalletOutlined style={style} />,
     },
     {
-      key: 'customer',
-      label: 'Customer',
-      style,
-      onClick: () => navigate('/customer'),
-      icon: <UserOutlined style={style} />,
-    },
-    {
       key: 'schedule',
       label: 'Schedule',
       style,
@@ -125,6 +119,13 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
           }}
         />
       ),
+    },
+    {
+      key: 'tag',
+      label: 'Tags',
+      style,
+      onClick: () => navigate('/tag'),
+      icon: <TagOutlined style={style} />,
     },
   ];
 

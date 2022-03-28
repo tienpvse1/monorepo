@@ -61,6 +61,12 @@ export class EmailService extends BaseService<Email> {
       sendAt: new Date(),
       deliveryAttempts: 10,
     });
+    await this.createItem({
+      account,
+      body: email.value,
+      subject: email.subject,
+      ip,
+    });
 
     return email;
   }

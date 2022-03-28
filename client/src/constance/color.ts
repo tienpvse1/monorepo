@@ -8,8 +8,8 @@ export const ThemeColor = {
   percentColorIncrease: style.percentColorIncrease,
   percentColorDecrease: style.percentColorDecrease,
   cardBorder: style.cardBorder,
-  boxShadowCardDashBoard: style.boxShadowCardDashBoard
-}
+  boxShadowCardDashBoard: style.boxShadowCardDashBoard,
+};
 
 //Config global color for ant design
 ConfigProvider.config({
@@ -17,3 +17,44 @@ ConfigProvider.config({
     primaryColor: style.primaryColor,
   },
 });
+
+export type AntColorType =
+  | 'error'
+  | 'success'
+  | 'warning'
+  | 'default'
+  | 'pink'
+  | 'red'
+  | 'yellow'
+  | 'orange'
+  | 'cyan'
+  | 'green'
+  | 'blue'
+  | 'purple'
+  | 'geekblue'
+  | 'magenta'
+  | 'volcano'
+  | 'gold'
+  | 'lime'
+  | 'processing';
+
+export const antColor: AntColorType[] = [
+  'error',
+  'success',
+  'warning',
+  'default',
+  'pink',
+  'red',
+  'yellow',
+  'orange',
+  'cyan',
+  'green',
+  'blue',
+  'purple',
+  'geekblue',
+  'magenta',
+  'volcano',
+  'gold',
+  'lime',
+  'processing',
+];

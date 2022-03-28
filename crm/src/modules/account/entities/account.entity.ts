@@ -40,7 +40,11 @@ export class Account extends BaseEntity {
   @Column({ name: 'last_name', nullable: true })
   lastName: string;
 
-  @Column({ nullable: true, type: 'text' })
+  @Column({
+    type: 'varchar',
+    default:
+      'https://www.mona.uwi.edu/modlang/sites/default/files/modlang/male-avatar-placeholder.png',
+  })
   photo: string;
 
   @Column()

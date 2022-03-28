@@ -5,6 +5,7 @@ import Statistic from './statistic';
 
 const MapStatistic = lazy(() => import('./map-statistic'));
 const HomePage = lazy(() => import('@pages/home'));
+const Tag = lazy(() => import('@pages/tag'));
 const Contact = lazy(() => import('@pages/contact'));
 const LoginPage = lazy(() => import('@pages/login'));
 const Company = lazy(() => import('@pages/company'));
@@ -158,6 +159,10 @@ export const route: RouteObject[] = [
       {
         path: 'product',
         element: <Product />,
+      },
+      {
+        path: 'tag',
+        element: <Tag />,
       },
       {
         path: 'opportunities',

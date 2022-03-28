@@ -22,5 +22,6 @@ export enum controllers {
   INBOX = 'inbox',
   EMAIL = 'email',
   CITY = 'city',
-  REASON = 'reason'
+  REASON = 'reason',
+  TAG = 'tag',
 }
