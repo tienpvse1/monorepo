@@ -78,7 +78,7 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
         >
           {dataContact?.map((contact) => (
             <Option key={contact.id} value={`${contact.id}`}>
-              {contact.name}
+              {contact.name} - {contact.email}
             </Option>
           ))}
         </Select>

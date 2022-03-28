@@ -53,7 +53,6 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
         </Form.Item>
 
         {showStageInput && <SelectBoxStage />}
-
         <Form.Item
           name="expectedRevenue"
           label="Expected Revenue"
@@ -61,16 +60,19 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
           <Input />
         </Form.Item>
 
-        <SelectBoxCourse />
+        <Input.Group compact>
+          <SelectBoxCourse />
 
-        <Form.Item
-          name="quantity"
-          label="Expected sold quantity"
-          rules={[isQuantity]}
-          initialValue={1}
-        >
-          <InputNumber className="my-input-number" />
-        </Form.Item>
+          <Form.Item
+            name="quantity"
+            label="Quantity"
+            rules={[isQuantity]}
+            initialValue={1}
+            style={{width: '20%'}}
+          >
+            <InputNumber style={{width: '100%'}} className="my-input-number" />
+          </Form.Item>
+        </Input.Group>
       </Col>
     </>
   )

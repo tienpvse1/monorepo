@@ -39,7 +39,8 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
       birth: contact.birth ? moment(contact.birth) : '',
       phone: contact.phone,
       jobPosition: contact.jobPosition,
-      companyName: contact.company.name
+      companyName: contact.company.name,
+      address: contact.address
     });
   };
 
