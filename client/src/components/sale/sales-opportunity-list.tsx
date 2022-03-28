@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import { GET_PIPELINE_ITEM_BY_ACCOUNT, useQueryPipelineByAccountId } from '@modules/pipeline-items/query/pipeline-item.get';
 import { useEffect, useState } from 'react';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
+import { searchPipelineItem } from '@modules/pipeline-items/query/pipeline-item.get';
 
 const SalesOpportunityList = () => {
   const [
@@ -28,6 +29,7 @@ const SalesOpportunityList = () => {
       <OpportunitiesTable
         queryKey={[GET_PIPELINE_ITEM_BY_ACCOUNT, id]}
         setDataOpportunity={setDataOpportunity}
+        searchMethod={searchPipelineItem}
         dataSource={dataOpportunity}
         isLoading={isLoading}
       />

@@ -20,13 +20,11 @@ export const PipelineItems: React.FC<PipelineItemsProps> = ({
   pipelineColumn,
   setShowCreateItemForm,
   showCreateItemForm,
-  isWonStage
 }) => {
 
   return (
     <>
       <Droppable
-        isDropDisabled={isWonStage && true}
         droppableId={pipelineColumn.id}
         type='task'
       >

@@ -55,7 +55,7 @@ const ListOfAllContact = lazy(
   () => import('@components/admin/list-of-all-contacts')
 );
 
-const OpportunityLost = lazy(() => import('@pages/opportunity-lost'));
+const SalesOpportunityLost = lazy(() => import('@components/sale/sales-opportunity-lost'));
 const PipelineSale = lazy(() => import('@components/sale/pipeline-sale'));
 
 export const route: RouteObject[] = [
@@ -100,7 +100,7 @@ export const route: RouteObject[] = [
           },
           {
             path: 'opportunities-lost',
-            element: <OpportunityLost />,
+            element: <SalesOpportunityLost />,
           },
         ],
       },

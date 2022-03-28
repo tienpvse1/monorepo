@@ -53,7 +53,7 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
   const handleToggleEditForm2 = () => {
     toggleEditForm2();
     form.setFieldsValue({
-      internalDescription: data.internalDescription
+      description: data.description
     });
   };
   const handleToggleEditForm3 = () => {
@@ -139,7 +139,10 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
             </Col>
           </Row>
         ) : (
-          <EditButtonHover toggleEditForm={handleToggleEditForm1}>
+          <EditButtonHover
+            disabled={data.pipelineColumn.isWon || data.isLose && true}
+            toggleEditForm={handleToggleEditForm1}
+          >
             <OpportunityInfoDetails opportunity={data} />
           </EditButtonHover>
         )}
@@ -157,11 +160,20 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
               </Space>
             </Col>
           </Row>) : (
-          <EditButtonHover toggleEditForm={handleToggleEditForm2}>
+          <EditButtonHover
+            disabled={data.pipelineColumn.isWon || data.isLose && true}
+            toggleEditForm={handleToggleEditForm2}
+          >
             <Row>
               <Col span={24}>
+                {
+                  data.isLose &&
+                  <MyForm label='Reason Lost'>
+                    {/* {data.internalDescription} */}
+                  </MyForm>
+                }
                 <MyForm label='Description'>
-                  {data.internalDescription}
+                  {data.description}
                 </MyForm>
               </Col>
             </Row>
@@ -181,7 +193,10 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
               </Space>
             </Col>
           </Row>) : (
-          <EditButtonHover disabled={!isRoleManager()} toggleEditForm={handleToggleEditForm3}>
+          <EditButtonHover
+            disabled={!isRoleManager() || data.pipelineColumn.isWon || data.isLose}
+            toggleEditForm={handleToggleEditForm3}
+          >
             <OpportunityInfoTeam opportunity={data} />
           </EditButtonHover>
         )}

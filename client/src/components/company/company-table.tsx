@@ -32,9 +32,6 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  console.log("compantL:", dataSource);
-  
-
   const { mutate: createCompany } = useCreateCompany();
   const { mutate: updateCompany } = useUpdateCompany();
   const { mutate: deleteCompany } = useDeleteCompany();

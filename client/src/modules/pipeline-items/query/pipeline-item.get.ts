@@ -43,6 +43,7 @@ export const getPipelineByAccountID = async (accountId: string) => {
       { field: 'pipelineColumn' },
       { field: 'account' },
       { field: 'contact' },
+      { field: 'reason' },
     ],
     filter: [
       {
@@ -77,7 +78,50 @@ export const getAllPipelineItem = async () => {
 
   return data;
 };
-export const searchPipelineItem = async (text: string) => {
+export const searchPipelineItem = async (text: string, accountId?: string) => {
+  const queryBuilder = RequestQueryBuilder.create({
+    join: [
+      { field: 'pipelineColumn' },
+      { field: 'account' },
+      { field: 'contact' },
+    ],
+    search: {
+      $and: [
+        {
+          $or: [
+            {
+              name: {
+                $cont: text
+              },
+            },
+            {
+              'contact.name': {
+                $cont: text
+              }
+            },
+            {
+              'account.firstName': {
+                $cont: text,
+              }
+            }
+          ]
+        },
+        {
+          'account.id': {
+            $eq: accountId
+          }
+        }
+      ]
+    }
+  }).query(false);
+
+  const { data } = await instance.get<IPipelineItem[]>(
+    `${PIPELINE_ITEM}?${queryBuilder}`
+  );
+
+  return data;
+};
+export const searchAllPipelineItem = async (text: string) => {
   const queryBuilder = RequestQueryBuilder.create({
     join: [
       { field: 'pipelineColumn' },
@@ -98,7 +142,7 @@ export const searchPipelineItem = async (text: string) => {
         },
         {
           'account.firstName': {
-            $cont: text
+            $cont: text,
           }
         }
       ]

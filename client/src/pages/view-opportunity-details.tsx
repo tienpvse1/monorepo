@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom';
 import { OpportunityTimeLine } from '@components/opportunity/opportunity-timeline';
 import { OpportunityInfoTabs } from '@components/opportunity/opportunity-info-tabs';
 import { OpportunityStep } from '@components/opportunity/opportunity-step';
-import { OpportunityCardImage } from '@components/opportunity/opportunity-card-image';
 const ViewOpportunityDetails = () => {
   const params = useParams();
   const { data, isLoading } = usePipelineItem(params.id);
@@ -28,9 +27,6 @@ const ViewOpportunityDetails = () => {
             <Col span={15}>
               <div className='container-content-details-page'>
                 <OpportunityInfoTabs data={data} />
-              </div>
-              <div className='container-content-details-page'>
-                <OpportunityCardImage data={data} />
               </div>
             </Col>
             <Col span={9}>

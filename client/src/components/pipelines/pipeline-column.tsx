@@ -84,7 +84,6 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
             showCreateItemForm={showCreateItemForm}
             setShowCreateItemForm={setShowCreateItemForm}
             pipelineColumn={pipelineColumn}
-            isWonStage={pipelineColumn.isWon}
           />
         </div>
       )}

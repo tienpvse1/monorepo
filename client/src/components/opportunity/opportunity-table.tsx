@@ -26,14 +26,15 @@ interface OpportunitiesTableProps {
   isLoading: boolean;
   setDataOpportunity?: (value: []) => void;
   queryKey?: string | [any, any];
+  searchMethod: (text: string, id?: string) => Promise<any>;
 }
 
 interface SubmitFormCreateOpportunity {
   columnId: string;
   contactId: string;
-  expectedClosing: string;
+  expectedClosing: string | any;
   expectedRevenue: string;
-  internalDescription: string;
+  description: string;
   internalNotes: string;
   name: string;
   productId: string;
@@ -47,6 +48,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
   dataSource,
   isLoading,
   setDataOpportunity,
+  searchMethod,
   queryKey
 }) => {
   const stageFilter = dataSource?.map((opportunity) => ({
@@ -112,7 +114,8 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
       columnId,
       contactId,
       internalNotes,
-      internalDescription,
+      description,
+      expectedClosing,
       courseId,
       quantity,
       priority
@@ -123,7 +126,8 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
         columnId,
         contactId,
         internalNotes,
-        internalDescription,
+        description,
+        expectedClosing: expectedClosing ? expectedClosing.format(DEFAULT) : '',
         priority,
         opportunityRevenue: {
           courseId,
@@ -143,6 +147,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
     <>
       <Form form={form}>
         <Table
+          scroll={{ x: 1300 }}
           loading={isLoading}
           dataSource={dataSource}
           tableLayout='fixed'
@@ -153,6 +158,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
           title={() => (
             <OpportunityTitleTable
               setDataOpportunity={setDataOpportunity}
+              searchMethod={searchMethod}
               toggleCreateModal={toggleCreateModal}
             />
           )}
@@ -183,6 +189,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             title='Contact Name'
             dataIndex='contactName'
             key='contactName'
+            width={200}
             render={(_, record: IPipelineItem) => (
               <>
                 <Link className='my-link' to={`view-details/${record.id}`}>
@@ -255,6 +262,23 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
               record.pipelineColumn.name.indexOf(value as string) === 0
             }
           />
+          <Column
+            title='Is Lost'
+            dataIndex='isLose'
+            key='isLose'
+            width={100}
+            render={(_, record: IPipelineItem) => (
+              <span>{record.isLose ? 'Yes' : 'No'}</span>
+            )}
+            filters={[{
+              text: 'Yes',
+              value: true
+            }, {
+              text: 'No',
+              value: false
+            }]}
+            onFilter={(value, record) => record.isLose === value}
+          />
 
           <Column
             title='Close Date'
@@ -282,6 +306,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             title='Actions'
             dataIndex='actions'
             key='actions'
+            fixed={'right'}
             width={125}
             render={(_, record: any) => (
               <Space size='small' style={{ width: '100%' }}>

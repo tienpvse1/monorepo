@@ -1,43 +1,58 @@
 import { OpportunityTitleLost } from "@components/opportunity/opportunity-title-lost"
-import { Avatar, List } from "antd"
+import { SearchBar } from "@components/search-bar"
+import { IPipelineItem } from "@modules/pipeline-items/entity/pipeline-items.entity";
+import { List, Typography } from "antd"
+import { Link } from "react-router-dom"
 
-const OpportunityLost = () => {
+interface OpportunityLostProps {
+  dataSource?: IPipelineItem[];
+  isLoading?: boolean;
+}
+
+export const OpportunityLost: React.FC<OpportunityLostProps> = ({
+  dataSource,
+  isLoading
+}) => {
+  const dataFilterLose = dataSource?.filter((value) => value.isLose)
   return (
     <>
-      <OpportunityTitleLost />
+      <OpportunityTitleLost
+        totalOpportunity={dataSource?.length}
+        opportunityLost={dataFilterLose?.length}
+      />
       <div className='container-page'>
         <List
-          bordered
-          // dataSource={data}
-          // renderItem={item => (
-          //   <List.Item key={'12354231'}>
-          //     <List.Item.Meta
-          //       avatar={<Avatar src={'https://joeschmoe.io/api/v1/random'} />}
-          //       title={<a href="https://ant.design">Abraham</a>}
-          //       description={'khwrwsh.slry@example.com'}
-          //     />
-          //     <div>Content</div>
-          //   </List.Item>
-          // )}
+          loading={isLoading}
+          size="small"
+          style={{ paddingLeft: '50px', paddingRight: '50px' }}
+          header={
+            <SearchBar
+              placeholder="Search for name opportunity, email..."
+              width={'40%'}
+              float='right'
+            />
+          }
+          dataSource={dataFilterLose}
+          renderItem={item => (
+            <List.Item key={item.id}>
+              <List.Item.Meta
+                title={<a href={`/opportunities/view-details/${item.id}`}>{item.name}</a>}
+                description={
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>{item.contact.email}</span>
+                    <span>
+                      <Typography.Text mark>[REASON] </Typography.Text> Khách hàng hủy
+                    </span>
+                    <span></span>
+                  </div>
+                }
+              />
+              <Link className="my-link" to={`/opportunities/view-details/${item.id}`}>View Details</Link>
+            </List.Item>
+          )}
         >
-          <List.Item key={'12354231'}>
-            <List.Item.Meta
-              title={<a href="https://ant.design">Abraham</a>}
-              description={'khwrwsh.slry@example.com'}
-            />
-            <div>View Details</div>
-          </List.Item>
-          <List.Item key={'12354231'}>
-            <List.Item.Meta
-              title={<a href="https://ant.design">Abraham</a>}
-              description={'khwrwsh.slry@example.com'}
-            />
-            <div>View Details</div>
-          </List.Item>
         </List>
       </div>
     </>
   )
 }
-
-export default OpportunityLost

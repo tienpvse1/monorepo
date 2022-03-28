@@ -1,7 +1,15 @@
 import { envVars } from '@env/var.env';
 import { Descriptions, PageHeader, Tag } from 'antd';
 
-export const OpportunityTitleLost = () => {
+interface OpportunityTitleLostProps {
+  totalOpportunity: number;
+  opportunityLost: number;
+}
+
+export const OpportunityTitleLost: React.FC<OpportunityTitleLostProps> = ({
+  opportunityLost = 0,
+  totalOpportunity = 0
+}) => {
   return (
     <>
       <div className='container-title-details-lost'>
@@ -23,7 +31,7 @@ export const OpportunityTitleLost = () => {
                   height={47}
                 />
                 <span>
-                  Total lost (5) <br />
+                  Total lost {`(${opportunityLost})`} <br />
                   <Tag color={'purple'}>Opportunity Lost</Tag>
                 </span>
               </span>
@@ -32,11 +40,11 @@ export const OpportunityTitleLost = () => {
         >
           <Descriptions size='small' column={3}>
             <Descriptions.Item label='Total opportunity'>
-              12
+              {totalOpportunity}
             </Descriptions.Item>
 
             <Descriptions.Item label='Opportunity lost'>
-              5
+              {opportunityLost}
             </Descriptions.Item>
             <Descriptions.Item label='Expected loss of revenue'>
               160k$

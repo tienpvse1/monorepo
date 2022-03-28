@@ -26,6 +26,9 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
         result = value.pipelineItems.some((value) => value.id === data.id);
     })
 
+    if (data.isLose)
+      result = true;
+
     return result;
   }
 

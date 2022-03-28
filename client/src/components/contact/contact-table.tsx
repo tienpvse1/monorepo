@@ -50,6 +50,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
   setDataContact
 }) => {
 
+  //CRUD api
   const { mutate: updateContact } = useUpdateContact(() => {
     client.invalidateQueries(QUERY_CONTACTS);
     message.success('Save successfully !');
@@ -63,12 +64,12 @@ export const ContactTable: React.FC<ContactTableProps> = ({
     message.success('Create new successfully !');
   });
 
+  //filter created by follow account id
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
-
-  const accountFilter = dataSource?.filter((value) => value.account.id !== public_user_info.id)
+  const accountFilter = dataSource?.filter((value) => value.account?.id !== public_user_info.id)
   const accountFormat = accountFilter?.map((value) => ({
-    text: `${value.account.firstName} ${value.account.lastName}`,
-    value: `${value.account.firstName} ${value.account.lastName}`
+    text: `${value.account?.firstName} ${value.account?.lastName}`,
+    value: `${value.account?.firstName} ${value.account?.lastName}`
   }))
   const account = removeDuplicate(accountFormat, 'value');
   account?.unshift({
@@ -76,6 +77,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
     value: `${public_user_info.firstName} ${public_user_info.lastName}`
   })
 
+  //handle method
   const [form] = Form.useForm<IContact>();
   const [isEditing, toggleEditing] = useToggle();
   const [isOpenModal, toggleCreateModal] = useToggle();
