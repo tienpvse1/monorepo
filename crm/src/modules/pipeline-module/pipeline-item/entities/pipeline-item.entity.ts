@@ -62,12 +62,6 @@ export class PipelineItem extends BaseEntity {
   @JoinColumn({ name: 'contact_id' })
   contact: Contact;
 
-  @ManyToMany(() => Tag, (tag) => tag.pipelineItems, {
-    eager: true,
-    cascade: true,
-  })
-  tags: Tag[];
-
   @OneToMany(() => Schedule, (schedule) => schedule.pipelineItem, {
     cascade: true,
     eager: true,

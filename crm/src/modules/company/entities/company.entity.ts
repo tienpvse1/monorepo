@@ -43,9 +43,6 @@ export class Company extends BaseEntity {
   @ManyToOne(() => City, (city) => city.companies)
   city: City;
 
-  @ManyToMany(() => Tag, (tag) => tag.companies, { cascade: ['insert'] })
-  tags: Tag[];
-
   @OneToMany(() => Contact, (contact) => contact.company)
   contacts: Contact[];
 }

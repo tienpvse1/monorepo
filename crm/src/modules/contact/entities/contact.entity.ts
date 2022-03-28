@@ -4,7 +4,15 @@ import { Company } from 'src/modules/company/entities/company.entity';
 import { Inbox } from 'src/modules/inbox/entities/inbox.entity';
 import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Tag } from 'src/modules/tag/entities/tag.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 @Entity({ name: 'contact' })
 export class Contact extends BaseEntity {
@@ -59,4 +67,7 @@ export class Contact extends BaseEntity {
     cascade: true,
   })
   noteWorthies: NoteWorthy[];
+
+  @ManyToMany(() => Tag, (tag) => tag.contacts)
+  tags: Tag[];
 }
