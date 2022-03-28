@@ -6,12 +6,10 @@ import { OpportunityHistory } from 'src/modules/opportunity-history/entities/opp
 import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
 import { Reason } from 'src/modules/reason/entities/reason.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
-import { Tag } from 'src/modules/tag/entities/tag.entity';
 import {
   Column,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -61,12 +59,6 @@ export class PipelineItem extends BaseEntity {
   @ManyToOne(() => Contact, (contact) => contact.pipelineItems)
   @JoinColumn({ name: 'contact_id' })
   contact: Contact;
-
-  @ManyToMany(() => Tag, (tag) => tag.pipelineItems, {
-    eager: true,
-    cascade: true,
-  })
-  tags: Tag[];
 
   @OneToMany(() => Schedule, (schedule) => schedule.pipelineItem, {
     cascade: true,
