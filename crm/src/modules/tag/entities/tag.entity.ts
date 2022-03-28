@@ -12,8 +12,8 @@ export class Tag extends BaseEntity {
   @ManyToMany(() => Contact, (contact) => contact.tags)
   @JoinTable({
     name: 'tag_contact',
-    joinColumn: { name: 'contact_id' },
-    inverseJoinColumn: { name: 'tag_id' },
+    joinColumn: { name: 'tag_id' },
+    inverseJoinColumn: { name: 'contact_id' },
   })
   contacts: Contact[];
 }
