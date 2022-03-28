@@ -20,15 +20,11 @@ export const OpportunityLost: React.FC<OpportunityLostProps> = ({
   searchMethod
 }) => {
   const dataFilterLose = dataSource?.filter((value) => value.isLose)
-
-  // const totalOpportunity = useRef(dataSource?.length);
-  // const totalLost = useRef(dataFilterLose?.length);
-
   return (
     <>
       <OpportunityTitleLost
-        totalOpportunity={dataSource?.length}
-        opportunityLost={dataFilterLose?.length}
+        totalOpportunity={data?.length}
+        opportunityLost={data?.filter((value) => value.isLose).length}
       />
       <div className='container-page'>
         <List

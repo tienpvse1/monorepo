@@ -15,7 +15,6 @@ const SalesOpportunityLost = () => {
 
   const { data, isLoading } = useQueryPipelineByAccountId(id);
   const [dataOpportunityLost, setDataOpportunityLost] = useState<IPipelineItem[]>();
-  console.log("dataL", data);
 
   useEffect(() => {
     setDataOpportunityLost(data);
