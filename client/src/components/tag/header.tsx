@@ -12,13 +12,16 @@ export const Header: React.FC<HeaderProps> = ({}) => {
   const [form] = Form.useForm();
   const handleCreate = () => {
     return (value: any) => {
-      mutate(value, {
-        onSettled: async () => {
-          await client.invalidateQueries(QUERY_TAGS);
-          form.resetFields()
-          toggle();
-        },
-      });
+      mutate(
+        { ...value },
+        {
+          onSettled: async () => {
+            await client.invalidateQueries(QUERY_TAGS);
+            form.resetFields();
+            toggle();
+          },
+        }
+      );
     };
   };
   return (
@@ -39,11 +42,9 @@ export const Header: React.FC<HeaderProps> = ({}) => {
           </Form.Item>
 
           <Form.Item label='Color' initialValue={'volcano'} name='color'>
-            <Select
-              tagRender={(prop) => <Tag color={prop.value}>{prop.value}</Tag>}
-            >
-              {antColor.map((color, index) => (
-                <Select.Option key={index}>
+            <Select>
+              {antColor.map((color) => (
+                <Select.Option key={color}>
                   <Tag color={color}>{color}</Tag>
                 </Select.Option>
               ))}
