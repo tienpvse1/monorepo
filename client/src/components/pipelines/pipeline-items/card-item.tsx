@@ -9,7 +9,7 @@ import { CreateScheduleForm } from '@components/schedule/create-schedule-form';
 import { useBooleanToggle } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.delete';
-import { Avatar, Button, Card, Divider, Dropdown, Space, Tag } from 'antd';
+import { Avatar, Button, Card, Divider, Dropdown, Space } from 'antd';
 import { lazy, Suspense } from 'react';
 import { PopoverAction } from '../../popover/popover-action';
 import { ICreateScheduleDto } from '@modules/schedule/dto/create-schedule.dto';
@@ -68,9 +68,6 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
               <CrownFilled style={{ color: '#FBC02D' }} />
               {` ${cardData.name}`}
             </span>
-            {/* <Tag color={'blue'} style={{ marginLeft: 10, borderRadius: 5 }}>
-              Design
-            </Tag> */}
           </>
         }
         style={{
@@ -83,7 +80,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
         <Meta
           description={
             <>
-              <div style={{ fontSize: 16 }}>UX - User Flow</div>
+              <div style={{ fontSize: 16 }}>{cardData?.description}</div>
               <Divider
                 style={{ marginBottom: 6, borderTop: '1px solid #D4D4D8' }}
               />
@@ -117,10 +114,6 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
                     />
                   </Dropdown>
                   <IconLost cardData={cardData}/>
-
-                  <Tag style={{ marginLeft: 5, borderRadius: 5 }}>
-                    Modified 2h ago
-                  </Tag>
                 </Space>
                 <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
               </div>
