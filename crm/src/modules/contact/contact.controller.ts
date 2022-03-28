@@ -42,6 +42,7 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
       account: {},
       company: {},
       'account.team': {},
+      tags: {},
     },
   },
   routes: {
