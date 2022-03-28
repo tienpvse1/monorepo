@@ -9,7 +9,7 @@ export const GET_PIPELINE_ITEM_BY_ID = 'get-pipeline-item-by-id';
 export const GET_PIPELINE_ITEM_BY_ACCOUNT = 'get-pipeline-item-by-account';
 export const GET_ALL_PIPELINE_ITEM = 'get-all-pipeline-item';
 
-export const getPipelineId = async (id: string) => {
+export const getPipelineItemById = async (id: string) => {
   const queryBuilder = RequestQueryBuilder.create({
     join: [
       { field: 'noteWorthies' },
@@ -21,6 +21,7 @@ export const getPipelineId = async (id: string) => {
       { field: 'contact' },
       { field: 'contact.company' },
       { field: 'schedules' },
+      { field: 'reason' },
     ],
     filter: [
       {
@@ -84,6 +85,7 @@ export const searchPipelineItem = async (text: string, accountId?: string) => {
       { field: 'pipelineColumn' },
       { field: 'account' },
       { field: 'contact' },
+      { field: 'reason' },
     ],
     search: {
       $and: [
@@ -157,7 +159,7 @@ export const searchAllPipelineItem = async (text: string) => {
 };
 
 export const usePipelineItem = (id: string) =>
-  useQuery([GET_PIPELINE_ITEM_BY_ID, id], () => getPipelineId(id), {
+  useQuery([GET_PIPELINE_ITEM_BY_ID, id], () => getPipelineItemById(id), {
     suspense: true,
     enabled: Boolean(id),
   });

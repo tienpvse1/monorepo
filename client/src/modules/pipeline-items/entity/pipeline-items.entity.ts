@@ -5,6 +5,7 @@ import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column
 import { ISchedule } from '@modules/schedule/entity/schedule.entity';
 import { INoteWorthy } from '../dto/create-pipeline-items.dto';
 import { IProduct } from '@modules/product/entity/product.entity';
+import { IReason } from '@modules/reason/entity/reason.entity';
 
 export interface IPipelineItem extends IBase {
   name: string;
@@ -33,6 +34,7 @@ export interface IPipelineItem extends IBase {
   schedules: ISchedule[];
   opportunityRevenue: IOpportunityRevenue;
   isLose: boolean;
+  reason: IReason;
 }
 
 export interface IOpportunityRevenue {

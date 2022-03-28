@@ -116,7 +116,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
                       style={{ fontSize: 18, cursor: 'pointer', color: cardData.schedules?.length > 0 ? '#FFB300' : '' }}
                     />
                   </Dropdown>
-                  <IconLost />
+                  <IconLost cardData={cardData}/>
 
                   <Tag style={{ marginLeft: 5, borderRadius: 5 }}>
                     Modified 2h ago

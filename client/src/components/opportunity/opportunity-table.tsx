@@ -308,7 +308,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             key='actions'
             fixed={'right'}
             width={125}
-            render={(_, record: any) => (
+            render={(_, record: IPipelineItem) => (
               <Space size='small' style={{ width: '100%' }}>
                 {isEditing && record.id === editingIndex ? (
                   <>
@@ -335,6 +335,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                     </Button>
 
                     <Button
+                      disabled={record.pipelineColumn.isWon || record.isLose && true}
                       type='default'
                       onClick={() =>
                         showDeleteConfirm(() =>

@@ -6,14 +6,24 @@ import { Link } from "react-router-dom"
 
 interface OpportunityLostProps {
   dataSource?: IPipelineItem[];
+  data?: IPipelineItem[];
   isLoading?: boolean;
+  setDataOpportunityLost: (value: []) => void;
+  searchMethod: (text: string, id: string) => Promise<any>;
 }
 
 export const OpportunityLost: React.FC<OpportunityLostProps> = ({
   dataSource,
-  isLoading
+  data,
+  isLoading,
+  setDataOpportunityLost,
+  searchMethod
 }) => {
   const dataFilterLose = dataSource?.filter((value) => value.isLose)
+
+  // const totalOpportunity = useRef(dataSource?.length);
+  // const totalLost = useRef(dataFilterLose?.length);
+
   return (
     <>
       <OpportunityTitleLost
@@ -30,6 +40,8 @@ export const OpportunityLost: React.FC<OpportunityLostProps> = ({
               placeholder="Search for name opportunity, email..."
               width={'40%'}
               float='right'
+              setData={setDataOpportunityLost}
+              getApi={searchMethod}
             />
           }
           dataSource={dataFilterLose}
@@ -41,7 +53,7 @@ export const OpportunityLost: React.FC<OpportunityLostProps> = ({
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span>{item.contact.email}</span>
                     <span>
-                      <Typography.Text mark>[REASON] </Typography.Text> Khách hàng hủy
+                      <Typography.Text mark>[REASON] </Typography.Text> {item.reason?.reason}
                     </span>
                     <span></span>
                   </div>

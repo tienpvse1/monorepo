@@ -4,6 +4,7 @@ import { useQueryPipelineByAccountId } from "@modules/pipeline-items/query/pipel
 import { OpportunityLost } from "@pages/opportunity-lost";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { searchPipelineItem } from '@modules/pipeline-items/query/pipeline-item.get';
 
 const SalesOpportunityLost = () => {
   const [
@@ -13,20 +14,26 @@ const SalesOpportunityLost = () => {
   ] = useCookies([PUBLIC_USER_INFO]);
 
   const { data, isLoading } = useQueryPipelineByAccountId(id);
-  const [dataOpportunity, setDataOpportunity] = useState<IPipelineItem[]>();
+  const [dataOpportunityLost, setDataOpportunityLost] = useState<IPipelineItem[]>();
   console.log("dataL", data);
-  
+
   useEffect(() => {
-    setDataOpportunity(data);
+    setDataOpportunityLost(data);
     return () => {
       // @ts-ignore
-      setDataOpportunity([]);
+      setDataOpportunityLost([]);
     };
   }, [data]);
 
 
   return (
-    <OpportunityLost dataSource={dataOpportunity} isLoading={isLoading}/>
+    <OpportunityLost
+      dataSource={dataOpportunityLost}
+      data={data}
+      isLoading={isLoading}
+      setDataOpportunityLost={setDataOpportunityLost}
+      searchMethod={searchPipelineItem}
+    />
   )
 }
 

@@ -1,6 +1,5 @@
 import { envVars } from '@env/var.env';
 import { Descriptions, PageHeader, Tag } from 'antd';
-
 interface OpportunityTitleLostProps {
   totalOpportunity: number;
   opportunityLost: number;

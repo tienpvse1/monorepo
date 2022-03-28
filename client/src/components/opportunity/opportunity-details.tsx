@@ -169,7 +169,7 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
                 {
                   data.isLose &&
                   <MyForm label='Reason Lost'>
-                    {/* {data.internalDescription} */}
+                    {data.reason?.reason}
                   </MyForm>
                 }
                 <MyForm label='Description'>
