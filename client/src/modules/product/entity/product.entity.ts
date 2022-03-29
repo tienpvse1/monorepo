@@ -10,7 +10,7 @@ export interface IProduct extends IBase {
   productAccounts?: any;
 }
 
-export interface Data {
+export interface CourseData {
   id: number;
   name: string;
   code: string;
@@ -33,6 +33,6 @@ export interface Paging {
 }
 
 export interface ICourse {
-  data: Data[];
+  data: CourseData[];
   paging: Paging;
 }
