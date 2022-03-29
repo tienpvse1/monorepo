@@ -4,38 +4,49 @@ import { savePermissions } from '@db/permission.db';
 import { Role } from '@interfaces/type-roles';
 import { IAuthDto } from '@modules/auth/dto/auth.dto';
 import { authenticateUser } from '@modules/auth/mutation/auth.post';
+import { useCourseServiceAuth } from '@modules/auth/mutation/course-service.post';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { useMutation } from 'react-query';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Modal from './modal';
+export const COURSE_SERVICE_TOKEN = 'course-service-token';
 export const LoginForm = () => {
-  const { mutate, error, data, reset, isSuccess } = useMutation(
-    authenticateUser,
-    {
-      onSuccess: (data) => {
-        savePermissions(data.publicData.role.permissions);
-      },
-    }
-  );
+  const { mutate: authenticateCourseSystem } = useCourseServiceAuth();
+  const navigate = useNavigate();
+  const { mutate, error, reset } = useMutation(authenticateUser, {
+    onSuccess: (data) => {
+      savePermissions(data.publicData.role.permissions);
+      authenticateCourseSystem(
+        {
+          username: 'ad',
+          password: 'password123@',
+        },
+        {
+          onSettled: (authData) => {
+            const publicData = JSON.stringify(data.publicData);
+            setCookie(COURSE_SERVICE_TOKEN, authData.access_token, 24);
+            setCookie(PUBLIC_USER_INFO, publicData || '', 24 * 7);
+
+            if (data.publicData.role.name == `${Role.ADMIN}`) {
+              navigate('/administration', { replace: true });
+            }
+            if (data.publicData.role.name == `${Role.SALE_MANAGER}`) {
+              navigate('/sale-manager', { replace: true });
+            }
+            if (data.publicData.role.name == `${Role.ACCOUNTANT}`) {
+              navigate('/accountant', { replace: true });
+            }
+            if (data.publicData.role.name == Role.SALE) {
+              navigate('/', { replace: true });
+            }
+          },
+        }
+      );
+    },
+  });
   const handleLogin = async (authDto: IAuthDto) => {
     mutate(authDto);
   };
-  if (isSuccess && data) {
-    const publicData = JSON.stringify(data.publicData);
-    setCookie(PUBLIC_USER_INFO, publicData || '', 24 * 7);
-
-    if (data.publicData.role.name == `${Role.ADMIN}`) {
-      return <Navigate to={'/administration'} replace />;
-    }
-    if (data.publicData.role.name == `${Role.SALE_MANAGER}`) {
-      return <Navigate to={'/sale-manager'} replace />;
-    }
-    if (data.publicData.role.name == `${Role.ACCOUNTANT}`) {
-      return <Navigate to={'/accountant'} replace />;
-    }
-
-    return <Navigate to={'/'} replace />;
-  }
 
   return (
     <>

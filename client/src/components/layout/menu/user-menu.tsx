@@ -10,7 +10,6 @@ import {
   LineChartOutlined,
   SolutionOutlined,
   TagOutlined,
-  UserOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
@@ -78,7 +77,7 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
     },
     {
       key: 'product',
-      label: 'Product',
+      label: 'Courses',
       style,
       onClick: () => navigate('/product'),
       icon: <WalletOutlined style={style} />,
