@@ -103,6 +103,11 @@ export const searchPipelineItem = async (text: string, accountId?: string) => {
               }
             },
             {
+              'contact.email': {
+                $cont: text
+              }
+            },
+            {
               'account.firstName': {
                 $cont: text,
               }
@@ -140,6 +145,11 @@ export const searchAllPipelineItem = async (text: string) => {
         },
         {
           'contact.name': {
+            $cont: text
+          }
+        },
+        {
+          'contact.email': {
             $cont: text
           }
         },
