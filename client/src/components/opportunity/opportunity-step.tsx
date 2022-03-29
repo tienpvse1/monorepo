@@ -10,7 +10,6 @@ import { CreateModal } from '@components/modal/create-modal';
 import { VerificationForm } from '@components/accountant/verification-form';
 import { useToggle } from '@hooks/useToggle';
 import { startFireworks } from '@util/firework';
-import { useState } from 'react';
 const { Step } = Steps;
 
 interface OpportunityStepProps {
@@ -18,21 +17,6 @@ interface OpportunityStepProps {
 }
 export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
   const { data: pipelineColumns } = useStages();
-
-  const handleDisableAfterWon = () => {
-    let result: boolean = false;
-    pipelineColumns.forEach((value) => {
-      if (value.isWon)
-        result = value.pipelineItems.some((value) => value.id === data.id);
-    })
-
-    if (data.isLose)
-      result = true;
-
-    return result;
-  }
-
-  const [disabled, setDisabled] = useState<boolean>(handleDisableAfterWon());
 
   const { mutate } = useChangeStage();
   const [form] = Form.useForm<any>();
@@ -57,11 +41,9 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
 
   const handleChangeStageWon = async () => {
     const record = await form.validateFields();
-    console.log("Form confirm: ", record);
     handleUpdateStage(record.oldStageId, record.newStageId, () => {
       toggleModalChangeStageWon();
       startFireworks();
-      setDisabled(true);
     });
   }
 
@@ -82,7 +64,7 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
       >
         {pipelineColumns?.map((column, index) => (
           <Step
-            disabled={disabled}
+            disabled={data.pipelineColumn.isWon || data.isLose && true}
             key={column.id}
             status={qualifyStage(index, data.pipelineColumn.index)}
             title={column.name}
