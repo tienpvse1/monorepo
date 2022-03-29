@@ -11,10 +11,7 @@ interface OpportunityInfoTabsProps {
 }
 
 export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }) => {
-  console.log("temp:", data.schedules);
- 
   return (
-  
     <>
       <Tabs
         size="large"
@@ -39,10 +36,10 @@ export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }
         </TabPane>
         {/* //TODO: these tab is still hard coded */}
         <TabPane tab='Task' key='3'>
-          <ListSchedules schedule={data.schedules}/>
+          <ListSchedules schedule={data.schedules} />
         </TabPane>
         <TabPane tab='Notes' key='4'>
-          <OpportunityNotes data={data.contact}/>
+          <OpportunityNotes data={data.contact} />
         </TabPane>
       </Tabs>
     </>
