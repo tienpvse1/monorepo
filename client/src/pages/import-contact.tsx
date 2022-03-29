@@ -8,6 +8,7 @@ const PreviewContactTable = lazy(
 import { CreateContactDto } from '@modules/contact/dto/create-contact.dto';
 import { useCookies } from 'react-cookie';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
+import { ExcelImportForm } from '@components/contact/excel-import-form';
 
 const ImportContact: React.FC = () => {
   const [importedContacts, setImportedContacts] = useState<CreateContactDto[]>(
@@ -21,6 +22,7 @@ const ImportContact: React.FC = () => {
   const { data: contacts } = useContacts(id);
   return (
     <div>
+      <ExcelImportForm />
       {importedContacts.length <= 0 ? (
         <Upload setImportedContacts={setImportedContacts} contacts={contacts} />
       ) : (
