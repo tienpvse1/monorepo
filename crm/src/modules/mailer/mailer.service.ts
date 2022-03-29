@@ -22,15 +22,18 @@ export class EmailService extends BaseService<Email> {
 
   async addEmailToDB(email: CreateMailerDto, ip: string, senderId: string) {
     const accountRepository = getCustomRepository(AccountRepository);
-    this.addWithRelation<Account>(
-      {
-        ip: ip.split(':')[3],
-        receiverEmail: email.to,
-      },
-      senderId,
-      accountRepository,
-      'emails',
-    );
+    for (const target of email.to) {
+      if (target.isTag) continue;
+      this.addWithRelation<Account>(
+        {
+          ip: ip.split(':')[3],
+          receiverEmail: target.email,
+        },
+        senderId,
+        accountRepository,
+        'emails',
+      );
+    }
   }
 
   async sendEmail(email: CreateMailerDto, ip: string, senderId: string) {
@@ -45,28 +48,32 @@ export class EmailService extends BaseService<Email> {
       'email.serverAccessToken',
     )}`;
 
-    await axios.post(urlString, {
-      from: {
-        name: `From ${account.firstName}`,
-        address: account.email,
-      },
-      to: [
-        {
-          address: email.to,
+    for (const target of email.to) {
+      if (target.isTag) continue;
+      await axios.post(urlString, {
+        from: {
+          name: `From ${account.firstName}`,
+          address: account.email,
         },
-      ],
+        to: [
+          {
+            address: target.email,
+          },
+        ],
 
-      subject: email.subject,
-      html: email.value,
-      sendAt: new Date(),
-      deliveryAttempts: 10,
-    });
-    await this.createItem({
-      account,
-      body: email.value,
-      subject: email.subject,
-      ip,
-    });
+        subject: email.subject,
+        html: email.value,
+        sendAt: new Date(),
+        deliveryAttempts: 10,
+      });
+      await this.createItem({
+        account,
+        body: email.value,
+        subject: email.subject,
+        receiverEmail: target.email,
+        ip,
+      });
+    }
 
     return email;
   }

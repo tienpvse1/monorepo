@@ -49,8 +49,8 @@ export class PipelineService {
 
   async updatePipeline(columns: PipelineColumn[], accountId: string) {
     reIndexColumn(sortColumns(columns));
-
-    await Promise.all([this.updateColumns(columns), this.updateItems(columns)]);
+    await this.updateColumns(columns);
+    await this.updateItems(columns);
 
     const result = await this.findOwnOnePipeline(accountId);
     this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED, columns);
