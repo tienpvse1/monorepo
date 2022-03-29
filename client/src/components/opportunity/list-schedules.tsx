@@ -73,6 +73,7 @@ export const ListSchedules: React.FC<ListSchedulesProps> = ({
       <Column
         title="Activity"
         dataIndex="name"
+        width={110}
         key="name"
         render={(_, record: ISchedule) => (
           <Link className="my-link" to={`${navigateRole}schedule`}>
@@ -86,7 +87,6 @@ export const ListSchedules: React.FC<ListSchedulesProps> = ({
         title='Summary'
         dataIndex='summary'
         key='summary'
-        width={100}
         render={(_, record: ISchedule) => (
           <Link
             className="my-link"
@@ -101,6 +101,7 @@ export const ListSchedules: React.FC<ListSchedulesProps> = ({
         title="Created Date"
         dataIndex="createdAt"
         key="createdAt"
+        width={120}
         render={(_, record: ISchedule) => (
           <Link className="my-link" to={`${navigateRole}schedule`} >
             {moment(record.createdAt).format(DEFAULT)}
