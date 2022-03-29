@@ -22,7 +22,6 @@ export const IconLost: React.FC<IconLostProps> = ({
   const { mutate: loseOpportunity } = useLoseOpportunity();
   const queryClient = useQueryClient();
   const handleSubmit = (record: any) => {
-    console.log(record);
     loseOpportunity({ id: cardData.id }, {
       onSuccess: () => {
         createReason({

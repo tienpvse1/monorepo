@@ -71,7 +71,7 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
 
   const handleToggleEditForm3 = () => {
     toggleEditForm3();
-
+    
   };
 
   const handleSubmitForm1 = async () => {

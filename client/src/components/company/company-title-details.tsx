@@ -1,6 +1,10 @@
+import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { envVars } from '@env/var.env'
+import { useHandleNavigate } from '@hooks/useHandleNavigate';
 import { ICompany } from '@modules/company/entity/company.entity'
+import { useDeleteCompany } from '@modules/company/mutation/company.delete';
 import { Button, Descriptions, PageHeader, Tag } from 'antd'
+import { useNavigate } from 'react-router-dom';
 
 interface CompanyTitleDetailsProps {
   company: ICompany;
@@ -9,6 +13,10 @@ interface CompanyTitleDetailsProps {
 export const CompanyTitleDetails: React.FC<CompanyTitleDetailsProps> = ({
   company
 }) => {
+  const { mutate: deleteCompany } = useDeleteCompany();
+  const { navigateRole } = useHandleNavigate();
+  const navigate = useNavigate();
+
   return (
     <div className="container-title-details">
       <PageHeader
@@ -20,6 +28,11 @@ export const CompanyTitleDetails: React.FC<CompanyTitleDetailsProps> = ({
               className='button-ant-custom-style'
               type='primary'
               size='middle'
+              onClick={() => showDeleteConfirm(() => deleteCompany(company.id, {
+                onSuccess: () => {
+                  navigate(`${navigateRole}company`)
+                }
+              }))}
             >
               Delete
             </Button>
