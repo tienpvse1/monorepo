@@ -200,7 +200,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
           />
 
           <Column
-            title="Created at"
+            title="Created Date"
             dataIndex="createdAt"
             key="createdAt"
             render={(_, record: any) => (

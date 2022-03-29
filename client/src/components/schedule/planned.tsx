@@ -1,13 +1,15 @@
 import {
-  CheckOutlined,
   FileTextOutlined,
   PlusOutlined,
   MailOutlined,
   CoffeeOutlined,
-  PushpinOutlined
+  PushpinOutlined,
+  PhoneOutlined,
+  CheckCircleOutlined
 } from '@ant-design/icons';
 import { useClickOutside } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
+import { useRemoveSchedule } from '@modules/schedule/mutation/schedule.delete';
 import { Alert, Button } from 'antd';
 import moment from 'moment';
 interface PlannedProps {
@@ -30,6 +32,9 @@ const Planned: React.FC<PlannedProps> = ({
     toggleDropdown();
     toggleModal();
   };
+
+  const { mutate: removeSchedule } = useRemoveSchedule();
+
   return (
     <div ref={ref} className='planned-container'>
       <div className='planned-title'>Planned</div>
@@ -52,10 +57,16 @@ const Planned: React.FC<PlannedProps> = ({
             icon={
               schedule.type == 'todo' && <FileTextOutlined /> ||
               schedule.type == 'email' && <MailOutlined /> ||
-              schedule.type == 'meeting' && <CoffeeOutlined /> || <PushpinOutlined />
+              schedule.type == 'meeting' && <CoffeeOutlined /> ||
+              schedule.type == 'call' && <PhoneOutlined /> || <PushpinOutlined />
             }
             closable
-            closeIcon={<CheckOutlined style={{ fontSize: '14px' }} />}
+            closeIcon={
+              <CheckCircleOutlined
+                onClick={() => removeSchedule(schedule.id)}
+                className="close-icon"
+              />
+            }
           />
         ))}
       </div>

@@ -1,8 +1,9 @@
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { Alert, Empty, Tabs } from 'antd'
+import { Tabs } from 'antd'
 import { ContactInfo } from './contact-info';
 import { OpportunityDetails } from '@components/opportunity/opportunity-details';
 import { OpportunityNotes } from './opportunity-notes';
+import { ListSchedules } from './list-schedules';
 const { TabPane } = Tabs;
 
 interface OpportunityInfoTabsProps {
@@ -10,7 +11,10 @@ interface OpportunityInfoTabsProps {
 }
 
 export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }) => {
+  console.log("temp:", data.schedules);
+ 
   return (
+  
     <>
       <Tabs
         size="large"
@@ -35,19 +39,7 @@ export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }
         </TabPane>
         {/* //TODO: these tab is still hard coded */}
         <TabPane tab='Task' key='3'>
-          {data.schedules.length > 0 ? data.schedules.map((schedule) =>
-          (<Alert
-            key={schedule.id}
-            message={schedule.type.toUpperCase()}
-            type={
-              schedule.type == 'todo' && 'info' ||
-              schedule.type == 'email' && 'error' ||
-              schedule.type == 'meeting' && 'warning' || 'success'
-            }
-            closable
-            description={schedule.summary}
-          />)
-          ) : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
+          <ListSchedules schedule={data.schedules}/>
         </TabPane>
         <TabPane tab='Notes' key='4'>
           <OpportunityNotes data={data.contact}/>
