@@ -20,6 +20,14 @@ export const ContactInfoForm = () => {
           rules={[isRequired('Email is required'), isEmail]}>
           <Input />
         </Form.Item>
+
+        <Form.Item
+          name="jobPosition"
+          label="Job Position"
+        >
+          <Input />
+        </Form.Item>
+
         <Form.Item
           name="address"
           label="Address"
@@ -37,7 +45,7 @@ export const ContactInfoForm = () => {
         >
           <Input />
         </Form.Item>
-        
+
         <SelectBoxCompany />
 
         <Form.Item

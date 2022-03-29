@@ -1,17 +1,18 @@
 import { dateFormat } from '@constance/date-format'
 import { envVars } from '@env/var.env'
+import { IContact } from '@modules/contact/entity/contact.entity'
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity'
 import { Table } from 'antd'
 import Column from 'antd/lib/table/Column'
 import moment from 'moment'
-import React from 'react'
 import { Link } from 'react-router-dom'
 const { DEFAULT } = dateFormat;
-interface ListOfContactOpportunitiesProps {
-  dataSource: IPipelineItem[]
+
+interface ListContactsOfCompanyProps {
+  dataSource: IContact[]
 }
 
-export const ListOfContactOpportunities: React.FC<ListOfContactOpportunitiesProps> = ({
+export const ListContactsOfCompany: React.FC<ListContactsOfCompanyProps> = ({
   dataSource
 }) => {
   return (
@@ -21,9 +22,9 @@ export const ListOfContactOpportunities: React.FC<ListOfContactOpportunitiesProp
       title={() => <>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <img
-            src={`${envVars.VITE_BE_DOMAIN}/files/crown.png`}
-            width={40}
-            height={40}
+            src={`${envVars.VITE_BE_DOMAIN}/files/contact.png`}
+            width={35}
+            height={35}
           />
           <span
             style={{
@@ -33,7 +34,7 @@ export const ListOfContactOpportunities: React.FC<ListOfContactOpportunitiesProp
               marginLeft: '10px'
             }}
           >
-            Opportunities {`(${dataSource?.length})`}
+            Contacts {`(${dataSource?.length})`}
           </span>
         </div>
       </>}
@@ -51,33 +52,39 @@ export const ListOfContactOpportunities: React.FC<ListOfContactOpportunitiesProp
         dataIndex="name"
         key="name"
         render={(_, record: IPipelineItem) => (
-          <Link className="my-link" to={`/opportunities/view-details/${record.id}`} >{record.name}</Link>
+          <Link className="my-link" to={`/contact/view-details/${record.id}`} >{record.name}</Link>
+        )}
+        sorter={(a, b) => ('' + a.name).localeCompare(b.name)}
+      />
+      <Column
+        title="Email"
+        dataIndex="email"
+        key="email"
+        render={(_, record: IPipelineItem) => (
+          <Link className="my-link" to={`/contact/view-details/${record.id}`} >{record.email}</Link>
+        )}
+        sorter={(a, b) => ('' + a.email).localeCompare(b.email)}
+      />
+      <Column
+        title="Phone Number"
+        dataIndex="phone"
+        key="phone"
+        render={(_, record: IPipelineItem) => (
+          <Link className="my-link" to={`/contact/view-details/${record.id}`} >{record.phone}</Link>
         )}
       />
       <Column
-        title="Assigned date"
+        title="Assigned Date"
         dataIndex="createdAt"
         key="createdAt"
         render={(_, record: IPipelineItem) => (
-          <Link className="my-link" to={`/opportunities/view-details/${record.id}`} >{moment(record.createdAt).format(DEFAULT)}</Link>
+          <Link className="my-link" to={`/contact/view-details/${record.id}`} >{moment(record.createdAt).format(DEFAULT)}</Link>
         )}
+        sorter={(a, b) =>
+          moment(a.createdAt).diff(moment(b.createdAt))
+        }
       />
-      <Column
-        title="Expected revenue"
-        dataIndex="expectedRevenue"
-        key="expectedRevenue"
-      // render={(_, record: IPipelineItem) => (
-      //   <Link className="my-link" to={`view-details/${record.id}`} >{record.expectedRevenue}</Link>
-      // )}
-      />
-      <Column
-        title="Close Date"
-        dataIndex="expectedClosing"
-        key="expectedClosing"
-        render={(_, record: IPipelineItem) => (
-          <Link className="my-link" to={`/opportunities/view-details/${record.id}`} >{record.expectedClosing}</Link>
-        )}
-      />
+
     </Table>
   )
 }

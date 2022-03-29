@@ -1,24 +1,33 @@
 import { SearchOutlined } from '@ant-design/icons'
+import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useDebouncedValue } from '@mantine/hooks';
 import { Button, Form, Input } from 'antd'
 import { useEffect, useRef, useState } from 'react';
+import { useCookies } from 'react-cookie';
 
 interface SearchBarProps {
   placeholder: string;
-  width?: number;
+  width?: number | string;
   setData?: (value: []) => void;
-  getApi?: (text: string) => Promise<any>;
+  getApi?: (text: string, id?: string) => Promise<any>;
+  float?: any;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ placeholder, width, setData, getApi }) => {
+export const SearchBar: React.FC<SearchBarProps> = ({
+  placeholder,
+  width,
+  setData,
+  getApi,
+  float
+}) => {
   const [value, setValue] = useState('');
   const [debounced] = useDebouncedValue(value, 400);
   const isMounted = useRef(false);
+  const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
 
   useEffect(() => {
     if (isMounted.current) {
-      console.log('call api:', debounced);
-      getApi(debounced).then((data) => setData(data));
+      getApi(debounced, public_user_info.id).then((data) => setData(data));
       // getApi(debounced).then((data) => queryClient.setQueryData(QUERY_CONTACTS, data));
     } else {
       isMounted.current = true;
@@ -32,7 +41,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ placeholder, width, setDat
           onChange={(event) => setValue(event.currentTarget.value)}
           size="small"
           placeholder={placeholder}
-          style={{ borderRadius: '10px', width: width }}
+          style={{ borderRadius: '10px', width: width, float: float }}
           suffix={
             <Button
               shape="circle"

@@ -1,16 +1,13 @@
-export interface IProvinces {
-  name: string;
-  code: number;
-  division_type: string;
-  codename: string;
-  phone_code: number;
-  districts: IDistricts[]
-}
+import { IBase } from "@interfaces/base";
 
-export interface IDistricts {
-  name: string;
-  code: number;
-  division_type: string;
-  codename: string;
-  province_code: number;
+export interface IProvinces extends IBase{
+  city: string;
+  lat: number;
+  lng: number;
+  country: string;
+  iso2: string;
+  admin_name: string;
+  capital: string;
+  population: number;
+  population_proper: number;
 }

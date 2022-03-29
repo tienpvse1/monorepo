@@ -9,6 +9,7 @@ const { PIPELINE_COLUMN } = controllers;
 export const GET_STAGES = 'get-stages';
 export const GET_STAGES_INFO = 'get-stages-info';
 export const GET_MY_STAGES = 'get-my-stages';
+
 export const getStages = async () => {
   const query = RequestQueryBuilder.create({
     join: [
@@ -30,6 +31,7 @@ export const getStages = async () => {
     `${PIPELINE_COLUMN}?${query}`
   );
   for (const column of data) {
+    //@ts-ignore
     column.pipelineItems = column.pipelineItems.filter((item) => !item.isLose);
   }
   abstractSort(data, 'pipelineItems');

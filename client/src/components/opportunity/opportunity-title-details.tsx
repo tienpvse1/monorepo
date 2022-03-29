@@ -12,12 +12,12 @@ export const OpportunityTitleDetails: React.FC<
 > = ({ opportunity }) => {
   return (
     <Badge.Ribbon
-      text='Won'
-      color='green'
+      text={opportunity.isLose ? 'Lost' : 'Won'}
+      color={opportunity.isLose ? '#757575' : 'green'}
       style={{
         marginRight: '20px',
         marginTop: '8px',
-        display: opportunity.pipelineColumn.isWon ? 'flex' : 'none',
+        display: opportunity.pipelineColumn.isWon || opportunity.isLose ? 'flex' : 'none',
         alignItems: 'center',
         height: '26px',
         fontSize: '20px',
@@ -29,7 +29,7 @@ export const OpportunityTitleDetails: React.FC<
           onBack={() => window.history.back()}
           extra={
             <>
-              {!opportunity.pipelineColumn.isWon && (
+              {!opportunity.pipelineColumn.isWon && !opportunity.isLose && (
                 <Button
                   className='button-ant-custom-style'
                   type='primary'
@@ -56,7 +56,9 @@ export const OpportunityTitleDetails: React.FC<
                 />
                 <span>
                   {opportunity.name} <br />
-                  <Tag color={'cyan'}>Opportunity</Tag>
+                  {opportunity.isLose ?
+                    <Tag color={'purple'}>Opportunity Lost</Tag> :
+                    <Tag color={'cyan'}>Opportunity</Tag>}
                 </span>
               </span>
             </>
@@ -64,7 +66,7 @@ export const OpportunityTitleDetails: React.FC<
         >
           <Descriptions size='small' column={3}>
             <Descriptions.Item label='Serve by'>
-              {opportunity.account?.username}
+              {opportunity.account?.firstName} {opportunity.account?.lastName}
             </Descriptions.Item>
 
             <Descriptions.Item label='Created at'>

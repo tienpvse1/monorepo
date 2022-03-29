@@ -2,16 +2,17 @@ import { PlusOutlined } from '@ant-design/icons'
 import { SearchBar } from '@components/search-bar'
 import { Button, Col, Row, Space } from 'antd'
 import { envVars } from '@env/var.env';
-import { searchPipelineItem } from '@modules/pipeline-items/query/pipeline-item.get';
 
 interface OpportunityTitleTableProps {
   toggleCreateModal: () => void;
   setDataOpportunity?: (value: []) => void;
+  searchMethod: (text: string, id?: string) => Promise<any>;
 }
 
 export const OpportunityTitleTable: React.FC<OpportunityTitleTableProps> = ({
   toggleCreateModal,
-  setDataOpportunity
+  setDataOpportunity,
+  searchMethod
 }) => {
   return (
     <>
@@ -59,7 +60,7 @@ export const OpportunityTitleTable: React.FC<OpportunityTitleTableProps> = ({
                 setData={setDataOpportunity}
                 width={400}
                 placeholder='Search for name, contact name or sales person'
-                getApi={searchPipelineItem}
+                getApi={searchMethod}
               />
             </Space>
           </Col>

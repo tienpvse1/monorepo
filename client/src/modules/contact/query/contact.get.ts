@@ -74,6 +74,9 @@ export const getContactsById = async (contactId: string) => {
 };
 export const searchContacts = async (text: string) => {
   const query = RequestQueryBuilder.create({
+    join: [
+      { field: 'account' },
+    ],
     search: {
       $or: [
         {

@@ -62,11 +62,10 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
     })
   };
   const handleCreateCompany = (record: any) => {
-    const { residence, region, address, city, country, ...rest } = record;
+    const { region, country ,...rest } = record;
+
     createCompany({
       ...rest,
-      state: region === 'VN' ? residence[1] : address,
-      city: region === 'VN' ? residence[0] : city,
       country: region === 'VN' ? region : country,
       type: 'company',
     }, {
@@ -169,17 +168,18 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
             dataIndex="city"
             key="city"
             render={(_, record: any) => (
-              <EditableCell
-                linkTo={`view-details/${record.id}`}
-                dataIndex='city'
-                nameForm='city'
-                editing={isEditing}
-                editingIndex={editingIndex}
-                recordIndex={record.id}
-                record={record}
-              />
+              // <EditableCell
+              //   linkTo={`view-details/${record.id}`}
+              //   dataIndex='admin_name'
+              //   nameForm='admin_name'
+              //   editing={isEditing}
+              //   editingIndex={editingIndex}
+              //   recordIndex={record.id}
+              //   record={record.city}
+              // />
+              <span>{record.city?.admin_name}</span>
             )}
-            sorter={(a, b) => ('' + a.city).localeCompare(b.city)}
+            sorter={(a, b) => ('' + a.city?.name).localeCompare(b.city?.name)}
           />
           <Column
             title="Country"

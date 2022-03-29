@@ -100,7 +100,7 @@ export const KanBanItem = (
                       >
                         <Avatar
                           src={
-                            item.account.photo
+                            item.account?.photo
                               ? item.account.photo
                               : imagePlaceHolderUrl
                           }
@@ -150,7 +150,7 @@ export const KanBanItem = (
                     avatar={
                       <Avatar
                         src={
-                          item.contact.photo
+                          item.contact?.photo
                             ? item.contact.photo
                             : imagePlaceHolderUrl
                         }

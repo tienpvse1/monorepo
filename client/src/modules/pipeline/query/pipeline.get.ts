@@ -6,12 +6,13 @@ const { PIPELINE } = controllers;
 export const GET_PIPELINE_DESIGN = 'get-pipeline-design';
 export const getPipelineUser = async () => {
   const { data } = await instance.get<IPipeline>(`${PIPELINE}`);
+  
   return data;
 };
 
 export const useGetPipeLineUser = () => {
-  const { data } = useQuery(GET_PIPELINE_DESIGN, getPipelineUser, {
+  const { data, isLoading } = useQuery(GET_PIPELINE_DESIGN, getPipelineUser, {
     staleTime: Infinity,
   });
-  return { data };
+  return { data, isLoading };
 };

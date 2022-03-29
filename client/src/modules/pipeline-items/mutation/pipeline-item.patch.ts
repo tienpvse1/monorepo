@@ -3,6 +3,7 @@ import { controllers } from '@constance/controllers';
 import { useMutation } from 'react-query';
 import { IUpdateExpectedClosing } from '../dto/update-pipeline-items.dto';
 import { IPipelineItem } from '../entity/pipeline-items.entity';
+import { handleMutationResponse } from '@modules/base/base.handler';
 
 export interface AssignAccountDto {
   id: string;
@@ -36,9 +37,20 @@ export const updateExpectedClosing = async ({
   return data;
 };
 
+export const reassignAccount = async (dto: AssignAccountDto) => {
+  const { data } = await instance.patch(`${PIPELINE_ITEM}/reassign`, dto);
+  return data;
+}
+
+export const useReassignAccount = () => useMutation(reassignAccount, {
+  ...handleMutationResponse()
+});
+
 export const useAssignAccount = () => useMutation(assignAccount);
+
 export const useUpdateExpectedClosing = () =>
   useMutation(updateExpectedClosing);
 
 export const useLoseOpportunity = () => useMutation(loseOpportunity);
+
 export const useRestoreOpportunity = () => useMutation(restoreOpportunity);

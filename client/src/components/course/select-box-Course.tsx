@@ -12,6 +12,7 @@ export const SelectBoxCourse = () => {
           label='Course Name'
           name='courseId'
           rules={[isRequired('Course name is required')]}
+          style={{ width: 'calc(80% - 10px)', marginRight: '10px' }}
         >
           <Select
             showSearch

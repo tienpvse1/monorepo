@@ -1,5 +1,5 @@
 import { useTeams } from '@modules/team/query/team.get';
-import { Form, Select } from 'antd'
+import { Col, Form, Select } from 'antd'
 import { useEffect, useState } from 'react';
 import { IAccount } from '@interfaces/account';
 import { ITeam } from '@modules/team/entity/team.entity';
@@ -17,45 +17,48 @@ export const SelectBoxSalePerson: React.FC<SelectBoxSalePersonProps> = ({
   const [salePerson, setSalePerson] = useState<IAccount[]>([]);
 
   useEffect(() => {
-    const salePerson = teams?.find((value) => value.id === team?.id)
-    setSalePerson(salePerson?.accounts);
+    const data = teams?.find((value) => value.id === team?.id)
+    setSalePerson(data?.accounts);
   }, [teams])
 
   const handleSelectedTeam = (teamId: String) => {
-    const salePerson = teams.find((value) => value.id === teamId)
-    setSalePerson(salePerson.accounts);
+    const data = teams.find((value) => value.id === teamId)
+    setSalePerson(data.accounts);
   }
 
   return (
     <>
-      <Form.Item
-        name="saleTeam"
-        label="Sale Team"
-      >
-        <Select
-          onSelect={(teamId: string) => handleSelectedTeam(teamId)}
+      <Col span={12}>
+        <Form.Item
+          name="saleTeam"
+          label="Sale Team"
         >
-          {teams?.map((team) => (
-            <Option key={team.id}>
-              {team.name}
-            </Option>
-          ))}
-        </Select>
-      </Form.Item>
+          <Select
+            onSelect={(teamId: string) => handleSelectedTeam(teamId)}
+          >
+            {teams?.map((team) => (
+              <Option key={team.id}>
+                {team.name}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+      </Col>
 
-      <Form.Item
-        name="salePerson"
-        label="Sale Person"
-      >
-        <Select >
-          {salePerson?.map((account) => (
-            <Option key={account.id}>
-              {`${account.firstName} ${account.lastName}`}
-            </Option>
-          ))}
-        </Select>
-      </Form.Item>
-
+      <Col span={12}>
+        <Form.Item
+          name="salePerson"
+          label="Sale Person"
+        >
+          <Select >
+            {salePerson?.map((account) => (
+              <Option key={account.id}>
+                {`${account.firstName} ${account.lastName}`}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+      </Col>
     </>
   )
 }

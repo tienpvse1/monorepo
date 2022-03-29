@@ -7,7 +7,7 @@ import {
 } from '@modules/contact/query/contact.get';
 import { Button, Form, Popconfirm, Space, Table } from 'antd';
 import Column from 'antd/lib/table/Column';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { client } from '../../App';
 import { ContactHeader } from './contact-header';
 import { EditableCell } from '../table/editable-cell';
@@ -24,6 +24,10 @@ import { useInsertContact } from '@modules/contact/mutation/contact.post';
 import { message } from 'antd';
 import { dateFormat } from "@constance/date-format";
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import { PUBLIC_USER_INFO } from '@constance/cookie';
+import { removeDuplicate } from '@util/array';
+
 const { DEFAULT } = dateFormat;
 
 const rowSelection = {
@@ -46,6 +50,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
   setDataContact
 }) => {
 
+  //CRUD api
   const { mutate: updateContact } = useUpdateContact(() => {
     client.invalidateQueries(QUERY_CONTACTS);
     message.success('Save successfully !');
@@ -59,6 +64,25 @@ export const ContactTable: React.FC<ContactTableProps> = ({
     message.success('Create new successfully !');
   });
 
+  //filter created by follow account id
+  const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
+
+  const handleFilter = () => {
+    const accountFilter = dataSource?.filter((value) => value.account?.id !== public_user_info.id)
+    const accountFormat = accountFilter?.map((value) => ({
+      text: `${value.account?.firstName} ${value.account?.lastName}`,
+      value: `${value.account?.firstName} ${value.account?.lastName}`
+    }))
+    const account = removeDuplicate(accountFormat, 'value');
+    account?.unshift({
+      text: 'My contacts',
+      value: `${public_user_info.firstName} ${public_user_info.lastName}`
+    })
+    return account;
+  }
+  const arrayFilter = useMemo(() => handleFilter(), [dataSource])
+
+  //handle method
   const [form] = Form.useForm<IContact>();
   const [isEditing, toggleEditing] = useToggle();
   const [isOpenModal, toggleCreateModal] = useToggle();
@@ -102,7 +126,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
 
   return (
     <>
-      <Form className='form-123123' form={form}>
+      <Form form={form}>
         <Table
           loading={isLoading}
           tableLayout='fixed'
@@ -196,9 +220,17 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             width={120}
             render={(_, record: IContact) => (
               <Link className="my-link" to={`view-details/${record?.id}`} >
-                {record?.account?.username}
+                {record?.account?.firstName} {record?.account?.lastName}
               </Link>
             )}
+            filters={arrayFilter}
+            defaultFilteredValue={[`${public_user_info.firstName} ${public_user_info.lastName}`]}
+            filterSearch={true}
+            onFilter={(value, record) => {
+              let fullName = `${record.account?.firstName} ${record.account?.lastName}`
+              return fullName.indexOf(value as string) === 0
+            }
+            }
           />
           <Column
             title='Action'
