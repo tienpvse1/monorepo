@@ -1,23 +1,30 @@
 import { envVars } from "@env/var.env"
 import Column from 'antd/lib/table/Column'
-import { Table } from "antd"
+import { Button, Table } from "antd"
 import { ISchedule } from "@modules/schedule/entity/schedule.entity";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { dateFormat } from "@constance/date-format";
-import { CoffeeOutlined, FileTextOutlined, MailOutlined, PhoneOutlined, PushpinOutlined } from "@ant-design/icons";
+import { CheckOutlined, CoffeeOutlined, FileTextOutlined, MailOutlined, PhoneOutlined, PushpinOutlined } from "@ant-design/icons";
 import { useHandleNavigate } from "@hooks/useHandleNavigate";
-const { DEFAULT, DUE_DATE } = dateFormat;
+import { useRemoveSchedule } from "@modules/schedule/mutation/schedule.delete";
+import { useQueryClient } from "react-query";
+import { GET_PIPELINE_ITEM_BY_ID } from "@modules/pipeline-items/query/pipeline-item.get";
+const { DUE_DATE } = dateFormat;
 
 interface ListSchedulesProps {
   schedule: ISchedule[];
+  opportunityId: string;
 }
 
 export const ListSchedules: React.FC<ListSchedulesProps> = ({
-  schedule
+  schedule,
+  opportunityId
 }) => {
 
   const { navigateRole } = useHandleNavigate();
+  const { mutate: removeSchedule } = useRemoveSchedule();
+  const queryClient = useQueryClient();
 
   const handleActivity = (scheduleType: string) => {
     let node = <><PushpinOutlined /> Document</>;
@@ -98,20 +105,6 @@ export const ListSchedules: React.FC<ListSchedulesProps> = ({
       />
 
       <Column
-        title="Created Date"
-        dataIndex="createdAt"
-        key="createdAt"
-        width={120}
-        render={(_, record: ISchedule) => (
-          <Link className="my-link" to={`${navigateRole}schedule`} >
-            {moment(record.createdAt).format(DEFAULT)}
-          </Link>
-        )}
-        sorter={(a, b) =>
-          moment(a.createdAt).diff(moment(b.createdAt))
-        }
-      />
-      <Column
         title="Due Date"
         dataIndex="dueDate"
         key="dueDate"
@@ -124,6 +117,27 @@ export const ListSchedules: React.FC<ListSchedulesProps> = ({
           moment(a.dueDate).diff(moment(b.dueDate))
         }
       />
+
+      <Column
+        title="Action"
+        dataIndex="action"
+        key="action"
+        width={70}
+        render={(_, record: ISchedule) => (
+          <Button
+            size="small"
+            shape="round"
+            onClick={() => removeSchedule(record.id, {
+              onSuccess: () => {
+                queryClient.refetchQueries([GET_PIPELINE_ITEM_BY_ID, opportunityId]);
+              }
+            })}
+          >
+            <CheckOutlined />
+          </Button>
+        )}
+      />
+
     </Table>
   )
 }
