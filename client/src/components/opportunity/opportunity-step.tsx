@@ -49,7 +49,7 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
         onSuccess: () => {
           client.refetchQueries(GET_PIPELINE_ITEM_BY_ID);
           client.refetchQueries(GET_PIPELINE_DESIGN);
-          callback();
+          callback ? callback() : '';
         },
       }
     );

@@ -36,6 +36,8 @@ const PipelineSale: React.FC<PipelineSaleProps> = ({ }) => {
   useEffect(() => {
     setPipeLine(data);
     return () => {
+      console.log('123')
+      
       // @ts-ignore
       setPipeLine({});
     };

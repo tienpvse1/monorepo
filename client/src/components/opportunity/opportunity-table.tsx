@@ -335,7 +335,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                     </Button>
 
                     <Button
-                      disabled={record.pipelineColumn.isWon || record.isLose && true}
+                      disabled={record.pipelineColumn?.isWon || record.isLose && true}
                       type='default'
                       onClick={() =>
                         showDeleteConfirm(() =>

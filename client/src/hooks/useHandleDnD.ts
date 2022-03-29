@@ -14,6 +14,7 @@ export const useHandleDnD = (data: IPipeline) => {
       pipelineColumns: newColumn,
     };
     setPipeLine(newState);
+    console.log("updatePipeline:", newState);
     updatePipeline(newState);
   };
 

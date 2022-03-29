@@ -19,6 +19,7 @@ import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { useNavigate } from 'react-router-dom';
 import { IconLost } from './icon-lost';
 import { ThemeColor } from '@constance/color';
+import moment from 'moment';
 const Planned = lazy(() => import('@components/schedule/planned'));
 const { Meta } = Card;
 
@@ -90,7 +91,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
               >
                 15.000.000đ
               </div>
-              <div style={{ fontSize: 16 }}>{cardData?.contact.name}</div>
+              <div style={{ fontSize: 16 }}>{cardData?.contact?.name}</div>
               <Divider
                 style={{ marginBottom: 6, borderTop: '1px solid #D4D4D8' }}
               />
@@ -124,7 +125,9 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
                     />
                   </Dropdown>
                   <IconLost cardData={cardData} />
-                  
+                  <Tag style={{ marginLeft: 5, borderRadius: 5 }}>
+                    {moment(cardData.createdAt).format("MMMM Do")}
+                  </Tag>
                 </Space>
                 <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
               </div>
