@@ -8,9 +8,20 @@ const { TAG } = controllers;
 
 export const QUERY_TAGS = 'query-tags';
 export const QUERY_TAG_BY_ID = 'query-tag-by-id';
+export const QUERY_TAG_LIKE = 'query-tag-like';
 
 const getTags = async () => {
   const query = RequestQueryBuilder.create({
+    join: [{ field: 'contacts' }],
+  }).query(false);
+  const { data } = await instance.get<ITag[]>(`${TAG}?${query}`);
+  return data;
+};
+
+const getTagsLike = async (key: string) => {
+  const query = RequestQueryBuilder.create({
+    filter: [{ field: 'name', operator: '$cont', value: key }],
+    limit: 5,
     join: [{ field: 'contacts' }],
   }).query(false);
   const { data } = await instance.get<ITag[]>(`${TAG}?${query}`);
@@ -27,4 +38,10 @@ export const useTags = () =>
 export const useTagById = (id: string) =>
   useQuery([QUERY_TAG_BY_ID, id], () => getTagById(id), {
     enabled: Boolean(id),
+  });
+
+export const useTagsLike = (key: string) =>
+  useQuery([QUERY_TAG_LIKE, key], () => getTagsLike(key), {
+    placeholderData: [],
+    enabled: Boolean(key),
   });

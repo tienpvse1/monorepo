@@ -3,23 +3,20 @@ import {
   warningProps,
 } from '@components/email-compose/confirm-modal';
 import { MyModal } from '@components/email-compose/templates-model';
-import { Loading } from '@components/loading/loading';
 import { useDebounce } from '@hooks/debounce';
 import { getContactsEmailLike } from '@modules/contact/query/contact.get';
-import { IEmailTemplate } from '@modules/email-temlate/entity/email-template.entity';
-import {
-  findAllTemplates,
-  getTemplateById,
-} from '@modules/email-temlate/query/email-template.get';
+import { getTemplateById } from '@modules/email-temlate/query/email-template.get';
 import { useSendEmail } from '@modules/email/mutate/email.post';
+import { useTagsLike } from '@modules/tag/query/tag.get';
 import { openNotification } from '@util/notification';
-import { AutoComplete, Button, Input, Modal, Spin } from 'antd';
+import { Button, Input, Modal, Select, Spin } from 'antd';
 import { Suspense, useRef, useState } from 'react';
 import EmailEditor, { Design } from 'react-email-editor';
 import { useQuery } from 'react-query';
+
 const EmailCompose: React.FC = () => {
   // necessary state
-  const [searchKey, setSearchKey] = useState(undefined);
+  const [searchKey, setSearchKey] = useState('');
 
   const debouncedFilter = useDebounce(searchKey, 500);
 
@@ -27,11 +24,15 @@ const EmailCompose: React.FC = () => {
     ['query-contact-like-email', debouncedFilter],
     () => getContactsEmailLike(debouncedFilter),
     {
+      placeholderData: [],
       enabled: Boolean(debouncedFilter),
     }
   );
+
+  const { data: tags } = useTagsLike(debouncedFilter);
   const emailEditorRef = useRef<EmailEditor>(null);
   const [to, setTo] = useState('');
+  const [targets, setTargets] = useState<string[]>([]);
   const [design, setDesign] = useState<Design>();
   const [subject, setSubject] = useState('');
   const [currentModal, setCurrentModal] = useState('');
@@ -45,12 +46,12 @@ const EmailCompose: React.FC = () => {
 
   // this function will handle when use hit send button
   // every content will be convert to html and send via gmail
-  const exportHTML = () => {
+  const sendEmail = () => {
     if (emailEditorRef.current) {
       emailEditorRef.current.exportHtml((design) => {
         mutate({
           subject,
-          to,
+          to: targets.map((item) => ({ email: item, isTag: false })),
           value: design.html,
         });
       });
@@ -96,24 +97,33 @@ const EmailCompose: React.FC = () => {
           design={design!}
         />
       </Suspense>
-      <AutoComplete
+      {/* <AutoComplete dataSource={dataSource} /> */}
+
+      <Select
         style={{ width: '100%' }}
-        onChange={(e) => {
+        mode='multiple'
+        onSearch={(e) => {
           setSearchKey(e);
           setTo(e);
         }}
-        placeholder={'To'}
-        notFoundContent={
-          <Loading
-            coverWidth={'100%'}
-            coverHeight={180}
-            loadingHeight={40}
-            loadingWidth={40}
-          />
+        onSelect={(value: string) => setTargets((prev) => [...prev, value])}
+        onDeselect={(value: string) =>
+          setTargets((prev) => prev.filter((item) => item !== value))
         }
-        dataSource={dataSource}
-        filterOption={() => true}
-      />
+      >
+        <Select.OptGroup label='Contacts'>
+          {dataSource?.map((item) => (
+            <Select.Option key={item} value={item}>
+              {item}
+            </Select.Option>
+          ))}
+        </Select.OptGroup>
+        <Select.OptGroup label='Group of contacts'>
+          {tags?.map((tag) => (
+            <Select.Option key={tag.name}>{tag.name}</Select.Option>
+          ))}
+        </Select.OptGroup>
+      </Select>
 
       <Input
         placeholder='Email subject'
@@ -158,7 +168,7 @@ const EmailCompose: React.FC = () => {
         }}
         onClick={() => {
           modal.warning(
-            warningProps(`this email will be sent to ${to}`, exportHTML)
+            warningProps(`this email will be sent to ${to}`, sendEmail)
           );
         }}
         type='primary'
