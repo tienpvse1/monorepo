@@ -6,6 +6,8 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { ICourse, IProduct } from '../entity/product.entity';
 const { PRODUCT } = controllers;
+
+export const QUERY_COURSES = 'query-courses';
 export const getAllProduct = async () => {
   const { data } = await instance.get<IProduct[]>(`${PRODUCT}`);
   return data;
@@ -14,7 +16,9 @@ export const getAllProduct = async () => {
 export const useQueryProducts = () => useQuery(PRODUCT, getAllProduct);
 
 export const getCourses = async (search = '', size = 10, index = 1) => {
-  const token = getCookies(COURSE_SERVICE_TOKEN);
+  const token = getCookies(COURSE_SERVICE_TOKEN)[0]['course-service-token'];
+  console.log(token);
+
   const { data } = await axios.get<ICourse>(
     `http://smapi.hisoft.vn/api/course?index=${index}&size=${size}&name=${search}`,
     {
@@ -27,4 +31,6 @@ export const getCourses = async (search = '', size = 10, index = 1) => {
 };
 
 export const useCourses = (search = '', size = 10, index = 1) =>
-  useQuery('get-course', () => getCourses(search, size, index));
+  useQuery([QUERY_COURSES, search, size, index], () =>
+    getCourses(search, size, index)
+  );
