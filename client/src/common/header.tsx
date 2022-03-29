@@ -34,14 +34,10 @@ export const HeaderApp = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const toggleDrawer = () => setShowDrawer(!showDrawer);
   const [notifications, setNotifications] = useState<INotification[]>([]);
-  const [
-    {
-      public_user_info: { id },
-    },
-  ] = useCookies([PUBLIC_USER_INFO]);
   const currentDate = { ...new Date() } as Date;
+  
   const { data: schedules } = useUpcomingEvents({
-    accountId: id,
+    accountId: public_user_info.id,
     date: currentDate,
   });
   useEffect(() => {

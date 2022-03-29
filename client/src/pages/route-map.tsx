@@ -27,7 +27,7 @@ const DealStatistic = lazy(
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
 const SaleManagerDashboard = lazy(() => import('./sale-manager/dashboard'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
-const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/pipeline'));
+const PipelineManager = lazy(() => import('@pages/sale-manager/pipeline'));
 const ContactsChart = lazy(() => import('@components/statistic/chart'));
 const SentEmailStatistic = lazy(
   () => import('@components/statistic/sent-email-statistic')
@@ -58,6 +58,8 @@ const ListOfAllContact = lazy(
 
 const SalesOpportunityLost = lazy(() => import('@components/sale/sales-opportunity-lost'));
 const PipelineSale = lazy(() => import('@components/sale/pipeline-sale'));
+const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/sale-manager-pipeline'));
+const ListAllOpportunityLost = lazy(() => import('@components/sale-manager/list-all-opportunity-lost'));
 
 export const route: RouteObject[] = [
   {
@@ -222,7 +224,17 @@ export const route: RouteObject[] = [
       },
       {
         path: 'pipeline',
-        element: <SaleManagerPipeline />,
+        element: <PipelineManager />,
+        children: [
+          {
+            index: true,
+            element: <SaleManagerPipeline />
+          },
+          {
+            path: 'opportunities-lost',
+            element: <ListAllOpportunityLost />
+          }
+        ]
       },
       {
         path: 'company',

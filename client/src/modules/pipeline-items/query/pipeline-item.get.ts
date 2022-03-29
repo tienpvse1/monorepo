@@ -68,6 +68,7 @@ export const getAllPipelineItem = async () => {
       { field: 'pipelineColumn' },
       { field: 'account' },
       { field: 'contact' },
+      { field: 'reason' },
     ],
     sort: [{ field: 'createdAt', order: 'DESC' }]
   }).query(false);
