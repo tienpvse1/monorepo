@@ -17,7 +17,7 @@ export const CompanyAddressDetails: React.FC<CompanyAddressDetailsProps> = ({
             customStyle={{ height: '100%' }}
             label='Address'
           >
-            {`${company.state || ''}, ${company.city || ''}`}
+            {`${company.city?.city || ''}, ${company.city?.admin_name || ''}`}
           </MyForm>
           <MyForm label="Postal Code">
             {company.postalCode}

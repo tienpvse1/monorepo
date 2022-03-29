@@ -5,7 +5,6 @@ interface ImportMetaEnv extends Readonly<Record<string, string>> {
   readonly VITE_APP_NAME: string;
   readonly VITE_BE_DOMAIN: string;
   readonly VITE_FE_DOMAIN: string;
-  readonly VITE_BE_PROVINCES_BASE_URL: string;
   // more env variables...
 }
 interface ImportMeta {

@@ -48,6 +48,7 @@ export const ModalFormCreateStageColumn: React.FC<
           </Form.Item>
           <Form.Item
             name='isWon'
+            initialValue={false}
           >
             <Checkbox>Stage is won</Checkbox>
           </Form.Item>

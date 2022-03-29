@@ -1,17 +1,34 @@
-import { envVars } from "@env/var.env";
-import axios from "axios";
-import { useQuery } from "react-query";
+import { controllers } from "@constance/controllers";
+import { RequestQueryBuilder } from "@nestjsx/crud-request";
 import { IProvinces } from "../entity/provinces.entity";
+import { instance as instance2 } from '@axios';
+import { removeDuplicate } from "@util/array";
+const { CITY } = controllers;
 
-const instance = axios.create({ baseURL: envVars.VITE_BE_PROVINCES_BASE_URL });
+export const searchCity = async (text: string) => {
+  const query = RequestQueryBuilder.create({
+    search: {
+      'admin_name': {
+        $cont: text
+      },
+    }
+  }).query(false);
+  const { data } = await instance2.get<IProvinces[]>(`${CITY}?${query}`);
 
-const PROVINCES = 'provinces';
-
-const getProvinces = async () => {
-  const { data } = await instance.get<IProvinces[]>('?depth=2');
-  return data;
+  return removeDuplicate(data, 'admin_name');
 };
 
-export const useQueryProvinces = () => useQuery(PROVINCES, getProvinces, {
-  staleTime: Infinity
-});
+export const getStateByCity = async (cityName: string) => {
+  const query = RequestQueryBuilder.create({
+    filter: [
+      {
+        field: 'admin_name',
+        operator: '$eq',
+        value: cityName,
+      },
+    ],
+  }).query(false);
+  const { data } = await instance2.get<IProvinces[]>(`${CITY}?${query}`);
+
+  return removeDuplicate(data, 'city').filter((value) => value.capital === 'minor');
+};

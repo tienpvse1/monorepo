@@ -46,7 +46,6 @@ export const CreateModal: React.FC<CreateModalProps> = ({
         {hasForm ?
           <>{children}</> :
           <Form
-            initialValues={{ ['prefixMobile']: '84' }}
             form={form}
             layout='vertical'
           >

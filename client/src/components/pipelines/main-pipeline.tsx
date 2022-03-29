@@ -4,7 +4,6 @@ import { PipeLineColumn } from '@components/pipelines/pipeline-column';
 import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-horizontal';
 import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import { sortPipeline } from '@util/sort';
 import { Button, Form } from 'antd';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
@@ -46,13 +45,8 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
   const { mutate } = useChangeStage();
   const stageWon = data?.pipelineColumns?.find((stage) => stage.isWon === true)
 
-  if (data !== undefined) {
-    sortPipeline(data);
-  }
-
   const totalColumn = data?.pipelineColumns.length || 1;
   const widthOfItem = 333;
-
 
   const handleIsRoleAdmin = () => {
     return public_user_info.role.name === 'admin' ? true : false

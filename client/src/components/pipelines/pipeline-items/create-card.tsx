@@ -1,17 +1,12 @@
-import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { isRequired } from '@constance/rules-of-input-antd';
-// import { IContact } from '@modules/contact/entity/contact.entity';
-// import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
-import { useContacts } from '@modules/contact/query/contact.get';
 import { ICreatePipelineItemsDto } from '@modules/pipeline-items/dto/create-pipeline-items.dto';
 import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
-import { Button, Card, Form, Input, InputNumber, Select } from 'antd';
+import { Button, Card, Form, Input, InputNumber } from 'antd';
 import { FC } from 'react';
-import { useCookies } from 'react-cookie';
 import { SelectBoxCourse } from '@components/course/select-box-Course';
-import { SelectBoxContact } from '@components/contact/select-box-contact';
 import { useQueryClient } from 'react-query';
+import { SelectBoxGroup } from './select-box-group';
 
 interface CreateCardItemProps {
   pipelineColumnID: string;
@@ -32,14 +27,6 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
   toggleClose,
 }) => {
   const { mutate: createNewItems } = usePostPipelineItems();
-  // const { mutate: updateContact } = useUpdateContact();
-  const [
-    {
-      public_user_info: { id },
-    },
-  ] = useCookies([PUBLIC_USER_INFO]);
-  const { data } = useContacts(id);
-  // const [infoContact, setInfoContact] = useState<IContact>();
   const [form] = Form.useForm<SubmittedObject>();
   const queryClient = useQueryClient();
 
@@ -57,22 +44,22 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
     createNewItems(data, {
       onSuccess: () => {
         queryClient.refetchQueries(GET_PIPELINE_DESIGN);
+        console.log("refecth:", GET_PIPELINE_DESIGN);
+        
         toggleClose();
       },
     });
   };
 
-  const handleSelect = (contactIdSelected: string) => {
-    const contactSelected = data?.find((contact) => {
-      return contact.id == contactIdSelected;
-    });
+  // const handleSelect = (contactIdSelected: string) => {
+  //   const contactSelected = data?.find((contact) => {
+  //     return contact.id == contactIdSelected;
+  //   });
 
-    // setInfoContact(contactSelected);
-
-    form.setFieldsValue({
-      name: `${contactSelected.name}'s opportunity`
-    });
-  };
+  //   form.setFieldsValue({
+  //     name: `${contactSelected.name}'s opportunity`
+  //   });
+  // };
 
   return (
     <>
@@ -94,7 +81,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
           onFinish={(value) => handleSubmit(value)}
         >
 
-          <SelectBoxContact rule={[isRequired('Contact is required')]} data={data} callback={handleSelect} />
+          <SelectBoxGroup />
 
           <Form.Item
             label='Opportunity'
@@ -103,16 +90,6 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
             rules={[isRequired('Please input opportunity name!')]}
           >
             <Input placeholder='Opportunity name...' />
-          </Form.Item>
-
-          <Form.Item
-            label='Company'
-            name='company'
-          // rules={[isRequired('Company is required')]}
-          >
-            <Select>
-
-            </Select>
           </Form.Item>
 
           <SelectBoxCourse />

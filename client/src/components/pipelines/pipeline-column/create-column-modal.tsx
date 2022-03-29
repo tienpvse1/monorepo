@@ -14,6 +14,8 @@ export const CreateColumnModal: React.FC<CreateColumnModalProps> = ({ pipelineId
 
   const onCreate = (values: ICreatePipelineColumnDto) => {
     createPipelineColumn({ ...values, pipelineId: pipelineId });    
+    console.log("ccc:", { ...values, pipelineId: pipelineId });
+    
     setVisible();
   };
 

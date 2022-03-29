@@ -1,6 +1,5 @@
-
 export class CreateEmailDto {
-  to: string;
+  to: { email: string; isTag: boolean }[];
   subject: string;
   value: string;
 }

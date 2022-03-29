@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { useToggle } from '@hooks/useToggle';
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { OpportunityTitleTable } from '@components/opportunity/opportunity-title-table';
-import { GET_PIPELINE_ITEM_BY_ACCOUNT } from '@modules/pipeline-items/query/pipeline-item.get';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { isRequired } from '@constance/rules-of-input-antd';
 import { CreateModal } from '@components/modal/create-modal';
@@ -18,7 +17,6 @@ import { message } from 'antd';
 import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { useQueryClient } from 'react-query';
 import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.delete';
-import { IContact } from '@modules/contact/entity/contact.entity';
 import { removeDuplicate } from '@util/array';
 import { dateFormat } from '@constance/date-format';
 const { DEFAULT } = dateFormat;
@@ -26,28 +24,32 @@ const { DEFAULT } = dateFormat;
 interface OpportunitiesTableProps {
   dataSource: IPipelineItem[];
   isLoading: boolean;
-  dataSelectBoxContact: IContact[];
   setDataOpportunity?: (value: []) => void;
+  queryKey?: string | [any, any];
+  searchMethod: (text: string, id?: string) => Promise<any>;
 }
 
 interface SubmitFormCreateOpportunity {
   columnId: string;
   contactId: string;
-  expectedClosing: string;
+  expectedClosing: string | any;
   expectedRevenue: string;
-  internalDescription: string;
+  description: string;
   internalNotes: string;
   name: string;
   productId: string;
   quantity: number;
   saleTeam: number;
   courseId: string;
+  priority: number;
 }
 
 export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
   dataSource,
   isLoading,
   setDataOpportunity,
+  searchMethod,
+  queryKey
 }) => {
   const stageFilter = dataSource?.map((opportunity) => ({
     text: opportunity.pipelineColumn?.name,
@@ -65,7 +67,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
   const [form] = Form.useForm<any>();
 
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {},
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
     getCheckboxProps: (record: any) => ({
       disabled: record.name === 'Disabled User',
       name: record.name,
@@ -112,9 +114,11 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
       columnId,
       contactId,
       internalNotes,
-      internalDescription,
+      description,
+      expectedClosing,
       courseId,
       quantity,
+      priority
     } = record;
     createOpportunity(
       {
@@ -122,7 +126,9 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
         columnId,
         contactId,
         internalNotes,
-        internalDescription,
+        description,
+        expectedClosing: expectedClosing ? expectedClosing.format(DEFAULT) : '',
+        priority,
         opportunityRevenue: {
           courseId,
           quantity,
@@ -130,7 +136,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
       },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries(GET_PIPELINE_ITEM_BY_ACCOUNT);
+          queryClient.refetchQueries(queryKey);
           message.success('Created opportunity successfully !');
         },
       }
@@ -141,6 +147,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
     <>
       <Form form={form}>
         <Table
+          scroll={{ x: 1300 }}
           loading={isLoading}
           dataSource={dataSource}
           tableLayout='fixed'
@@ -151,6 +158,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
           title={() => (
             <OpportunityTitleTable
               setDataOpportunity={setDataOpportunity}
+              searchMethod={searchMethod}
               toggleCreateModal={toggleCreateModal}
             />
           )}
@@ -181,6 +189,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             title='Contact Name'
             dataIndex='contactName'
             key='contactName'
+            width={200}
             render={(_, record: IPipelineItem) => (
               <>
                 <Link className='my-link' to={`view-details/${record.id}`}>
@@ -201,7 +210,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             render={(_, record: IPipelineItem) => (
               <>
                 <Link className='my-link' to={`view-details/${record.id}`}>
-                  {record.account.username}
+                  {record.account.firstName} {record.account.lastName}
                 </Link>
               </>
             )}
@@ -253,6 +262,23 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
               record.pipelineColumn.name.indexOf(value as string) === 0
             }
           />
+          <Column
+            title='Is Lost'
+            dataIndex='isLose'
+            key='isLose'
+            width={100}
+            render={(_, record: IPipelineItem) => (
+              <span>{record.isLose ? 'Yes' : 'No'}</span>
+            )}
+            filters={[{
+              text: 'Yes',
+              value: true
+            }, {
+              text: 'No',
+              value: false
+            }]}
+            onFilter={(value, record) => record.isLose === value}
+          />
 
           <Column
             title='Close Date'
@@ -280,8 +306,9 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             title='Actions'
             dataIndex='actions'
             key='actions'
+            fixed={'right'}
             width={125}
-            render={(_, record: any) => (
+            render={(_, record: IPipelineItem) => (
               <Space size='small' style={{ width: '100%' }}>
                 {isEditing && record.id === editingIndex ? (
                   <>
@@ -308,14 +335,13 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                     </Button>
 
                     <Button
+                      disabled={record.pipelineColumn.isWon || record.isLose && true}
                       type='default'
                       onClick={() =>
                         showDeleteConfirm(() =>
                           removePipelineItems(record.id, {
                             onSuccess: () => {
-                              queryClient.invalidateQueries(
-                                GET_PIPELINE_ITEM_BY_ACCOUNT
-                              );
+                              queryClient.invalidateQueries(queryKey);
                               message.success(
                                 'Deleted opportunity successfully !'
                               );

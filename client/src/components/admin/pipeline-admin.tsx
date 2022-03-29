@@ -18,13 +18,12 @@ const PipelineAdmin: React.FC<PipelineAdminProps> = ({ }) => {
     staleTime: Infinity
   });
 
-  // TODO: this is still hard code
   const pipeline: IPipeline = {
-    id: "QIECTiuvzY",
+    id: "pipeline-project",
     createdAt: null,
     updatedAt: null,
     deletedAt: null,
-    name: "pipeline 1",
+    name: "pipeline project",
     pipelineColumns: stages
   }
 

@@ -12,9 +12,13 @@ const socket = connect(`${envVars.VITE_BE_DOMAIN}/pipeline`);
 
 interface PipelineSaleProps { }
 
-export const PipelineSale: React.FC<PipelineSaleProps> = ({ }) => {
+const PipelineSale: React.FC<PipelineSaleProps> = ({ }) => {
   const { data } = useGetPipeLineUser();
   const queryClient = useQueryClient();
+
+  //filter opportunity is lose = false
+  data?.pipelineColumns.map(column => column.pipelineItems = column.pipelineItems.filter(item => !item.isLose))
+
   const {
     newPipeLine,
     setPipeLine,
@@ -47,3 +51,5 @@ export const PipelineSale: React.FC<PipelineSaleProps> = ({ }) => {
     />
   );
 };
+
+export default PipelineSale;

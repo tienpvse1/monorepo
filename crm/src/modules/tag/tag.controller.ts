@@ -26,6 +26,11 @@ import { TagService } from './tag.service';
     },
     exclude: ['deleteOneBase'],
   },
+  query: {
+    join: {
+      contacts: {},
+    },
+  },
 })
 export class TagController {
   constructor(public readonly service: TagService) {}

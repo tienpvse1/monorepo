@@ -6,7 +6,7 @@ export const CompanyAdditionalForm = () => {
     <>
       <Col span={24}>
         <Form.Item
-          name="internalDescription"
+          name="description"
           label="Description"
         >
           <Input.TextArea />

@@ -5,6 +5,7 @@ import Statistic from './statistic';
 
 const MapStatistic = lazy(() => import('./map-statistic'));
 const HomePage = lazy(() => import('@pages/home'));
+const Tag = lazy(() => import('@pages/tag'));
 const Contact = lazy(() => import('@pages/contact'));
 const LoginPage = lazy(() => import('@pages/login'));
 const Company = lazy(() => import('@pages/company'));
@@ -24,9 +25,6 @@ const DealStatistic = lazy(
   () => import('@components/statistic/deal-statistic')
 );
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
-const SalesContactList = lazy(
-  () => import('@components/sale/sales-contact-list')
-);
 const SaleManagerDashboard = lazy(() => import('./sale-manager/dashboard'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
 const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/pipeline'));
@@ -58,6 +56,9 @@ const ListOfAllContact = lazy(
   () => import('@components/admin/list-of-all-contacts')
 );
 
+const SalesOpportunityLost = lazy(() => import('@components/sale/sales-opportunity-lost'));
+const PipelineSale = lazy(() => import('@components/sale/pipeline-sale'));
+
 export const route: RouteObject[] = [
   {
     path: '/login',
@@ -82,7 +83,7 @@ export const route: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <SalesContactList />,
+            element: <ListOfAllContact />,
           },
           {
             path: 'view-details/:id',
@@ -93,6 +94,16 @@ export const route: RouteObject[] = [
       {
         path: 'pipeline',
         element: <Pipeline />,
+        children: [
+          {
+            index: true,
+            element: <PipelineSale />,
+          },
+          {
+            path: 'opportunities-lost',
+            element: <SalesOpportunityLost />,
+          },
+        ],
       },
       {
         path: 'schedule',
@@ -148,6 +159,10 @@ export const route: RouteObject[] = [
       {
         path: 'product',
         element: <Product />,
+      },
+      {
+        path: 'tag',
+        element: <Tag />,
       },
       {
         path: 'opportunities',

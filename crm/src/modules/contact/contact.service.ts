@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/base/nestjsx.service';
-import { getCustomRepository, getRepository } from 'typeorm';
+import { getCustomRepository, getRepository, In } from 'typeorm';
 import { AccountRepository } from '../account/account.repository';
 import { Account } from '../account/entities/account.entity';
 import { Company } from '../company/entities/company.entity';
+import { Tag } from '../tag/entities/tag.entity';
 import { ContactRepository } from './contact.repository';
 import { CreateContactDto } from './dto/create-contact.dto';
+import { AddTagDto } from './dto/update-contact.dto';
 import { Contact } from './entities/contact.entity';
 
 @Injectable()
@@ -75,5 +77,19 @@ export class ContactService extends BaseService<Contact> {
     }
     // return dto;
     return { ids };
+  }
+
+  async addTags(id: string, dto: AddTagDto) {
+    const tagRepository = getRepository(Tag);
+    const [contact, tags] = await Promise.all([
+      this.findOneItem({ where: { id }, relations: ['tags'] }),
+      tagRepository.find({ where: { id: In(dto.tagIds) } }),
+    ]);
+    if (!contact.tags) contact.tags = [];
+    const filteredTags = tags.filter(
+      (tag) => !contact.tags.some((contactTag) => contactTag.id === tag.id),
+    );
+    contact.tags.push(...filteredTags);
+    return contact.save();
   }
 }

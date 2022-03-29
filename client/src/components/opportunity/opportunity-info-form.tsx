@@ -1,26 +1,21 @@
 import { isQuantity, isRequired } from '@constance/rules-of-input-antd'
 import { SelectBoxCourse } from '@components/course/select-box-Course';
-import { Col, DatePicker, Form, Input, InputNumber } from 'antd'
-import { SelectBoxContact } from '@components/contact/select-box-contact';
-import { useCookies } from 'react-cookie';
-import { PUBLIC_USER_INFO } from '@constance/cookie';
-import { useContacts } from '@modules/contact/query/contact.get';
+import { Badge, Col, DatePicker, Form, Input, InputNumber, Select } from 'antd'
 import { SelectBoxStage } from '@components/opportunity/select-box-stage';
-import { SelectBoxSalePerson } from '@components/sale/select-box-sale-person';
-import { ITeam } from '@modules/team/entity/team.entity';
+import { SelectBoxGroup } from '@components/pipelines/pipeline-items/select-box-group';
+import { IContact } from '@modules/contact/entity/contact.entity';
 
 interface OpportunityInfoFormProps {
   showStageInput?: boolean;
-  team?: ITeam;
+  contact?: IContact;
+  disabledCompany?: boolean;
 }
 
-export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({ showStageInput = true, team }) => {
-  const [
-    {
-      public_user_info: { id, role },
-    },
-  ] = useCookies([PUBLIC_USER_INFO]);
-  const { data } = useContacts(id);
+export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
+  showStageInput = true,
+  contact,
+  disabledCompany = false
+}) => {
 
   return (
     <>
@@ -33,9 +28,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({ showSt
           <Input />
         </Form.Item>
 
-        <SelectBoxContact rule={[isRequired('Contact is required')]} data={data} />
-
-        {role.name === 'sale_manager' && <SelectBoxSalePerson team={team}/>}
+        <SelectBoxGroup disabledCompany={disabledCompany} contact={contact} />
 
         <Form.Item
           name="expectedClosing"
@@ -45,9 +38,21 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({ showSt
         </Form.Item>
       </Col>
       <Col span={12}>
+        <Form.Item name='priority' label='Priority' initialValue={1}>
+          <Select>
+            <Select.Option value={2}>
+              <Badge color={'red'} text='Important' />
+            </Select.Option>
+            <Select.Option value={1}>
+              <Badge color={'yellow'} text='Medium' />
+            </Select.Option>
+            <Select.Option value={0}>
+              <Badge color={'blue'} text='Low' />
+            </Select.Option>
+          </Select>
+        </Form.Item>
 
         {showStageInput && <SelectBoxStage />}
-
         <Form.Item
           name="expectedRevenue"
           label="Expected Revenue"
@@ -55,16 +60,19 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({ showSt
           <Input />
         </Form.Item>
 
-        <SelectBoxCourse />
+        <Input.Group compact>
+          <SelectBoxCourse />
 
-        <Form.Item
-          name="quantity"
-          label="Expected sold quantity"
-          rules={[isQuantity]}
-          initialValue={1}
-        >
-          <InputNumber className="my-input-number" />
-        </Form.Item>
+          <Form.Item
+            name="quantity"
+            label="Quantity"
+            rules={[isQuantity]}
+            initialValue={1}
+            style={{width: '20%'}}
+          >
+            <InputNumber style={{width: '100%'}} className="my-input-number" />
+          </Form.Item>
+        </Input.Group>
       </Col>
     </>
   )

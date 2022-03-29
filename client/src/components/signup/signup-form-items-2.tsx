@@ -1,5 +1,5 @@
 import { Form, Input } from 'antd';
-import { SelectBoxDistrict } from './select-box-district';
+import { SelectBoxProvinces } from './select-box-provinces';
 import { SelectBoxGender } from './select-box-gender';
 import { SelectBoxPrefix } from './select-box-prefix-phone';
 
@@ -12,7 +12,7 @@ export const SignUpFormItems2 = () => {
         <SelectBoxGender />
       </Form.Item>
       <Form.Item name='district' rules={[{ type: 'array' }]}>
-        <SelectBoxDistrict />
+        <SelectBoxProvinces />
       </Form.Item>
 
       <Form.Item

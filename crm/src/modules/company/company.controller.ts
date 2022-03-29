@@ -26,6 +26,7 @@ import { Company } from './entities/company.entity';
   query: {
     join: {
       contacts: {},
+      city: {},
     },
   },
   routes: {

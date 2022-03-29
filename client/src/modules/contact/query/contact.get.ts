@@ -12,10 +12,7 @@ export const QUERY_CONTACTS_BY_ID = 'query-contact-by-id';
 
 const getContacts = async (accountId: string) => {
   const query = RequestQueryBuilder.create({
-    join: [
-      { field: 'account' },
-      { field: 'company' }
-    ],
+    join: [{ field: 'account' }, { field: 'company' }],
     filter: [
       {
         field: 'account.id',
@@ -29,21 +26,19 @@ const getContacts = async (accountId: string) => {
 };
 const getAllContacts = async () => {
   const query = RequestQueryBuilder.create({
-    join: [
-      { field: 'account' },
-      { field: 'company' },
-    ],
-    sort: [{ field: 'createdAt', order: 'DESC' }]
+    join: [{ field: 'account' }, { field: 'company' }],
+    sort: [{ field: 'createdAt', order: 'DESC' }],
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
   return data;
 };
 
-export const getContactsEmailLike = async (searchKey: string) => {
+export const getContactsEmailLike = async (searchKey = '') => {
   const queryBuilder = RequestQueryBuilder.create();
   const queryString = queryBuilder
     .select(['email'])
     .setFilter({ field: 'email', operator: 'cont', value: searchKey })
+    .setLimit(6)
     .query(false);
   const { data } = await instance.get<{ email: string; id: string }[]>(
     `${CONTACT}?${queryString}`
@@ -74,26 +69,28 @@ export const getContactsById = async (contactId: string) => {
 };
 export const searchContacts = async (text: string) => {
   const query = RequestQueryBuilder.create({
+    join: [
+      { field: 'account' },
+    ],
     search: {
       $or: [
         {
           name: {
-            $cont: text
+            $cont: text,
           },
         },
         {
           email: {
-            $cont: text
+            $cont: text,
           },
         },
         {
           phone: {
-            $cont: text
-          }
-        }
-      ]
+            $cont: text,
+          },
+        },
+      ],
     },
-
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
   return data;
@@ -104,7 +101,6 @@ export const useContactsWithEmailLike = (queryKey: string) =>
     [QUERY_CONTACTS_LIKE_EMAIL, queryKey],
     () => getContactsEmailLike(queryKey),
     {
-      enabled: Boolean(queryKey),
       useErrorBoundary: true,
     }
   );
@@ -121,5 +117,5 @@ export const useQueryAllContacts = () =>
 
 export const useQueryContactsById = (contactId: string) =>
   useQuery(QUERY_CONTACTS_BY_ID, () => getContactsById(contactId), {
-    enabled: Boolean(contactId)
+    enabled: Boolean(contactId),
   });

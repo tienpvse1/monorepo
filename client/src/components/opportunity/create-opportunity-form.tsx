@@ -8,7 +8,7 @@ export const CreateOpportunityForm = () => {
     <>
       <WrapperModalForm titleName='Opportunity Information' >
         <Row gutter={[24, 0]}>
-          <OpportunityInfoForm />
+          <OpportunityInfoForm  />
         </Row>
       </WrapperModalForm>
 
