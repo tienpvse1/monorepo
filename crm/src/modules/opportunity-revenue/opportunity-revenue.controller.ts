@@ -27,6 +27,8 @@ import { OpportunityRevenueService } from './opportunity-revenue.service';
   query: {
     join: {
       pipelineItem: {},
+      'pipelineItem.pipelineColumn': {},
+      'pipelineItem.account': {},
       product: {},
     },
   },

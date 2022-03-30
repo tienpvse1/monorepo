@@ -17,6 +17,7 @@ export enum controllers {
   SESSION = 'session',
   TEAM = 'team',
   OPPORTUNITY_HISTORY = 'opportunity-history',
+  OPPORTUNITY_REVENUE = 'opportunity-revenue',
   COMPANY = 'company',
   COURSE = 'course',
   INBOX = 'inbox',

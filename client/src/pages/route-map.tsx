@@ -4,6 +4,7 @@ import { RouteObject } from 'react-router-dom';
 import Statistic from './statistic';
 
 const MapStatistic = lazy(() => import('./map-statistic'));
+
 const HomePage = lazy(() => import('@pages/home'));
 const Tag = lazy(() => import('@pages/tag'));
 const Contact = lazy(() => import('@pages/contact'));
@@ -21,6 +22,9 @@ const AdminLayout = lazy(() => import('@common/admin-layout'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
 const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
+const SoldCoursesStatistic = lazy(
+  () => import('@components/statistic/sold-course')
+);
 const DealStatistic = lazy(
   () => import('@components/statistic/deal-statistic')
 );
@@ -56,7 +60,9 @@ const ListOfAllContact = lazy(
   () => import('@components/admin/list-of-all-contacts')
 );
 
-const SalesOpportunityLost = lazy(() => import('@components/sale/sales-opportunity-lost'));
+const SalesOpportunityLost = lazy(
+  () => import('@components/sale/sales-opportunity-lost')
+);
 const PipelineSale = lazy(() => import('@components/sale/pipeline-sale'));
 
 export const route: RouteObject[] = [
@@ -120,6 +126,10 @@ export const route: RouteObject[] = [
           {
             path: '/statistic/deal',
             element: <DealStatistic />,
+          },
+          {
+            path: '/statistic/sold',
+            element: <SoldCoursesStatistic />,
           },
           {
             path: '/statistic/sent-email',
