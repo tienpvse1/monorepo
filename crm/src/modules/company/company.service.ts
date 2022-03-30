@@ -4,6 +4,7 @@ import { BaseService } from 'src/base/nestjsx.service';
 import { getRepository, Repository } from 'typeorm';
 import { City } from '../city/entities/city.entity';
 import { CreateCompanyDto } from './dto/create-company.dto';
+import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Company } from './entities/company.entity';
 
 @Injectable()
@@ -20,5 +21,17 @@ export class CompanyService extends BaseService<Company> {
       city,
     });
     return result;
+  }
+
+  async updateCompany(id: string, { cityId, ...rest }: UpdateCompanyDto) {
+    if (cityId) {
+      const cityRepository = getRepository(City);
+      const city = await cityRepository.findOne({ where: { id: cityId } });
+      return this.repository.update(id, {
+        ...rest,
+        city,
+      });
+    }
+    return this.repository.update(id, { ...rest });
   }
 }

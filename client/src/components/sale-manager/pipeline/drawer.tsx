@@ -1,7 +1,6 @@
 import { imagePlaceHolderUrl } from '@constance/image';
 import { useSaleAccounts } from '@modules/account/get/account.get';
 import { useQueryAllContacts } from '@modules/contact/query/contact.get';
-import { useCourses } from '@modules/course/query/course.get';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import {
   GET_STAGES,
@@ -28,6 +27,7 @@ import {
 import { CheckOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { client } from '../../../App';
+import { useCourses } from '@modules/product/query/products.get';
 
 interface CreateOpportunityProps {
   visible: boolean;
@@ -251,7 +251,7 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
               <Form.Item
                 name='courseId'
                 label='Course'
-                initialValue={courses.length > 0 && courses[0].id}
+                initialValue={courses?.data.length > 0 && courses?.data[0].id}
                 rules={[{ required: true, message: 'Please choose a course' }]}
               >
                 <Select
@@ -264,8 +264,8 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
                       .includes(input.toLowerCase());
                   }}
                 >
-                  {courses
-                    ?.filter((_item, index) => index < 5)
+                  {courses?.data
+                    .filter((_item, index) => index < 5)
                     .map((course) => (
                       <Select.Option key={course.id} value={course.id}>
                         {course.name}
