@@ -3,7 +3,6 @@ import { Database, Resource } from '@adminjs/typeorm';
 import { Module } from '@nestjs/common';
 import AdminJS from 'adminjs';
 import { Contact } from 'src/modules/contact/entities/contact.entity';
-import { Course } from 'src/modules/course/entities/course.entity';
 import { Email } from 'src/modules/mailer/entities/mailer.entity';
 import { NoteWorthy } from 'src/modules/note-worthy/entities/note-worthy.entity';
 import { Notification } from 'src/modules/notification/entities/notification.entity';
@@ -14,7 +13,6 @@ import { ProductAccount } from 'src/modules/product-account/entities/product-acc
 import { Product } from 'src/modules/product/entities/product.entity';
 import { Role } from 'src/modules/role/entities/role.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
-import { Subject } from 'src/modules/subject/entities/subject.entity';
 import { Team } from 'src/modules/team/entities/team.entity';
 import { Account } from '../modules/account/entities/account.entity';
 import { EmailTemplate } from '../modules/email-template/entities/email-template.entity';
@@ -42,8 +40,6 @@ AdminJS.registerAdapter({ Database, Resource });
           Product,
           Team,
           NoteWorthy,
-          Course,
-          Subject,
           OpportunityRevenue,
           OpportunityHistory,
           Notification,
