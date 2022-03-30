@@ -42,7 +42,7 @@ export const OpportunityTitleLost: React.FC<OpportunityTitleLostProps> = ({
               {totalOpportunity}
             </Descriptions.Item>
 
-            <Descriptions.Item label='Opportunity lost'>
+            <Descriptions.Item label='Lost opportunity'>
               {opportunityLost}
             </Descriptions.Item>
             <Descriptions.Item label='Expected loss of revenue'>
