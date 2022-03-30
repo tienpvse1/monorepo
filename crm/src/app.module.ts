@@ -7,19 +7,22 @@ import {
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { AppService } from 'src/app.service';
 import { AdminModule } from './admin/admin.module';
+import { AppController } from './app.controller';
 import { LoggingMiddleware } from './middleware/logging.middleware';
 import { AccountModule } from './modules/account/account.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CityModule } from './modules/city/city.module';
 import { CompanyModule } from './modules/company/company.module';
 import { ConfigModule } from './modules/config/config.module';
 import { ContactModule } from './modules/contact/contact.module';
-import { CourseModule } from './modules/course/course.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { EmailTemplateModule } from './modules/email-template/email-template.module';
 import { FileModule } from './modules/file/file.module';
 import { GlobalModule } from './modules/global/global.module';
 import { HistoryModule } from './modules/history/history.module';
+import { InboxModule } from './modules/inbox/inbox.module';
 import { MailerModule } from './modules/mailer/mailer.module';
 import { MessageModule } from './modules/message/message.module';
 import { NoteWorthyModule } from './modules/note-worthy/note-worthy.module';
@@ -38,14 +41,9 @@ import { ReasonModule } from './modules/reason/reason.module';
 import { RoleModule } from './modules/role/role.module';
 import { ScheduleModule } from './modules/schedule/schedule.module';
 import { SessionModule } from './modules/session/session.module';
-import { SubjectModule } from './modules/subject/subject.module';
 import { TagModule } from './modules/tag/tag.module';
 import { TeamModule } from './modules/team/team.module';
 import { WebhookModule } from './modules/webhook/webhook.module';
-import { InboxModule } from './modules/inbox/inbox.module';
-import { AppController } from './app.controller';
-import { AppService } from 'src/app.service';
-import { CityModule } from './modules/city/city.module';
 
 @Module({
   imports: [
@@ -82,8 +80,6 @@ import { CityModule } from './modules/city/city.module';
     OpportunityRevenueModule,
     OpportunityHistoryModule,
     CompanyModule,
-    CourseModule,
-    SubjectModule,
     NotificationModule,
     ReasonModule,
     WebhookModule,

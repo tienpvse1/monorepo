@@ -5,7 +5,6 @@ import { BaseService } from 'src/base/nestjsx.service';
 import { InternalServerEvent } from 'src/constance/event';
 import { AccountRepository } from 'src/modules/account/account.repository';
 import { ContactRepository } from 'src/modules/contact/contact.repository';
-import { CourseRepository } from 'src/modules/course/couse.repository';
 import { InternalSendNotificationPayload } from 'src/modules/notification/dto/internal-send-notification.dto';
 import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
 import { reIndexItems } from 'src/util/pipeline-column';
@@ -98,21 +97,17 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     const contactRepository = getCustomRepository(ContactRepository);
     const accountRepository = getCustomRepository(AccountRepository);
     const columnRepository = getCustomRepository(PipelineColumnRepository);
-    const courseRepository = getCustomRepository(CourseRepository);
     const revenueRepository = getRepository(OpportunityRevenue);
 
-    const [account, contact, pipelineColumn, course] = await Promise.all([
+    const [account, contact, pipelineColumn] = await Promise.all([
       accountRepository.findOneItem({ where: { id: accountId } }),
       contactRepository.findOneItem({ where: { id: contactId } }),
       columnRepository.findOneItem({ where: { id: columnId } }),
-      courseRepository.findOneItem({
-        where: { id: opportunityRevenue.courseId },
-      }),
     ]);
     const revenue = await revenueRepository
       .create({
         quantity: opportunityRevenue.quantity,
-        course,
+        courseId: opportunityRevenue.courseId,
       })
       .save();
 
@@ -140,23 +135,18 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     const contactRepository = getCustomRepository(ContactRepository);
     const accountRepository = getCustomRepository(AccountRepository);
     const columnRepository = getCustomRepository(PipelineColumnRepository);
-    const courseRepository = getCustomRepository(CourseRepository);
     const revenueRepository = getRepository(OpportunityRevenue);
 
-    const [account, manager, contact, pipelineColumn, course] =
-      await Promise.all([
-        accountRepository.findOneItem({ where: { id: accountId } }),
-        accountRepository.findOneItem({ where: { id: managerId } }),
-        contactRepository.findOneItem({ where: { id: contactId } }),
-        columnRepository.findOneItem({ where: { id: columnId } }),
-        courseRepository.findOneItem({
-          where: { id: opportunityRevenue.courseId },
-        }),
-      ]);
+    const [account, manager, contact, pipelineColumn] = await Promise.all([
+      accountRepository.findOneItem({ where: { id: accountId } }),
+      accountRepository.findOneItem({ where: { id: managerId } }),
+      contactRepository.findOneItem({ where: { id: contactId } }),
+      columnRepository.findOneItem({ where: { id: columnId } }),
+    ]);
     const revenue = await revenueRepository
       .create({
         quantity: opportunityRevenue.quantity,
-        course,
+        courseId: opportunityRevenue.courseId,
       })
       .save();
 
