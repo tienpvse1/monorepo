@@ -65,7 +65,12 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
       ],
     },
 
-    exclude: ['createOneBase', 'createManyBase', 'deleteOneBase'],
+    exclude: [
+      'createOneBase',
+      'createManyBase',
+      'deleteOneBase',
+      'updateOneBase',
+    ],
   },
 })
 export class ContactController {
@@ -94,5 +99,9 @@ export class ContactController {
   @Patch('add-tag/:id')
   addTag(@Param('id') id: string, @Body() dto: AddTagDto) {
     return this.service.addTags(id, dto);
+  }
+  @Patch(':id')
+  updateContact(@Param('id') id: string, @Body() dto: UpdateContactDto) {
+    return this.service.updateContact(id, dto);
   }
 }

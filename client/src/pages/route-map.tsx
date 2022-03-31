@@ -144,16 +144,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'map-statistic',
-        element: (
-          <MapStatistic
-            locations={[
-              {
-                lat: 10.8033,
-                lng: 106.6967,
-              },
-            ]}
-          />
-        ),
+        element: <MapStatistic />,
       },
       {
         path: 'forecast',
