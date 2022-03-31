@@ -2,6 +2,7 @@ import { CreateContactDto } from '@modules/contact/dto/create-contact.dto';
 import { IContact } from '@modules/contact/entity/contact.entity';
 import { Button, Checkbox, Form, Select, Table } from 'antd';
 import Column from 'antd/lib/table/Column';
+import { nanoid } from 'nanoid';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
 
 interface PreviewContactTableProps {
@@ -24,7 +25,7 @@ const contactsKeys = [
   'jobPosition',
   'description',
 ];
-const PreviewContactTable: FC<PreviewContactTableProps> = ({
+const AssignDataTable: FC<PreviewContactTableProps> = ({
   contacts,
   setPreviewContacts,
 }) => {
@@ -63,6 +64,7 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
     const contactList: CreateContactDto[] = contacts.map((item) => ({
       companyName: '',
       address: item[getOriginalField(Object.entries(value), 'address')] || '',
+      name: item[getOriginalField(Object.entries(value), 'name')] || '',
       birth: item[getOriginalField(Object.entries(value), 'birth')] || '',
       phone: item[getOriginalField(Object.entries(value), 'phone')] || '',
       photo: item[getOriginalField(Object.entries(value), 'photo')] || '',
@@ -72,7 +74,12 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
       internalNotes:
         item[getOriginalField(Object.entries(value), 'description')] || '',
     }));
-    setPreviewContacts(contactList);
+    setPreviewContacts(
+      contactList.map((item) => ({
+        ...item,
+        id: nanoid(5),
+      }))
+    );
   };
   const [form] = Form.useForm();
   return (
@@ -168,4 +175,4 @@ const PreviewContactTable: FC<PreviewContactTableProps> = ({
   );
 };
 
-export default PreviewContactTable;
+export default AssignDataTable;

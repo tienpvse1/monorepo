@@ -3,7 +3,7 @@ import { contactSchema } from '@modules/contact/schema/contact.schema';
 import { removeDuplicate, removeMissingProps } from '@util/array';
 import { Modal, Radio } from 'antd';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { Types } from './preview-contact-table';
+import { Types } from './assign-data-table';
 
 interface SaveModalProps {
   setShowModal: Dispatch<SetStateAction<boolean>>;

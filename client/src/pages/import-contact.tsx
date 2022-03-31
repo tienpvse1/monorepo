@@ -2,8 +2,8 @@ import { lazy, Suspense, useState } from 'react';
 import Upload from '@common/upload';
 import { Loading } from '@components/loading/loading';
 import { useContacts } from '@modules/contact/query/contact.get';
-const PreviewContactTable = lazy(
-  () => import('@components/import-contact/preview-contact-table')
+const AssignDataTable = lazy(
+  () => import('@components/import-contact/assign-data-table')
 );
 import { CreateContactDto } from '@modules/contact/dto/create-contact.dto';
 import { useCookies } from 'react-cookie';
@@ -15,6 +15,8 @@ import {
   FileOutlined,
   SolutionOutlined,
 } from '@ant-design/icons';
+import PreviewTable from '@components/import-contact/preview-table';
+import { Is } from '@common/is';
 const { Step } = Steps;
 const ImportContact: React.FC = () => {
   const [importedContacts, setImportedContacts] = useState<CreateContactDto[]>(
@@ -50,13 +52,22 @@ const ImportContact: React.FC = () => {
         />
         <Step status={'wait'} title='Done' icon={<CheckOutlined />} />
       </Steps>
-      {importedContacts.length <= 0 ? (
+      <Is condition={importedContacts.length === 0}>
         <Upload setImportedContacts={setImportedContacts} contacts={contacts} />
-      ) : (
+      </Is>
+      {importedContacts.length > 0 && previewContacts.length === 0 && (
         <Suspense fallback={<Loading />}>
-          <PreviewContactTable
+          <AssignDataTable
             contacts={importedContacts}
             setPreviewContacts={setPreviewContacts}
+          />
+        </Suspense>
+      )}
+      {previewContacts.length > 0 && (
+        <Suspense fallback={<Loading />}>
+          <PreviewTable
+            previewData={previewContacts}
+            setPreviewData={setPreviewContacts}
           />
         </Suspense>
       )}
