@@ -1,29 +1,22 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
 import { IContact } from '@modules/contact/entity/contact.entity';
 import { useDeleteContact } from '@modules/contact/mutation/contact.delete';
-import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
 import {
   QUERY_CONTACTS,
 } from '@modules/contact/query/contact.get';
-import { Button, Form, Popconfirm, Space, Table } from 'antd';
+import { Button, Form, Space, Table } from 'antd';
 import Column from 'antd/lib/table/Column';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { client } from '../../App';
 import { ContactHeader } from './contact-header';
-import { EditableCell } from '../table/editable-cell';
 import { useToggle } from '@hooks/useToggle';
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { CreateModal } from '@components/modal/create-modal';
 import { CreateContactForm } from './create-contact-form';
-import {
-  isEmail,
-  isPhoneNumber,
-  isRequired,
-} from '@constance/rules-of-input-antd';
 import { useInsertContact } from '@modules/contact/mutation/contact.post';
 import { message } from 'antd';
 import { dateFormat } from "@constance/date-format";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { removeDuplicate } from '@util/array';
@@ -51,10 +44,6 @@ export const ContactTable: React.FC<ContactTableProps> = ({
 }) => {
 
   //CRUD api
-  const { mutate: updateContact } = useUpdateContact(() => {
-    client.invalidateQueries(QUERY_CONTACTS);
-    message.success('Save successfully !');
-  });
   const { mutate: deleteContact } = useDeleteContact(() => {
     client.invalidateQueries(QUERY_CONTACTS);
     message.success('Delete successfully !');
@@ -82,38 +71,16 @@ export const ContactTable: React.FC<ContactTableProps> = ({
   }
   const arrayFilter = useMemo(() => handleFilter(), [dataSource])
 
+  //filter company column
+  const companyFilter = dataSource?.map((value) => ({
+    text: value.company?.name,
+    value: value.company?.name,
+  }));
+
   //handle method
   const [form] = Form.useForm<IContact>();
-  const [isEditing, toggleEditing] = useToggle();
   const [isOpenModal, toggleCreateModal] = useToggle();
-
-  const [editingIndex, setEditingIndex] = useState('');
-
-  const handleEditClick = (record: IContact) => {
-    toggleEditing();
-    setEditingIndex(record.id);
-    const { name, internalNotes, phone, email } = record;
-    form.setFieldsValue({
-      phone,
-      name,
-      email,
-      internalNotes,
-    });
-  };
-
-  const handleSave = async (id: string) => {
-    try {
-      const record = await form.validateFields();
-      toggleEditing();
-      updateContact({
-        id,
-        ...record,
-      });
-      form.resetFields();
-    } catch (error) {
-      return;
-    }
-  };
+  const navigate = useNavigate();
 
   const handleCreateContact = (record: any) => {
 
@@ -145,17 +112,9 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             dataIndex='name'
             key='name'
             render={(_, record: IContact) => (
-              <EditableCell
-                linkTo={`view-details/${record.id}`}
-                dataIndex='name'
-                nameForm='name'
-                editing={isEditing}
-                editingIndex={editingIndex}
-                recordIndex={record.id}
-                title='Name'
-                record={record}
-                rules={[isRequired('Name is required')]}
-              />
+              <Link className='my-link' to={`view-details/${record.id}`}>
+                {record.name}
+              </Link>
             )}
             sorter={(a, b) => ('' + a.name).localeCompare(b.name)}
           />
@@ -164,17 +123,9 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             dataIndex='email'
             key='email'
             render={(_, record: IContact) => (
-              <EditableCell
-                linkTo={`view-details/${record.id}`}
-                dataIndex='email'
-                nameForm='email'
-                editing={isEditing}
-                editingIndex={editingIndex}
-                recordIndex={record.id}
-                title='Email'
-                record={record}
-                rules={[isRequired('Address is required'), isEmail]}
-              />
+              <Link className='my-link' to={`view-details/${record.id}`}>
+                {record.email}
+              </Link>
             )}
             sorter={(a, b) => ('' + a.email).localeCompare(b.email)}
           />
@@ -183,35 +134,25 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             dataIndex='phone'
             key='phone'
             render={(_, record: IContact) => (
-              <EditableCell
-                linkTo={`view-details/${record.id}`}
-                dataIndex='phone'
-                nameForm='phone'
-                editing={isEditing}
-                editingIndex={editingIndex}
-                recordIndex={record.id}
-                title='Phone Number'
-                record={record}
-                rules={[isRequired('Phone is required'), isPhoneNumber]}
-              />
+              <Link className='my-link' to={`view-details/${record.id}`}>
+                {record.phone}
+              </Link>
             )}
           />
           <Column
-            title='Notes'
-            dataIndex='internalNotes'
-            key='internalNotes'
+            title='Company'
+            dataIndex='companyName'
+            key='companyName'
             render={(_, record: IContact) => (
-              <EditableCell
-                linkTo={`view-details/${record.id}`}
-                dataIndex='internalNotes'
-                nameForm='internalNotes'
-                editing={isEditing}
-                editingIndex={editingIndex}
-                recordIndex={record.id}
-                title='Notes'
-                record={record}
-              />
+              <Link className='my-link' to={`view-details/${record.id}`}>
+                {record.company.name}
+              </Link>
             )}
+            filters={removeDuplicate(companyFilter, 'value')}
+            filterSearch={true}
+            onFilter={(value, record) =>
+              record.company.name.indexOf(value as string) === 0
+            }
           />
           <Column
             title='Created By'
@@ -233,47 +174,31 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             }
           />
           <Column
-            title='Action'
-            dataIndex='action'
-            key='action'
+            title='Actions'
+            dataIndex='actions'
+            key='actions'
             render={(_, record: IContact) => (
               <Space size='small' style={{ width: '100%' }}>
-                {isEditing && record.id === editingIndex ? (
-                  <>
-                    <Button type='link' onClick={() => handleSave(record.id)}>
-                      Save
-                    </Button>
-                    <Popconfirm
-                      title='Sure to cancel?'
-                      onConfirm={toggleEditing}
-                      okText='Yes'
-                      cancelText='No'
-                    >
-                      <span style={{ cursor: 'pointer' }}>Cancel</span>
-                    </Popconfirm>
-                  </>
-                ) : (
-                  <>
-                    <Button
-                      type='ghost'
-                      shape='round'
-                      onClick={() => handleEditClick(record)}
-                    >
-                      <FormOutlined />
-                    </Button>
+                <>
+                  <Button
+                    type='ghost'
+                    shape='round'
+                    onClick={() => navigate(`view-details/${record.id}`)}
+                  >
+                    <FormOutlined />
+                  </Button>
 
-                    <Button
-                      type='default'
-                      onClick={() =>
-                        showDeleteConfirm(() => deleteContact(record.id))
-                      }
-                      shape='round'
-                      danger
-                    >
-                      <DeleteOutlined />
-                    </Button>
-                  </>
-                )}
+                  <Button
+                    type='default'
+                    onClick={() =>
+                      showDeleteConfirm(() => deleteContact(record.id))
+                    }
+                    shape='round'
+                    danger
+                  >
+                    <DeleteOutlined />
+                  </Button>
+                </>
               </Space>
             )}
           />
