@@ -20,6 +20,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { removeDuplicate } from '@util/array';
+import { useHandleNavigate } from '@hooks/useHandleNavigate';
 
 const { DEFAULT } = dateFormat;
 
@@ -81,6 +82,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
   const [form] = Form.useForm<IContact>();
   const [isOpenModal, toggleCreateModal] = useToggle();
   const navigate = useNavigate();
+  const { navigateRole } = useHandleNavigate();
 
   const handleCreateContact = (record: any) => {
 
@@ -144,7 +146,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             dataIndex='companyName'
             key='companyName'
             render={(_, record: IContact) => (
-              <Link className='my-link' to={`view-details/${record.id}`}>
+              <Link className='my-link' to={`${navigateRole}company/view-details/${record.company.id}`}>
                 {record.company.name}
               </Link>
             )}
