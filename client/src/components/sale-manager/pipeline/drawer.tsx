@@ -247,7 +247,7 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
               <Form.Item
                 name='courseId'
                 label='Course'
-                initialValue={courses?.data.length > 0 && courses?.data[0].id}
+                initialValue={courses?.data.length > 0 && courses?.data[0].code}
                 rules={[{ required: true, message: 'Please choose a course' }]}
               >
                 <Select

@@ -11,7 +11,7 @@ export const SelectBoxCourse = () => {
         <Form.Item
           name='courseId'
           label='Course'
-          initialValue={courses?.data.length > 0 && courses?.data[0].id}
+          initialValue={courses?.data.length > 0 && courses?.data[0].code}
           style={{ width: 'calc(80% - 10px)', marginRight: '10px' }}
           rules={[{ required: true, message: 'Please choose a course' }]}
         >
