@@ -22,7 +22,6 @@ export const IconLost: React.FC<IconLostProps> = ({
   const { mutate: loseOpportunity } = useLoseOpportunity();
   const queryClient = useQueryClient();
   const handleSubmit = (record: any) => {
-    console.log(record);
     loseOpportunity({ id: cardData.id }, {
       onSuccess: () => {
         createReason({
@@ -51,7 +50,7 @@ export const IconLost: React.FC<IconLostProps> = ({
       <CreateModal
         width={500}
         bodyStyle={{ height: '250px' }}
-        title='Opportunity Lost'
+        title='Lost Opportunity'
         isOpenModal={isVisible}
         toggleCreateModal={toggleModal}
         callback={handleSubmit}

@@ -20,7 +20,7 @@ export const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
         {/* //TODO: this field is still hard-coded */}
         <span style={{ fontWeight: '600' }}> 69.96%</span>
       </span>
-      <InfoWrapper title='communication options'>
+      <InfoWrapper contactId={data.contact.id} title='Communication options'>
         <Descriptions
           column={2}
           title={
@@ -39,12 +39,12 @@ export const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
           <Descriptions.Item label='Telephone'>
             {handleUndefinedString(data.contact.phone)}
           </Descriptions.Item>
-          <Descriptions.Item label='Mobile'>
-            {handleUndefinedString(data.contact.mobile)}
+          <Descriptions.Item label='Job Position'>
+            {handleUndefinedString(data.contact.jobPosition)}
           </Descriptions.Item>
         </Descriptions>
       </InfoWrapper>
-      <InfoWrapper title='Noteworthy events'>
+      <InfoWrapper contactId={data.contact.id} title='Noteworthy events'>
         <Table
           pagination={false}
           dataSource={data.noteWorthies}

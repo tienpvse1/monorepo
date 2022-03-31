@@ -2,20 +2,6 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Button, Col, Row, Upload } from "antd"
 import { Form, Input } from "antd";
 import { isRequired } from "@constance/rules-of-input-antd";
-const fileList: any = [
-  {
-    uid: '-1',
-    name: 'example1.png',
-    status: 'done',
-    url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-  },
-  {
-    uid: '-2',
-    name: 'example2.png',
-    status: 'error',
-  },
-];
 
 export const VerificationForm = () => {
   return (
@@ -40,7 +26,6 @@ export const VerificationForm = () => {
               onChange={(data) => console.log(data)}
               action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
               listType="picture"
-              defaultFileList={[...fileList]}
             >
               <Button
                 type="dashed"

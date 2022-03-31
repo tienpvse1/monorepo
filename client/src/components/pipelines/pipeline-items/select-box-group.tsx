@@ -39,17 +39,8 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
         <Select
           disabled={disabledCompany}
           showSearch
-          onSelect={handleSelected}
+          onChange={handleSelected}
           placeholder='Select a company'
-          optionFilterProp='children'
-          filterOption={(input, option: any) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
-          filterSort={(optionA, optionB) =>
-            optionA.children
-              .toLowerCase()
-              .localeCompare(optionB.children.toLowerCase())
-          }
         >
           {companies && companies.map((value) =>
             <Option key={value.id}>{value.name}</Option>
@@ -63,18 +54,9 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
         rules={[isRequired('Contact is required')]}
       >
         <Select
-          // onSelect={handleSelect}
           showSearch
           placeholder='Select a contact'
           optionFilterProp='children'
-          filterOption={(input, option: any) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
-          filterSort={(optionA, optionB) =>
-            optionA.children
-              .toLowerCase()
-              .localeCompare(optionB.children.toLowerCase())
-          }
         >
           {dataContact?.map((contact) => (
             <Option key={contact.id} value={`${contact.id}`}>

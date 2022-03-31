@@ -19,10 +19,10 @@ const Upload: React.FC<UploadProps> = ({ contacts, setImportedContacts }) => {
     const excelData = await readExcel(info.file);
     const data = excelData.map(
       ({ company, ...item }) =>
-        ({ ...item, companyName: company } as CreateContactDto & {
-          __rowNum__: number;
-          id: string;
-        })
+      ({ ...item, companyName: company } as CreateContactDto & {
+        __rowNum__: number;
+        id: string;
+      })
     );
     // console.log(data);
     setImportedContacts(data);
@@ -32,36 +32,26 @@ const Upload: React.FC<UploadProps> = ({ contacts, setImportedContacts }) => {
     <>
       <Dragger
         name='file'
-        style={{
-          height: '90vh',
-        }}
         multiple={false}
         maxCount={1}
         beforeUpload={() => false}
         onChange={(info) => handleChange(info)}
         accept='.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'
       >
-        <div
-          style={{
-            height: '70vh',
-          }}
-        >
-          <p className='ant-upload-drag-icon'>
-            <InboxOutlined
-              style={{
-                fontSize: 100,
-                marginTop: '20vh',
-              }}
-            />
-          </p>
-          <p className='ant-upload-text'>
-            Click or drag file to this area to upload
-          </p>
-          <p className='ant-upload-hint'>
-            Support for a single or bulk upload. Strictly prohibit from
-            uploading company data or other band files
-          </p>
-        </div>
+        <p className='ant-upload-drag-icon'>
+          <InboxOutlined
+            style={{
+              fontSize: 100,
+            }}
+          />
+        </p>
+        <p className='ant-upload-text'>
+          Click or drag file to this area to upload
+        </p>
+        <p className='ant-upload-hint'>
+          Support for a single or bulk upload. Strictly prohibit from
+          uploading company data or other band files
+        </p>
       </Dragger>
     </>
   );

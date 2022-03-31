@@ -42,7 +42,7 @@ export const DashBoard: React.FC = () => {
             }}
           >
             <DashboardHeader setData={setData} data={data} />
-            <LineChart height={230} width={'100%'} />
+            {/* <LineChart height={230} width={'100%'} /> */}
           </div>
           <div style={{ marginTop: 20 }}>
             <div

@@ -68,6 +68,7 @@ export const getAllPipelineItem = async () => {
       { field: 'pipelineColumn' },
       { field: 'account' },
       { field: 'contact' },
+      { field: 'reason' },
     ],
     sort: [{ field: 'createdAt', order: 'DESC' }]
   }).query(false);
@@ -98,6 +99,11 @@ export const searchPipelineItem = async (text: string, accountId?: string) => {
             },
             {
               'contact.name': {
+                $cont: text
+              }
+            },
+            {
+              'contact.email': {
                 $cont: text
               }
             },
@@ -139,6 +145,11 @@ export const searchAllPipelineItem = async (text: string) => {
         },
         {
           'contact.name': {
+            $cont: text
+          }
+        },
+        {
+          'contact.email': {
             $cont: text
           }
         },

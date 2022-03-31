@@ -1,5 +1,6 @@
 import { OpportunityTitleLost } from "@components/opportunity/opportunity-title-lost"
 import { SearchBar } from "@components/search-bar"
+import { useHandleNavigate } from "@hooks/useHandleNavigate";
 import { IPipelineItem } from "@modules/pipeline-items/entity/pipeline-items.entity";
 import { List, Typography } from "antd"
 import { Link } from "react-router-dom"
@@ -20,6 +21,7 @@ export const OpportunityLost: React.FC<OpportunityLostProps> = ({
   searchMethod
 }) => {
   const dataFilterLose = dataSource?.filter((value) => value.isLose)
+  const { navigateRole } = useHandleNavigate();
   return (
     <>
       <OpportunityTitleLost
@@ -44,12 +46,14 @@ export const OpportunityLost: React.FC<OpportunityLostProps> = ({
           renderItem={item => (
             <List.Item key={item.id}>
               <List.Item.Meta
-                title={<a href={`/opportunities/view-details/${item.id}`}>{item.name}</a>}
+                title={
+                  <Link className="my-link" to={`${navigateRole}opportunities/view-details/${item.id}`}>{item.name}</Link>
+                }
                 description={
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <span>{item.contact.email}</span>
-                    <span>
-                      <Typography.Text mark>[REASON] </Typography.Text> {item.reason?.reason}
+                    <span >
+                      <Typography.Text mark>{item.reason?.reason}</Typography.Text>
                     </span>
                     <span></span>
                   </div>

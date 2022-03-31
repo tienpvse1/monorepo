@@ -31,7 +31,7 @@ export const OpportunityTitleLost: React.FC<OpportunityTitleLostProps> = ({
                 />
                 <span>
                   Total lost {`(${opportunityLost})`} <br />
-                  <Tag color={'purple'}>Opportunity Lost</Tag>
+                  <Tag color={'purple'}>Lost Opportunity</Tag>
                 </span>
               </span>
             </>

@@ -6,13 +6,19 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { AppLayout } from './layout';
 
 const LayoutUser = () => {
-  const [cookies] = useCookies([PUBLIC_USER_INFO]);
-  if (!cookies.public_user_info) return <Navigate to={'/login'} />;
-  const { role } = cookies.public_user_info;
+  const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
+  const { role } = public_user_info;
+  
+  if (!public_user_info) return <Navigate to={'/login'} />;
 
   if (!role) return <Navigate to={'/login'} />;
-  if (cookies.public_user_info?.role === `${Role.ADMIN}`)
-    return <Navigate to={'/administrator'} />;
+
+  if (public_user_info?.role.name === `${Role.ADMIN}`)
+    return <Navigate to={'/administration'} />;
+
+  if (public_user_info?.role.name === `${Role.SALE_MANAGER}`)
+    return <Navigate to={'/sale-manager'} />;
+    
 
   return (
     <AppLayout

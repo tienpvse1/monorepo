@@ -9,7 +9,7 @@ import { CreateScheduleForm } from '@components/schedule/create-schedule-form';
 import { useBooleanToggle } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.delete';
-import { Avatar, Button, Card, Divider, Dropdown, Space } from 'antd';
+import { Avatar, Button, Card, Divider, Dropdown, Space, Tag } from 'antd';
 import { lazy, Suspense } from 'react';
 import { PopoverAction } from '../../popover/popover-action';
 import { ICreateScheduleDto } from '@modules/schedule/dto/create-schedule.dto';
@@ -18,6 +18,8 @@ import { client } from '../../../App';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { useNavigate } from 'react-router-dom';
 import { IconLost } from './icon-lost';
+import { ThemeColor } from '@constance/color';
+import moment from 'moment';
 const Planned = lazy(() => import('@components/schedule/planned'));
 const { Meta } = Card;
 
@@ -80,7 +82,16 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
         <Meta
           description={
             <>
-              <div style={{ fontSize: 16 }}>{cardData?.description}</div>
+              <div
+                style={{
+                  fontSize: 16,
+                  color: ThemeColor.primaryTextColor,
+                  fontWeight: 400
+                }}
+              >
+                15.000.000đ
+              </div>
+              <div style={{ fontSize: 16 }}>{cardData?.contact?.name}</div>
               <Divider
                 style={{ marginBottom: 6, borderTop: '1px solid #D4D4D8' }}
               />
@@ -113,7 +124,10 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
                       style={{ fontSize: 18, cursor: 'pointer', color: cardData.schedules?.length > 0 ? '#FFB300' : '' }}
                     />
                   </Dropdown>
-                  <IconLost cardData={cardData}/>
+                  <IconLost cardData={cardData} />
+                  <Tag style={{ marginLeft: 5, borderRadius: 5 }}>
+                    {moment(cardData.createdAt).format("MMMM Do")}
+                  </Tag>
                 </Space>
                 <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
               </div>

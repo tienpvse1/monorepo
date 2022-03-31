@@ -1,12 +1,24 @@
+import { showDeleteConfirm } from "@components/modal/delete-confirm";
 import { envVars } from "@env/var.env"
+import { useHandleNavigate } from "@hooks/useHandleNavigate";
 import { IContact } from "@modules/contact/entity/contact.entity"
+import { useDeleteContact } from "@modules/contact/mutation/contact.delete";
 import { Button, Descriptions, PageHeader, Tag } from "antd"
+import { useNavigate } from "react-router-dom";
 
 interface PageDetailsTitleProps {
   contact: IContact;
 }
 
 export const PageDetailsTitle: React.FC<PageDetailsTitleProps> = ({ contact }) => {
+
+  const navigate = useNavigate();
+  const { navigateRole } = useHandleNavigate();
+
+  const { mutate: deleteContact } = useDeleteContact(() => {
+    navigate(`${navigateRole}contact`);
+  });
+
   return (
     <div className="container-title-details">
       <PageHeader
@@ -18,6 +30,7 @@ export const PageDetailsTitle: React.FC<PageDetailsTitleProps> = ({ contact }) =
               className='button-ant-custom-style'
               type='primary'
               size='middle'
+              onClick={() => showDeleteConfirm(() => deleteContact(contact.id))}
             >
               Delete
             </Button>
