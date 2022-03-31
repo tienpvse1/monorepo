@@ -7,16 +7,16 @@ import { useToggle } from "@hooks/useToggle";
 import { OpportunityInfoForm } from "./opportunity-info-form";
 import moment from "moment";
 import { dateFormat } from "@constance/date-format";
-import { OpportunityAdditionalForm } from "./opportunity-additional-form";
 import { useUpdatePipelineItem } from "@modules/pipeline-items/mutation/pipeline-items.update";
 import { OpportunityInfoTeam } from "./opportunity-info-team";
 import { OpportunityTeamForm } from "./opportunity-team-form";
-import { useReassignAccount } from "@modules/pipeline-items/mutation/pipeline-item.patch";
 import { useQueryClient } from "react-query";
 import { GET_PIPELINE_ITEM_BY_ID } from "@modules/pipeline-items/query/pipeline-item.get";
 import { useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { PUBLIC_USER_INFO } from "@constance/cookie";
+import { useReassignAccount } from "@modules/pipeline-items/mutation/pipeline-item.patch";
+import { OpportunityAdditionalForm } from "./opportunity-additional-form";
 const { CRUD_AT } = dateFormat;
 
 interface OpportunityDetailsProps {
@@ -47,7 +47,8 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
       expectedRevenue: data.expectedRevenue,
       contactId: data.contact.id,
       companyName: data.contact.company.id,
-      priority: data.priority
+      priority: data.priority,
+      courseId: data.opportunityRevenue.courseId
     });
   };
   const handleToggleEditForm2 = () => {

@@ -38,6 +38,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
         </Form.Item>
       </Col>
       <Col span={12}>
+        {showStageInput && <SelectBoxStage />}
         <Form.Item name='priority' label='Priority' initialValue={1}>
           <Select>
             <Select.Option value={2}>
@@ -52,7 +53,6 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
           </Select>
         </Form.Item>
 
-        {showStageInput && <SelectBoxStage />}
         <Form.Item
           name="expectedRevenue"
           label="Expected Revenue"

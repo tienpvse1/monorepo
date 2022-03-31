@@ -1,37 +1,37 @@
-import { isRequired } from '@constance/rules-of-input-antd';
-import { useCourses } from '@modules/course/query/course.get';
+import { useCourses } from '@modules/product/query/products.get';
 import { Form, Select } from 'antd';
 const { Option } = Select;
 
 export const SelectBoxCourse = () => {
-  const { data: course } = useCourses();
+  const { data: courses } = useCourses();
+
   return (
     <>
-      {course &&
+      {courses &&
         <Form.Item
-          label='Course Name'
           name='courseId'
-          rules={[isRequired('Course name is required')]}
+          label='Course'
+          initialValue={courses?.data.length > 0 && courses?.data[0].id}
           style={{ width: 'calc(80% - 10px)', marginRight: '10px' }}
+          rules={[{ required: true, message: 'Please choose a course' }]}
         >
           <Select
             showSearch
             placeholder='Select a course'
-            optionFilterProp='children'
-            filterOption={(input, option: any) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }
-            filterSort={(optionA, optionB) =>
-              optionA.children
+            filterOption={(input, option) => {
+              return option.children
+                .toString()
                 .toLowerCase()
-                .localeCompare(optionB.children.toLowerCase())
-            }
+                .includes(input.toLowerCase());
+            }}
           >
-            {course?.map((course) => (
-              <Option key={course.id}>
-                {course.name}
-              </Option>
-            ))}
+            {courses?.data
+              .filter((_item, index) => index < 5)
+              .map((course) => (
+                <Option key={course.code} value={course.code}>
+                  {course.name}
+                </Option>
+              ))}
           </Select>
         </Form.Item>}
     </>

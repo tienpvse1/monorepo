@@ -1,6 +1,8 @@
 import { MyForm } from '@components/form/my-form';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
+import { getCoursesById } from '@modules/product/query/products.get';
 import { Badge, Col, Row } from 'antd';
+import { useEffect } from 'react';
 
 interface OpportunityInfoDetailsProps {
   opportunity: IPipelineItem;
@@ -9,6 +11,10 @@ interface OpportunityInfoDetailsProps {
 export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
   opportunity,
 }) => {
+  
+  useEffect(() => {
+    getCoursesById(opportunity.opportunityRevenue.courseId).then((value) => console.log(value))
+  }, [])
 
   const handlePriority = (value: number) => {
     let node = <Badge color={'blue'} text='Low' />;
@@ -22,6 +28,9 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
     }
     return node;
   }
+
+  console.log("opportunity:", opportunity);
+
 
   return (
     <>
@@ -46,7 +55,7 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
             {/* {opportunity.opportunityRevenue.product.name} */}
           </MyForm>
           <MyForm label='Expected sold quantity'>
-            {/* {opportunity.opportunityRevenue.quantity} */}
+            {opportunity.opportunityRevenue.quantity}
           </MyForm>
         </Col>
       </Row>
