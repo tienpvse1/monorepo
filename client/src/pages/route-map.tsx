@@ -21,6 +21,7 @@ const AddContact = lazy(() => import('@pages/import-contact'));
 const AdminLayout = lazy(() => import('@common/admin-layout'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
+const LostOpportunity = lazy(() => import('./lost-opportunity'));
 const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
 const SoldCoursesStatistic = lazy(
   () => import('@components/statistic/sold-course')
@@ -145,16 +146,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'map-statistic',
-        element: (
-          <MapStatistic
-            locations={[
-              {
-                lat: 10.8033,
-                lng: 106.6967,
-              },
-            ]}
-          />
-        ),
+        element: <MapStatistic />,
       },
       {
         path: 'forecast',
@@ -163,6 +155,10 @@ export const route: RouteObject[] = [
       {
         path: 'profile',
         element: <ProfilePage />,
+      },
+      {
+        path: 'lost-opportunities',
+        element: <LostOpportunity />,
       },
       {
         path: 'import-contact',

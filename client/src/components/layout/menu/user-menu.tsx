@@ -10,6 +10,7 @@ import {
   LineChartOutlined,
   SolutionOutlined,
   TagOutlined,
+  UserDeleteOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
@@ -74,6 +75,13 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       style,
       onClick: () => navigate('/opportunities'),
       icon: <CrownOutlined style={style} />,
+    },
+    {
+      key: 'lost-opportunity',
+      label: 'Lost opportunity',
+      style,
+      onClick: () => navigate('/lost-opportunities'),
+      icon: <UserDeleteOutlined style={style} />,
     },
     {
       key: 'product',

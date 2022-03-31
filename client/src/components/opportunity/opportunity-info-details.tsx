@@ -39,7 +39,7 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
           <MyForm label='Name'>{opportunity.name}</MyForm>
           <MyForm label='Company Name'>{opportunity.contact?.company?.name}</MyForm>
           <MyForm label='Organization / Contact'>
-            {opportunity.contact.name}
+            {opportunity.contact?.name}
           </MyForm>
           <MyForm label='Close Date'>{opportunity.expectedClosing}</MyForm>
         </Col>

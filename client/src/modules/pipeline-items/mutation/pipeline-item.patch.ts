@@ -40,11 +40,12 @@ export const updateExpectedClosing = async ({
 export const reassignAccount = async (dto: AssignAccountDto) => {
   const { data } = await instance.patch(`${PIPELINE_ITEM}/reassign`, dto);
   return data;
-}
+};
 
-export const useReassignAccount = () => useMutation(reassignAccount, {
-  ...handleMutationResponse()
-});
+export const useReassignAccount = () =>
+  useMutation(reassignAccount, {
+    ...handleMutationResponse(),
+  });
 
 export const useAssignAccount = () => useMutation(assignAccount);
 
