@@ -22,7 +22,7 @@ export const ManagerPipelineHeader: React.FC<SaleManageHeaderProps> = ({ }) => {
             type='primary'
             icon={<DeleteOutlined />}
           >
-            Opportunities Lost
+            Lost Opportunities
           </Button>,
         ]}
       ></PageHeader>

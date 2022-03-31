@@ -60,7 +60,7 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
                 icon={<DeleteOutlined />}
                 className='button-more-pipeline'
               >
-                Opportunities Lost
+                Lost Opportunities
               </Button>
             </Space>
           </div>

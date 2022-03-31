@@ -3,11 +3,11 @@ import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.ent
 import { Badge, Button, Descriptions, Form, Input, message, PageHeader, Tag } from 'antd';
 import moment from 'moment';
 import { CreateModal } from '@components/modal/create-modal';
-import { useCreateReason } from '@modules/reason/mutation/reason.post';
-import { useLoseOpportunity } from '@modules/pipeline-items/mutation/pipeline-item.patch';
 import { useToggle } from '@hooks/useToggle';
 import { useQueryClient } from 'react-query';
 import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-item.get';
+import { useCreateReason } from '@modules/reason/mutation/reason.post';
+import { useLoseOpportunity } from '@modules/pipeline-items/mutation/pipeline-item.patch';
 
 interface OpportunityTitleDetailsProps {
   opportunity?: IPipelineItem;
@@ -82,7 +82,7 @@ export const OpportunityTitleDetails: React.FC<
                   <span>
                     {opportunity.name} <br />
                     {opportunity.isLose ?
-                      <Tag color={'purple'}>Opportunity Lost</Tag> :
+                      <Tag color={'purple'}>Lost Opportunity</Tag> :
                       <Tag color={'cyan'}>Opportunity</Tag>}
                   </span>
                 </span>
@@ -110,7 +110,7 @@ export const OpportunityTitleDetails: React.FC<
       <CreateModal
         width={500}
         bodyStyle={{ height: '250px' }}
-        title='Opportunity Lost'
+        title='Lost Opportunity'
         isOpenModal={isVisible}
         toggleCreateModal={toggleModal}
         callback={handleSubmit}

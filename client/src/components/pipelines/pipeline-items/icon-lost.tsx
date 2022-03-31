@@ -50,7 +50,7 @@ export const IconLost: React.FC<IconLostProps> = ({
       <CreateModal
         width={500}
         bodyStyle={{ height: '250px' }}
-        title='Opportunity Lost'
+        title='Lost Opportunity'
         isOpenModal={isVisible}
         toggleCreateModal={toggleModal}
         callback={handleSubmit}
