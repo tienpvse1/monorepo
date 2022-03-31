@@ -210,7 +210,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             render={(_, record: IPipelineItem) => (
               <>
                 <Link className='my-link' to={`view-details/${record.id}`}>
-                  {record.account.firstName} {record.account.lastName}
+                  {record.account?.firstName} {record.account?.lastName}
                 </Link>
               </>
             )}
