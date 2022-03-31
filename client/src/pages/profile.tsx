@@ -18,8 +18,10 @@ const Profile = () => {
           { label: 'Password and security', icon: 'pi pi-unlock' },
         ]}
         style={{
-          minHeight: '80vh',
+          minHeight: '50vh',
           width: '25%',
+          borderTop: 'none',
+          borderLeft: 'none'
         }}
       />
       <ProfileDetails />

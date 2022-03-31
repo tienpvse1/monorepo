@@ -11,9 +11,9 @@ import { Toast } from 'primereact/toast';
 import { setCookie } from '@cookies';
 import { imagePlaceHolderUrl } from '@constance/image';
 
-interface ProfileDetailsProps {}
+interface ProfileDetailsProps { }
 
-export const ProfileDetails: React.FC<ProfileDetailsProps> = ({}) => {
+export const ProfileDetails: React.FC<ProfileDetailsProps> = ({ }) => {
   const [cookies] = useCookies([PUBLIC_USER_INFO]);
   const inputRef = useRef<HTMLInputElement>(null);
   const toast = useRef<Toast>(null);
@@ -141,19 +141,23 @@ export const ProfileDetails: React.FC<ProfileDetailsProps> = ({}) => {
               />
             </div>
           </div>
-          <Inplace
-            defaultValue={publicData.email}
-            label='Email'
-            inputStyle={{ width: '100%' }}
-            field='email'
-            showToast={showToast}
-          />
-          <Inplace
-            defaultValue='+84 779 799 555'
-            label={publicData.phone}
-            inputStyle={{ width: '100%' }}
-            showToast={showToast}
-          />
+          <div style={{ marginTop: '15px' }}>
+            <Inplace
+              defaultValue={publicData.email}
+              label='Email'
+              inputStyle={{ width: '80%' }}
+              field='email'
+              showToast={showToast}
+            />
+          </div>
+          <div style={{ marginTop: '15px' }}>
+            <Inplace
+              defaultValue='+84 779 799 555'
+              label={publicData.phone}
+              inputStyle={{ width: '80%' }}
+              showToast={showToast}
+            />
+          </div>
         </div>
       </div>
     </div>
