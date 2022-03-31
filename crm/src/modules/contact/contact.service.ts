@@ -8,7 +8,7 @@ import { Company } from '../company/entities/company.entity';
 import { Tag } from '../tag/entities/tag.entity';
 import { ContactRepository } from './contact.repository';
 import { CreateContactDto } from './dto/create-contact.dto';
-import { AddTagDto } from './dto/update-contact.dto';
+import { AddTagDto, UpdateContactDto } from './dto/update-contact.dto';
 import { Contact } from './entities/contact.entity';
 
 @Injectable()
@@ -91,5 +91,25 @@ export class ContactService extends BaseService<Contact> {
     );
     contact.tags.push(...filteredTags);
     return contact.save();
+  }
+
+  async updateContact(id: string, { companyName, ...rest }: UpdateContactDto) {
+    if (companyName) {
+      const companyRepository = getRepository(Company);
+      const [company, contact] = await Promise.all([
+        companyRepository
+          .createQueryBuilder('company')
+          .where('company.name = :name', { name: companyName })
+          .getOne(),
+        this.repository
+          .createQueryBuilder('contact')
+          .where('id = :id', { id })
+          .getOne(),
+      ]);
+      const newObject = { ...contact, ...rest };
+      newObject.company = company;
+      return this.repository.save(newObject);
+    }
+    return this.repository.update(id, rest);
   }
 }

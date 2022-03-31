@@ -21,9 +21,7 @@ export class CreateContactDto {
   @IsPhoneNumber('VN')
   @IsOptional()
   phone?: string;
-  @IsString()
-  @IsOptional()
-  type?: string;
+
   @IsEmail()
   @IsOptional()
   email?: string;

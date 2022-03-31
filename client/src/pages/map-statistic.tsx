@@ -2,14 +2,19 @@ import { Loading } from '@components/loading/loading';
 import { useCompanies } from '@modules/company/query/company.get';
 import { Spin } from 'antd';
 import { Circle, GoogleApiWrapper, Map } from 'google-maps-react';
+import { useState } from 'react';
 
 interface MapStatisticProps {
   google: any;
-  locations: {}[];
 }
 
-const MapStatistic: React.FC<MapStatisticProps> = ({ google, locations }) => {
+const MapStatistic: React.FC<MapStatisticProps> = ({ google }) => {
   const { data: companies, isLoading } = useCompanies();
+  const [zoom, setZoom] = useState(8);
+  const [center, setCenter] = useState({
+    lat: 10.8033,
+    lng: 106.6967,
+  });
   return (
     <div
       style={{
@@ -27,15 +32,16 @@ const MapStatistic: React.FC<MapStatisticProps> = ({ google, locations }) => {
           containerStyle={{
             width: '80%',
           }}
-          center={locations[0]}
-          initialCenter={locations[0]}
+          center={center}
+          initialCenter={center}
           centerAroundCurrentLocation
-          zoom={13}
+          zoom={zoom}
+          onZoomChanged={(prop, map) => setZoom(map.zoom)}
         >
           {companies?.map((item) => (
             <Circle
               key={item.id}
-              radius={10000}
+              radius={(20 - zoom) * 1400}
               center={{
                 lat: item.city.lat,
                 lng: item.city.lng,
