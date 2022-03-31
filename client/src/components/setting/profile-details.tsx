@@ -141,23 +141,19 @@ export const ProfileDetails: React.FC<ProfileDetailsProps> = ({ }) => {
               />
             </div>
           </div>
-          <div style={{ marginTop: '15px' }}>
-            <Inplace
-              defaultValue={publicData.email}
-              label='Email'
-              inputStyle={{ width: '80%' }}
-              field='email'
-              showToast={showToast}
-            />
-          </div>
-          <div style={{ marginTop: '15px' }}>
-            <Inplace
-              defaultValue='+84 779 799 555'
-              label={publicData.phone}
-              inputStyle={{ width: '80%' }}
-              showToast={showToast}
-            />
-          </div>
+          <Inplace
+            defaultValue={publicData.email}
+            label='Email'
+            inputStyle={{ width: '100%' }}
+            field='email'
+            showToast={showToast}
+          />
+          <Inplace
+            defaultValue='+84 779 799 555'
+            label='Phone'
+            inputStyle={{ width: '100%' }}
+            showToast={showToast}
+          />
         </div>
       </div>
     </div>
