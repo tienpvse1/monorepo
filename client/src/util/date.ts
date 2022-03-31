@@ -28,12 +28,12 @@ export const getMonthToShow = (): Moment[] => {
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
   return [
-    moment(new Date(currentYear, currentMonth, 0)).subtract(4, 'M'),
-    moment(new Date(currentYear, currentMonth, 0)).subtract(3, 'M'),
-    moment(new Date(currentYear, currentMonth, 0)).subtract(2, 'M'),
-    moment(new Date(currentYear, currentMonth, 0)).subtract(1, 'M'),
-    moment(new Date(currentYear, currentMonth, 0)),
-    moment(new Date(currentYear, currentMonth, 0)).add(1, 'M'),
+    moment(new Date(currentYear, currentMonth, 0)).subtract(4, 'M').endOf('M'),
+    moment(new Date(currentYear, currentMonth, 0)).subtract(3, 'M').endOf('M'),
+    moment(new Date(currentYear, currentMonth, 0)).subtract(2, 'M').endOf('M'),
+    moment(new Date(currentYear, currentMonth, 0)).subtract(1, 'M').endOf('M'),
+    moment(new Date(currentYear, currentMonth, 0)).endOf('M'),
+    moment(new Date(currentYear, currentMonth, 0)).add(1, 'M').endOf('M'),
   ];
 };
 

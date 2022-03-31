@@ -14,7 +14,11 @@ import { useSocket } from '@hooks/socket';
 import { IAccount } from '@interfaces/account';
 import { ReceivedEmailDto } from '@modules/notification/dto/create-webhook.dto';
 import { INotification } from '@modules/notification/entity/notification.entity';
-import { getNotifications } from '@modules/notification/query/notification.get';
+import { useSeen } from '@modules/notification/mutation/notification.patch';
+import {
+  getNotifications,
+  QUERY_NOTIFICATIONS,
+} from '@modules/notification/query/notification.get';
 import { useUpcomingEvents } from '@modules/schedule/query/schedule.get';
 import { useUpdateSession } from '@modules/session/mutation/session.patch';
 import { Avatar, Badge, Dropdown, Tooltip } from 'antd';
@@ -23,12 +27,14 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
+import { client } from '../App';
 const DropDown = lazy(() => import('@components/header/dropdown'));
 const socket = io(`${envVars.VITE_BE_DOMAIN}/notification`);
 
 export const HeaderApp = () => {
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
   const { mutate, isError } = useUpdateSession();
+  const { mutate: seen } = useSeen();
   const navigate = useNavigate();
   if (isError) navigate('/login');
   const [showDrawer, setShowDrawer] = useState(false);
@@ -66,6 +72,19 @@ export const HeaderApp = () => {
       );
       return result;
     });
+  };
+
+  const handleSeen = (isVisible: boolean) => {
+    if (isVisible && notifications.some((item) => !item.seen)) {
+      seen(undefined, {
+        onSettled: () => {
+          client.invalidateQueries(QUERY_NOTIFICATIONS);
+          setNotifications((prev) =>
+            prev.map((item) => ({ ...item, seen: true }))
+          );
+        },
+      });
+    }
   };
 
   useSocket({
@@ -134,6 +153,7 @@ export const HeaderApp = () => {
             }}
             placement='bottomCenter'
             arrow
+            onVisibleChange={handleSeen}
             overlay={<NotificationDropdown data={notifications} />}
           >
             <Badge count={notifications.filter((item) => !item.seen).length}>
