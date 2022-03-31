@@ -46,6 +46,6 @@ const MapStatistic: React.FC<MapStatisticProps> = ({ google, locations }) => {
 };
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyCDrvO8bRp1-YqqQRzlDnCkAjEzJI9utlQ',
+  apiKey: 'AIzaSyAdHSrR0FH8HdPHWs6ZqEypjRMZWDEi-4g',
   LoadingContainer: Loading,
 })(MapStatistic);

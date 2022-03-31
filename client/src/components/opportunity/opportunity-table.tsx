@@ -215,7 +215,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
               </>
             )}
             sorter={(a, b) =>
-              ('' + a.account.username).localeCompare(b.account.username)
+              ('' + a.account?.username).localeCompare(b.account?.username)
             }
           />
 
