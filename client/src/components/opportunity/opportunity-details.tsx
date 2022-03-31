@@ -129,7 +129,12 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
       <Form form={form} layout='vertical'>
         {isEditingForm1 ? (
           <Row gutter={[24, 0]}>
-            <OpportunityInfoForm disabledCompany={true} contact={data.contact} showStageInput={false} />
+            <OpportunityInfoForm
+              disabledCompany={true}
+              contact={data.contact}
+              showStageInput={false}
+              courseId={data.opportunityRevenue.courseId}
+            />
             <Col style={{ textAlign: 'right' }} span={24}>
               <Space>
                 <Button onClick={() => handleSubmitForm1()} type='primary'>

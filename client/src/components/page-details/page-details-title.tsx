@@ -69,7 +69,7 @@ export const PageDetailsTitle: React.FC<PageDetailsTitleProps> = ({ contact }) =
             {contact.phone}
           </Descriptions.Item>
           <Descriptions.Item label='Company'>
-            AABC company
+            {contact.company.name}
           </Descriptions.Item>
 
         </Descriptions>

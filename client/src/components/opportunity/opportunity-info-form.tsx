@@ -9,12 +9,14 @@ interface OpportunityInfoFormProps {
   showStageInput?: boolean;
   contact?: IContact;
   disabledCompany?: boolean;
+  courseId?: string; 
 }
 
 export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
   showStageInput = true,
   contact,
-  disabledCompany = false
+  disabledCompany = false,
+  courseId
 }) => {
 
   return (
@@ -38,7 +40,6 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
         </Form.Item>
       </Col>
       <Col span={12}>
-        {showStageInput && <SelectBoxStage />}
         <Form.Item name='priority' label='Priority' initialValue={1}>
           <Select>
             <Select.Option value={2}>
@@ -53,6 +54,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
           </Select>
         </Form.Item>
 
+        {showStageInput && <SelectBoxStage />}
         <Form.Item
           name="expectedRevenue"
           label="Expected Revenue"
@@ -61,7 +63,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
         </Form.Item>
 
         <Input.Group compact>
-          <SelectBoxCourse />
+          <SelectBoxCourse courseId={courseId}/>
 
           <Form.Item
             name="quantity"
