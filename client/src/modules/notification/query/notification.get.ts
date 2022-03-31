@@ -1,6 +1,5 @@
 import { instance } from '@axios';
 import { controllers } from '@constance/controllers';
-import { queryWithIdProps } from '@modules/base/base.handler';
 import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { useQuery } from 'react-query';
 import { INotification } from '../entity/notification.entity';
