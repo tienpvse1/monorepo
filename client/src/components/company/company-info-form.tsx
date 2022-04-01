@@ -39,6 +39,7 @@ export const CompanyInfoForm = () => {
         <Form.Item
           name="type"
           label="Type"
+          initialValue={'Company'}
         >
           <Select>
             <Option value='Individual' key='Individual' >
