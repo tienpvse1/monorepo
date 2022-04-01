@@ -25,7 +25,12 @@ const ViewCompanyDetails = () => {
             </Col>
             <Col span={8}>
               <div className="container-page">
-                <CardImage />
+                <CardImage
+                  title={data.name}
+                  description1={data.type}
+                  description2={data.mobile}
+                  email={'company@gmail.com'}
+                />
               </div>
             </Col>
           </Row>

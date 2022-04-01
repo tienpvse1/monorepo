@@ -1,14 +1,22 @@
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { imagePlaceHolderUrl } from '@constance/image';
-import { handleUndefinedString } from '@util/undefined';
 import { Card, Divider, Image, Tag } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 
 interface CardImageProps {
-  data?: any
+  title?: string;
+  email?: string;
+  photo?: any;
+  description1?: string;
+  description2?: string;
 }
 
-export const CardImage: React.FC<CardImageProps> = ({ data = [] }) => {
+export const CardImage: React.FC<CardImageProps> = ({
+  title,
+  email,
+  photo,
+  description1,
+  description2
+}) => {
   return (
     <>
       <Card
@@ -17,18 +25,13 @@ export const CardImage: React.FC<CardImageProps> = ({ data = [] }) => {
           <div style={{ padding: 20 }}>
             <Image
               alt='example'
-              src={data.photo ? data.photo : imagePlaceHolderUrl}
+              src={photo ? photo : imagePlaceHolderUrl}
             />
           </div>
         }
-        actions={[
-          <SettingOutlined style={{ fontSize: '24px' }} key='setting' />,
-          <EditOutlined style={{ fontSize: '24px' }} key='edit' />,
-          <EllipsisOutlined style={{ fontSize: '24px' }} key='ellipsis' />,
-        ]}
       >
         <Meta
-          title='Summary'
+          title={title}
           description={
             <>
               <span
@@ -37,14 +40,14 @@ export const CardImage: React.FC<CardImageProps> = ({ data = [] }) => {
                   fontSize: 16,
                 }}
               >
-                {handleUndefinedString(data.title)}
+                {description1}
               </span>
               <br />
-              <span>{handleUndefinedString(data.jobPosition)}</span>
+              <span>{description2}</span>
               <br />
               Email:{' '}
               <i style={{ textDecoration: 'underline', color: 'blue' }}>
-                {handleUndefinedString(data.email)}
+                {email}
               </i>
             </>
           }

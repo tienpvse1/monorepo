@@ -25,7 +25,12 @@ const ViewContactDetails = () => {
             </Col>
             <Col span={8}>
               <div className="container-page">
-                <CardImage />
+                <CardImage 
+                  title={data.name}
+                  description1={data.jobPosition}
+                  description2={data.phone}
+                  email={data.email}
+                />
               </div>
             </Col>
           </Row>
