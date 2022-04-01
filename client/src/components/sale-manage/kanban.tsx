@@ -1,6 +1,6 @@
 import { ITeam } from '@modules/team/entity/team.entity';
 import { useUpdateTeam } from '@modules/team/mutate/team.patch';
-import { abstractReIndex, reIndexTeam } from '@util/array';
+import { abstractReIndex } from '@util/array';
 import { Dispatch, SetStateAction } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import '../../stylesheets/kanban.css';
