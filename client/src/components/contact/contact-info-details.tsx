@@ -20,7 +20,6 @@ export const ContactInfoDetails: React.FC<ContactInfoDetailsProps> = ({
         <Col style={{ height: '100%' }} span={12}>
           <MyForm label='Name'>{contact.name}</MyForm>
           <MyForm label='Email'>{contact.email}</MyForm>
-          <MyForm label='Job Position'>{contact.jobPosition}</MyForm>
           <MyForm
             customStyle={{ height: '100%' }}
             label='Address'
@@ -29,6 +28,7 @@ export const ContactInfoDetails: React.FC<ContactInfoDetailsProps> = ({
               {contact.address || '.'}
             </Paragraph>
           </MyForm>
+          <MyForm label='Job Position'>{contact.jobPosition}</MyForm>
         </Col>
         <Col span={12}>
           <MyForm label='Phone'>{contact.phone}</MyForm>

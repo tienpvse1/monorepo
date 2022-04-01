@@ -12,16 +12,18 @@ import { CSSProperties, FC, useState } from 'react';
 import { useCookies } from 'react-cookie';
 interface InplaceProps {
   defaultValue: string;
-  label?: string;
+  label: string;
   inputStyle?: CSSProperties;
+  labelStyle?: CSSProperties;
   field?: keyof IUpdateAccountDto;
-  showToast: (message: 'success' | 'fail') => void;
+  showToast?: (message: 'success' | 'fail') => void;
 }
 
 export const Inplace: FC<InplaceProps> = ({
   defaultValue,
   label,
   inputStyle,
+  labelStyle = { fontSize: 16, paddingLeft: 10 },
   field = 'firstName',
   showToast,
 }) => {
@@ -50,32 +52,37 @@ export const Inplace: FC<InplaceProps> = ({
     );
   };
   return (
-    <>
-      <InplaceComponent
-        style={{ ...inputStyle }}
-        active={active}
-        onToggle={(e) => setActive(e.value)}
-      >
-        <InplaceDisplay>
-          <InputText
-            disabled
-            style={{ ...inputStyle, transform: 'translateX(-10px)', height: '42px' }}
-            id={label}
-            value={value}
-          />
-        </InplaceDisplay>
-        <InplaceContent>
-          <InputText
-            onChange={(e) => setValue(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') handleEnter();
-            }}
-            style={inputStyle}
-            id={label}
-            defaultValue={defaultValue}
-          />
-        </InplaceContent>
-      </InplaceComponent>
-    </>
+    <div>
+      <label style={labelStyle} htmlFor={label}>
+        {label}
+      </label>
+      <div style={{ margin: 10 }}>
+        <InplaceComponent
+          style={{ ...inputStyle }}
+          active={active}
+          onToggle={(e) => setActive(e.value)}
+        >
+          <InplaceDisplay>
+            <InputText
+              disabled
+              style={{ ...inputStyle, transform: 'translateX(-10px)' }}
+              id={label}
+              value={value}
+            />
+          </InplaceDisplay>
+          <InplaceContent>
+            <InputText
+              onChange={(e) => setValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') handleEnter();
+              }}
+              style={inputStyle}
+              id={label}
+              defaultValue={defaultValue}
+            />
+          </InplaceContent>
+        </InplaceComponent>
+      </div>
+    </div>
   );
 };

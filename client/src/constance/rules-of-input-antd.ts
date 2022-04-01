@@ -28,5 +28,6 @@ export const isPostalCode = {
 export const isQuantity: any = {
   type: 'number',
   min: 1,
-  max: 99
+  max: 99,
+  message: 'Quantity must be between 1 and 99'
 }

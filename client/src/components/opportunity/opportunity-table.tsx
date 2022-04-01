@@ -15,6 +15,7 @@ import { useQueryClient } from 'react-query';
 import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.delete';
 import { removeDuplicate } from '@util/array';
 import { dateFormat } from '@constance/date-format';
+import { useHandleNavigate } from '@hooks/useHandleNavigate';
 const { DEFAULT } = dateFormat;
 
 interface OpportunitiesTableProps {
@@ -52,6 +53,8 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
     value: opportunity.pipelineColumn?.name,
   }));
   const navigate = useNavigate();
+  const { navigateRole } = useHandleNavigate();
+
   const { mutate: createOpportunity } = usePostPipelineItems();
   const { mutate: removePipelineItems } = useDeletePipelineItems();
   const queryClient = useQueryClient();
@@ -144,7 +147,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             width={200}
             render={(_, record: IPipelineItem) => (
               <>
-                <Link className='my-link' to={`view-details/${record.id}`}>
+                <Link className='my-link' to={`${navigateRole}contact/view-details/${record.contact.id}`}>
                   {record.contact?.name}
                 </Link>
               </>
@@ -196,7 +199,6 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
               </Link>
             )}
             filters={removeDuplicate(stageFilter, 'value')}
-            //@ts-ignore
             onFilter={(value, record) =>
               record.pipelineColumn.name.indexOf(value as string) === 0
             }
