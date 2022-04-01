@@ -21,6 +21,7 @@ export const Arrow: React.FC<ArrowProps> = ({
   };
 
   const mouseHover = (scroll: () => void) => {
+    // @ts-ignore
     refId.current = setInterval(scroll, 10);
   };
 

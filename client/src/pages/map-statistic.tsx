@@ -11,7 +11,7 @@ interface MapStatisticProps {
 const MapStatistic: React.FC<MapStatisticProps> = ({ google }) => {
   const { data: companies, isLoading } = useCompanies();
   const [zoom, setZoom] = useState(8);
-  const [center, setCenter] = useState({
+  const [center, _setCenter] = useState({
     lat: 10.8033,
     lng: 106.6967,
   });
@@ -35,6 +35,7 @@ const MapStatistic: React.FC<MapStatisticProps> = ({ google }) => {
           center={center}
           initialCenter={center}
           centerAroundCurrentLocation
+          // @ts-ignore
           zoom={zoom}
           onZoomChanged={(prop, map) => setZoom(map.zoom)}
         >

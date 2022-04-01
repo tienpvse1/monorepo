@@ -10,13 +10,12 @@ import {
   BarElement,
   CategoryScale,
   Chart as ChartJS,
+  Filler,
   Legend,
   LinearScale,
   Title,
   Tooltip,
-  Filler,
 } from 'chart.js';
-import moment from 'moment';
 import { Dispatch, lazy, SetStateAction, Suspense } from 'react';
 import { useCookies } from 'react-cookie';
 const VerticalChart = lazy(() => import('./vertical-chart'));

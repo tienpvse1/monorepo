@@ -1,4 +1,3 @@
-import { getPipeline } from '@db/pipeline.db';
 import { useStages } from '@modules/pipeline-column/query/pipeline-column.get';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useChangeStage } from '@modules/pipeline-items/mutation/pipeline-items.update';
@@ -6,7 +5,6 @@ import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { qualifyStage } from '@util/stage';
 import { Alert, Button, Card, Steps, Tabs } from 'antd';
-import { useLiveQuery } from 'dexie-react-hooks';
 import { client } from '../../App';
 import { ContactInfo } from './contact-info';
 

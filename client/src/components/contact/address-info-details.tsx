@@ -1,4 +1,3 @@
-import { MyForm } from '@components/form/my-form';
 import { IContact } from '@modules/contact/entity/contact.entity';
 import { Col, Row } from 'antd';
 
