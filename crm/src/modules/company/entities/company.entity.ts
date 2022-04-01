@@ -13,6 +13,9 @@ export class Company extends BaseEntity {
   mobile: string;
 
   @Column({ nullable: true })
+  address: string;
+
+  @Column({ nullable: true })
   email: string;
 
   @Column({ nullable: true })
