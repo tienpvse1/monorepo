@@ -17,7 +17,6 @@ const LayoutUser = () => {
 
   if (public_user_info?.role.name === `${Role.SALE_MANAGER}`)
     return <Navigate to={'/sale-manager'} />;
-    
 
   return (
     <AppLayout
