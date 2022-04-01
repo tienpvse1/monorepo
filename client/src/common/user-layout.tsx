@@ -7,11 +7,7 @@ import { AppLayout } from './layout';
 
 const LayoutUser = () => {
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
-<<<<<<< HEAD
-
-=======
   
->>>>>>> d87da062d4cbc050636146dd822123fd653d467f
   if (!public_user_info) return <Navigate to={'/login'} />;
 
   if (!public_user_info.role) return <Navigate to={'/login'} />;
