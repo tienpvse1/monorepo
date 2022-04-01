@@ -1,3 +1,4 @@
+
 import { OpportunityHistoryType } from '@modules/opportunity-history/entity/opportunity-history.entity';
 import { useOpportunityHistory } from '@modules/opportunity-history/query/opportunity-history.get';
 import { getHistoryDate } from '@util/date';
@@ -25,7 +26,7 @@ export const OpportunityTimeLine: React.FC<ThirdColumnProps> = ({
                 Moved from{' '}
                 <Tag color={'blue'}>
                   {item.description.split(/from|to/)[1]}
-                </Tag>{' '}
+                </Tag>
                 to{' '}
                 <Tag color={'error'}>
                   {item.description.split(/from|to/)[2]}
