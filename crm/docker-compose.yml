@@ -52,6 +52,6 @@ services:
       GOOGLE_PASSWORD: Username666
       #email server
       EMAIL_SERVER_URL: http://165.22.59.245/v1/
-      EMAIL_SERVER_ACCESS_TOKEN: 2984c30ed5d4c8deaaf93b0e96a22b3c3fbe02405cd84478457aa4cd624ca169
+      EMAIL_SERVER_ACCESS_TOKEN: e0af67ee5203a51e999d3f31b32ef69fd00f4ec63c138f86a166d3a371565cf5
     ports:
       - 80:8080
