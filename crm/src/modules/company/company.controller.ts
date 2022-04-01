@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -30,7 +30,7 @@ import { Company } from './entities/company.entity';
     },
   },
   routes: {
-    exclude: ['deleteOneBase', 'createOneBase'],
+    exclude: ['deleteOneBase', 'createOneBase', 'updateOneBase'],
   },
 })
 @ApiTags('company')
@@ -45,5 +45,10 @@ export class CompanyController {
   @Post()
   create(@Body() dto: CreateCompanyDto) {
     return this.service.create(dto);
+  }
+  @Patch(':id')
+  @HistoryLog('update a company')
+  update(@Param('id') id: string, @Body() dto: UpdateCompanyDto) {
+    return this.service.updateCompany(id, dto);
   }
 }

@@ -43,8 +43,10 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
   const queryClient = useQueryClient();
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
   const { mutate } = useChangeStage();
-  const stageWon = data?.pipelineColumns?.find((stage) => stage.isWon === true)
 
+  console.log("data:", data);
+  
+  const stageWon = data?.pipelineColumns?.find((stage) => stage.isWon === true)
   const totalColumn = data?.pipelineColumns.length || 1;
   const widthOfItem = 333;
 

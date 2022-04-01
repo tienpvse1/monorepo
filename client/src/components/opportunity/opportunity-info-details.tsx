@@ -1,6 +1,9 @@
 import { MyForm } from '@components/form/my-form';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { Badge, Col, Row } from 'antd';
+import { getCoursesById } from '@modules/product/query/products.get';
+import { Badge, Col, Row, Typography } from 'antd';
+import { useEffect, useState } from 'react';
+const { Paragraph } = Typography;
 
 interface OpportunityInfoDetailsProps {
   opportunity: IPipelineItem;
@@ -9,6 +12,13 @@ interface OpportunityInfoDetailsProps {
 export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
   opportunity,
 }) => {
+
+  const [courseName, setCourseName] = useState<string>();
+
+  useEffect(() => {
+    getCoursesById(opportunity.opportunityRevenue.courseId)
+      .then((value) => setCourseName(value.data[0].name))
+  }, [])
 
   const handlePriority = (value: number) => {
     let node = <Badge color={'blue'} text='Low' />;
@@ -30,11 +40,11 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
           <MyForm label='Name'>{opportunity.name}</MyForm>
           <MyForm label='Company Name'>{opportunity.contact?.company?.name}</MyForm>
           <MyForm label='Organization / Contact'>
-            {opportunity.contact.name}
+            {opportunity.contact?.name}
           </MyForm>
           <MyForm label='Close Date'>{opportunity.expectedClosing}</MyForm>
         </Col>
-        <Col span={12}>
+        <Col style={{ height: '100%' }} span={12}>
           <MyForm label='Priority'>
             {handlePriority(opportunity.priority)}
           </MyForm>
@@ -42,11 +52,13 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
           <MyForm label='Expected Revenue'>
             {opportunity.expectedRevenue}
           </MyForm>
-          <MyForm label='Course name'>
-            {/* {opportunity.opportunityRevenue.product.name} */}
+          <MyForm label='Course name' customStyle={{ height: '100%' }}>
+            <Paragraph style={{ marginBottom: 0 }}>
+              {courseName}
+            </Paragraph>
           </MyForm>
           <MyForm label='Expected sold quantity'>
-            {/* {opportunity.opportunityRevenue.quantity} */}
+            {opportunity.opportunityRevenue.quantity}
           </MyForm>
         </Col>
       </Row>

@@ -1,8 +1,6 @@
 import { DeleteOutlined, FormOutlined } from "@ant-design/icons";
-import { EditableCell } from "@components/table/editable-cell";
-import { Button, Form, Popconfirm, Space, Table } from "antd"
+import { Button, Form, Space, Table } from "antd"
 import Column from "antd/lib/table/Column"
-import { useState } from "react";
 import { useToggle } from "@hooks/useToggle";
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { CompanyTitleTable } from "@components/company/company-title-table";
@@ -13,10 +11,10 @@ import moment from "moment";
 import { dateFormat } from "@constance/date-format";
 import { useCreateCompany } from "@modules/company/mutation/company.post";
 import { message } from 'antd';
-import { useUpdateCompany } from "@modules/company/mutation/company.patch";
 import { useQueryClient } from "react-query";
 import { useDeleteCompany } from "@modules/company/mutation/company.delete";
 import { ICompany } from "@modules/company/entity/company.entity";
+import { Link, useNavigate } from "react-router-dom";
 const { CRUD_AT } = dateFormat;
 
 interface CompanyTableProps {
@@ -31,15 +29,12 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
   setDataCompany
 }) => {
   const queryClient = useQueryClient();
-
+  const navigate = useNavigate();
   const { mutate: createCompany } = useCreateCompany();
-  const { mutate: updateCompany } = useUpdateCompany();
   const { mutate: deleteCompany } = useDeleteCompany();
 
   const [form] = Form.useForm<any>();
-  const [isEditing, toggleEditing] = useToggle();
   const [isOpenModal, toggleCreateModal] = useToggle();
-  const [editingIndex, setEditingIndex] = useState('');
 
 
   const rowSelection = {
@@ -50,19 +45,8 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
     }),
   };
 
-  const handleEditClick = (record: any) => {
-    toggleEditing();
-    setEditingIndex(record.id);
-    form.setFieldsValue({
-      name: record.name,
-      email: record.email,
-      mobile: record.mobile,
-      city: record.city,
-      country: record.country
-    })
-  };
   const handleCreateCompany = (record: any) => {
-    const { region, country ,...rest } = record;
+    const { region, country, ...rest } = record;
 
     createCompany({
       ...rest,
@@ -74,24 +58,6 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
         message.success('Create new company successfully');
       }
     })
-  }
-
-  const handleSave = async (id: string) => {
-    try {
-      const record = await form.validateFields();
-      updateCompany({
-        id,
-        ...record
-      }, {
-        onSuccess: () => {
-          queryClient.invalidateQueries(QUERY_COMPANIES);
-          message.success('Saved successfully');
-          toggleEditing();
-        }
-      })
-    } catch (error) {
-      return;
-    }
   }
 
   return (
@@ -115,15 +81,9 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
             dataIndex="name"
             key="name"
             render={(_, record: any) => (
-              <EditableCell
-                linkTo={`view-details/${record.id}`}
-                dataIndex='name'
-                nameForm='name'
-                editing={isEditing}
-                editingIndex={editingIndex}
-                recordIndex={record.id}
-                record={record}
-              />
+              <Link className='my-link' to={`view-details/${record.id}`}>
+                {record.name}
+              </Link>
             )}
             sorter={(a, b) => ('' + a.name).localeCompare(b.name)}
           />
@@ -133,51 +93,21 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
             dataIndex="mobile"
             key="mobile"
             render={(_, record: any) => (
-              <EditableCell
-                linkTo={`view-details/${record.id}`}
-                dataIndex='mobile'
-                nameForm='mobile'
-                editing={isEditing}
-                editingIndex={editingIndex}
-                recordIndex={record.id}
-                record={record}
-              />
+              <Link className='my-link' to={`view-details/${record.id}`}>
+                {record.mobile}
+              </Link>
             )}
 
           />
-
-          {/* <Column
-            title="Company Owner"
-            dataIndex="companyOwner"
-            key="companyOwner"
-            render={(_, record: any) => (
-              <EditableCell
-                linkTo={`view-details/`}
-                dataIndex='companyOwner'
-                nameForm='companyOwner'
-                editing={false}
-                editingIndex={editingIndex}
-                recordIndex={record.id}
-                record={record}
-              />
-            )}
-          /> */}
 
           <Column
             title="City"
             dataIndex="city"
             key="city"
             render={(_, record: any) => (
-              // <EditableCell
-              //   linkTo={`view-details/${record.id}`}
-              //   dataIndex='admin_name'
-              //   nameForm='admin_name'
-              //   editing={isEditing}
-              //   editingIndex={editingIndex}
-              //   recordIndex={record.id}
-              //   record={record.city}
-              // />
-              <span>{record.city?.admin_name}</span>
+              <Link className='my-link' to={`view-details/${record.id}`}>
+                {record.city?.admin_name}
+              </Link>
             )}
             sorter={(a, b) => ('' + a.city?.name).localeCompare(b.city?.name)}
           />
@@ -186,25 +116,21 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
             dataIndex="country"
             key="country"
             render={(_, record: any) => (
-              <EditableCell
-                linkTo={`view-details/${record.id}`}
-                dataIndex='country'
-                nameForm='country'
-                editing={isEditing}
-                editingIndex={editingIndex}
-                recordIndex={record.id}
-                record={record}
-              />
+              <Link className='my-link' to={`view-details/${record.id}`}>
+                {record.country}
+              </Link>
             )}
             sorter={(a, b) => ('' + a.country).localeCompare(b.country)}
           />
 
           <Column
-            title="Created at"
+            title="Created Date"
             dataIndex="createdAt"
             key="createdAt"
             render={(_, record: any) => (
-              <span>{moment(record.createdAt).format(CRUD_AT)}</span>
+              <Link className='my-link' to={`view-details/${record.id}`}>
+                {moment(record.createdAt).format(CRUD_AT)}
+              </Link>
             )}
             sorter={(a, b) => moment(a.createdAt).diff(moment(b.createdAt))}
           />
@@ -212,45 +138,29 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
           <Column title="Actions" dataIndex="actions" key="actions" width={150}
             render={(_, record: any) => (
               <Space size='small' style={{ width: '100%' }}>
-                {isEditing && record.id === editingIndex ? (
-                  <>
-                    <Button type='link' onClick={() => handleSave(record.id)}>
-                      Save
-                    </Button>
-                    <Popconfirm
-                      title='Sure to cancel?'
-                      onConfirm={toggleEditing}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <span style={{ cursor: 'pointer' }}>Cancel</span>
-                    </Popconfirm>
-                  </>
-                ) : (
-                  <>
-                    <Button
-                      type='ghost'
-                      shape='round'
-                      onClick={() => handleEditClick(record)}
-                    >
-                      <FormOutlined />
-                    </Button>
+                <>
+                  <Button
+                    type='ghost'
+                    shape='round'
+                    onClick={() => navigate(`view-details/${record.id}`)}
+                  >
+                    <FormOutlined />
+                  </Button>
 
-                    <Button
-                      type='default'
-                      onClick={() => showDeleteConfirm(() => deleteCompany(record.id, {
-                        onSuccess: () => {
-                          queryClient.invalidateQueries(QUERY_COMPANIES);
-                          message.success('Deleted company successfully!');
-                        }
-                      }))}
-                      shape='round'
-                      danger
-                    >
-                      <DeleteOutlined />
-                    </Button>
-                  </>
-                )}
+                  <Button
+                    type='default'
+                    onClick={() => showDeleteConfirm(() => deleteCompany(record.id, {
+                      onSuccess: () => {
+                        queryClient.invalidateQueries(QUERY_COMPANIES);
+                        message.success('Deleted company successfully!');
+                      }
+                    }))}
+                    shape='round'
+                    danger
+                  >
+                    <DeleteOutlined />
+                  </Button>
+                </>
               </Space>
             )}
           />

@@ -1,7 +1,6 @@
 import { OpportunityHistoryType } from '@modules/opportunity-history/entity/opportunity-history.entity';
 import { usePostOpportunityHistory } from '@modules/opportunity-history/mutation/opportunity-history.post';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { useChangePipeline } from '@modules/pipeline/mutation/pipeline.update';
 import { abstractReIndex } from '@util/array';
 import { startFireworks } from '@util/firework';

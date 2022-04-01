@@ -7,7 +7,7 @@ interface OpportunityTitleLostProps {
 
 export const OpportunityTitleLost: React.FC<OpportunityTitleLostProps> = ({
   opportunityLost = 0,
-  totalOpportunity = 0
+  totalOpportunity = 0,
 }) => {
   return (
     <>
@@ -31,7 +31,7 @@ export const OpportunityTitleLost: React.FC<OpportunityTitleLostProps> = ({
                 />
                 <span>
                   Total lost {`(${opportunityLost})`} <br />
-                  <Tag color={'purple'}>Opportunity Lost</Tag>
+                  <Tag color={'purple'}>Lost Opportunity</Tag>
                 </span>
               </span>
             </>
@@ -42,16 +42,15 @@ export const OpportunityTitleLost: React.FC<OpportunityTitleLostProps> = ({
               {totalOpportunity}
             </Descriptions.Item>
 
-            <Descriptions.Item label='Opportunity lost'>
+            <Descriptions.Item label='Lost Opportunity'>
               {opportunityLost}
             </Descriptions.Item>
             <Descriptions.Item label='Expected loss of revenue'>
               160k$
             </Descriptions.Item>
-
           </Descriptions>
         </PageHeader>
       </div>
     </>
-  )
-}
+  );
+};

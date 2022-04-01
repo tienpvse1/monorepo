@@ -55,7 +55,8 @@ const DealStatistic: React.FC<EmailStatisticProps> = ({}) => {
           return pipelineItems?.filter(
             (item) =>
               isIn(item.createdAt.toString(), month) &&
-              !item.pipelineColumn.isWon
+              !item.pipelineColumn.isWon &&
+              !item.isLose
           ).length;
         }),
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -74,7 +75,9 @@ const DealStatistic: React.FC<EmailStatisticProps> = ({}) => {
       {
         label: 'Lost',
         data: labels.map((month) => {
-          return 0.5;
+          return pipelineItems?.filter(
+            (item) => isIn(item.createdAt.toString(), month) && item.isLose
+          ).length;
         }),
         backgroundColor: 'rgba(125, 58, 193, 0.5)',
       },

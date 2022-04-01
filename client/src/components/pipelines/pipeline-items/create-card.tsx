@@ -1,10 +1,10 @@
+import { SelectBoxCourse } from '@components/course/select-box-Course';
 import { isRequired } from '@constance/rules-of-input-antd';
 import { ICreatePipelineItemsDto } from '@modules/pipeline-items/dto/create-pipeline-items.dto';
 import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { Button, Card, Form, Input, InputNumber } from 'antd';
 import { FC } from 'react';
-import { SelectBoxCourse } from '@components/course/select-box-Course';
 import { useQueryClient } from 'react-query';
 import { SelectBoxGroup } from './select-box-group';
 

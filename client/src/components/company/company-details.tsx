@@ -71,7 +71,7 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
 
   const handleToggleEditForm3 = () => {
     toggleEditForm3();
-
+    
   };
 
   const handleSubmitForm1 = async () => {
@@ -95,7 +95,7 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
   const handleSubmitForm2 = async () => {
     try {
       const value = await form.validateFields();
-      const { region, address, cityId, country, city, state, ...rest } = value;
+      const { region, address, cityId, country, city, state, cityName ,...rest } = value;
       updateCompany({
         ...rest,
         id: company.id,

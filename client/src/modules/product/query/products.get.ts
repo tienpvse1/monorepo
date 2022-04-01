@@ -17,10 +17,23 @@ export const useQueryProducts = () => useQuery(PRODUCT, getAllProduct);
 
 export const getCourses = async (search = '', size = 10, index = 1) => {
   const token = getCookies(COURSE_SERVICE_TOKEN)[0]['course-service-token'];
-  console.log(token);
 
   const { data } = await axios.get<ICourse>(
     `http://smapi.hisoft.vn/api/course?index=${index}&size=${size}&name=${search}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return data;
+};
+
+export const getCoursesById = async (code: string, size = 10, index = 1) => {
+  const token = getCookies(COURSE_SERVICE_TOKEN)[0]['course-service-token'];
+
+  const { data } = await axios.get<ICourse>(
+    `http://smapi.hisoft.vn/api/course?index=${index}&size=${size}&code=${code}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

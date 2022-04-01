@@ -1,14 +1,14 @@
+import { CheckOutlined } from '@ant-design/icons';
 import { imagePlaceHolderUrl } from '@constance/image';
 import { useSaleAccounts } from '@modules/account/get/account.get';
 import { useQueryAllContacts } from '@modules/contact/query/contact.get';
-import { useCourses } from '@modules/course/query/course.get';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import {
-  GET_STAGES,
-  useStages,
+  useStages
 } from '@modules/pipeline-column/query/pipeline-column.get';
-import { useCreatePipelineItemForManager } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { ICreatePipelineItemForManager } from '@modules/pipeline-items/dto/create-pipeline-items.dto';
+import { useCreatePipelineItemForManager } from '@modules/pipeline-items/mutation/pipeline-items.post';
+import { useCourses } from '@modules/product/query/products.get';
 import {
   Avatar,
   Badge,
@@ -18,16 +18,12 @@ import {
   Divider,
   Drawer,
   Form,
-  Input,
-  Row,
+  Input, notification, Row,
   Select,
-  Space,
-  notification,
+  Space
 } from 'antd';
-
-import { CheckOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { client } from '../../../App';
+
 
 interface CreateOpportunityProps {
   visible: boolean;
@@ -251,7 +247,7 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
               <Form.Item
                 name='courseId'
                 label='Course'
-                initialValue={courses.length > 0 && courses[0].id}
+                initialValue={courses?.data.length > 0 && courses?.data[0].code}
                 rules={[{ required: true, message: 'Please choose a course' }]}
               >
                 <Select
@@ -264,10 +260,10 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
                       .includes(input.toLowerCase());
                   }}
                 >
-                  {courses
-                    ?.filter((_item, index) => index < 5)
+                  {courses?.data
+                    .filter((_item, index) => index < 5)
                     .map((course) => (
-                      <Select.Option key={course.id} value={course.id}>
+                      <Select.Option key={course.code} value={course.code}>
                         {course.name}
                       </Select.Option>
                     ))}

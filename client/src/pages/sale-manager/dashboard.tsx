@@ -8,18 +8,24 @@ import { isIn } from '@util/date';
 import { Calendar } from 'antd';
 import moment from 'moment';
 import { Suspense, useState } from 'react';
+import { useOpportunityRevenue } from '@modules/opportunity-revenue/query/opportunity-revenue.get';
 
 interface SaleManagerDashboardProps {}
 
 const SaleManagerDashboard: React.FC<SaleManagerDashboardProps> = ({}) => {
   const { data: pipelineItems } = usePipelineItems();
   const { data: sales } = useSaleAccounts(true);
+  const { data: opportunityRevenue } = useOpportunityRevenue(true);
   const [data, setData] = useState<(ICardData & { index: number })[]>([
     {
       index: 0,
       title: 'Total Opportunities',
-      total: pipelineItems.filter((item) =>
-        isIn(item.createdAt.toString(), moment().month(new Date().getMonth()))
+      total: pipelineItems.filter(
+        (item) =>
+          isIn(
+            item.createdAt.toString(),
+            moment().month(new Date().getMonth())
+          ) && !item.isLose
       ).length,
       updateStatus: 'since last month',
       variance: 9,
@@ -27,7 +33,9 @@ const SaleManagerDashboard: React.FC<SaleManagerDashboardProps> = ({}) => {
     {
       index: 1,
       title: 'Sold courses',
-      total: 59,
+      total: opportunityRevenue.filter((item) =>
+        isIn(item.createdAt.toString(), moment().month(new Date().getMonth()))
+      ).length,
       updateStatus: 'since last month',
       variance: 9,
     },

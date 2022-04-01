@@ -1,4 +1,5 @@
 import { RetweetOutlined } from '@ant-design/icons';
+import { AntColorType } from '@constance/color';
 import { getMonthToShow } from '@util/date';
 import {
   Button,
@@ -13,13 +14,21 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface StatisticHeaderProps {}
-
+type ChartType = 'contacts' | 'deal' | 'sent-email' | 'sold';
+const chartTypeWithColor: {
+  label: string;
+  color: AntColorType;
+  key: ChartType;
+}[] = [
+  { key: 'contacts', color: 'volcano', label: 'Contacts' },
+  { key: 'deal', color: 'purple', label: 'Deal' },
+  { key: 'sent-email', color: 'blue', label: 'Sent emails' },
+  { key: 'sold', color: 'green', label: 'Sold' },
+];
 export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
-  const [chartType, setChartType] = useState<
-    'contacts' | 'deal' | 'sent-email'
-  >('contacts');
+  const [chartType, setChartType] = useState<ChartType>('contacts');
   const navigate = useNavigate();
-  const handleMenuItemClicked = (path: 'contacts' | 'deal' | 'sent-email') => {
+  const handleMenuItemClicked = (path: ChartType) => {
     setChartType(path),
       navigate(`/statistic/${path === 'contacts' ? '' : path}`);
   };
@@ -47,24 +56,27 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
             }}
             label='Target'
           >
-            <Tag color={'error'}>{chartType}</Tag>
+            <Tag
+              color={
+                chartTypeWithColor.filter((item) => item.key === chartType)[0]
+                  .color
+              }
+            >
+              {chartType}
+            </Tag>
             <Tooltip title='change'>
               <Dropdown
+                trigger={['click']}
                 overlay={
                   <Menu onSelect={(e) => navigate(`/statistic/${e.key}`)}>
-                    <Menu.Item
-                      onClick={() => handleMenuItemClicked('contacts')}
-                    >
-                      <Tag color={'volcano'}>Contacts</Tag>
-                    </Menu.Item>
-                    <Menu.Item onClick={() => handleMenuItemClicked('deal')}>
-                      <Tag color={'purple'}>Deals</Tag>
-                    </Menu.Item>
-                    <Menu.Item
-                      onClick={() => handleMenuItemClicked('sent-email')}
-                    >
-                      <Tag color={'blue'}>Sent emails</Tag>
-                    </Menu.Item>
+                    {chartTypeWithColor.map((item) => (
+                      <Menu.Item
+                        key={item.key}
+                        onClick={() => handleMenuItemClicked(item.key)}
+                      >
+                        <Tag color={item.color}>{item.label}</Tag>
+                      </Menu.Item>
+                    ))}
                   </Menu>
                 }
               >

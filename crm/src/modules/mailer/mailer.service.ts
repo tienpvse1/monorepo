@@ -37,6 +37,7 @@ export class EmailService extends BaseService<Email> {
   }
 
   async sendEmail(email: CreateMailerDto, ip: string, senderId: string) {
+    if (!ip) return;
     const account = await this.accountService.findOneItem({
       where: {
         id: senderId,

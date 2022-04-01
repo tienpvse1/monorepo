@@ -1,4 +1,5 @@
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
+import { useChangeStagePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items-change-stage';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { useUpdatePipeline } from '@modules/pipeline/mutation/pipeline.update';
 import { startFireworks } from '@util/firework';
@@ -7,6 +8,7 @@ import { useState } from 'react';
 export const useHandleDnD = (data: IPipeline) => {
   const [newPipeLine, setPipeLine] = useState<IPipeline>();
   const { updatePipeline, isError } = useUpdatePipeline();
+  const { changeStage } = useChangeStagePipelineItems();
 
   const setNewPipeline = (newColumn: IPipelineColumn[]) => {
     const newState = {
@@ -16,6 +18,35 @@ export const useHandleDnD = (data: IPipeline) => {
     setPipeLine(newState);
     updatePipeline(newState);
   };
+
+  const handleChangeStageItems = (
+    newColumn: IPipelineColumn[],
+    draggableId: string,
+    startColumn: string,
+    finishColumn: string,
+    startColumnName: string,
+    finishColumnName: string
+  ) => {
+    const newState =
+    {
+      ...data,
+      pipelineColumns: newColumn,
+    }
+
+    setPipeLine(newState);
+    changeStage({
+      ...newState,
+      //@ts-ignore
+      infoChangeStage: {
+        itemsId: draggableId,
+        oldStage: startColumn,
+        newStage: finishColumn,
+        startColumnName,
+        finishColumnName
+      }
+    })
+
+  }
 
   const reassignIndex = <T>(array: Array<T>) => {
     return array.map((value, index) => ({ ...value, index: index }));
@@ -91,7 +122,7 @@ export const useHandleDnD = (data: IPipeline) => {
     const column2 = data.pipelineColumns.find(
       (value) => value.id == finishColumn
     );
-    
+
     if (column2.isWon) startFireworks();
 
     const items2 = Array.from(column2.pipelineItems);
@@ -111,7 +142,14 @@ export const useHandleDnD = (data: IPipeline) => {
     });
 
     // Update and Record stage transition activity
-    setNewPipeline(newColumn)
+    handleChangeStageItems(
+      newColumn,
+      draggableId,
+      startColumn,
+      finishColumn,
+      column1.name,
+      column2.name
+    );
   };
 
   return {

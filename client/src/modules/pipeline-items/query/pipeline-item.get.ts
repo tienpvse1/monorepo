@@ -8,6 +8,8 @@ const { PIPELINE_ITEM } = controllers;
 export const GET_PIPELINE_ITEM_BY_ID = 'get-pipeline-item-by-id';
 export const GET_PIPELINE_ITEM_BY_ACCOUNT = 'get-pipeline-item-by-account';
 export const GET_ALL_PIPELINE_ITEM = 'get-all-pipeline-item';
+export const GET_LOSE_PIPELINE_ITEMS = 'get-lose-pipeline-items';
+export const GET_MY_LOSE_PIPELINE_ITEMS = 'get-my-lose-pipeline-items';
 
 export const getPipelineItemById = async (id: string) => {
   const queryBuilder = RequestQueryBuilder.create({
@@ -53,7 +55,7 @@ export const getPipelineByAccountID = async (accountId: string) => {
         value: accountId,
       },
     ],
-    sort: [{ field: 'createdAt', order: 'DESC' }]
+    sort: [{ field: 'createdAt', order: 'DESC' }],
   }).query(false);
 
   const { data } = await instance.get<IPipelineItem[]>(
@@ -68,8 +70,9 @@ export const getAllPipelineItem = async () => {
       { field: 'pipelineColumn' },
       { field: 'account' },
       { field: 'contact' },
+      { field: 'reason' },
     ],
-    sort: [{ field: 'createdAt', order: 'DESC' }]
+    sort: [{ field: 'createdAt', order: 'DESC' }],
   }).query(false);
 
   const { data } = await instance.get<IPipelineItem[]>(
@@ -93,28 +96,33 @@ export const searchPipelineItem = async (text: string, accountId?: string) => {
           $or: [
             {
               name: {
-                $cont: text
+                $cont: text,
               },
             },
             {
               'contact.name': {
+                $cont: text,
+              },
+            },
+            {
+              'contact.email': {
                 $cont: text
               }
             },
             {
               'account.firstName': {
                 $cont: text,
-              }
-            }
-          ]
+              },
+            },
+          ],
         },
         {
           'account.id': {
-            $eq: accountId
-          }
-        }
-      ]
-    }
+            $eq: accountId,
+          },
+        },
+      ],
+    },
   }).query(false);
 
   const { data } = await instance.get<IPipelineItem[]>(
@@ -134,21 +142,26 @@ export const searchAllPipelineItem = async (text: string) => {
       $or: [
         {
           name: {
-            $cont: text
+            $cont: text,
           },
         },
         {
           'contact.name': {
+            $cont: text,
+          },
+        },
+        {
+          'contact.email': {
             $cont: text
           }
         },
         {
           'account.firstName': {
             $cont: text,
-          }
-        }
-      ]
-    }
+          },
+        },
+      ],
+    },
   }).query(false);
 
   const { data } = await instance.get<IPipelineItem[]>(
@@ -158,6 +171,40 @@ export const searchAllPipelineItem = async (text: string) => {
   return data;
 };
 
+export const getLostOpportunity = async () => {
+  const query = RequestQueryBuilder.create({
+    filter: [{ field: 'isLose', operator: '$eq', value: true }],
+    join: [
+      {
+        field: 'reason',
+      },
+    ],
+  }).query(false);
+  const { data } = await instance.get<IPipelineItem[]>(
+    `${PIPELINE_ITEM}?${query}`
+  );
+  return data;
+};
+export const getMyLostOpportunity = async (accountId: string) => {
+  const query = RequestQueryBuilder.create({
+    filter: [
+      { field: 'isLose', operator: '$eq', value: true },
+      { field: 'account.id', operator: '$eq', value: accountId },
+    ],
+    join: [
+      {
+        field: 'reason',
+      },
+      {
+        field: 'account',
+      },
+    ],
+  }).query(false);
+  const { data } = await instance.get<IPipelineItem[]>(
+    `${PIPELINE_ITEM}?${query}`
+  );
+  return data;
+};
 export const usePipelineItem = (id: string) =>
   useQuery([GET_PIPELINE_ITEM_BY_ID, id], () => getPipelineItemById(id), {
     suspense: true,
@@ -179,5 +226,18 @@ export const useMyPipelineItems = (accountId: string) =>
     () => getPipelineByAccountID(accountId),
     {
       enabled: Boolean(accountId),
+    }
+  );
+
+export const useLosePipelineItems = () =>
+  useQuery([GET_LOSE_PIPELINE_ITEMS], getLostOpportunity);
+
+export const useMyLosePipelineItems = (accountId: string, suspense = false) =>
+  useQuery(
+    [GET_MY_LOSE_PIPELINE_ITEMS, accountId],
+    () => getMyLostOpportunity(accountId),
+    {
+      enabled: Boolean(accountId),
+      suspense,
     }
   );

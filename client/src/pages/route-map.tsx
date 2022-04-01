@@ -1,33 +1,43 @@
 import SaleManagerLayout from '@common/sale-manager-layout';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
+import EmailContent from './email-content';
 import Statistic from './statistic';
 
-const MapStatistic = lazy(() => import('./map-statistic'));
-const HomePage = lazy(() => import('@pages/home'));
+const Inbox = lazy(() => import('./inbox'));
+const Email = lazy(() => import('./email'));
 const Tag = lazy(() => import('@pages/tag'));
+const HomePage = lazy(() => import('@pages/home'));
 const Contact = lazy(() => import('@pages/contact'));
 const LoginPage = lazy(() => import('@pages/login'));
 const Company = lazy(() => import('@pages/company'));
 const AdminPage = lazy(() => import('@pages/admin'));
 const Product = lazy(() => import('@pages/product'));
+const SentEmails = lazy(() => import('./sent-email'));
 const Schedule = lazy(() => import('@pages/schedule'));
 const Pipeline = lazy(() => import('@pages/pipeline'));
 const SignUpPage = lazy(() => import('@pages/signup'));
 const Layout = lazy(() => import('@common/user-layout'));
 const ProfilePage = lazy(() => import('@pages/profile'));
+const MapStatistic = lazy(() => import('./map-statistic'));
 const AddContact = lazy(() => import('@pages/import-contact'));
 const AdminLayout = lazy(() => import('@common/admin-layout'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
+const LostOpportunity = lazy(() => import('./lost-opportunity'));
+const SentItem = lazy(() => import('@components/sent-email/item'));
 const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
+const ListSentEmails = lazy(() => import('@components/sent-email/list'));
+const SoldCoursesStatistic = lazy(
+  () => import('@components/statistic/sold-course')
+);
 const DealStatistic = lazy(
   () => import('@components/statistic/deal-statistic')
 );
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
 const SaleManagerDashboard = lazy(() => import('./sale-manager/dashboard'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
-const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/pipeline'));
+const PipelineManager = lazy(() => import('@pages/sale-manager/pipeline'));
 const ContactsChart = lazy(() => import('@components/statistic/chart'));
 const SentEmailStatistic = lazy(
   () => import('@components/statistic/sent-email-statistic')
@@ -56,8 +66,16 @@ const ListOfAllContact = lazy(
   () => import('@components/admin/list-of-all-contacts')
 );
 
-const SalesOpportunityLost = lazy(() => import('@components/sale/sales-opportunity-lost'));
+const SalesOpportunityLost = lazy(
+  () => import('@components/sale/sales-opportunity-lost')
+);
 const PipelineSale = lazy(() => import('@components/sale/pipeline-sale'));
+const SaleManagerPipeline = lazy(
+  () => import('@pages/sale-manager/sale-manager-pipeline')
+);
+const ListAllOpportunityLost = lazy(
+  () => import('@components/sale-manager/list-all-opportunity-lost')
+);
 
 export const route: RouteObject[] = [
   {
@@ -122,6 +140,10 @@ export const route: RouteObject[] = [
             element: <DealStatistic />,
           },
           {
+            path: '/statistic/sold',
+            element: <SoldCoursesStatistic />,
+          },
+          {
             path: '/statistic/sent-email',
             element: <SentEmailStatistic />,
           },
@@ -129,20 +151,39 @@ export const route: RouteObject[] = [
       },
       {
         path: 'email',
-        element: <EmailCompose />,
+        element: <Email />,
+        children: [
+          {
+            path: '/email/',
+            element: <EmailCompose />,
+          },
+          {
+            path: '/email/inbox',
+            element: <Inbox />,
+          },
+          {
+            path: '/email/sent',
+            element: <SentEmails />,
+            children: [
+              {
+                path: '/email/sent/',
+                element: <ListSentEmails />,
+              },
+              {
+                path: '/email/sent/:id',
+                element: <SentItem />,
+              },
+            ],
+          },
+          {
+            path: '/email/:id',
+            element: <EmailContent />,
+          },
+        ],
       },
       {
         path: 'map-statistic',
-        element: (
-          <MapStatistic
-            locations={[
-              {
-                lat: 10.8033,
-                lng: 106.6967,
-              },
-            ]}
-          />
-        ),
+        element: <MapStatistic />,
       },
       {
         path: 'forecast',
@@ -151,6 +192,10 @@ export const route: RouteObject[] = [
       {
         path: 'profile',
         element: <ProfilePage />,
+      },
+      {
+        path: 'lost-opportunities',
+        element: <LostOpportunity />,
       },
       {
         path: 'import-contact',
@@ -222,7 +267,17 @@ export const route: RouteObject[] = [
       },
       {
         path: 'pipeline',
-        element: <SaleManagerPipeline />,
+        element: <PipelineManager />,
+        children: [
+          {
+            index: true,
+            element: <SaleManagerPipeline />,
+          },
+          {
+            path: 'opportunities-lost',
+            element: <ListAllOpportunityLost />,
+          },
+        ],
       },
       {
         path: 'company',
