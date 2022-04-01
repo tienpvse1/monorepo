@@ -28,9 +28,13 @@ export class WebhookController {
 
     this.eventEmitter.emit(InternalServerEvent.WEBHOOK_SENT_EVENT, body);
     if (body.event === 'messageNew' && isReceiveEmail) {
+      console.log('saving');
+
       const result = await this.service.saveAsInboxToDataBase(body);
       return result;
     } else {
+      console.log('ignored');
+
       return {};
     }
   }

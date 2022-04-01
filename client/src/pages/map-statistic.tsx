@@ -44,8 +44,8 @@ const MapStatistic: React.FC<MapStatisticProps> = ({ google }) => {
               key={item.id}
               radius={(20 - zoom) * 1400}
               center={{
-                lat: item.city.lat,
-                lng: item.city.lng,
+                lat: item.city?.lat || 0,
+                lng: item.city?.lng || 0,
               }}
               onMouseover={() => console.log('mouseover')}
               onClick={() => console.log('click')}
