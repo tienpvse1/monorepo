@@ -47,11 +47,9 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
 
   const handleCreateCompany = (record: any) => {
     const { region, country, ...rest } = record;
-
     createCompany({
       ...rest,
       country: region === 'VN' ? region : country,
-      type: 'company',
     }, {
       onSuccess: () => {
         queryClient.invalidateQueries(QUERY_COMPANIES);

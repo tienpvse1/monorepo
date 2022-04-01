@@ -1,8 +1,9 @@
 import { SelectBoxProvinces } from '@components/signup/select-box-provinces'
-import { isPostalCode, isTaxId } from '@constance/rules-of-input-antd';
+import { isNotWhiteSpace, isPostalCode, isTaxId } from '@constance/rules-of-input-antd';
 import { useToggle } from '@hooks/useToggle';
 import { Col, Form, FormInstance, Input, Select } from 'antd'
 import { useState } from 'react';
+import { InputWebsite } from './input-website';
 const { Option } = Select;
 
 interface CompanyAddressFormProps {
@@ -33,13 +34,14 @@ export const CompanyAddressForm: React.FC<CompanyAddressFormProps> = ({
               setCountry('VN');
           }}>
             <Option key={'VN'}>Viet Nam</Option>
-            <Option key={'Other'}>Other</Option>
+            <Option disabled key={'Other'}>Other</Option>
           </Select>
         </Form.Item>
 
         <Form.Item
           name='address'
           label="Address"
+          rules={[isNotWhiteSpace]}
         >
           <Input.TextArea showCount maxLength={150} />
         </Form.Item>
@@ -57,7 +59,7 @@ export const CompanyAddressForm: React.FC<CompanyAddressFormProps> = ({
             rules={[isPostalCode]}
             style={{ width: 'calc(70% - 10px)', marginRight: '10px' }}
           >
-            <Input maxLength={5}/>
+            <Input maxLength={5} />
           </Form.Item>
           {!visible && <Form.Item
             name='country'
@@ -70,12 +72,9 @@ export const CompanyAddressForm: React.FC<CompanyAddressFormProps> = ({
         </Input.Group>
       </Col>
       <Col span={12}>
-        <Form.Item
-          name="website"
-          label="Website"
-        >
-          <Input />
-        </Form.Item>
+
+        <InputWebsite />
+
         <Form.Item
           name="taxId"
           label="Tax ID"

@@ -1,5 +1,5 @@
 import { SelectBoxCompany } from '@components/company/select-box-company'
-import { isEmail, isPhoneNumber, isRequired } from '@constance/rules-of-input-antd'
+import { isEmail, isPhoneNumber, isRequired, textLength, isNotWhiteSpace } from '@constance/rules-of-input-antd'
 import { Col, DatePicker, Form, Input } from 'antd'
 
 export const ContactInfoForm = () => {
@@ -10,7 +10,14 @@ export const ContactInfoForm = () => {
           name="name"
           label="Name"
           required
-          rules={[isRequired('Name is required')]}>
+          rules={
+            [
+              isRequired('Name is required'),
+              textLength(3, 50, 'Name'),
+              isNotWhiteSpace
+            ]
+          }
+        >
           <Input />
         </Form.Item>
         <Form.Item
@@ -24,6 +31,12 @@ export const ContactInfoForm = () => {
         <Form.Item
           name="jobPosition"
           label="Job Position"
+          rules={
+            [
+              textLength(3, 50, 'Job Position'),
+              isNotWhiteSpace
+            ]
+          }
         >
           <Input />
         </Form.Item>
@@ -31,6 +44,7 @@ export const ContactInfoForm = () => {
         <Form.Item
           name="address"
           label="Address"
+          rules={[isNotWhiteSpace]}
         >
           <Input.TextArea showCount maxLength={250} rows={3} />
         </Form.Item>

@@ -2,6 +2,7 @@ import { Form, Input, Row } from 'antd'
 import { WrapperModalForm } from '@components/modal/modal-wrapper-form'
 import { OpportunityInfoForm } from './opportunity-info-form'
 import { OpportunityAdditionalForm } from './opportunity-additional-form'
+import { isNotWhiteSpace } from '@constance/rules-of-input-antd'
 
 export const CreateOpportunityForm = () => {
   return (
@@ -22,6 +23,7 @@ export const CreateOpportunityForm = () => {
         <Form.Item
           name="internalNotes"
           label="Internal Notes"
+          rules={[isNotWhiteSpace]}
         >
           <Input.TextArea showCount maxLength={150} placeholder="Notes..." style={{ height: '80px' }} />
         </Form.Item>

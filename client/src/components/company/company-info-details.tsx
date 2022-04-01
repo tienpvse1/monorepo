@@ -1,6 +1,7 @@
 import { Col, Row } from 'antd';
 import { MyForm } from '@components/form/my-form';
 import { ICompany } from '@modules/company/entity/company.entity';
+import { TypeOfCompany } from './type-of-company';
 
 interface CompanyInfoDetailsProps {
   company: ICompany
@@ -29,7 +30,7 @@ export const CompanyInfoDetails: React.FC<CompanyInfoDetailsProps> = ({
             {company.mobile}
           </MyForm>
           <MyForm label="Type">
-            {company.type}
+            <TypeOfCompany type={company.type} />
           </MyForm>
           <MyForm label="Tags">
             
