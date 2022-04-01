@@ -1,6 +1,5 @@
 import { isRequired } from '@constance/rules-of-input-antd';
 import { Form, Select } from 'antd';
-import 'ant-design-pro/dist/ant-design-pro.css';
 
 const { Option } = Select;
 import { useQueryStagesInfo } from '@modules/pipeline-column/query/pipeline-column.get';

@@ -1,9 +1,9 @@
 import SaleManagerLayout from '@common/sale-manager-layout';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
-import EmailContent from './email-content';
 import Statistic from './statistic';
 
+const EmailContent = lazy(() => import('./email-content'));
 const Inbox = lazy(() => import('./inbox'));
 const Email = lazy(() => import('./email'));
 const Tag = lazy(() => import('@pages/tag'));
