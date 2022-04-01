@@ -11,7 +11,7 @@ const Product = () => {
   const [search, setSearch] = useState('');
   const { data, isLoading } = useCourses(search, size, page);
   return (
-    <div>
+    <div className='container-page'>
       <ProductHeader setSearch={setSearch} />
       <Table
         loading={isLoading}

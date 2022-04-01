@@ -4,13 +4,13 @@ import { Col, Row  } from "antd"
 import { useParams } from 'react-router-dom'
 import { ContactInfoTabs } from '@components/contact/contact-info-tabs';
 import { CardImage } from "@components/opportunity/card-image";
+import { SkeletonPageDetails } from "@components/skeleton/page-details";
 const ViewContactDetails = () => {
   const params = useParams();
   const { data, isLoading } = useQueryContactsById(params.id);
 
-  // TODO: this skeleton still hard code
   if (isLoading)
-    return <div>this is skeleton....</div>;
+    return <SkeletonPageDetails />;
 
   return (
     <>
