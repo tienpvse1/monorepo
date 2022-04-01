@@ -4,7 +4,6 @@ import { RouteObject } from 'react-router-dom';
 import EmailContent from './email-content';
 import Statistic from './statistic';
 
-
 const Inbox = lazy(() => import('./inbox'));
 const Email = lazy(() => import('./email'));
 const Tag = lazy(() => import('@pages/tag'));
@@ -26,7 +25,9 @@ const AdminLayout = lazy(() => import('@common/admin-layout'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
 const LostOpportunity = lazy(() => import('./lost-opportunity'));
+const SentItem = lazy(() => import('@components/sent-email/item'));
 const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
+const ListSentEmails = lazy(() => import('@components/sent-email/list'));
 const SoldCoursesStatistic = lazy(
   () => import('@components/statistic/sold-course')
 );
@@ -163,6 +164,16 @@ export const route: RouteObject[] = [
           {
             path: '/email/sent',
             element: <SentEmails />,
+            children: [
+              {
+                path: '/email/sent/',
+                element: <ListSentEmails />,
+              },
+              {
+                path: '/email/sent/:id',
+                element: <SentItem />,
+              },
+            ],
           },
           {
             path: '/email/:id',
