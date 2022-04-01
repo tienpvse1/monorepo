@@ -1,8 +1,4 @@
-import { IEmailTemplate } from '@modules/email-temlate/entity/email-template.entity';
-import {
-  findAllTemplates,
-  useTemplates,
-} from '@modules/email-temlate/query/email-template.get';
+import { useTemplates } from '@modules/email-temlate/query/email-template.get';
 import { openNotification } from '@util/notification';
 import { Modal } from 'antd';
 import { Dispatch, SetStateAction } from 'react';

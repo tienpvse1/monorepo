@@ -3,7 +3,6 @@ import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useRestoreOpportunity } from '@modules/pipeline-items/mutation/pipeline-item.patch';
 import {
-  GET_LOSE_PIPELINE_ITEMS,
   GET_MY_LOSE_PIPELINE_ITEMS,
   useMyLosePipelineItems,
 } from '@modules/pipeline-items/query/pipeline-item.get';

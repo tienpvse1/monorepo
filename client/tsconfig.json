@@ -5,7 +5,7 @@
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -39,5 +39,6 @@
       "@db/*": ["./src/db/*"]
     }
   },
-  "include": ["./src", "@casl/react/contextAPIPatch.d.ts"]
+  "include": ["./src", "@casl/react/contextAPIPatch.d.ts"],
+  "exclude": ["./node_modules"]
 }

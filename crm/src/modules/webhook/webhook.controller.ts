@@ -31,8 +31,7 @@ export class WebhookController {
       const result = await this.service.saveAsInboxToDataBase(body);
       return result;
     } else {
-      const result = await this.service.saveAsSentToDatabase(body);
-      return result;
+      return {};
     }
   }
 
