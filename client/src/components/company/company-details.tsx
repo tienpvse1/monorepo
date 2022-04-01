@@ -40,7 +40,8 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
     form.setFieldsValue({
       name: company.name,
       mobile: company.mobile,
-      type: company.type
+      type: company.type,
+      email: company.email
     })
   };
 
@@ -53,7 +54,8 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
         postalCode: company.postalCode,
         country: company.country,
         website: company.website,
-        taxId: company.taxId
+        taxId: company.taxId,
+        address: company.address
       })
       toggleEditForm2();
       return;
@@ -64,14 +66,15 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
       cityId: company.city.id,
       postalCode: company.postalCode,
       website: company.website,
-      taxId: company.taxId
+      taxId: company.taxId,
+      address: company.address
     })
     toggleEditForm2();
   };
 
   const handleToggleEditForm3 = () => {
     toggleEditForm3();
-    
+
   };
 
   const handleSubmitForm1 = async () => {
@@ -95,7 +98,7 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
   const handleSubmitForm2 = async () => {
     try {
       const value = await form.validateFields();
-      const { region, address, cityId, country, city, state, cityName ,...rest } = value;
+      const { region, address, cityId, country, city, state, cityName, ...rest } = value;
       updateCompany({
         ...rest,
         id: company.id,

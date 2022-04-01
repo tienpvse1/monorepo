@@ -24,8 +24,7 @@ export const CompanyInfoForm = () => {
         <Form.Item
           name="email"
           label="Email"
-          required
-          rules={[isRequired('Email is required'), isEmail]}>
+          rules={[isEmail]}>
           <Input />
         </Form.Item>
       </Col>

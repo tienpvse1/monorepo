@@ -4,6 +4,8 @@ import { IProvinces } from '@modules/provinces/entity/provinces.entity';
 
 export interface ICompany extends IBase {
   name: string;
+  email: string;
+  address: string;
   mobile: string;
   state: string;
   city: IProvinces;

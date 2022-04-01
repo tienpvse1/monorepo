@@ -18,12 +18,11 @@ export const CompanyInfoDetails: React.FC<CompanyInfoDetailsProps> = ({
             {company.name}
           </MyForm>
           <MyForm label="Email">
-            
+            {company.email}
           </MyForm>
-          <MyForm label="Company Owner">
-            
-          </MyForm>
+          <MyForm label="Tags">
 
+          </MyForm>
         </Col>
         <Col span={12}>
           <MyForm label="Phone Number">
@@ -31,9 +30,6 @@ export const CompanyInfoDetails: React.FC<CompanyInfoDetailsProps> = ({
           </MyForm>
           <MyForm label="Type">
             <TypeOfCompany type={company.type} />
-          </MyForm>
-          <MyForm label="Tags">
-            
           </MyForm>
         </Col>
       </Row>

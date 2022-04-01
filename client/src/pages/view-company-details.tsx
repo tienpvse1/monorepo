@@ -29,7 +29,7 @@ const ViewCompanyDetails = () => {
                   title={data.name}
                   description1={data.type}
                   description2={data.mobile}
-                  email={'company@gmail.com'}
+                  email={data.email}
                 />
               </div>
             </Col>
