@@ -7,18 +7,16 @@ import { AppLayout } from './layout';
 
 const LayoutUser = () => {
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
-  const { role } = public_user_info;
-  
+
   if (!public_user_info) return <Navigate to={'/login'} />;
 
-  if (!role) return <Navigate to={'/login'} />;
+  if (!public_user_info.role) return <Navigate to={'/login'} />;
 
   if (public_user_info?.role.name === `${Role.ADMIN}`)
     return <Navigate to={'/administration'} />;
 
   if (public_user_info?.role.name === `${Role.SALE_MANAGER}`)
     return <Navigate to={'/sale-manager'} />;
-    
 
   return (
     <AppLayout

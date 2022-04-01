@@ -1,22 +1,26 @@
 import SaleManagerLayout from '@common/sale-manager-layout';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
+import EmailContent from './email-content';
 import Statistic from './statistic';
 
-const MapStatistic = lazy(() => import('./map-statistic'));
 
-const HomePage = lazy(() => import('@pages/home'));
+const Inbox = lazy(() => import('./inbox'));
+const Email = lazy(() => import('./email'));
 const Tag = lazy(() => import('@pages/tag'));
+const HomePage = lazy(() => import('@pages/home'));
 const Contact = lazy(() => import('@pages/contact'));
 const LoginPage = lazy(() => import('@pages/login'));
 const Company = lazy(() => import('@pages/company'));
 const AdminPage = lazy(() => import('@pages/admin'));
 const Product = lazy(() => import('@pages/product'));
+const SentEmails = lazy(() => import('./sent-email'));
 const Schedule = lazy(() => import('@pages/schedule'));
 const Pipeline = lazy(() => import('@pages/pipeline'));
 const SignUpPage = lazy(() => import('@pages/signup'));
 const Layout = lazy(() => import('@common/user-layout'));
 const ProfilePage = lazy(() => import('@pages/profile'));
+const MapStatistic = lazy(() => import('./map-statistic'));
 const AddContact = lazy(() => import('@pages/import-contact'));
 const AdminLayout = lazy(() => import('@common/admin-layout'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
@@ -65,8 +69,12 @@ const SalesOpportunityLost = lazy(
   () => import('@components/sale/sales-opportunity-lost')
 );
 const PipelineSale = lazy(() => import('@components/sale/pipeline-sale'));
-const SaleManagerPipeline = lazy(() => import('@pages/sale-manager/sale-manager-pipeline'));
-const ListAllOpportunityLost = lazy(() => import('@components/sale-manager/list-all-opportunity-lost'));
+const SaleManagerPipeline = lazy(
+  () => import('@pages/sale-manager/sale-manager-pipeline')
+);
+const ListAllOpportunityLost = lazy(
+  () => import('@components/sale-manager/list-all-opportunity-lost')
+);
 
 export const route: RouteObject[] = [
   {
@@ -142,7 +150,25 @@ export const route: RouteObject[] = [
       },
       {
         path: 'email',
-        element: <EmailCompose />,
+        element: <Email />,
+        children: [
+          {
+            path: '/email/',
+            element: <EmailCompose />,
+          },
+          {
+            path: '/email/inbox',
+            element: <Inbox />,
+          },
+          {
+            path: '/email/sent',
+            element: <SentEmails />,
+          },
+          {
+            path: '/email/:id',
+            element: <EmailContent />,
+          },
+        ],
       },
       {
         path: 'map-statistic',
@@ -234,13 +260,13 @@ export const route: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <SaleManagerPipeline />
+            element: <SaleManagerPipeline />,
           },
           {
             path: 'opportunities-lost',
-            element: <ListAllOpportunityLost />
-          }
-        ]
+            element: <ListAllOpportunityLost />,
+          },
+        ],
       },
       {
         path: 'company',

@@ -97,7 +97,7 @@ export const HeaderApp = () => {
           {
             createdAt: new Date(),
             updatedAt: new Date(),
-            description: `${data.data.from.address} sent you an email`,
+            description: `${data.data.from?.address} sent you an email`,
             id: nanoid(5),
             name: 'Gmail',
             receiver: public_user_info,
