@@ -1,4 +1,5 @@
 import {
+  IsEmail,
   IsOptional,
   IsPhoneNumber,
   IsPostalCode,
@@ -10,6 +11,9 @@ import {
 export class CreateCompanyDto {
   @IsString()
   name: string;
+  @IsOptional()
+  @IsEmail()
+  email: string;
   @Length(10)
   cityId: string;
   @IsPhoneNumber('VN')
