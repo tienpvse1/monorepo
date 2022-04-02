@@ -15,7 +15,7 @@ export const ModalFormCreateStageColumn: React.FC<
       <Modal
         visible={visible}
         title='Create a stage'
-        bodyStyle={{height: '180px'}}
+        bodyStyle={{ height: '180px' }}
         okText='Create'
         cancelText='Cancel'
         onCancel={onCancel}
@@ -47,8 +47,8 @@ export const ModalFormCreateStageColumn: React.FC<
             <Input />
           </Form.Item>
           <Form.Item
+            valuePropName="checked"
             name='isWon'
-            initialValue={false}
           >
             <Checkbox>Stage is won</Checkbox>
           </Form.Item>

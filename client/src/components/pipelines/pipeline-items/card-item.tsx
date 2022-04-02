@@ -3,6 +3,7 @@ import {
   CrownFilled,
   MailOutlined,
   MoreOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import { CreateModal } from '@components/modal/create-modal';
 import { CreateScheduleForm } from '@components/schedule/create-schedule-form';
@@ -129,7 +130,9 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
                     {moment(cardData.createdAt).format("MMMM Do")}
                   </Tag>
                 </Space>
-                <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
+                {cardData.account.photo ?
+                  <Avatar src={cardData.account.photo} /> :
+                  <Avatar icon={<UserOutlined />} />}
               </div>
             </>
           }

@@ -52,7 +52,6 @@ export const OpportunityTitleTable: React.FC<OpportunityTitleTableProps> = ({
         </Row>
         <Row style={{ alignItems: 'center' }}>
           <Col span={6}>
-            <span> Updated 9 hours ago </span>
           </Col>
           <Col span={18} style={{ textAlign: 'center' }}>
             <Space style={{ float: 'right', marginTop: '10px' }}>

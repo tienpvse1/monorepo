@@ -44,8 +44,6 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
   const { mutate } = useChangeStage();
 
-  console.log("data:", data);
-  
   const stageWon = data?.pipelineColumns?.find((stage) => stage.isWon === true)
   const totalColumn = data?.pipelineColumns.length || 1;
   const widthOfItem = 333;
@@ -126,7 +124,11 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
 
   return (
     <>
-      <PageTitlePipeline isRoleAdmin={handleIsRoleAdmin()} setModalCreateStage={setModalCreateStage} />
+      <PageTitlePipeline
+        isRoleAdmin={handleIsRoleAdmin()}
+        setModalCreateStage={setModalCreateStage}
+        pipeline={data}
+      />
       {data?.pipelineColumns.length == 0 ? (
         <EmptyComponent
           imageStyle={{ height: 200 }}

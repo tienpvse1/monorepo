@@ -63,7 +63,6 @@ export const ContactHeader: React.FC<ContactHeaderProps> = ({ toggleCreateModal,
       </Row>
       <Row style={{ alignItems: 'center' }}>
         <Col span={6}>
-          <span> Updated 17 minutes ago </span>
         </Col>
         <Col span={18} style={{ textAlign: 'center' }}>
           <Space style={{ float: 'right', marginTop: '10px' }}>

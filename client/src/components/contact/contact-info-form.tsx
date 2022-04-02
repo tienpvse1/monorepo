@@ -1,6 +1,7 @@
 import { SelectBoxCompany } from '@components/company/select-box-company'
 import { isEmail, isPhoneNumber, isRequired, textLength, isNotWhiteSpace } from '@constance/rules-of-input-antd'
 import { Col, DatePicker, Form, Input } from 'antd'
+import { SelectBoxTags } from './select-box-tags'
 
 export const ContactInfoForm = () => {
   return (
@@ -68,6 +69,8 @@ export const ContactInfoForm = () => {
         >
           <DatePicker style={{ width: '100%' }} />
         </Form.Item>
+
+        <SelectBoxTags />
 
       </Col>
     </>

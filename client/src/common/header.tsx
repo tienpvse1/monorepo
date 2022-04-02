@@ -147,7 +147,7 @@ export const HeaderApp = () => {
               padding: '10px 20px',
               border: '1px solid rgba(0,0,0,0.1)',
             }}
-            placement='bottomCenter'
+            placement='bottom'
             arrow
             onVisibleChange={handleSeen}
             overlay={<NotificationDropdown data={notifications} />}
