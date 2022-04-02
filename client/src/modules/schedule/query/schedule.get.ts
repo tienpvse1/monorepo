@@ -58,6 +58,20 @@ const getMySchedulesByMonth = async (id: string, month: number) => {
   const { data } = await instance.get<ISchedule[]>(`${SCHEDULE}?${query}`);
   return data;
 };
+
+const getAllSchedule = async () => {
+  const query = RequestQueryBuilder.create({
+    join: [
+      { field: 'account' },
+      { field: 'pipelineItem' }
+    ],
+  }).query(false)
+  const { data } = await instance.get<ISchedule[]>(`${SCHEDULE}?${query}`);
+  return data;
+}
+
+export const useQueryAllSchedule = () => useQuery(SCHEDULE, getAllSchedule)
+
 /**
  * get upcoming event in date
  */

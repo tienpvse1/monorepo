@@ -76,6 +76,8 @@ const SaleManagerPipeline = lazy(
 const ListAllOpportunityLost = lazy(
   () => import('@components/sale-manager/list-all-opportunity-lost')
 );
+const MyCalendar = lazy(() => import('@components/schedule/calendar'));
+const ListSchedule = lazy(() => import('@components/schedule/list'));
 
 export const route: RouteObject[] = [
   {
@@ -125,7 +127,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'schedule',
-        element: <Schedule />,
+        element: <MyCalendar />,
       },
       {
         path: 'statistic',
@@ -328,6 +330,16 @@ export const route: RouteObject[] = [
       {
         path: 'schedule',
         element: <Schedule />,
+        children: [
+          {
+            index: true,
+            element: <MyCalendar />
+          },
+          {
+            path: 'list-all',
+            element: <ListSchedule />
+          }
+        ]
       },
       {
         path: 'email',
