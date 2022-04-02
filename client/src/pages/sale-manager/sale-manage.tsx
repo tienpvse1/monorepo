@@ -5,7 +5,7 @@ interface SaleManageProps {}
 
 const SaleManage: React.FC<SaleManageProps> = ({}) => {
   return (
-    <div>
+    <div className='container-page'>
       <SaleManageHeader />
       <SaleManageBody />
     </div>
