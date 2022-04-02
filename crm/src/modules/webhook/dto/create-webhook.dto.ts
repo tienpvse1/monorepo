@@ -1,84 +1,48 @@
-export class CreateWebhookDto {}
-export interface From {
-  name: string;
-  address: string;
+/**
+ * new web hook interface
+ */
+
+export interface Header {
+  content: string;
 }
 
-export interface ReplyTo {
-  name: string;
-  address: string;
+export interface HeaderLine {
+  key: string;
+  line: string;
 }
 
-export interface Sender {
-  name: string;
+export interface Value {
   address: string;
+  name: string;
 }
 
 export interface To {
-  name: string;
-  address: string;
-}
-
-export interface Header {
-  'delivered-to': string[];
-  received: string[];
-  'x-received': string[];
-  'arc-seal': string[];
-  'arc-message-signature': string[];
-  'arc-authentication-results': string[];
-  'return-path': string[];
-  'received-spf': string[];
-  'authentication-results': string[];
-  'dkim-signature': string[];
-  'x-google-dkim-signature': string[];
-  'x-gm-message-state': string[];
-  'x-google-smtp-source': string[];
-  'mime-version': string[];
-  from: string[];
-  date: string[];
-  'message-id': string[];
-  subject: string[];
-  to: string[];
-  'content-type': string[];
-}
-
-export interface EncodedSize {
-  plain: number;
-  html: number;
-}
-
-export interface Text {
-  id: string;
-  encodedSize: EncodedSize;
-  plain: string;
+  value: Value[];
   html: string;
-  hasMore: boolean;
+  text: string;
 }
 
-export interface Data {
-  id: string;
-  uid: number;
-  emailId: string;
-  threadId: string;
-  date: string;
-  unseen: boolean;
-  size: number;
-  subject: string;
-  from: From;
-  replyTo: ReplyTo;
-  sender: Sender;
-  to: To[];
-  messageId: string;
-  labels: string[];
+export interface Value {
+  address: string;
+  name: string;
+}
+
+export interface From {
+  value: Value[];
+  html: string;
+  text: string;
+}
+
+export class WebHookDto {
+  attachments: any[];
   headers: Header;
-  text: Text;
-}
-
-export interface ReceivedEmailDto {
-  account: string;
+  headerLines: HeaderLine[];
+  html: string;
+  text: string;
+  textAsHtml: string;
+  subject: string;
   date: string;
-  path: string;
-  specialUse: string;
-  event: string;
-  data: Data;
+  to: To;
+  from: From;
+  messageId: string;
 }

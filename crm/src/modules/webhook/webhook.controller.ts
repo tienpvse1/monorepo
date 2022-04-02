@@ -10,7 +10,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/common/decorators/public.decorator';
 import { InternalServerEvent } from 'src/constance/event';
-import { ReceivedEmailDto } from './dto/create-webhook.dto';
+import { WebHookDto } from './dto/create-webhook.dto';
 import { WebhookService } from './webhook.service';
 
 @Controller('webhook')
@@ -23,20 +23,15 @@ export class WebhookController {
   ) {}
   @Post()
   @HttpCode(HttpStatus.OK)
-  async create(@Body() body: ReceivedEmailDto) {
-    const isReceiveEmail = await this.service.isReceive(body);
-
+  async create(@Body() body: WebHookDto) {
     this.eventEmitter.emit(InternalServerEvent.WEBHOOK_SENT_EVENT, body);
-    if (body.event === 'messageNew' && isReceiveEmail) {
-      console.log('saving');
-
-      const result = await this.service.saveAsInboxToDataBase(body);
-      return result;
-    } else {
-      console.log('ignored');
-
-      return {};
-    }
+    const result = await this.service.saveAsInboxToDataBase(body);
+    return result;
+  }
+  @Post('hook1')
+  @HttpCode(HttpStatus.OK)
+  async testHook(@Body() body: WebHookDto) {
+    this.eventEmitter.emit(InternalServerEvent.WEBHOOK_SENT_TEST_EVENT, body);
   }
 
   @Patch('')

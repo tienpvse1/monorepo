@@ -3,10 +3,8 @@ import { getCustomRepository } from 'typeorm';
 import { AccountService } from '../account/account.service';
 import { ContactRepository } from '../contact/contact.repository';
 import { InboxRepository } from '../inbox/inbox.repository';
-import { EmailType } from '../mailer/entities/mailer.entity';
-import { EmailRepository } from '../mailer/mailer.repository';
 import { NotificationService } from '../notification/notification.service';
-import { ReceivedEmailDto } from './dto/create-webhook.dto';
+import { WebHookDto } from './dto/create-webhook.dto';
 
 @Injectable()
 export class WebhookService {
@@ -15,26 +13,26 @@ export class WebhookService {
     private accountService: AccountService,
   ) {}
 
-  async isReceive(dto: ReceivedEmailDto) {
-    if (!dto.data.from) return false;
+  async isReceive(email: string) {
+    if (!email) return false;
     const account = await this.accountService.findOneWithoutError({
-      where: { email: dto.data.from.address },
+      where: { email },
     });
     if (!account) return true;
 
     return false;
   }
   // happen when
-  async saveAsInboxToDataBase(dto: ReceivedEmailDto) {
+  async saveAsInboxToDataBase(dto: WebHookDto) {
     try {
       const inboxRepository = getCustomRepository(InboxRepository);
       const contactRepository = getCustomRepository(ContactRepository);
       const [sender, receiver, gmailBot] = await Promise.all([
         contactRepository.findOne({
-          where: { email: dto.data.from.address },
+          where: { email: dto.from.value[0].address },
         }),
         this.accountService.findOneItem({
-          where: { email: dto.data.to[0].address },
+          where: { email: dto.to.value[0].address },
         }),
         this.accountService.findOneItem({
           where: { username: 'gmail' },
@@ -44,7 +42,7 @@ export class WebhookService {
       if (!sender) {
         const [result] = await Promise.all([
           this.notificationService.createItem({
-            description: `${dto.data.sender.address} sent you an email`,
+            description: `${dto.from.value[0].name} sent you an email`,
             name: 'Gmail',
             receiver,
             sender: gmailBot,
@@ -52,8 +50,8 @@ export class WebhookService {
           }),
           inboxRepository.createItem({
             receiver,
-            body: dto.data.text.html,
-            subject: dto.data.subject,
+            body: dto.html,
+            subject: dto.subject,
             isAnonymous: true,
           }),
         ]);
@@ -62,7 +60,7 @@ export class WebhookService {
 
       const [result] = await Promise.all([
         this.notificationService.createItem({
-          description: `${dto.data.sender.address} sent you an email`,
+          description: `${dto.from.value[0].address} sent you an email`,
           name: 'Gmail',
           receiver,
           sender: gmailBot,
@@ -71,48 +69,48 @@ export class WebhookService {
         inboxRepository.createItem({
           sender,
           receiver,
-          body: dto.data.text.html,
-          subject: dto.data.subject,
+          body: dto.html,
+          subject: dto.subject,
         }),
       ]);
       return result;
     } catch (error) {}
   }
   // an sale send contact an email
-  async saveAsSentToDatabase(dto: ReceivedEmailDto) {
-    if (!dto.data.to) return;
-    const contactRepository = getCustomRepository(ContactRepository);
-    const emailRepository = getCustomRepository(EmailRepository);
-    const [contact, account] = await Promise.all([
-      contactRepository.findOne({
-        where: { email: dto.data.to[0].address },
-      }),
-      this.accountService.findOneItem({
-        where: { username: dto.account },
-      }),
-    ]);
+  // async saveAsSentToDatabase(dto: WebHookDto) {
+  //   if (!dto.data.to) return;
+  //   const contactRepository = getCustomRepository(ContactRepository);
+  //   const emailRepository = getCustomRepository(EmailRepository);
+  //   const [contact, account] = await Promise.all([
+  //     contactRepository.findOne({
+  //       where: { email: dto.data.to[0].address },
+  //     }),
+  //     this.accountService.findOneItem({
+  //       where: { username: dto.account },
+  //     }),
+  //   ]);
 
-    if (!contact) {
-      const result = await emailRepository.createItem({
-        account,
-        body: dto.data.text.html,
-        subject: dto.data.subject,
-        receiverEmail: dto.data.to[0].address,
-        type: EmailType.SEND,
-        isAnonymous: true,
-      });
+  //   if (!contact) {
+  //     const result = await emailRepository.createItem({
+  //       account,
+  //       body: dto.data.text.html,
+  //       subject: dto.data.subject,
+  //       receiverEmail: dto.data.to[0].address,
+  //       type: EmailType.SEND,
+  //       isAnonymous: true,
+  //     });
 
-      return result;
-    }
+  //     return result;
+  //   }
 
-    const result = await emailRepository.createItem({
-      account,
-      body: dto.data.text.html,
-      subject: dto.data.subject,
-      receiverEmail: contact.email,
-      type: EmailType.SEND,
-    });
+  //   const result = await emailRepository.createItem({
+  //     account,
+  //     body: dto.data.text.html,
+  //     subject: dto.data.subject,
+  //     receiverEmail: contact.email,
+  //     type: EmailType.SEND,
+  //   });
 
-    return result;
-  }
+  //   return result;
+  // }
 }
