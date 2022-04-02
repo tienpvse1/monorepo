@@ -3,7 +3,7 @@ import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { InternalServerEvent, SocketSendEvent } from 'src/constance/event';
 import { AccountService } from '../account/account.service';
-import { ReceivedEmailDto } from '../webhook/dto/create-webhook.dto';
+import { WebHookDto } from '../webhook/dto/create-webhook.dto';
 import { InternalSendNotificationPayload } from './dto/internal-send-notification.dto';
 import { NotificationService } from './notification.service';
 // import { NotificationService } from './notification.service';
@@ -52,10 +52,10 @@ export class NotificationGateway {
   }
 
   @OnEvent(InternalServerEvent.WEBHOOK_SENT_EVENT)
-  async transactionMade(payload: ReceivedEmailDto) {
+  async transactionMade(payload: WebHookDto) {
     const account = await this.accountService.findOneWithoutError({
       where: {
-        username: payload.account,
+        username: payload.to.value[0].address,
       },
       relations: ['session'],
     });
@@ -66,5 +66,10 @@ export class NotificationGateway {
     this.server
       .to(account.session.notificationId)
       .emit(SocketSendEvent.WEBHOOK_SENT_EVENT, payload);
+  }
+
+  @OnEvent(InternalServerEvent.WEBHOOK_SENT_TEST_EVENT)
+  async testNotification(payload: any) {
+    this.server.emit(SocketSendEvent.WEBHOOK_SENT_TEST_EVENT, payload);
   }
 }

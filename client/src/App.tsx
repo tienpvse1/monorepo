@@ -1,11 +1,15 @@
 import { Loading } from '@components/loading/loading';
+import { envVars } from '@env/var.env';
+import { useSocket } from '@hooks/socket';
 import { Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useRoutes } from 'react-router-dom';
+import { io } from 'socket.io-client';
 import './constance/color';
 import { route } from './pages/route-map';
 import './stylesheets/App.scss';
 export const client = new QueryClient();
+const socket = io(`${envVars.VITE_BE_DOMAIN}/notification`);
 function App() {
   const elements = useRoutes(route);
   // const navigate = useNavigate();
@@ -19,6 +23,11 @@ function App() {
   //   }
   // }, [idle]);
 
+  useSocket({
+    event: 'webhook-sent-test-event',
+    onReceive: (data: any) => console.log(data),
+    socket,
+  });
   return (
     <QueryClientProvider client={client}>
       <Suspense fallback={<Loading />}>

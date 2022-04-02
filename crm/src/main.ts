@@ -26,6 +26,7 @@ async function bootstrap() {
       'http://localhost:3001',
       'http://165.22.59.245/',
       'http://tienpvse.fun:3000',
+      'http://tienpvse.fun',
     ],
     credentials: true,
   });

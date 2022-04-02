@@ -6,6 +6,7 @@ export enum InternalServerEvent {
   HISTORY_ADDED = 'history-added',
   TEAM_UPDATED = 'team-updated',
   WEBHOOK_SENT_EVENT = 'webhook-sent-event',
+  WEBHOOK_SENT_TEST_EVENT = 'webhook-sent-test-event',
 }
 
 export enum SocketReceiveEvent {
@@ -22,4 +23,5 @@ export enum SocketSendEvent {
   TEAM_UPDATED = 'team-updated',
   JOINED = 'joined',
   WEBHOOK_SENT_EVENT = 'webhook-sent-event',
+  WEBHOOK_SENT_TEST_EVENT = 'webhook-sent-test-event',
 }
