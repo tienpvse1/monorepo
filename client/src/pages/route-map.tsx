@@ -345,6 +345,10 @@ export const route: RouteObject[] = [
         path: 'email',
         element: <EmailCompose />,
       },
+      {
+        path: 'profile',
+        element: <ProfilePage />,
+      }
     ],
   },
   {

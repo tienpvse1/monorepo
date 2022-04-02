@@ -172,7 +172,7 @@ export const HeaderApp = () => {
         </Tooltip>
       </div>
       <Dropdown
-        trigger={['click']}
+        trigger={['hover']}
         overlay={
           <Suspense fallback={<Loading />}>
             <DropDown />
