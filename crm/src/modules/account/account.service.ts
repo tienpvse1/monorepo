@@ -5,7 +5,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import axios from 'axios';
 import { BaseService } from 'src/base/nestjsx.service';
 import { InternalServerEvent } from 'src/constance/event';
-import { getCustomRepository, Repository } from 'typeorm';
+import { getCustomRepository, getRepository, Repository } from 'typeorm';
+import { Role } from '../role/entities/role.entity';
+import { Team } from '../team/entities/team.entity';
 import { TeamRepository } from '../team/team.repository';
 import { CreateAccountDto, JoinTeamDto } from './dto/create-account.dto';
 import { Account } from './entities/account.entity';
@@ -46,9 +48,21 @@ export class AccountService extends BaseService<Account> {
     return team.save();
   }
 
-  async createAccount(dto: CreateAccountDto) {
+  async createAccount({ roleId, teamId, ...dto }: CreateAccountDto) {
     try {
-      const createResult = await this.createItem(dto);
+      const roleRepository = getRepository(Role);
+      const teamRepository = getRepository(Team);
+      const [role, team] = await Promise.all([
+        roleRepository.findOne({ where: { id: roleId } }),
+        teamRepository.findOne({ where: { id: teamId } }),
+      ]);
+      const createResult = await this.repository
+        .create({
+          ...dto,
+          role,
+          team,
+        })
+        .save();
       await this.createAccountOnEmailServer(
         dto.username,
         dto.email,

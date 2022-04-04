@@ -48,7 +48,7 @@ import { ExcludePasswordPipe } from './exclude-password.pipe';
         HistoryLog('updated their account'),
       ],
     },
-    exclude: ['deleteOneBase'],
+    exclude: ['deleteOneBase', 'createOneBase'],
   },
   params: {
     id: {
@@ -79,7 +79,7 @@ export class AccountController {
     return this.service.softDelete(id);
   }
   @Public()
-  @Post('/verify')
+  @Post('')
   @HistoryLog('Deleted an account')
   verifyAndCreate(@Body() body: CreateAccountDto) {
     return this.service.createAccount(body);
