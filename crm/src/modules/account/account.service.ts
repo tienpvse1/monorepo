@@ -50,29 +50,13 @@ export class AccountService extends BaseService<Account> {
 
   async createAccount(dto: CreateAccountDto) {
     try {
-      const verifyDto: VerifyAccountDto = this.generateVerifyDto(
-        dto.email,
-        dto.password,
-      );
-      const { data: verifyResult } = await axios.post(
-        `${this.config.get<string>(
-          'email.serverUrl',
-        )}verifyAccount?access_token=${this.config.get<string>(
-          'email.serverAccessToken',
-        )}`,
-        verifyDto,
-      );
-      if (!verifyResult.imap.success || !verifyResult.smtp.success)
-        throw new BadRequestException(
-          'verify process failed, email and password must be math with your real one',
-        );
+      const createResult = await this.createItem(dto);
       await this.createAccountOnEmailServer(
         dto.username,
         dto.email,
         dto.password,
-        `${dto.firstName} ${dto.lastName}`,
+        createResult.id,
       );
-      const createResult = await this.createItem(dto);
       return createResult;
     } catch (error) {
       throw new BadRequestException(error);
@@ -156,17 +140,17 @@ export class AccountService extends BaseService<Account> {
     username: string,
     email: string,
     password: string,
-    name: string,
+    id: string,
   ) {
     try {
-      const dto = this.generateCreateEmailDto(email, password, username, name);
       const { data } = await axios.post(
-        `${this.config.get<string>(
-          'email.serverUrl',
-        )}account?access_token=${this.config.get<string>(
-          'email.serverAccessToken',
-        )}`,
-        dto,
+        `${this.config.get<string>('email.serverUrl')}/account`,
+        {
+          username,
+          password,
+          email,
+          id,
+        },
       );
       return data;
     } catch (error) {
