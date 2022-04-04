@@ -4,7 +4,7 @@ import { useChangeStage } from '@modules/pipeline-items/mutation/pipeline-items.
 import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-item.get';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { qualifyStage } from '@util/stage';
-import { Form, Steps } from 'antd';
+import { Col, Form, Row, Steps } from 'antd';
 import { client } from '../../App';
 import { CreateModal } from '@components/modal/create-modal';
 import { VerificationForm } from '@components/sale/verification-form';
@@ -13,6 +13,7 @@ import { startFireworks } from '@util/firework';
 import { usePostOpportunityHistory } from '@modules/opportunity-history/mutation/opportunity-history.post';
 import { OpportunityHistoryType } from '@modules/opportunity-history/entity/opportunity-history.entity';
 import { QUERY_OPPORTUNITY_HISTORY } from '@modules/opportunity-history/query/opportunity-history.get';
+import { UploadInvoice } from '@components/sale/upload-invoice';
 const { Step } = Steps;
 
 interface OpportunityStepProps {
@@ -69,7 +70,12 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
     });
   }
 
-  const handleToggleModalChangeStageWon = (currentStageId: string, newStageId: string, startColumnName: string, finishColumnName: string) => {
+  const handleToggleModalChangeStageWon = (
+    currentStageId: string,
+    newStageId: string,
+    startColumnName: string,
+    finishColumnName: string
+  ) => {
     form.setFieldsValue({
       oldStageId: currentStageId,
       newStageId,
@@ -119,7 +125,12 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
           form={form}
           layout='vertical'
         >
-          <VerificationForm />
+          <Row>
+            <UploadInvoice form={form} />
+            <Col style={{ padding: '20px' }} span={12}>
+              <VerificationForm />
+            </Col>
+          </Row>
         </Form>
       </CreateModal>
     </>
