@@ -5,7 +5,6 @@ import {
   IsPhoneNumber,
   IsString,
   IsUrl,
-  Length,
   MinLength,
 } from 'class-validator';
 import { CreateNoteWorthyDto } from 'src/modules/note-worthy/dto/create-note-worthy.dto';
