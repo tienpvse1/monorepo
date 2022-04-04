@@ -21,8 +21,8 @@ export const ListOpportunitiesOfContacts: React.FC<ListOfContactOpportunitiesPro
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <img
             src={`${envVars.VITE_BE_DOMAIN}/files/crown.png`}
-            width={40}
-            height={40}
+            width={46}
+            height={46}
           />
           <span
             style={{

@@ -2,6 +2,7 @@ import { IAccount } from '@interfaces/account';
 import { IBase } from '@interfaces/base';
 import { ICompany } from '@modules/company/entity/company.entity';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
+import { ITag } from '@modules/tag/entity/tag.entity';
 
 export interface IContact extends IBase {
   name: string;
@@ -15,4 +16,5 @@ export interface IContact extends IBase {
   jobPosition: string;
   internalNotes: string;
   company: ICompany;
+  tags: ITag[];
 }

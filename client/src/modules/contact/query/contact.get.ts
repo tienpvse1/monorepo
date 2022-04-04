@@ -62,6 +62,7 @@ export const getContactsById = async (contactId: string) => {
       { field: 'company' },
       { field: 'account.team' },
       { field: 'pipelineItems' },
+      { field: 'tags' },
     ],
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);

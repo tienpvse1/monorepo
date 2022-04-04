@@ -14,6 +14,16 @@ export const CreateContactForm = () => {
         </Row>
       </WrapperModalForm>
 
+      <WrapperModalForm titleName='Address Information' >
+        <Form.Item
+          name="address"
+          label="Address"
+          rules={[isNotWhiteSpace]}
+        >
+          <Input.TextArea showCount maxLength={250} rows={3} />
+        </Form.Item>
+      </WrapperModalForm>
+
       <WrapperModalForm titleName='Notes Information' >
         <Form.Item
           name="internalNotes"
