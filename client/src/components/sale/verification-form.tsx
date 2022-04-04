@@ -5,7 +5,7 @@ export const VerificationForm = () => {
   return (
     <>
       <Form.Item
-        name="invoice"
+        name="invoiceId"
         label="Invoice ID"
         required
         rules={[isRequired('Tax Id is required')]}
@@ -13,13 +13,13 @@ export const VerificationForm = () => {
         <Input maxLength={14} />
       </Form.Item>
       <Form.Item
-        name="reason"
-        label="Reason"
+        name="description"
+        label="Description"
       >
         <Input.TextArea
           showCount
           maxLength={150}
-          placeholder="Write reason..."
+          placeholder="Write description..."
           rows={4}
         />
       </Form.Item>

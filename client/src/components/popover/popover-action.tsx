@@ -7,6 +7,7 @@ interface PopoverActionProps {
   option2: string;
   handleOption1?: () => void;
   handleOption2?: () => void;
+  isWon?: boolean;
 }
 
 export const PopoverAction: React.FC<PopoverActionProps> = ({
@@ -15,6 +16,7 @@ export const PopoverAction: React.FC<PopoverActionProps> = ({
   option2: itemName2,
   handleOption2,
   handleOption1,
+  isWon = false
 }) => {
   const [visible, setVisible] = useToggle();
 
@@ -37,8 +39,8 @@ export const PopoverAction: React.FC<PopoverActionProps> = ({
           <Col span={24}>
             <span onClick={handleEdit}>{itemName1}</span>
           </Col>
-          <Col span={24}>
-            <span onClick={handleDelete}>{itemName2}</span>
+          <Col style={{ cursor: isWon ? 'not-allowed' : '' }} span={24}>
+            <span onClick={!isWon && handleDelete}>{itemName2}</span>
           </Col>
         </Row>
       }

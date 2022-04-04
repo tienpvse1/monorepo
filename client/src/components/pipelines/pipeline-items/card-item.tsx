@@ -3,6 +3,7 @@ import {
   CrownFilled,
   MailOutlined,
   MoreOutlined,
+  SmileOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { CreateModal } from '@components/modal/create-modal';
@@ -26,9 +27,10 @@ const { Meta } = Card;
 
 interface PipelineCardItemProps {
   cardData: IPipelineItem;
+  isWon: boolean
 }
 
-export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) => {
+export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData, isWon }) => {
   const [isDropdownVisible, toggleDropdown] = useBooleanToggle(false);
   const [value, toggle] = useBooleanToggle(false);
   const { mutate } = useCreateSchedule();
@@ -54,6 +56,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
       <Card
         extra={
           <PopoverAction
+            isWon={isWon}
             option1='View details'
             option2='Delete'
             handleOption2={onDeletePipeLineItem}
@@ -104,31 +107,41 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData }) 
                 }}
               >
                 <Space size={'middle'}>
-                  <MailOutlined style={{ fontSize: 18 }} />
-
-                  <Dropdown
-                    visible={isDropdownVisible}
-                    destroyPopupOnHide
-                    overlay={
-                      <Suspense fallback={<></>}>
-                        <Planned
-                          toggleModal={toggle}
-                          cardData={cardData}
-                          toggleDropdown={toggleDropdown}
-                          isDropdownVisible={isDropdownVisible}
+                  {isWon ?
+                    <>
+                      <MailOutlined style={{ fontSize: 18 }} />
+                      <ClockCircleOutlined style={{ fontSize: 18 }} />
+                      <SmileOutlined style={{ fontSize: 18 }} />
+                    </> :
+                    <>
+                      <MailOutlined style={{ fontSize: 18 }} />
+                      <Dropdown
+                        visible={isDropdownVisible}
+                        destroyPopupOnHide
+                        overlay={
+                          <Suspense fallback={<></>}>
+                            <Planned
+                              toggleModal={toggle}
+                              cardData={cardData}
+                              toggleDropdown={toggleDropdown}
+                              isDropdownVisible={isDropdownVisible}
+                            />
+                          </Suspense>
+                        }
+                      >
+                        <ClockCircleOutlined
+                          onClick={() => toggleDropdown()}
+                          style={{ fontSize: 18, cursor: 'pointer', color: cardData.schedules?.length > 0 ? '#FFB300' : '' }}
                         />
-                      </Suspense>
-                    }
-                  >
-                    <ClockCircleOutlined
-                      onClick={() => toggleDropdown()}
-                      style={{ fontSize: 18, cursor: 'pointer', color: cardData.schedules?.length > 0 ? '#FFB300' : '' }}
-                    />
-                  </Dropdown>
-                  <IconLost cardData={cardData} />
+                      </Dropdown>
+                      <IconLost cardData={cardData} />
+                    </>
+                  }
+
                   <Tag style={{ marginLeft: 5, borderRadius: 5 }}>
                     {moment(cardData.createdAt).format("MMMM Do")}
                   </Tag>
+
                 </Space>
                 {cardData.account.photo ?
                   <Avatar src={cardData.account.photo} /> :

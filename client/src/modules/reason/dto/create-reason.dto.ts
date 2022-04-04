@@ -1,3 +1,5 @@
 import { IReason } from "../entity/reason.entity";
 
-export interface ICreateReasonDto extends Partial<IReason> {}
+export interface ICreateReasonDto extends Partial<IReason> {
+  pipelineItemId: string;
+}

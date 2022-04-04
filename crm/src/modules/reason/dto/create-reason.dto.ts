@@ -1,4 +1,4 @@
-import { IsEnum, IsOptional, IsString, IsUrl, Length } from 'class-validator';
+import { IsEnum, IsOptional, IsString, Length } from 'class-validator';
 import { ReasonType } from '../entities/reason.entity';
 
 export class CreateReasonDto {
@@ -11,7 +11,7 @@ export class CreateReasonDto {
   description: string;
   @IsEnum(ReasonType)
   reasonType: ReasonType;
-  @IsUrl()
+  @IsString()
   photo: string;
 
   @IsString()

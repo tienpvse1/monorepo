@@ -51,7 +51,7 @@ export const PipelineItems: React.FC<PipelineItemsProps> = ({
                       {...provided.dragHandleProps}
                       style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                     >
-                      <PipelineCardItem cardData={data} />
+                      <PipelineCardItem cardData={data} isWon={pipelineColumn.isWon}/>
                     </div>
                   )}
                 </Draggable>

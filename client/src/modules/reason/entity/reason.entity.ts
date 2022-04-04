@@ -5,5 +5,7 @@ export interface IReason extends IBase {
   reasonType: string;
   reason: string;
   description: string;
-  pipelineItem: IPipelineItem
+  pipelineItem: IPipelineItem;
+  photo: string;
+  invoiceId: string;
 }
