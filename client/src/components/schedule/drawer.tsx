@@ -1,6 +1,6 @@
-import { CoffeeOutlined, FileTextOutlined, InboxOutlined, MailOutlined, PhoneOutlined, PushpinOutlined } from '@ant-design/icons';
+import { CoffeeOutlined, FileTextOutlined, MailOutlined, PhoneOutlined, PushpinOutlined } from '@ant-design/icons';
 import { ISchedule } from '@modules/schedule/entity/schedule.entity';
-import { Alert, Drawer } from 'antd';
+import { Alert, Drawer, Empty } from 'antd';
 import moment from 'moment';
 
 interface ScheduleDrawerProps {
@@ -57,7 +57,7 @@ export const ScheduleDrawer: React.FC<ScheduleDrawerProps> = ({
           />
         ))
       ) : (
-        <InboxOutlined />
+        <Empty style={{ paddingTop: '125px' }} />
       )}
     </Drawer>
   );
