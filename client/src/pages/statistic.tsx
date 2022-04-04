@@ -5,7 +5,7 @@ interface StatisticProps {}
 
 const Statistic: React.FC<StatisticProps> = ({}) => {
   return (
-    <div>
+    <div className='container-page'>
       <StatisticHeader />
       <Outlet />
     </div>

@@ -77,7 +77,7 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       icon: <CrownOutlined style={style} />,
     },
     {
-      key: 'lost-opportunity',
+      key: 'lost-opportunities',
       label: 'Lost opportunity',
       style,
       onClick: () => navigate('/lost-opportunities'),

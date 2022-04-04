@@ -1,5 +1,5 @@
 import { DeleteOutlined, FormOutlined } from "@ant-design/icons";
-import { Button, Form, Space, Table } from "antd"
+import { Button, Form, FormInstance, Modal, Space, Table } from "antd"
 import Column from "antd/lib/table/Column"
 import { useToggle } from "@hooks/useToggle";
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
@@ -45,17 +45,29 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
     }),
   };
 
-  const handleCreateCompany = (record: any) => {
+  const handleCreateCompany = (record: any, form: FormInstance<any>) => {
     const { region, country, ...rest } = record;
-
     createCompany({
       ...rest,
       country: region === 'VN' ? region : country,
-      type: 'company',
     }, {
       onSuccess: () => {
         queryClient.invalidateQueries(QUERY_COMPANIES);
         message.success('Create new company successfully');
+        toggleCreateModal();
+        form.resetFields();
+      },
+      onError: (error: any) => {
+        if (error.response) {
+          if (error.response.data.message.includes('Duplicate entry')) {
+            Modal.error({
+              title: `Company name already exists !!`,
+              content: 'please try again later...',
+            });
+          } else {
+            message.error(`${error}`);
+          }
+        }
       }
     })
   }
@@ -167,6 +179,8 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
         </Table>
       </Form>
       <CreateModal
+        autoToggleModel={false}
+        autoResetFields={false}
         title='New Company'
         callback={handleCreateCompany}
         isOpenModal={isOpenModal}

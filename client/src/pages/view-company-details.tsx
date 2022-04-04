@@ -4,14 +4,13 @@ import { CompanyInfoTabs } from '@components/company/company-info-tabs';
 import { useParams } from "react-router-dom";
 import { useQueryCompanyById } from "@modules/company/query/company.get";
 import { CardImage } from "@components/opportunity/card-image";
-
+import { SkeletonPageDetails } from "@components/skeleton/page-details";
 const ViewCompanyDetails = () => {
   const params = useParams();
   const { data, isLoading } = useQueryCompanyById(params.id);
 
-  // TODO: this skeleton still hard code
   if (isLoading)
-    return <div>this is skeleton</div>
+    return <SkeletonPageDetails />;
 
   return (
     <>
@@ -26,7 +25,12 @@ const ViewCompanyDetails = () => {
             </Col>
             <Col span={8}>
               <div className="container-page">
-                <CardImage />
+                <CardImage
+                  title={data.name}
+                  description1={data.type}
+                  description2={data.mobile}
+                  email={data.email}
+                />
               </div>
             </Col>
           </Row>

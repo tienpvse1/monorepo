@@ -2,7 +2,7 @@ import { MoreOutlined } from '@ant-design/icons';
 import { ThemeColor } from '@constance/color';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import { useDeletePipelineColumn } from '@modules/pipeline-column/mutation/pipeline-column.delete';
-import { Button, Typography } from 'antd';
+import { Button, Typography, message } from 'antd';
 import { CSSProperties } from 'react';
 const { Text } = Typography;
 import { PopoverAction } from '../../popover/popover-action';
@@ -18,9 +18,13 @@ export const ColumnHeaderName: React.FC<HeaderColumnNameProps> = ({
   setShowInput,
   isRoleAdmin
 }) => {
-  const { deletePipelineColumn } = useDeletePipelineColumn();
+  const { mutate: deletePipelineColumn } = useDeletePipelineColumn();
 
-  const onDeletePipelineColumn = () => deletePipelineColumn(pipelineColumn.id);
+  const onDeletePipelineColumn = () => deletePipelineColumn(pipelineColumn.id, {
+    onSuccess: () => {
+      message.success('Deleted stage successfully!')
+    }
+  });
 
   const props: CSSProperties = {
     textAlign: 'center',

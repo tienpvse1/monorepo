@@ -101,7 +101,8 @@ export const OpportunityTitleDetails: React.FC<
                 160k$
               </Descriptions.Item>
               <Descriptions.Item label='Expected closing'>
-                {moment(new Date(opportunity.expectedClosing)).fromNow()}
+                {opportunity.expectedClosing ?
+                  moment(new Date(opportunity.expectedClosing)).fromNow() : ''}
               </Descriptions.Item>
             </Descriptions>
           </PageHeader>

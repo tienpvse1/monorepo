@@ -21,9 +21,5 @@ export const usePostPipelineColumn = () => {
     }
   );
 
-  const createPipelineColumn = (pipelineColumn: ICreatePipelineColumnDto) => {
-    mutate(pipelineColumn);
-  }
-
-  return { createPipelineColumn, ...rest };
+  return { mutate, ...rest };
 }

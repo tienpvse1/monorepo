@@ -7,7 +7,7 @@ interface TagProps {}
 
 const Tag: React.FC<TagProps> = ({}) => {
   return (
-    <div>
+    <div className='container-page'>
       <Header />
       <Suspense fallback={<Spin />}>
         <TagTable />

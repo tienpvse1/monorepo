@@ -26,6 +26,7 @@ export class PipelineService {
       )
       .leftJoinAndSelect('pipelineItems.schedules', 'schedules')
       .leftJoinAndSelect('pipelineItems.contact', 'contact')
+      .leftJoinAndSelect('pipelineItems.account', 'account')
       .getMany();
 
     reIndexColumn(sortColumns(column));

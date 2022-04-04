@@ -172,8 +172,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             onFilter={(value, record) => {
               let fullName = `${record.account?.firstName} ${record.account?.lastName}`
               return fullName.indexOf(value as string) === 0
-            }
-            }
+            }}
           />
           <Column
             title='Actions'
