@@ -36,6 +36,8 @@ export class Account extends BaseEntity {
 
   @Column({ name: 'first_name', nullable: true })
   firstName: string;
+  @Column({ name: 'is_enable', default: false })
+  isEnable: boolean;
 
   @Column({ name: 'last_name', nullable: true })
   lastName: string;

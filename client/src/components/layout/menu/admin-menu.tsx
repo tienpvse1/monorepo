@@ -69,11 +69,12 @@ export const AdminMenuSider = ({ style }: MenuSiderAdminProps) => {
           Subscription
         </Menu.Item>
         <Menu.Item
-          key='users'
+          key='account'
           style={style}
           icon={<TeamOutlined style={style} />}
+          onClick={() => navigate('/administration/account')}
         >
-          Users
+          Account
         </Menu.Item>
       </Menu>
     </>

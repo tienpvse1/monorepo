@@ -3,10 +3,12 @@ import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { Axios, instance } from '../../../axios';
 import { controllers } from '../../../constance/controllers';
 import { useQuery } from 'react-query';
+import { Role } from '@interfaces/type-roles';
 const { ACCOUNT } = controllers;
 
 export const GET_ACCOUNT_BY_SALE_ROLE = 'get-account-by-sale-role';
 export const QUERY_SALE_ACCOUNTS = 'query-sale-accounts';
+export const QUERY_ALL_ACCOUNTS = 'query-all-accounts';
 export const getUser = async () => {
   const { instance } = new Axios();
   const { data } = await instance.get(`${ACCOUNT}/custom`, {
@@ -15,12 +17,39 @@ export const getUser = async () => {
   return data;
 };
 
+export const getAllAccount = async () => {
+  const query = RequestQueryBuilder.create({
+    join: [{ field: 'role' }],
+    sort: [
+      {
+        field: 'account.role.name',
+        order: 'ASC',
+      },
+    ],
+    filter: [
+      {
+        field: 'role.name',
+        operator: '$notnull',
+      },
+      {
+        field: 'role.name',
+        operator: '$ne',
+        value: Role.SYSTEM,
+      },
+      {
+        field: 'role.name',
+        operator: '$ne',
+        value: Role.ADMIN,
+      },
+    ],
+  }).query(false);
+  const { data } = await instance.get<IAccount[]>(`${ACCOUNT}?${query}`);
+  return data;
+};
+
 export const getSaleAccounts = async () => {
   const query = RequestQueryBuilder.create({
-    join: [
-      { field: 'team' },
-      { field: 'role' },
-    ],
+    join: [{ field: 'team' }, { field: 'role' }],
     filter: [
       {
         field: 'role.name',
@@ -34,7 +63,7 @@ export const getSaleAccounts = async () => {
     id: item.id,
     name: `${item.firstName} ${item.lastName}`,
     photo: item.photo,
-    ...item
+    ...item,
   }));
 };
 
@@ -48,3 +77,6 @@ export const useQueryAccountBySaleRole = () =>
 
 export const useSaleAccounts = (suspense = false) =>
   useQuery(QUERY_SALE_ACCOUNTS, getSaleAccounts, { suspense });
+
+export const useAccounts = (suspense = false) =>
+  useQuery(QUERY_ALL_ACCOUNTS, getAllAccount, { suspense });

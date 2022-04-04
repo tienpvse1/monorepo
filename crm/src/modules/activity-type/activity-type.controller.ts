@@ -1,4 +1,5 @@
 import { Controller } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { ActivityTypeService } from './activity-type.service';
 import { CreateActivityTypeDto } from './dto/create-activity-type.dto';
@@ -20,6 +21,7 @@ import { ActivityType } from './entities/activity-type.entity';
     },
   },
 })
+@ApiTags('activity type')
 export class ActivityTypeController {
   constructor(readonly service: ActivityTypeService) {}
 }

@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Param,
+  Patch,
   Post,
   UseInterceptors,
   UsePipes,
@@ -82,5 +83,20 @@ export class AccountController {
   @HistoryLog('Deleted an account')
   verifyAndCreate(@Body() body: CreateAccountDto) {
     return this.service.createAccount(body);
+  }
+
+  @HasRoles(Roles.ADMIN)
+  @Patch('enable/:id')
+  enableAccount(@Param('id') accountId: string) {
+    return this.service.repository.update(accountId, {
+      isEnable: true,
+    });
+  }
+  @HasRoles(Roles.ADMIN)
+  @Patch('disable/:id')
+  disableAccount(@Param('id') accountId: string) {
+    return this.service.repository.update(accountId, {
+      isEnable: false,
+    });
   }
 }
