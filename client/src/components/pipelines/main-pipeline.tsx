@@ -4,12 +4,12 @@ import { PipeLineColumn } from '@components/pipelines/pipeline-column';
 import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-horizontal';
 import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import { Button, Form } from 'antd';
+import { Button, Col, Form, Row } from 'antd';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { CreateColumnModal } from './pipeline-column/create-column-modal';
 import { CreateModal } from '@components/modal/create-modal';
-import { VerificationForm } from '@components/accountant/verification-form';
+import { VerificationForm } from '@components/sale/verification-form';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useCookies } from 'react-cookie';
 import { useChangeStage } from '@modules/pipeline-items/mutation/pipeline-items.update';
@@ -17,6 +17,7 @@ import { useQueryClient } from 'react-query';
 import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-item.get';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { startFireworks } from '@util/firework';
+import { UploadInvoice } from '@components/sale/upload-invoice';
 
 interface MainPipelineProps {
   data: IPipeline;
@@ -71,7 +72,11 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
     );
   }
 
-  const handleToggleModalChangeStageWon = (oldStageId: string, newStageId: string, draggableId: string) => {
+  const handleToggleModalChangeStageWon = (
+    oldStageId: string,
+    newStageId: string,
+    draggableId: string
+  ) => {
     form.setFieldsValue({
       oldStageId,
       newStageId,
@@ -195,12 +200,17 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
         hasSubmitMethod={handleChangeStageWon}
         hasForm={true}
       >
-        <Form
-          form={form}
-          layout='vertical'
-        >
-          <VerificationForm />
-        </Form>
+        <Row>
+          <UploadInvoice />
+          <Col style={{ padding: '20px' }} span={12}>
+            <Form
+              form={form}
+              layout='vertical'
+            >
+              <VerificationForm />
+            </Form>
+          </Col>
+        </Row>
       </CreateModal>
     </>
   );

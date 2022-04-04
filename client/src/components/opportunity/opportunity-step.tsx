@@ -7,7 +7,7 @@ import { qualifyStage } from '@util/stage';
 import { Form, Steps } from 'antd';
 import { client } from '../../App';
 import { CreateModal } from '@components/modal/create-modal';
-import { VerificationForm } from '@components/accountant/verification-form';
+import { VerificationForm } from '@components/sale/verification-form';
 import { useToggle } from '@hooks/useToggle';
 import { startFireworks } from '@util/firework';
 import { usePostOpportunityHistory } from '@modules/opportunity-history/mutation/opportunity-history.post';
