@@ -21,7 +21,7 @@ export const ContactInfoDetails: React.FC<ContactInfoDetailsProps> = ({
           <MyForm label='Job Position'>{contact.jobPosition}</MyForm>
           <MyForm label='Tags'>
             {contact.tags.map((tag) => (
-              <Tag color={tag.color}>
+              <Tag color={tag.color} key={tag.id}>
                 {tag.name}
               </Tag>
             ))}
