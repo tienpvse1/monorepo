@@ -73,6 +73,7 @@ export class ContactService extends BaseService<Contact> {
     payload: { bulk: CreateContactDto[] },
     accountId: string,
   ) {
+    const tagRepository = getRepository(Tag);
     const accountRepository = getCustomRepository(AccountRepository);
     const ids: string[] = [];
     payload.bulk = payload.bulk.filter((item) => item.companyName != undefined);
@@ -81,7 +82,8 @@ export class ContactService extends BaseService<Contact> {
       where: { id: accountId },
     });
     for (const dto of bulk) {
-      const id = await this.createContact(dto, creator);
+      const tags = await tagRepository.find({ where: { id: In(dto.tagIds) } });
+      const id = await this.createContact(dto, creator, tags);
       ids.push(id);
     }
     // return dto;
