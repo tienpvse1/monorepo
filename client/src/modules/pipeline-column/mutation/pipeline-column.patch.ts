@@ -6,12 +6,28 @@ import { useMutation } from "react-query";
 import { ICreatePipelineColumnDto } from "../dto/create-pipeline-column.dto"
 const { PIPELINE_COLUMN } = controllers;
 
-
 export const actionPatchPipelineColumn = async (pipelineColumn: ICreatePipelineColumnDto) => {
   const { instance } = new Axios();
   const { data } = await instance.patch(`${PIPELINE_COLUMN}/${pipelineColumn.pipelineId}`, { ...pipelineColumn });
 
   return data;
+}
+
+export const setWonPipelineColumn = async (id: string) => {
+  const { instance } = new Axios();
+  const { data } = await instance.patch(`${PIPELINE_COLUMN}/set-won/${id}`);
+
+  return data;
+}
+
+export const useSetWonPipelineColumn = () => {
+  const { mutate, ...rest } = useMutation(setWonPipelineColumn,
+    {
+      ...handleMutationResponse()
+    }
+  );
+
+  return { mutate, ...rest };
 }
 
 export const useUpdatePipelineColumn = () => {

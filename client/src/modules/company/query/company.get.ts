@@ -42,6 +42,7 @@ export const getCompanyById = async (companyId: string) => {
 
 export const searchCompany = async (text: string) => {
   const query = RequestQueryBuilder.create({
+    join: [{ field: 'city' }],
     search: {
       $or: [
         {
@@ -55,7 +56,7 @@ export const searchCompany = async (text: string) => {
           },
         },
         {
-          city: {
+          'city.admin_name': {
             $cont: text
           }
         },

@@ -51,7 +51,6 @@ export const CompanyTitleTable: React.FC<CompanyTitleTableProps> = ({
         </Row>
         <Row style={{ alignItems: 'center' }}>
           <Col span={6}>
-            <span> Updated 7 days ago </span>
           </Col>
           <Col span={18} style={{ textAlign: 'center' }}>
             <Space style={{ float: 'right', marginTop: '10px' }}>

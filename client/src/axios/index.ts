@@ -19,15 +19,16 @@ export class Axios {
 
         return response.data;
       },
-      ({ response: { status } }) => {
-        console.log(status);
+      (error) => {
         if (
           this.handleError &&
-          (status === StatusCodes.UNAUTHORIZED ||
-            status === StatusCodes.FORBIDDEN)
+          (error.response.status === StatusCodes.UNAUTHORIZED ||
+            error.response.status === StatusCodes.FORBIDDEN)
         ) {
           window.location.href = `${feDomain}/login`;
+          return;
         }
+        return Promise.reject(error);
       }
     );
   }

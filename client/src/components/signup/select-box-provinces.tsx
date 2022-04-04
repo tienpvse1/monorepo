@@ -31,6 +31,8 @@ export const SelectBoxProvinces: React.FC<SelectBoxProvincesProps> = ({ cityName
       isMounted.current = true;
       if (cityName)
         getStateByCity(cityName).then((value) => setDataState(value));
+      else
+        searchCity('').then((data) => setDataCity(data));
     }
   }, [debounced])
 

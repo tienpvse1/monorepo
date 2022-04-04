@@ -8,8 +8,6 @@ import { InternalServerEvent } from 'src/constance/event';
 import { getCustomRepository, Repository } from 'typeorm';
 import { TeamRepository } from '../team/team.repository';
 import { CreateAccountDto, JoinTeamDto } from './dto/create-account.dto';
-import { CreateEmailAccount } from './dto/create-email-account.dto';
-import { VerifyAccountDto } from './dto/verify-account-dto';
 import { Account } from './entities/account.entity';
 
 @Injectable()
@@ -50,123 +48,34 @@ export class AccountService extends BaseService<Account> {
 
   async createAccount(dto: CreateAccountDto) {
     try {
-      const verifyDto: VerifyAccountDto = this.generateVerifyDto(
-        dto.email,
-        dto.password,
-      );
-      const { data: verifyResult } = await axios.post(
-        `${this.config.get<string>(
-          'email.serverUrl',
-        )}verifyAccount?access_token=${this.config.get<string>(
-          'email.serverAccessToken',
-        )}`,
-        verifyDto,
-      );
-      if (!verifyResult.imap.success || !verifyResult.smtp.success)
-        throw new BadRequestException(
-          'verify process failed, email and password must be math with your real one',
-        );
+      const createResult = await this.createItem(dto);
       await this.createAccountOnEmailServer(
         dto.username,
         dto.email,
         dto.password,
-        `${dto.firstName} ${dto.lastName}`,
+        createResult.id,
       );
-      const createResult = await this.createItem(dto);
       return createResult;
     } catch (error) {
       throw new BadRequestException(error);
     }
   }
 
-  generateVerifyDto(email: string, password: string): VerifyAccountDto {
-    return {
-      imap: {
-        auth: {
-          user: email,
-          pass: password,
-        },
-        host: 'imap.gmail.com',
-        port: 993,
-        secure: true,
-        tls: {
-          rejectUnauthorized: true,
-          minVersion: 'TLSv1.2',
-        },
-        resyncDelay: 900,
-      },
-      smtp: {
-        auth: {
-          user: email,
-          pass: password,
-        },
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        tls: {
-          rejectUnauthorized: true,
-          minVersion: 'TLSv1.2',
-        },
-      },
-    };
-  }
-  generateCreateEmailDto(
-    email: string,
-    password: string,
-    username: string,
-    name: string,
-  ): CreateEmailAccount {
-    return {
-      account: username,
-      name: name,
-      email: email,
-      path: 'INBOX',
-      copy: true,
-      logs: true,
-      imap: {
-        auth: {
-          user: email,
-          pass: password,
-        },
-        host: 'imap.gmail.com',
-        port: 993,
-        secure: true,
-        tls: {
-          rejectUnauthorized: true,
-          minVersion: 'TLSv1.2',
-        },
-        resyncDelay: 900,
-      },
-      smtp: {
-        auth: {
-          user: email,
-          pass: password,
-        },
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        tls: {
-          rejectUnauthorized: true,
-          minVersion: 'TLSv1.2',
-        },
-      },
-    };
-  }
   async createAccountOnEmailServer(
     username: string,
     email: string,
     password: string,
-    name: string,
+    id: string,
   ) {
     try {
-      const dto = this.generateCreateEmailDto(email, password, username, name);
       const { data } = await axios.post(
-        `${this.config.get<string>(
-          'email.serverUrl',
-        )}account?access_token=${this.config.get<string>(
-          'email.serverAccessToken',
-        )}`,
-        dto,
+        `${this.config.get<string>('email.serverUrl')}/account`,
+        {
+          username,
+          password,
+          email,
+          id,
+        },
       );
       return data;
     } catch (error) {

@@ -1,5 +1,6 @@
 import { ImportOutlined, UserOutlined } from '@ant-design/icons';
 import { instance } from '@axios';
+import { useHandleNavigate } from '@hooks/useHandleNavigate';
 import { Menu } from 'antd';
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
@@ -7,8 +8,9 @@ import { useNavigate } from 'react-router-dom';
 const DropDown = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { navigateRole } = useHandleNavigate();
   const handleProfileClick = () => {
-    navigate('/profile');
+    navigate(`${navigateRole}profile`);
   };
 
   const handleLogout = () => {

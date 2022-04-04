@@ -1,4 +1,5 @@
-import { Descriptions, Input, PageHeader } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { Button, Descriptions, Input, PageHeader } from 'antd';
 import { Dispatch, SetStateAction } from 'react';
 
 interface ProductHeaderProps {
@@ -15,9 +16,16 @@ export const ProductHeader: React.FC<ProductHeaderProps> = ({ setSearch }) => {
         subTitle='courses from VJAA system'
         extra={[
           <Input.Search
-            placeholder='input search text'
+            enterButton={
+              <Button
+                style={{ height: '40px', width: '35px' }}
+                icon={<SearchOutlined />}
+                type='primary'
+              />
+            }
+            placeholder='Search for name course'
             onSearch={(value) => setSearch(value)}
-            style={{ width: 200 }}
+            style={{ width: 350 }}
           />,
         ]}
       >

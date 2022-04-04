@@ -33,7 +33,7 @@ const ListSentEmails: React.FC<ListSentEmailsProps> = ({}) => {
             onClick={() => handleClick(item.id)}
           >
             <Comment
-              actions={[<span>Detail</span>]}
+              actions={[<span key={1}>Detail</span>]}
               author={'You'}
               avatar={item.account.photo}
               content={item.subject}

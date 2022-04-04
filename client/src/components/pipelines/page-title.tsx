@@ -1,71 +1,85 @@
-import { FilterOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { WrapperRowTitle } from '@components/layout/title-pages/wrapper-row-title';
-import { SearchBar } from '@components/search-bar';
-import { Button, Col, Row, Select, Space } from 'antd';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { envVars } from '@env/var.env';
+import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
+import { Button, Descriptions, PageHeader } from 'antd';
 import { useNavigate } from 'react-router-dom';
-const { Option } = Select;
 
 interface PageTitlePipelineProps {
   setModalCreateStage: () => void;
   isRoleAdmin: boolean;
+  pipeline: IPipeline;
 }
 
 export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
   setModalCreateStage,
-  isRoleAdmin
+  isRoleAdmin,
+  pipeline
 }) => {
-
   const navigate = useNavigate();
+
+  var totalOpportunity = pipeline?.pipelineColumns?.reduce((acc, value) => {
+    return acc + value.pipelineItems.length
+  }, 0)
 
   return (
     <>
-      <WrapperRowTitle
-        className='wrapper-title-page-2'
-        title='Pipeline'
-        titleSize='27px'
-        children={
-          <SearchBar placeholder='Search for id, name or phone number' />
-        }
-      />
-      <Row>
-        <Col
-          span={24}
-          className='wrapper-title-page-2'
-          style={isRoleAdmin ? {} : { flexDirection: 'row-reverse' }}
-        >
-          {isRoleAdmin &&
+      <PageHeader
+        className='site-page-header'
+        extra={
+          <>
             <Button
-              onClick={setModalCreateStage}
-              className='button-create-task-pipeline'
-              icon={<PlusOutlined />}
-              type='primary'
+              onClick={() => navigate('opportunities-lost')}
+              danger
+              icon={<DeleteOutlined />}
+              className='button-more-pipeline'
             >
-              Create Stage
-            </Button>}
-          <div>
-            <Space>
-              <Select
-                placeholder='Group by'
-                style={{ width: 120 }}
-              >
-                <Option value='salesPerson'>Sales Person</Option>
-                <Option value='salesTeam'>Sales Team</Option>
-              </Select>
-              <Button className='button-filter-pipeline'>
-                <FilterOutlined />
-              </Button>
+              Lost Opportunities
+            </Button>
+            {isRoleAdmin &&
               <Button
-                onClick={() => navigate('opportunities-lost') }
+                onClick={setModalCreateStage}
+                className='button-create-task-pipeline'
+                icon={<PlusOutlined />}
                 type='primary'
-                icon={<DeleteOutlined />}
-                className='button-more-pipeline'
               >
-                Lost Opportunities
-              </Button>
-            </Space>
-          </div>
-        </Col>
-      </Row>
+                Create Stage
+              </Button>}
+          </>
+        }
+        title={
+          <>
+            <span
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+              }}
+            >
+              <img
+                src={`${envVars.VITE_BE_DOMAIN}/files/branch.png`}
+                width={47}
+                height={47}
+              />
+              <span style={{ fontSize: '27px' }}>
+                Pipeline
+              </span>
+            </span>
+          </>
+        }
+      >
+        <Descriptions size='small' column={3}>
+          <Descriptions.Item label='Total opportunity'>
+            {totalOpportunity}
+          </Descriptions.Item>
+
+          <Descriptions.Item label='Stages'>
+            {pipeline?.pipelineColumns?.length}
+          </Descriptions.Item>
+          <Descriptions.Item label='Expected revenue'>
+            160k$
+          </Descriptions.Item>
+        </Descriptions>
+      </PageHeader>
     </>
   );
 };

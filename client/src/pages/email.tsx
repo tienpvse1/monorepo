@@ -25,6 +25,11 @@ const Email: React.FC<EmailProps> = ({}) => {
             { label: 'New', icon: 'pi pi-fw pi-plus', url: '/email/' },
             { label: 'Inbox', icon: PrimeIcons.INBOX, url: '/email/inbox' },
             { label: 'Sent', icon: PrimeIcons.CHECK, url: '/email/sent' },
+            {
+              label: 'Outside mails',
+              icon: PrimeIcons.BOX,
+              url: '/email/outside-mails',
+            },
           ]}
         />
       </div>

@@ -43,11 +43,7 @@ export class EmailService extends BaseService<Email> {
         id: senderId,
       },
     });
-    const urlString = `${this.config.get<string>('email.serverUrl')}account/${
-      account.username
-    }/submit?access_token=${this.config.get<string>(
-      'email.serverAccessToken',
-    )}`;
+    const urlString = `${this.config.get<string>('email.serverUrl')}/send`;
 
     for (const target of email.to) {
       if (target.isTag) continue;
@@ -65,7 +61,6 @@ export class EmailService extends BaseService<Email> {
         subject: email.subject,
         html: email.value,
         sendAt: new Date(),
-        deliveryAttempts: 10,
       });
       await this.createItem({
         account,

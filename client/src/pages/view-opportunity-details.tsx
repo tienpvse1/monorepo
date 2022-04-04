@@ -5,13 +5,13 @@ import { useParams } from 'react-router-dom';
 import { OpportunityTimeLine } from '@components/opportunity/opportunity-timeline';
 import { OpportunityInfoTabs } from '@components/opportunity/opportunity-info-tabs';
 import { OpportunityStep } from '@components/opportunity/opportunity-step';
+import { SkeletonPageDetails } from '@components/skeleton/page-details';
 const ViewOpportunityDetails = () => {
   const params = useParams();
   const { data, isLoading } = usePipelineItem(params.id);
 
-  // TODO: this skeleton still hard code
-  if(isLoading)
-    return <div>this is skeleton</div>;
+  if (isLoading)
+    return <SkeletonPageDetails />;
 
   return (
     <>

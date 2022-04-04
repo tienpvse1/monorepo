@@ -147,7 +147,7 @@ export const HeaderApp = () => {
               padding: '10px 20px',
               border: '1px solid rgba(0,0,0,0.1)',
             }}
-            placement='bottomCenter'
+            placement='bottom'
             arrow
             onVisibleChange={handleSeen}
             overlay={<NotificationDropdown data={notifications} />}
@@ -172,7 +172,7 @@ export const HeaderApp = () => {
         </Tooltip>
       </div>
       <Dropdown
-        trigger={['click']}
+        trigger={['hover']}
         overlay={
           <Suspense fallback={<Loading />}>
             <DropDown />

@@ -1,14 +1,16 @@
-import { Form, Modal } from 'antd';
+import { Form, FormInstance, Modal } from 'antd';
 
 interface CreateModalProps {
   isOpenModal: boolean;
   toggleCreateModal: () => void;
-  callback?: (record) => void;
+  callback?: (record: any, form?: FormInstance<any>) => void;
   width?: number;
   title: string;
   bodyStyle?: React.CSSProperties;
   hasForm?: boolean;
   hasSubmitMethod?: () => void;
+  autoToggleModel?: boolean;
+  autoResetFields?: boolean;
 }
 
 export const CreateModal: React.FC<CreateModalProps> = ({
@@ -20,15 +22,17 @@ export const CreateModal: React.FC<CreateModalProps> = ({
   title,
   bodyStyle,
   hasForm = false,
-  hasSubmitMethod
+  hasSubmitMethod,
+  autoToggleModel = true,
+  autoResetFields = true
 }) => {
   const [form] = Form.useForm<any>();
 
   const handleSubmit = async () => {
     const record = await form.validateFields();
-    callback(record);
-    toggleCreateModal();
-    form.resetFields();
+    callback(record, form);
+    autoToggleModel && toggleCreateModal();
+    autoResetFields && form.resetFields();
   };
 
   return (

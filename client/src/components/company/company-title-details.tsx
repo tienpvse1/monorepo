@@ -68,7 +68,7 @@ export const CompanyTitleDetails: React.FC<CompanyTitleDetailsProps> = ({
             {company.mobile}
           </Descriptions.Item>
           <Descriptions.Item label='Email'>
-            company@gmail.com
+            {company.email}
           </Descriptions.Item>
           <Descriptions.Item label='Company name'>
             {company.name}

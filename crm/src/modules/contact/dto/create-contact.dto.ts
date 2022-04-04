@@ -15,6 +15,10 @@ export class CreateContactDto {
 
   @IsString()
   companyName: string;
+
+  @IsArray()
+  tagIds: string[];
+
   @IsOptional()
   @IsArray()
   noteWorthies?: CreateNoteWorthyDto[];

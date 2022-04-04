@@ -19,9 +19,5 @@ export const useDeletePipelineColumn = () => {
     }
   );
 
-  const deletePipelineColumn = (pipelineColumnId: string) => {
-    mutate(pipelineColumnId);
-  }
-
-  return { deletePipelineColumn, ...rest };
+  return { mutate, ...rest };
 }
