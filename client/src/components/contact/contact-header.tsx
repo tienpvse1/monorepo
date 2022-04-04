@@ -13,7 +13,7 @@ interface ContactHeaderProps {
 export const ContactHeader: React.FC<ContactHeaderProps> = ({ toggleCreateModal, setDataContact }) => {
   const navigate = useNavigate();
   const handleImportClick = () => {
-    navigate('/import-contact');
+    navigate('import-contact');
   };
 
   return (

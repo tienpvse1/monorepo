@@ -88,7 +88,6 @@ export const route: RouteObject[] = [
     path: '/signup',
     element: <SignUpPage />,
   },
-
   {
     path: '/',
     element: <Layout />,
@@ -109,6 +108,10 @@ export const route: RouteObject[] = [
             path: 'view-details/:id',
             element: <ViewContactDetails />,
           },
+          {
+            path: 'import-contact',
+            element: <AddContact />,
+          }
         ],
       },
       {
@@ -202,10 +205,6 @@ export const route: RouteObject[] = [
       {
         path: 'lost-opportunities',
         element: <LostOpportunity />,
-      },
-      {
-        path: 'import-contact',
-        element: <AddContact />,
       },
       {
         path: 'product',
@@ -311,6 +310,10 @@ export const route: RouteObject[] = [
             path: 'view-details/:id',
             element: <ViewContactDetails />,
           },
+          {
+            path: 'import-contact',
+            element: <AddContact />,
+          }
         ],
       },
       {
