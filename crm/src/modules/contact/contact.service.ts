@@ -18,16 +18,23 @@ export class ContactService extends BaseService<Contact> {
   }
   async createOneContact(dto: CreateContactDto, accountId: string) {
     const accountRepository = getCustomRepository(AccountRepository);
-    const account = await accountRepository.findOneItem({
-      where: { id: accountId },
-    });
-    const id = await this.createContact(dto, account);
+    const tagRepository = getRepository(Tag);
+    const [account, tags] = await Promise.all([
+      accountRepository.findOneItem({
+        where: { id: accountId },
+      }),
+      tagRepository.find({
+        where: { id: In(dto.tagIds) },
+      }),
+    ]);
+    const id = await this.createContact(dto, account, tags);
     return { id };
   }
 
   async createContact(
     { companyName, ...rest }: CreateContactDto,
     account: Account,
+    tags: Tag[] = [],
   ) {
     const companyRepository = getRepository(Company);
     const company = await companyRepository
@@ -46,6 +53,7 @@ export class ContactService extends BaseService<Contact> {
           ...rest,
           company,
           account,
+          tags,
         })
         .save();
       return id;
@@ -55,6 +63,7 @@ export class ContactService extends BaseService<Contact> {
           ...rest,
           company,
           account,
+          tags,
         })
         .save();
       return id;
