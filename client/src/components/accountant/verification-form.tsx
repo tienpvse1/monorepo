@@ -68,6 +68,12 @@ export const VerificationForm = () => {
           <Form.Item name="draggableId" style={{ display: 'none' }}>
             <Input />
           </Form.Item>
+          <Form.Item name="startColumnName" style={{ display: 'none' }}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="finishColumnName" style={{ display: 'none' }}>
+            <Input />
+          </Form.Item>
         </Col>
       </Row>
     </>

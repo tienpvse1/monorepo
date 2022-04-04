@@ -10,6 +10,9 @@ import { CreateModal } from '@components/modal/create-modal';
 import { VerificationForm } from '@components/accountant/verification-form';
 import { useToggle } from '@hooks/useToggle';
 import { startFireworks } from '@util/firework';
+import { usePostOpportunityHistory } from '@modules/opportunity-history/mutation/opportunity-history.post';
+import { OpportunityHistoryType } from '@modules/opportunity-history/entity/opportunity-history.entity';
+import { QUERY_OPPORTUNITY_HISTORY } from '@modules/opportunity-history/query/opportunity-history.get';
 const { Step } = Steps;
 
 interface OpportunityStepProps {
@@ -21,8 +24,16 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
   const { mutate } = useChangeStage();
   const [form] = Form.useForm<any>();
   const [isVisible, toggleModalChangeStageWon] = useToggle();
+  const { mutateAsync: mutateOpportunityHistory } = usePostOpportunityHistory();
 
-  const handleUpdateStage = (currentStageId: string, newStageId: string, callback?: () => void) => {
+
+  const handleUpdateStage = (
+    currentStageId: string,
+    newStageId: string,
+    startColumnName?: string,
+    finishColumnName?: string,
+    callback?: () => void
+  ) => {
     mutate(
       {
         id: data.id,
@@ -33,6 +44,17 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
         onSuccess: () => {
           client.refetchQueries(GET_PIPELINE_ITEM_BY_ID);
           client.refetchQueries(GET_PIPELINE_DESIGN);
+          mutateOpportunityHistory({
+            newStageID: newStageId,
+            oldStageId: currentStageId,
+            description: `moved from ${startColumnName} to ${finishColumnName}`,
+            pipelineItemId: data.id,
+            type: OpportunityHistoryType.CHANGE_STATE,
+          }, {
+            onSuccess: () => {
+              client.refetchQueries([QUERY_OPPORTUNITY_HISTORY, data.id]);
+            }
+          });
           callback ? callback() : '';
         },
       }
@@ -41,17 +63,19 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
 
   const handleChangeStageWon = async () => {
     const record = await form.validateFields();
-    handleUpdateStage(record.oldStageId, record.newStageId, () => {
+    handleUpdateStage(record.oldStageId, record.newStageId, record.startColumnName, record.finishColumnName, () => {
       toggleModalChangeStageWon();
       startFireworks();
     });
   }
 
-  const handleToggleModalChangeStageWon = (currentStageId: string, newStageId: string) => {
+  const handleToggleModalChangeStageWon = (currentStageId: string, newStageId: string, startColumnName: string, finishColumnName: string) => {
     form.setFieldsValue({
       oldStageId: currentStageId,
       newStageId,
-      draggableId: data.id
+      draggableId: data.id,
+      startColumnName,
+      finishColumnName
     })
     toggleModalChangeStageWon();
   }
@@ -69,15 +93,15 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
             status={qualifyStage(index, data.pipelineColumn.index)}
             title={column.name}
             onStepClick={(step) => {
-              const { id: currentId, index: currentIndex } =
+              const { id: currentId, index: currentIndex, name: currentName } =
                 data.pipelineColumn;
               if (step !== currentIndex && column.isWon) {
-                handleToggleModalChangeStageWon(currentId, pipelineColumns[step].id);
+                handleToggleModalChangeStageWon(currentId, pipelineColumns[step].id, currentName, pipelineColumns[step].name);
                 return;
               }
 
               if (step !== currentIndex)
-                handleUpdateStage(currentId, pipelineColumns[step].id);
+                handleUpdateStage(currentId, pipelineColumns[step].id, currentName, pipelineColumns[step].name);
             }}
           />
         ))}
