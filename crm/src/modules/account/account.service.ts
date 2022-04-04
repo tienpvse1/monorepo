@@ -8,8 +8,6 @@ import { InternalServerEvent } from 'src/constance/event';
 import { getCustomRepository, Repository } from 'typeorm';
 import { TeamRepository } from '../team/team.repository';
 import { CreateAccountDto, JoinTeamDto } from './dto/create-account.dto';
-import { CreateEmailAccount } from './dto/create-email-account.dto';
-import { VerifyAccountDto } from './dto/verify-account-dto';
 import { Account } from './entities/account.entity';
 
 @Injectable()
@@ -63,79 +61,6 @@ export class AccountService extends BaseService<Account> {
     }
   }
 
-  generateVerifyDto(email: string, password: string): VerifyAccountDto {
-    return {
-      imap: {
-        auth: {
-          user: email,
-          pass: password,
-        },
-        host: 'imap.gmail.com',
-        port: 993,
-        secure: true,
-        tls: {
-          rejectUnauthorized: true,
-          minVersion: 'TLSv1.2',
-        },
-        resyncDelay: 900,
-      },
-      smtp: {
-        auth: {
-          user: email,
-          pass: password,
-        },
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        tls: {
-          rejectUnauthorized: true,
-          minVersion: 'TLSv1.2',
-        },
-      },
-    };
-  }
-  generateCreateEmailDto(
-    email: string,
-    password: string,
-    username: string,
-    name: string,
-  ): CreateEmailAccount {
-    return {
-      account: username,
-      name: name,
-      email: email,
-      path: 'INBOX',
-      copy: true,
-      logs: true,
-      imap: {
-        auth: {
-          user: email,
-          pass: password,
-        },
-        host: 'imap.gmail.com',
-        port: 993,
-        secure: true,
-        tls: {
-          rejectUnauthorized: true,
-          minVersion: 'TLSv1.2',
-        },
-        resyncDelay: 900,
-      },
-      smtp: {
-        auth: {
-          user: email,
-          pass: password,
-        },
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        tls: {
-          rejectUnauthorized: true,
-          minVersion: 'TLSv1.2',
-        },
-      },
-    };
-  }
   async createAccountOnEmailServer(
     username: string,
     email: string,
