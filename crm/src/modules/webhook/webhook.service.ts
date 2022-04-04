@@ -76,41 +76,4 @@ export class WebhookService {
       return result;
     } catch (error) {}
   }
-  // an sale send contact an email
-  // async saveAsSentToDatabase(dto: WebHookDto) {
-  //   if (!dto.data.to) return;
-  //   const contactRepository = getCustomRepository(ContactRepository);
-  //   const emailRepository = getCustomRepository(EmailRepository);
-  //   const [contact, account] = await Promise.all([
-  //     contactRepository.findOne({
-  //       where: { email: dto.data.to[0].address },
-  //     }),
-  //     this.accountService.findOneItem({
-  //       where: { username: dto.account },
-  //     }),
-  //   ]);
-
-  //   if (!contact) {
-  //     const result = await emailRepository.createItem({
-  //       account,
-  //       body: dto.data.text.html,
-  //       subject: dto.data.subject,
-  //       receiverEmail: dto.data.to[0].address,
-  //       type: EmailType.SEND,
-  //       isAnonymous: true,
-  //     });
-
-  //     return result;
-  //   }
-
-  //   const result = await emailRepository.createItem({
-  //     account,
-  //     body: dto.data.text.html,
-  //     subject: dto.data.subject,
-  //     receiverEmail: contact.email,
-  //     type: EmailType.SEND,
-  //   });
-
-  //   return result;
-  // }
 }

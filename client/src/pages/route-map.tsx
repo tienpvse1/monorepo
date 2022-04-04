@@ -164,6 +164,10 @@ export const route: RouteObject[] = [
             element: <Inbox />,
           },
           {
+            path: '/email/outside-mails',
+            element: <Inbox />,
+          },
+          {
             path: '/email/sent',
             element: <SentEmails />,
             children: [
