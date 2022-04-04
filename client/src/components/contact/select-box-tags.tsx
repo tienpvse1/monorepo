@@ -11,8 +11,8 @@ export const SelectBoxTags = () => {
     >
       <Select>
         {data?.map((tag) => (
-          <Option value={tag.id}>
-            <Tag color={tag.color}>
+          <Option value={tag.id} key={tag.id}>
+            <Tag color={tag.color} key={tag.id}>
               {tag.name}
             </Tag>
           </Option>
