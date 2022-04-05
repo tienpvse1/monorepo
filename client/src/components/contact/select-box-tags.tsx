@@ -8,6 +8,7 @@ export const SelectBoxTags = () => {
     <Form.Item
       name="tagIds"
       label="Tags"
+      initialValue={[]}
     >
       <Select
         mode="multiple"
