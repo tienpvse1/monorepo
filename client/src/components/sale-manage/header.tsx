@@ -3,10 +3,9 @@ import { CreateModal } from '@components/modal/create-modal';
 import { useToggle } from '@hooks/useToggle';
 import { useCreateTeam } from '@modules/team/mutate/team.post';
 import { Button, Form, Input, message, PageHeader, Tag } from 'antd';
-import { Dispatch, SetStateAction } from 'react';
 
 interface SaleManageHeaderProps {
-  setReload: Dispatch<SetStateAction<boolean>>;
+  setReload: () => void;
 }
 
 export const SaleManageHeader: React.FC<SaleManageHeaderProps> = ({ setReload }) => {
@@ -17,7 +16,7 @@ export const SaleManageHeader: React.FC<SaleManageHeaderProps> = ({ setReload })
     createTeam(record.name, {
       onSuccess: () => {
         message.success('Created team successfully !');
-        setReload(true);
+        setReload();
       }
     })
   }
