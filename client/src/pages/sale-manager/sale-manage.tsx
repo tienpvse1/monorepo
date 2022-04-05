@@ -14,7 +14,6 @@ interface SaleManageProps { }
 
 const SaleManage: React.FC<SaleManageProps> = ({ }) => {
   const [data, setData] = useState<ITeam[]>([]);
-  // const [reload, setReload] = useState<boolean>(false);
   const [reload, setReload] = useToggle();
 
   const { data: socketData } = useSocket({
