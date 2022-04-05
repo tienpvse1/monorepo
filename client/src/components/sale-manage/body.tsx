@@ -7,9 +7,10 @@ import { Table } from './table';
 interface SaleManageBodyProps {
   data: ITeam[];
   setData: Dispatch<SetStateAction<ITeam[]>>;
+  setReload: () => void;
 }
 
-export const SaleManageBody: React.FC<SaleManageBodyProps> = ({ data, setData }) => {
+export const SaleManageBody: React.FC<SaleManageBodyProps> = ({ data, setData, setReload }) => {
 
   return (
     <div
@@ -22,7 +23,7 @@ export const SaleManageBody: React.FC<SaleManageBodyProps> = ({ data, setData })
           <Kanban data={data} setData={setData} />
         </Tabs.TabPane>
         <Tabs.TabPane tab='Table' key='2'>
-          <Table data={data} />
+          <Table setReload={setReload} data={data} />
         </Tabs.TabPane>
       </Tabs>
     </div>

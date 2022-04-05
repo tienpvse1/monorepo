@@ -2,6 +2,7 @@ import { SaleManageBody } from '@components/sale-manage/body';
 import { SaleManageHeader } from '@components/sale-manage/header';
 import { envVars } from '@env/var.env';
 import { useSocket } from '@hooks/socket';
+import { useToggle } from '@hooks/useToggle';
 import { ITeam } from '@modules/team/entity/team.entity';
 import { getTeams } from '@modules/team/query/team.get';
 import { sortTeams } from '@util/array';
@@ -13,7 +14,7 @@ interface SaleManageProps { }
 
 const SaleManage: React.FC<SaleManageProps> = ({ }) => {
   const [data, setData] = useState<ITeam[]>([]);
-  const [reload, setReload] = useState<boolean>(false);
+  const [reload, setReload] = useToggle();
 
   const { data: socketData } = useSocket({
     event: 'team-updated',
@@ -34,7 +35,7 @@ const SaleManage: React.FC<SaleManageProps> = ({ }) => {
   return (
     <div className='container-page'>
       <SaleManageHeader setReload={setReload} />
-      <SaleManageBody data={data} setData={setData} />
+      <SaleManageBody data={data} setData={setData} setReload={setReload}/>
     </div>
   );
 };
