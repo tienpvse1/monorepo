@@ -14,6 +14,7 @@ import { usePostOpportunityHistory } from '@modules/opportunity-history/mutation
 import { OpportunityHistoryType } from '@modules/opportunity-history/entity/opportunity-history.entity';
 import { QUERY_OPPORTUNITY_HISTORY } from '@modules/opportunity-history/query/opportunity-history.get';
 import { UploadInvoice } from '@components/sale/upload-invoice';
+import { useCreateReason } from '@modules/reason/mutation/reason.post';
 const { Step } = Steps;
 
 interface OpportunityStepProps {
@@ -26,7 +27,7 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
   const [form] = Form.useForm<any>();
   const [isVisible, toggleModalChangeStageWon] = useToggle();
   const { mutateAsync: mutateOpportunityHistory } = usePostOpportunityHistory();
-
+  const { mutate: postReason } = useCreateReason();
 
   const handleUpdateStage = (
     currentStageId: string,
@@ -54,9 +55,9 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
           }, {
             onSuccess: () => {
               client.refetchQueries([QUERY_OPPORTUNITY_HISTORY, data.id]);
+              callback ? callback() : '';
             }
           });
-          callback ? callback() : '';
         },
       }
     );
@@ -64,10 +65,26 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
 
   const handleChangeStageWon = async () => {
     const record = await form.validateFields();
-    handleUpdateStage(record.oldStageId, record.newStageId, record.startColumnName, record.finishColumnName, () => {
-      toggleModalChangeStageWon();
-      startFireworks();
-    });
+    handleUpdateStage(
+      record.oldStageId,
+      record.newStageId,
+      record.startColumnName,
+      record.finishColumnName,
+      () => {
+        postReason({
+          pipelineItemId: data.id,
+          description: record.description,
+          photo: record.photo,
+          invoiceId: record.invoiceId,
+          reason: 'no thing',
+          reasonType: 'win'
+        }, {
+          onSuccess: () => {
+            toggleModalChangeStageWon();
+            startFireworks();
+          }
+        })
+      })
   }
 
   const handleToggleModalChangeStageWon = (

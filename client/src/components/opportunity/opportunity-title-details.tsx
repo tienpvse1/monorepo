@@ -26,10 +26,15 @@ export const OpportunityTitleDetails: React.FC<
         createReason({
           ...record,
           pipelineItemId: opportunity.id,
-          reasonType: 'lose'
+          reasonType: 'lose',
+          invoiceId: '',
+          photo: ''
+        }, {
+          onSuccess: () => {
+            queryClient.invalidateQueries([GET_PIPELINE_ITEM_BY_ID, opportunity.id]);
+            message.success('Lost opportunity success!')
+          }
         })
-        queryClient.invalidateQueries([GET_PIPELINE_ITEM_BY_ID, opportunity.id]);
-        message.success('Lost opportunity success!')
       }
     })
   }
