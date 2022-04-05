@@ -4,7 +4,7 @@ import { useDeleteContact } from '@modules/contact/mutation/contact.delete';
 import {
   QUERY_CONTACTS,
 } from '@modules/contact/query/contact.get';
-import { Button, Form, Space, Table } from 'antd';
+import { Button, Form, Space, Table, Tag } from 'antd';
 import Column from 'antd/lib/table/Column';
 import { useMemo } from 'react';
 import { client } from '../../App';
@@ -77,6 +77,16 @@ export const ContactTable: React.FC<ContactTableProps> = ({
     text: value.company?.name,
     value: value.company?.name,
   }));
+
+  //filter tags
+  const arrayTags: any = dataSource?.map((contact) => {
+    return contact.tags.map((tag) => tag.name)
+  })
+  const arrayConcatTags = [].concat.apply([], arrayTags);
+  const tagsFilter = arrayConcatTags.map((value) => ({
+    text: value,
+    value: value
+  }))
 
   //handle method
   const [form] = Form.useForm<IContact>();
@@ -156,6 +166,29 @@ export const ContactTable: React.FC<ContactTableProps> = ({
               record.company.name.indexOf(value as string) === 0
             }
           />
+
+          <Column
+            title='Tags'
+            dataIndex='tags'
+            key='tags'
+            render={(_, record: IContact) => (
+              record.tags.map((tag) => (
+                <Tag
+                  style={{ marginTop: '3px' }}
+                  color={tag.color}
+                  key={tag.id}
+                >
+                  {tag.name}
+                </Tag>
+              ))
+            )}
+            filters={removeDuplicate(tagsFilter, 'value')}
+            filterSearch={true}
+            onFilter={(value, record) =>
+              record.tags.some((tag) => tag.name === value)
+            }
+          />
+
           <Column
             title='Created By'
             dataIndex='username'
@@ -174,6 +207,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
               return fullName.indexOf(value as string) === 0
             }}
           />
+
           <Column
             title='Actions'
             dataIndex='actions'
