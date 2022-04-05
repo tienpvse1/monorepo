@@ -32,7 +32,7 @@ const ImportContact: React.FC = () => {
   ] = useCookies([PUBLIC_USER_INFO]);
   const { data: contacts } = useContacts(id);
   return (
-    <div>
+    <div className='container-page'>
       <Steps>
         <Step
           status={importedContacts.length > 0 ? 'finish' : 'process'}
