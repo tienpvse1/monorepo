@@ -59,7 +59,7 @@ const SalesCompanyList = lazy(
 );
 const ViewCompanyDetails = lazy(() => import('@pages/view-company-details'));
 
-const PipelineAdmin = lazy(() => import('@components/admin/pipeline-admin'));
+const AdminPipeline = lazy(() => import('@components/admin/admin-pipeline'));
 const AccountantLayout = lazy(() => import('@common/accountant-layout'));
 
 const ListOfAllContact = lazy(
@@ -254,7 +254,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'pipeline',
-        element: <PipelineAdmin />,
+        element: <AdminPipeline />,
       },
     ],
   },
@@ -368,7 +368,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'pipeline',
-        element: <PipelineAdmin />,
+        element: <AdminPipeline />,
       },
       {
         path: 'forecast',
