@@ -104,10 +104,26 @@ export class ContactService extends BaseService<Contact> {
     return contact.save();
   }
 
-  async updateContact(id: string, { companyName, ...rest }: UpdateContactDto) {
+  async updateTags(id: string, dto: AddTagDto) {
+    const tagRepository = getRepository(Tag);
+    const [contact, tags] = await Promise.all([
+      this.findOneItem({ where: { id }, relations: ['tags'] }),
+      tagRepository.find({ where: { id: In(dto.tagIds) } }),
+    ]);
+    contact.tags = [];
+
+    contact.tags.push(...tags);
+    return contact.save();
+  }
+
+  async updateContact(
+    id: string,
+    { companyName, tagIds, ...rest }: UpdateContactDto,
+  ) {
     if (companyName) {
       const companyRepository = getRepository(Company);
-      const [company, contact] = await Promise.all([
+      const tagRepository = getRepository(Tag);
+      const [company, contact, tags] = await Promise.all([
         companyRepository
           .createQueryBuilder('company')
           .where('company.name = :name', { name: companyName })
@@ -116,9 +132,16 @@ export class ContactService extends BaseService<Contact> {
           .createQueryBuilder('contact')
           .where('id = :id', { id })
           .getOne(),
+        tagRepository.find({
+          where: {
+            id: In(tagIds),
+          },
+        }),
       ]);
       const newObject = { ...contact, ...rest };
       newObject.company = company;
+      newObject.tags = tags;
+
       return this.repository.save(newObject);
     }
     return this.repository.update(id, rest);
