@@ -13,6 +13,7 @@ export interface IAccount extends IBase {
   team: ITeam;
   email: string;
   password: string;
+  isEnable: boolean;
   isSocialAccount: boolean;
   role: {
     name: Role;

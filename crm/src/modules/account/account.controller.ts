@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Param,
+  Patch,
   Post,
   UseInterceptors,
   UsePipes,
@@ -47,7 +48,7 @@ import { ExcludePasswordPipe } from './exclude-password.pipe';
         HistoryLog('updated their account'),
       ],
     },
-    exclude: ['deleteOneBase'],
+    exclude: ['deleteOneBase', 'createOneBase'],
   },
   params: {
     id: {
@@ -78,9 +79,24 @@ export class AccountController {
     return this.service.softDelete(id);
   }
   @Public()
-  @Post('/verify')
+  @Post('')
   @HistoryLog('Deleted an account')
   verifyAndCreate(@Body() body: CreateAccountDto) {
     return this.service.createAccount(body);
+  }
+
+  @HasRoles(Roles.ADMIN)
+  @Patch('enable/:id')
+  enableAccount(@Param('id') accountId: string) {
+    return this.service.repository.update(accountId, {
+      isEnable: true,
+    });
+  }
+  @HasRoles(Roles.ADMIN)
+  @Patch('disable/:id')
+  disableAccount(@Param('id') accountId: string) {
+    return this.service.repository.update(accountId, {
+      isEnable: false,
+    });
   }
 }

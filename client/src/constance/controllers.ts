@@ -25,4 +25,5 @@ export enum controllers {
   CITY = 'city',
   REASON = 'reason',
   TAG = 'tag',
+  ROLE = 'role',
 }

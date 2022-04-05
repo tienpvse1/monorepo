@@ -8,6 +8,7 @@ const Inbox = lazy(() => import('./inbox'));
 const Email = lazy(() => import('./email'));
 const Tag = lazy(() => import('@pages/tag'));
 const HomePage = lazy(() => import('@pages/home'));
+const Account = lazy(() => import('./administration/account'));
 const Contact = lazy(() => import('@pages/contact'));
 const LoginPage = lazy(() => import('@pages/login'));
 const Company = lazy(() => import('@pages/company'));
@@ -257,6 +258,10 @@ export const route: RouteObject[] = [
         path: 'pipeline',
         element: <PipelineAdmin />,
       },
+      {
+        path: '/administration/account',
+        element: <Account />,
+      },
     ],
   },
   {
@@ -337,13 +342,13 @@ export const route: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <MyCalendar />
+            element: <MyCalendar />,
           },
           {
             path: 'list-all',
-            element: <ListSchedule />
-          }
-        ]
+            element: <ListSchedule />,
+          },
+        ],
       },
       {
         path: 'email',
@@ -352,7 +357,7 @@ export const route: RouteObject[] = [
       {
         path: 'profile',
         element: <ProfilePage />,
-      }
+      },
     ],
   },
   {

@@ -50,6 +50,7 @@ export class AuthService {
         'firstName',
         'lastName',
         'photo',
+        'isEnable',
       ],
       relations: ['role', 'role.permissions'],
     });
@@ -163,6 +164,8 @@ export class AuthService {
     req: Request,
   ) {
     const account = await this.getAccountForAuth(email, password);
+    if (!account.isEnable)
+      throw new BadRequestException('account has been disabled');
     try {
       const [isPasswordMatch, sessionFromAccountId] = await Promise.all([
         compare(password, account.password),

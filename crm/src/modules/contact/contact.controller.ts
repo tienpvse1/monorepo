@@ -89,7 +89,10 @@ export class ContactController {
   ) {
     return this.service.createManyContact(dto, accountId);
   }
-
+  @Patch('tags/:id')
+  updateContactTags(@Param('id') id: string, @Body() dto: AddTagDto) {
+    return this.service.updateTags(id, dto);
+  }
   @Delete(':id')
   @HistoryLog('Deleted a contact')
   delete(@Param('id') id: string) {
