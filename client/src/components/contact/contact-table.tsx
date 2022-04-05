@@ -209,9 +209,9 @@ export const ContactTable: React.FC<ContactTableProps> = ({
           />
 
           <Column
-            title='Actions'
-            dataIndex='actions'
-            key='actions'
+            title='Action'
+            dataIndex='action'
+            key='action'
             render={(_, record: IContact) => (
               <Space size='small' style={{ width: '100%' }}>
                 <>

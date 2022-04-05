@@ -1,51 +1,72 @@
-import { EllipsisOutlined, LeftOutlined } from '@ant-design/icons';
-import { Button, Tag } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { CreateModal } from '@components/modal/create-modal';
+import { useToggle } from '@hooks/useToggle';
+import { useCreateTeam } from '@modules/team/mutate/team.post';
+import { Button, Form, Input, message, PageHeader, Tag } from 'antd';
+import { Dispatch, SetStateAction } from 'react';
 
-interface SaleManageHeaderProps {}
+interface SaleManageHeaderProps {
+  setReload: Dispatch<SetStateAction<boolean>>;
+}
 
-export const SaleManageHeader: React.FC<SaleManageHeaderProps> = ({}) => {
+export const SaleManageHeader: React.FC<SaleManageHeaderProps> = ({ setReload }) => {
+  const [isVisible, toggleModal] = useToggle();
+  const { mutate: createTeam } = useCreateTeam();
+
+  const handleSubmit = (record: any) => {
+    createTeam(record.name, {
+      onSuccess: () => {
+        message.success('Created team successfully !');
+        setReload(true);
+      }
+    })
+  }
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 20,
-      }}
-    >
-      <Button
-        type='default'
-        style={{
-          height: 50,
-          width: 50,
-        }}
-        shape='round'
-        icon={<LeftOutlined />}
-      />
-      <div>
-        <span style={{ opacity: 0.7 }}>Manage</span>
-        <h2
-          style={{
-            display: 'flex',
-            fontSize: 23.5,
-          }}
+    <>
+      <PageHeader
+        style={{ padding: '10px' }}
+        className='site-page-header'
+        onBack={() => window.history.back()}
+        extra={
+          <>
+            <Button
+              className='button-ant-custom-style'
+              type='primary'
+              icon={<PlusOutlined />}
+              onClick={toggleModal}
+            >
+              New Team
+            </Button>
+          </>
+        }
+        title={
+          <>
+            <h2 style={{ fontSize: 23 }} >
+              Sale Manage
+            </h2>
+            <Tag color={'volcano'}>Opportunity</Tag>
+            <Tag color={'cyan'}>Sales</Tag>
+            <Tag color={'volcano'}>Manage</Tag>
+          </>
+        }
+      ></PageHeader>
+      <CreateModal
+        width={500}
+        bodyStyle={{ height: '150px' }}
+        title='New Team'
+        isOpenModal={isVisible}
+        toggleCreateModal={toggleModal}
+        callback={handleSubmit}
+      >
+        <Form.Item
+          name="name"
+          label="Name:"
+          required
         >
-          Sale Manage{' '}
-          <span>
-            <EllipsisOutlined
-              style={{
-                marginLeft: 20,
-                transform: 'translateY(2px)',
-                opacity: 0.7,
-              }}
-            />
-          </span>
-        </h2>
-        <div>
-          <Tag color={'volcano'}>Opportunity</Tag>
-          <Tag color={'cyan'}>Sales</Tag>
-          <Tag color={'volcano'}>Manage</Tag>
-        </div>
-      </div>
-    </div>
+          <Input />
+        </Form.Item>
+      </CreateModal>
+    </>
   );
 };

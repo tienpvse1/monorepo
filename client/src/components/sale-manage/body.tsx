@@ -1,34 +1,15 @@
-import { envVars } from '@env/var.env';
-import { useSocket } from '@hooks/socket';
 import { ITeam } from '@modules/team/entity/team.entity';
-import { getTeams } from '@modules/team/query/team.get';
-import { sortTeams } from '@util/array';
 import { Tabs } from 'antd';
-import { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import { Dispatch, SetStateAction } from 'react';
 import { Kanban } from './kanban';
 import { Table } from './table';
-const socket = io(`${envVars.VITE_BE_DOMAIN}/team`);
 
-interface SaleManageBodyProps {}
+interface SaleManageBodyProps {
+  data: ITeam[];
+  setData: Dispatch<SetStateAction<ITeam[]>>;
+}
 
-export const SaleManageBody: React.FC<SaleManageBodyProps> = ({}) => {
-  const [data, setData] = useState<ITeam[]>([]);
-  const { data: socketData } = useSocket({
-    event: 'team-updated',
-    socket,
-    onReceive: (e: ITeam[]) => sortTeams(e),
-  });
-  // get initial data
-  useEffect(() => {
-    getTeams().then((data) => setData(data));
-  }, []);
-  // update data when there's an event from server
-  useEffect(() => {
-    if (socketData) {
-      setData(socketData);
-    }
-  }, [socketData]);
+export const SaleManageBody: React.FC<SaleManageBodyProps> = ({ data, setData }) => {
 
   return (
     <div
