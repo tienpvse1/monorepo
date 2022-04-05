@@ -17,4 +17,5 @@ export interface IContact extends IBase {
   internalNotes: string;
   company: ICompany;
   tags: ITag[];
+  tagIds: string[];
 }

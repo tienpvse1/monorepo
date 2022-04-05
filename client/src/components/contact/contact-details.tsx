@@ -9,11 +9,12 @@ import { IContact } from '@modules/contact/entity/contact.entity';
 import moment from 'moment';
 import { dateFormat } from '@constance/date-format';
 const { CRUD_AT, BIRTH } = dateFormat;
-import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
+import { useUpdateContact, useUpdateContactTags } from '@modules/contact/mutation/contact.patch';
 import { useQueryClient } from 'react-query';
 import { QUERY_CONTACTS_BY_ID } from '@modules/contact/query/contact.get';
 import { message } from 'antd';
 import { AddressInfoForm } from './address-info-form';
+import _ from 'lodash';
 
 interface ContactDetailsProps {
   contact: IContact;
@@ -22,12 +23,24 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
   const [isEditingForm1, toggleEditForm1] = useToggle();
   const [isEditingForm2, toggleEditForm2] = useToggle();
   const [form] = Form.useForm<any>();
-
   const queryClient = useQueryClient();
+  const { mutate: updateContactTags } = useUpdateContactTags();
 
-  const onSuccess = () => {
+  const onSuccess = (response: IContact) => {
     queryClient.invalidateQueries(QUERY_CONTACTS_BY_ID);
     message.success('Save successfully !');
+    const responseTags = response.tagIds;
+    const currentTags = contact.tags.map((tag) => tag.id);
+    if (!_.isEqual(responseTags, currentTags)) {
+      updateContactTags({
+        id: contact.id,
+        tagIds: responseTags
+      }, {
+        onSuccess: () => {
+          queryClient.invalidateQueries(QUERY_CONTACTS_BY_ID);
+        }
+      })
+    }
   };
   const { mutate } = useUpdateContact(onSuccess);
 
