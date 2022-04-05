@@ -38,8 +38,6 @@ export const ProfileDetails: React.FC<ProfileDetailsProps> = ({ }) => {
   };
 
   const handleSubmit = async (photo: File) => {
-    console.log("selectedPhoto:", photo);
-    
     const compressedPhoto = await compressImage(photo, 0.1);
     const data = await uploadFiles([compressedPhoto]);
     const imageUrl = `${envVars.VITE_BE_DOMAIN}/files/${data[0].filename}`;

@@ -8,7 +8,7 @@ import { ISchedule } from '@modules/schedule/entity/schedule.entity';
 import { useSchedulesByMonth } from '@modules/schedule/query/schedule.get';
 import { Button, Calendar, Tooltip } from 'antd';
 import { Moment } from 'moment';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import '../../stylesheets/schedule.css';
@@ -18,6 +18,8 @@ const MyCalendar: React.FC<ScheduleProps> = ({ }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [drawerData, setDrawerData] = useState<ISchedule[]>([]);
   const [value, toggle] = useBooleanToggle(false);
+  const isClick = useRef(false);
+
   const navigate = useNavigate();
   const [
     {
@@ -30,7 +32,6 @@ const MyCalendar: React.FC<ScheduleProps> = ({ }) => {
   }, [currentMonth]);
 
   const onSelect = (date: Moment) => {
-    console.log('then this');
     const items = data.filter((item) => {
       const currentDate = new Date(item.dueDate);
       return (
@@ -39,13 +40,14 @@ const MyCalendar: React.FC<ScheduleProps> = ({ }) => {
         currentDate.getFullYear() === date.year()
       );
     });
-    toggle(true);
+    toggle(!isClick.current);
 
     setDrawerData(
       items.sort(
         (a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
       )
     );
+    isClick.current = false;
   };
 
   return (
@@ -62,7 +64,7 @@ const MyCalendar: React.FC<ScheduleProps> = ({ }) => {
         <>
           <Calendar
             onPanelChange={(e) => {
-              console.log('this get called');
+              isClick.current = true;
               setCurrentMonth(e.month());
             }}
             onSelect={(e) => onSelect(e)}

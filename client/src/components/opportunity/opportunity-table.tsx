@@ -237,9 +237,9 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
           />
 
           <Column
-            title='Actions'
-            dataIndex='actions'
-            key='actions'
+            title='Action'
+            dataIndex='action'
+            key='action'
             fixed={'right'}
             width={125}
             render={(_, record: IPipelineItem) => (

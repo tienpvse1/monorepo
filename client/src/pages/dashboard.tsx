@@ -8,7 +8,6 @@ import { Calendar } from 'antd';
 import moment from 'moment';
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
-import '../stylesheets/dashboard.css';
 export const DashBoard: React.FC = () => {
   const [data, setData] = useState<(ICardData & { index: number })[]>(
     cardData.map((item, index) => ({ ...item, index }))

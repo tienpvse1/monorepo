@@ -4,7 +4,6 @@ import { IContact } from '@modules/contact/entity/contact.entity';
 import { readExcel } from '@util/excel';
 import { UploadChangeParam } from 'antd/lib/upload';
 import Dragger from 'antd/lib/upload/Dragger';
-import '../stylesheets/upload.css';
 interface UploadProps {
   contacts: IContact[];
   setImportedContacts: React.Dispatch<React.SetStateAction<CreateContactDto[]>>;

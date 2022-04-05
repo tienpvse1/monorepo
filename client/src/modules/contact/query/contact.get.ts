@@ -26,7 +26,7 @@ const getContacts = async (accountId: string) => {
 };
 const getAllContacts = async () => {
   const query = RequestQueryBuilder.create({
-    join: [{ field: 'account' }, { field: 'company' }],
+    join: [{ field: 'account' }, { field: 'company' }, { field: 'tags' }],
     sort: [{ field: 'createdAt', order: 'DESC' }],
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
@@ -62,6 +62,7 @@ export const getContactsById = async (contactId: string) => {
       { field: 'company' },
       { field: 'account.team' },
       { field: 'pipelineItems' },
+      { field: 'tags' },
     ],
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);

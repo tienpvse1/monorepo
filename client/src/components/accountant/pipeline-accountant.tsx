@@ -1,10 +1,10 @@
 
-import PipelineAdmin from '@components/admin/pipeline-admin';
+import AdminPipeline from '@components/admin/admin-pipeline';
 
 export const PipelineAccountant = () => {
   return (
     <>
-      <PipelineAdmin />
+      <AdminPipeline />
     </>
   )
 }
