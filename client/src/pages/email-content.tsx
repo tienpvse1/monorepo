@@ -23,7 +23,7 @@ const EmailContent: React.FC<EmailContentProps> = ({}) => {
           padding: '20px',
         }}
       >
-        {ReactHtmlParser(data[0].body)}
+        {/* {ReactHtmlParser(data[0].body)} */}
       </div>
     </div>
   );
