@@ -39,6 +39,9 @@ export const ColumnPlot: React.FC<ColumnPlotProps> = ({ data }) => {
         autoRotate: false,
       },
     },
+    yAxis: {
+      tickInterval: 1
+    },
     meta: {
       opportunity: {
         alias: 'Opportunity'
