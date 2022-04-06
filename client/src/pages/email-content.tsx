@@ -1,3 +1,4 @@
+import { InboxHeader } from '@components/inbox/inbox-header';
 import { IInbox } from '@modules/inbox/entity/inbox.entity';
 import {
   QUERY_MY_INBOX_EMAIL_FROM_CONTACTS,
@@ -5,8 +6,6 @@ import {
 } from '@modules/inbox/query/inbox.get';
 import { useParams } from 'react-router-dom';
 import { client } from '../App';
-import ReactHtmlParser from 'react-html-parser';
-import { InboxHeader } from '@components/inbox/inbox-header';
 interface EmailContentProps {}
 
 const EmailContent: React.FC<EmailContentProps> = ({}) => {
@@ -24,6 +23,7 @@ const EmailContent: React.FC<EmailContentProps> = ({}) => {
         }}
       >
         {/* {ReactHtmlParser(data[0].body)} */}
+        <div dangerouslySetInnerHTML={{ __html: data[0].body }}></div>
       </div>
     </div>
   );
