@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
 
 interface PreviewContactTableProps {
-  contacts: CreateContactDto[];
+  contacts: Partial<CreateContactDto>[];
   setPreviewContacts: Dispatch<SetStateAction<CreateContactDto[]>>;
 }
 
@@ -170,7 +170,7 @@ const AssignDataTable: FC<PreviewContactTableProps> = ({
           />
         </Table>
       </Form>
-      <Button onClick={() => form.submit()}>Click me</Button>
+      <Button onClick={() => form.submit()}>Next</Button>
     </>
   );
 };

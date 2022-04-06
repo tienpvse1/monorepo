@@ -82,9 +82,16 @@ export class ContactService extends BaseService<Contact> {
       where: { id: accountId },
     });
     for (const dto of bulk) {
-      const tags = await tagRepository.find({ where: { id: In(dto.tagIds) } });
-      const id = await this.createContact(dto, creator, tags);
-      ids.push(id);
+      if (dto.tagIds) {
+        const tags = await tagRepository.find({
+          where: { id: In(dto.tagIds) },
+        });
+        const id = await this.createContact(dto, creator, tags);
+        ids.push(id);
+      } else {
+        const id = await this.createContact(dto, creator, []);
+        ids.push(id);
+      }
     }
     // return dto;
     return { ids };

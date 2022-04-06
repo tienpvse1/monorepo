@@ -4,6 +4,7 @@ import { RouteObject } from 'react-router-dom';
 import Statistic from './statistic';
 
 const EmailContent = lazy(() => import('./email-content'));
+const Activity = lazy(() => import('./administration/activity'));
 const Inbox = lazy(() => import('./inbox'));
 const Email = lazy(() => import('./email'));
 const Tag = lazy(() => import('@pages/tag'));
@@ -261,6 +262,10 @@ export const route: RouteObject[] = [
       {
         path: '/administration/account',
         element: <Account />,
+      },
+      {
+        path: '/administration/activity',
+        element: <Activity />,
       },
     ],
   },
