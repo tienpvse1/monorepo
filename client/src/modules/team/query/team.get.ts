@@ -13,6 +13,9 @@ export const getTeams = async () => {
       {
         field: 'accounts',
       },
+      {
+        field: 'accounts.pipelineItems'
+      }
     ],
   }).query(false);
 

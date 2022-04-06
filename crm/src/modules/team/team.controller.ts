@@ -34,6 +34,7 @@ import { TeamService } from './team.service';
       accounts: {
         alias: 'acc',
       },
+      'accounts.pipelineItems': {},
     },
   },
   params: {

@@ -1,5 +1,6 @@
 import { IBase } from '@interfaces/base';
 import { Role } from '@interfaces/type-roles';
+import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { ITeam } from '@modules/team/entity/team.entity';
 
@@ -23,4 +24,5 @@ export interface IAccount extends IBase {
     deletedAt: string;
   };
   pipeline: IPipeline;
+  pipelineItems: IPipelineItem[];
 }

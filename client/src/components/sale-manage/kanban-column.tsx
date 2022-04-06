@@ -16,7 +16,7 @@ export const KanbanColumn = (
   return (
     <div {...e.droppableProps} ref={e.innerRef} style={{ display: 'flex' }}>
       {teams.map((team, index) => (
-        <Draggable index={index} key={team.id} draggableId={team.id}>
+        <Draggable index={index} key={team.id} draggableId={team.id} isDragDisabled={true}>
           {(provided, _snapshot) => (
             <div
               {...provided.draggableProps}

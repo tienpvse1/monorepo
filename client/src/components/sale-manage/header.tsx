@@ -1,8 +1,9 @@
-import { PlusOutlined } from '@ant-design/icons';
+import { BarChartOutlined, PlusOutlined } from '@ant-design/icons';
 import { CreateModal } from '@components/modal/create-modal';
 import { useToggle } from '@hooks/useToggle';
 import { useCreateTeam } from '@modules/team/mutate/team.post';
 import { Button, Form, Input, message, PageHeader, Tag } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 interface SaleManageHeaderProps {
   setReload: () => void;
@@ -11,6 +12,7 @@ interface SaleManageHeaderProps {
 export const SaleManageHeader: React.FC<SaleManageHeaderProps> = ({ setReload }) => {
   const [isVisible, toggleModal] = useToggle();
   const { mutate: createTeam } = useCreateTeam();
+  const navigate = useNavigate();
 
   const handleSubmit = (record: any) => {
     createTeam(record.name, {
@@ -29,6 +31,14 @@ export const SaleManageHeader: React.FC<SaleManageHeaderProps> = ({ setReload })
         onBack={() => window.history.back()}
         extra={
           <>
+            <Button
+              className='button-ant-custom-style'
+              type='ghost'
+              icon={<BarChartOutlined />}
+              onClick={() => navigate('team-chart')}
+            >
+              Column Plot
+            </Button>
             <Button
               className='button-ant-custom-style'
               type='primary'
