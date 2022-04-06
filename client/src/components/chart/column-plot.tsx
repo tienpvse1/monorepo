@@ -2,7 +2,7 @@ import { Column } from '@ant-design/charts';
 import { ThemeColor } from "../../constance/color";
 
 interface ColumnPlotProps {
-  data: any
+  data: any;
 }
 
 export const ColumnPlot: React.FC<ColumnPlotProps> = ({ data }) => {

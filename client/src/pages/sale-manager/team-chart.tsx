@@ -1,6 +1,7 @@
 import { Card, Col, DatePicker, PageHeader, Row, Tag } from "antd";
 import { useTeams } from "@modules/team/query/team.get";
 import { ColumnPlot } from "@components/chart/column-plot";
+import moment from "moment";
 const { RangePicker } = DatePicker;
 
 const TeamChart = () => {
@@ -8,6 +9,7 @@ const TeamChart = () => {
 
   const teamFilter = teams?.map((team) => {
     return {
+      id: team.id,
       name: team.name,
       account: team.accounts.map((account) => {
         return {
@@ -42,10 +44,15 @@ const TeamChart = () => {
       />
       <Row gutter={[16, 20]}>
         {teamFilter?.map((team) => (
-          <Col span={12}>
+          <Col key={team.id} span={12}>
             <Card
+              key={team.id}
               title={team.name}
-              extra={<RangePicker />}
+              extra={
+                <RangePicker
+                  defaultValue={[moment().subtract(1, 'months'), moment()]}
+                />
+              }
               style={{ width: 450, height: 300 }}
             >
               <ColumnPlot data={team.account} />
