@@ -1,7 +1,8 @@
+import { useCompanies } from '@modules/company/query/company.get';
 import { CreateContactDto } from '@modules/contact/dto/create-contact.dto';
 import { useBulkInsertContact } from '@modules/contact/mutation/contact.post';
-import { Button, notification, Table } from 'antd';
-import { Dispatch, SetStateAction } from 'react';
+import { AutoComplete, Button, notification, Table } from 'antd';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const { Column } = Table;
@@ -16,10 +17,16 @@ const PreviewTable: React.FC<PreviewTableProps> = ({
 }) => {
   const { mutate } = useBulkInsertContact();
   const navigate = useNavigate();
+  const { data } = useCompanies();
+  const [currentCompany, setCurrentCompany] = useState(null);
   const handleImport = () => {
+    if (!currentCompany) alert('please choose an company');
     mutate(
       {
-        bulk: previewData,
+        bulk: previewData.map((item) => ({
+          ...item,
+          companyName: currentCompany,
+        })),
       },
       {
         onSuccess: () => {
@@ -37,6 +44,7 @@ const PreviewTable: React.FC<PreviewTableProps> = ({
   const handleRemove = (id: string) => {
     setPreviewData((prev) => prev.filter((item) => item.id !== id));
   };
+
   return (
     <>
       <div
@@ -45,6 +53,21 @@ const PreviewTable: React.FC<PreviewTableProps> = ({
           justifyContent: 'flex-end',
         }}
       >
+        <div>
+          <AutoComplete
+            style={{ width: 200, transform: 'translateY(17px)' }}
+            placeholder='input here'
+            filterOption={(inputValue, option) =>
+              option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
+              -1
+            }
+            options={data?.map((company) => ({
+              value: company.name,
+            }))}
+            onChange={(value) => setCurrentCompany(value)}
+          />
+        </div>
+
         <Button
           style={{
             margin: 20,

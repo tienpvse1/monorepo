@@ -1,10 +1,27 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Col, Upload } from "antd"
+import { envVars } from "@env/var.env";
+import { compressImage, uploadFiles } from "@util/file";
+import { Button, Col, Form, FormInstance, Input, Upload } from "antd"
 import { RcFile } from "antd/lib/upload";
 import { useState } from "react";
 
-export const UploadInvoice = () => {
+interface UploadInvoiceProps {
+  form: FormInstance<any>;
+}
+
+export const UploadInvoice: React.FC<UploadInvoiceProps> = ({ form }) => {
   const [file, setFile] = useState<RcFile[]>([]);
+
+  const handleOnChangeUpload = async (file: any) => {
+
+    //Compress Image
+    const compressedPhoto = await compressImage(file, 0.1);
+    const data = await uploadFiles([compressedPhoto]);
+    const imageUrl = `${envVars.VITE_BE_DOMAIN}/files/${data[0].filename}`;
+    form.setFieldsValue({ photo: imageUrl })
+
+    setFile([file]);
+  }
 
   return (
     <Col span={12}>
@@ -23,12 +40,12 @@ export const UploadInvoice = () => {
           Upload image (if available):
         </div>
         <Upload
-          beforeUpload={(file) => setFile([file])}
+          beforeUpload={(file) => handleOnChangeUpload(file)}
           onRemove={() => setFile([])}
           listType="picture"
           maxCount={1}
           fileList={file}
-          customRequest={() => {}}
+          customRequest={() => { }}
         >
           <Button
             type="dashed"
@@ -39,6 +56,10 @@ export const UploadInvoice = () => {
           </Button>
 
         </Upload>
+        {/* Hidden input */}
+        <Form.Item name="photo" style={{ display: 'none' }}>
+          <Input />
+        </Form.Item>
       </div>
     </Col>
   )

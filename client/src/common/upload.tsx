@@ -4,10 +4,11 @@ import { IContact } from '@modules/contact/entity/contact.entity';
 import { readExcel } from '@util/excel';
 import { UploadChangeParam } from 'antd/lib/upload';
 import Dragger from 'antd/lib/upload/Dragger';
-import '../stylesheets/upload.css';
 interface UploadProps {
   contacts: IContact[];
-  setImportedContacts: React.Dispatch<React.SetStateAction<CreateContactDto[]>>;
+  setImportedContacts: React.Dispatch<
+    React.SetStateAction<Partial<CreateContactDto>[]>
+  >;
 }
 export interface Message {
   message: string;
@@ -19,10 +20,10 @@ const Upload: React.FC<UploadProps> = ({ contacts, setImportedContacts }) => {
     const excelData = await readExcel(info.file);
     const data = excelData.map(
       ({ company, ...item }) =>
-      ({ ...item, companyName: company } as CreateContactDto & {
-        __rowNum__: number;
-        id: string;
-      })
+        ({ ...item } as Partial<CreateContactDto> & {
+          __rowNum__: number;
+          id: string;
+        })
     );
     // console.log(data);
     setImportedContacts(data);
@@ -49,8 +50,8 @@ const Upload: React.FC<UploadProps> = ({ contacts, setImportedContacts }) => {
           Click or drag file to this area to upload
         </p>
         <p className='ant-upload-hint'>
-          Support for a single or bulk upload. Strictly prohibit from
-          uploading company data or other band files
+          Support for a single or bulk upload. Strictly prohibit from uploading
+          company data or other band files
         </p>
       </Dragger>
     </>

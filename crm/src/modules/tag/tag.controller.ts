@@ -31,6 +31,13 @@ import { TagService } from './tag.service';
       contacts: {},
     },
   },
+  params: {
+    id: {
+      field: 'id',
+      primary: true,
+      type: 'string',
+    },
+  },
 })
 export class TagController {
   constructor(public readonly service: TagService) {}

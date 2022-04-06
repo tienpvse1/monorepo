@@ -1,6 +1,6 @@
-import { InboxOutlined } from '@ant-design/icons';
+import { CoffeeOutlined, FileTextOutlined, MailOutlined, PhoneOutlined, PushpinOutlined } from '@ant-design/icons';
 import { ISchedule } from '@modules/schedule/entity/schedule.entity';
-import { Alert, Drawer } from 'antd';
+import { Alert, Drawer, Empty } from 'antd';
 import moment from 'moment';
 
 interface ScheduleDrawerProps {
@@ -21,32 +21,43 @@ export const ScheduleDrawer: React.FC<ScheduleDrawerProps> = ({
       onClose={() => toggle(false)}
     >
       {data.length > 0 ? (
-        data.map((item) => (
+        data.map((schedule) => (
           <Alert
-            key={item.id}
-            showIcon
-            message={item.summary}
-            type='info'
+            key={schedule.id}
             style={{
-              marginTop: 20,
+              marginTop: 15,
             }}
+            message={
+              <span style={{ fontSize: '17px' }}>
+                {schedule.type.toUpperCase()}
+              </span>
+            }
             description={
               <>
-                <span>
-                  'Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Fuga, earum.'
-                </span>
-                <br />
-                <span>
-                  {moment(new Date(item.dueDate)).hour()}:
-                  {moment(new Date(item.dueDate)).minute()}
+                <span style={{ fontSize: '16px' }}>
+                  {schedule.summary}
+                </span> <br />
+                <span style={{ fontSize: '12px', float: 'right' }}>
+                  Due {moment(new Date(schedule.dueDate)).fromNow()}
                 </span>
               </>
+            }
+            type={
+              schedule.type == 'todo' && 'info' ||
+              schedule.type == 'email' && 'error' ||
+              schedule.type == 'meeting' && 'warning' || 'success'
+            }
+            showIcon
+            icon={
+              schedule.type == 'todo' && <FileTextOutlined /> ||
+              schedule.type == 'email' && <MailOutlined /> ||
+              schedule.type == 'meeting' && <CoffeeOutlined /> ||
+              schedule.type == 'call' && <PhoneOutlined /> || <PushpinOutlined />
             }
           />
         ))
       ) : (
-        <InboxOutlined />
+        <Empty style={{ paddingTop: '125px' }} />
       )}
     </Drawer>
   );

@@ -2,32 +2,45 @@ import { MyForm } from '@components/form/my-form';
 import { Button, Col, Form, Row, Space } from 'antd';
 import { EditButtonHover } from '@components/page-details/edit-button-hover';
 import { ContactInfoDetails } from './contact-info-details';
-// import { AddressInfoDetails } from './address-info-details';
+import { AddressInfoDetails } from './address-info-details';
 import { ContactInfoForm } from './contact-info-form';
 import { useToggle } from '@hooks/useToggle';
 import { IContact } from '@modules/contact/entity/contact.entity';
 import moment from 'moment';
-// import { AddressInfoForm } from './address-info-form';
 import { dateFormat } from '@constance/date-format';
 const { CRUD_AT, BIRTH } = dateFormat;
-import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
+import { useUpdateContact, useUpdateContactTags } from '@modules/contact/mutation/contact.patch';
 import { useQueryClient } from 'react-query';
 import { QUERY_CONTACTS_BY_ID } from '@modules/contact/query/contact.get';
 import { message } from 'antd';
+import { AddressInfoForm } from './address-info-form';
+import _ from 'lodash';
 
 interface ContactDetailsProps {
   contact: IContact;
 }
 export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
   const [isEditingForm1, toggleEditForm1] = useToggle();
-  // const [isEditingForm2, toggleEditForm2] = useToggle();
+  const [isEditingForm2, toggleEditForm2] = useToggle();
   const [form] = Form.useForm<any>();
-
   const queryClient = useQueryClient();
+  const { mutate: updateContactTags } = useUpdateContactTags();
 
-  const onSuccess = () => {
+  const onSuccess = (response: IContact) => {
     queryClient.invalidateQueries(QUERY_CONTACTS_BY_ID);
     message.success('Save successfully !');
+    const responseTags = response.tagIds;
+    const currentTags = contact.tags.map((tag) => tag.id);
+    if (!_.isEqual(responseTags, currentTags)) {
+      updateContactTags({
+        id: contact.id,
+        tagIds: responseTags
+      }, {
+        onSuccess: () => {
+          queryClient.invalidateQueries(QUERY_CONTACTS_BY_ID);
+        }
+      })
+    }
   };
   const { mutate } = useUpdateContact(onSuccess);
 
@@ -40,19 +53,17 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
       phone: contact.phone,
       jobPosition: contact.jobPosition,
       companyName: contact.company.name,
-      address: contact.address
+      address: contact.address,
+      tagIds: contact.tags.map((tag) => tag.id)
     });
   };
 
-  // const handleToggleEditForm2 = () => {
-  //   toggleEditForm2();
-  //   form.setFieldsValue({
-  //     // postalCode: contact.postalCode,
-  //     jobPosition: contact.jobPosition,
-  //     // website: contact.website,
-  //     // taxId: contact.taxId,
-  //   });
-  // };
+  const handleToggleEditForm2 = () => {
+    toggleEditForm2();
+    form.setFieldsValue({
+      address: contact.address
+    });
+  };
 
   const handleSubmitForm1 = async () => {
     try {
@@ -69,18 +80,18 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
     }
   };
 
-  // const handleSubmitForm2 = async () => {
-  //   try {
-  //     const value = await form.validateFields();
-  //     mutate({
-  //       ...value,
-  //       id: contact.id,
-  //     });
-  //     toggleEditForm2();
-  //   } catch (error) {
-  //     return;
-  //   }
-  // };
+  const handleSubmitForm2 = async () => {
+    try {
+      const value = await form.validateFields();
+      mutate({
+        ...value,
+        id: contact.id,
+      });
+      toggleEditForm2();
+    } catch (error) {
+      return;
+    }
+  };
 
   return (
     <>
@@ -103,7 +114,7 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
           </EditButtonHover>
         )}
 
-        {/* <Row className='title-form-content'>Address Information</Row>
+        <Row className='title-form-content'>Address Information</Row>
         {isEditingForm2 ? (
           <Row gutter={[24, 0]}>
             <AddressInfoForm />
@@ -120,7 +131,7 @@ export const ContactDetails: React.FC<ContactDetailsProps> = ({ contact }) => {
           <EditButtonHover toggleEditForm={handleToggleEditForm2}>
             <AddressInfoDetails contact={contact} />
           </EditButtonHover>
-        )} */}
+        )}
 
         <Row className='title-form-content'>System Information</Row>
         <Row>

@@ -42,13 +42,7 @@ export const ContactInfoForm = () => {
           <Input />
         </Form.Item>
 
-        <Form.Item
-          name="address"
-          label="Address"
-          rules={[isNotWhiteSpace]}
-        >
-          <Input.TextArea showCount maxLength={250} rows={3} />
-        </Form.Item>
+        <SelectBoxTags />
 
       </Col>
       <Col span={12}>
@@ -69,9 +63,6 @@ export const ContactInfoForm = () => {
         >
           <DatePicker style={{ width: '100%' }} />
         </Form.Item>
-
-        <SelectBoxTags />
-
       </Col>
     </>
   )

@@ -105,6 +105,7 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
         state: region === 'VN' ? state : address,
         cityId: region === 'VN' ? cityId : city,
         country: region === 'VN' ? region : country,
+        address
       }, {
         onSuccess: () => {
           queryClient.invalidateQueries(QUERY_COMPANY_DETAILS);

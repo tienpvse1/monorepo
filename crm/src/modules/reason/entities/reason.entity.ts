@@ -20,6 +20,8 @@ export class Reason extends BaseEntity {
   reason: string;
   @Column({ type: 'text' })
   photo: string;
+  @Column({ type: 'text', name: 'invoice_id' })
+  invoiceId: string;
 
   @Column({ type: 'mediumtext' })
   description: string;

@@ -4,10 +4,12 @@ import { RouteObject } from 'react-router-dom';
 import Statistic from './statistic';
 
 const EmailContent = lazy(() => import('./email-content'));
+const Activity = lazy(() => import('./administration/activity'));
 const Inbox = lazy(() => import('./inbox'));
 const Email = lazy(() => import('./email'));
 const Tag = lazy(() => import('@pages/tag'));
 const HomePage = lazy(() => import('@pages/home'));
+const Account = lazy(() => import('./administration/account'));
 const Contact = lazy(() => import('@pages/contact'));
 const LoginPage = lazy(() => import('@pages/login'));
 const Company = lazy(() => import('@pages/company'));
@@ -59,7 +61,7 @@ const SalesCompanyList = lazy(
 );
 const ViewCompanyDetails = lazy(() => import('@pages/view-company-details'));
 
-const PipelineAdmin = lazy(() => import('@components/admin/pipeline-admin'));
+const AdminPipeline = lazy(() => import('@components/admin/admin-pipeline'));
 const AccountantLayout = lazy(() => import('@common/accountant-layout'));
 
 const ListOfAllContact = lazy(
@@ -88,7 +90,6 @@ export const route: RouteObject[] = [
     path: '/signup',
     element: <SignUpPage />,
   },
-
   {
     path: '/',
     element: <Layout />,
@@ -109,6 +110,10 @@ export const route: RouteObject[] = [
             path: 'view-details/:id',
             element: <ViewContactDetails />,
           },
+          {
+            path: 'import-contact',
+            element: <AddContact />,
+          }
         ],
       },
       {
@@ -204,10 +209,6 @@ export const route: RouteObject[] = [
         element: <LostOpportunity />,
       },
       {
-        path: 'import-contact',
-        element: <AddContact />,
-      },
-      {
         path: 'product',
         element: <Product />,
       },
@@ -255,7 +256,15 @@ export const route: RouteObject[] = [
       },
       {
         path: 'pipeline',
-        element: <PipelineAdmin />,
+        element: <AdminPipeline />,
+      },
+      {
+        path: '/administration/account',
+        element: <Account />,
+      },
+      {
+        path: '/administration/activity',
+        element: <Activity />,
       },
     ],
   },
@@ -311,6 +320,10 @@ export const route: RouteObject[] = [
             path: 'view-details/:id',
             element: <ViewContactDetails />,
           },
+          {
+            path: 'import-contact',
+            element: <AddContact />,
+          }
         ],
       },
       {
@@ -337,13 +350,13 @@ export const route: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <MyCalendar />
+            element: <MyCalendar />,
           },
           {
             path: 'list-all',
-            element: <ListSchedule />
-          }
-        ]
+            element: <ListSchedule />,
+          },
+        ],
       },
       {
         path: 'email',
@@ -352,7 +365,7 @@ export const route: RouteObject[] = [
       {
         path: 'profile',
         element: <ProfilePage />,
-      }
+      },
     ],
   },
   {
@@ -365,7 +378,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'pipeline',
-        element: <PipelineAdmin />,
+        element: <AdminPipeline />,
       },
       {
         path: 'forecast',

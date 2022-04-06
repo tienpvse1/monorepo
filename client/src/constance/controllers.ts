@@ -18,6 +18,7 @@ export enum controllers {
   TEAM = 'team',
   OPPORTUNITY_HISTORY = 'opportunity-history',
   OPPORTUNITY_REVENUE = 'opportunity-revenue',
+  ACTIVITY_TYPE = 'activity-type',
   COMPANY = 'company',
   COURSE = 'course',
   INBOX = 'inbox',
@@ -25,4 +26,5 @@ export enum controllers {
   CITY = 'city',
   REASON = 'reason',
   TAG = 'tag',
+  ROLE = 'role',
 }

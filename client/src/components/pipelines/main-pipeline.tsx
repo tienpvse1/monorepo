@@ -18,6 +18,7 @@ import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { startFireworks } from '@util/firework';
 import { UploadInvoice } from '@components/sale/upload-invoice';
+import { useCreateReason } from '@modules/reason/mutation/reason.post';
 
 interface MainPipelineProps {
   data: IPipeline;
@@ -43,7 +44,8 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
   const [isVisible, toggleModalChangeStageWon] = useToggle();
   const queryClient = useQueryClient();
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
-  const { mutate } = useChangeStage();
+  const { mutate: changeStageWon } = useChangeStage();
+  const { mutate: postReason } = useCreateReason();
 
   const stageWon = data?.pipelineColumns?.find((stage) => stage.isWon === true)
   const totalColumn = data?.pipelineColumns.length || 1;
@@ -54,22 +56,38 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
   }
 
   const handleChangeStageWon = async () => {
-    const record = await form.validateFields();
-    mutate(
-      {
-        id: record.draggableId,
-        newStageId: record.newStageId,
-        oldStageId: record.oldStageId,
-      },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries(GET_PIPELINE_ITEM_BY_ID);
-          queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
-          toggleModalChangeStageWon();
-          startFireworks();
-        },
+    const {
+      draggableId,
+      newStageId,
+      oldStageId,
+      description,
+      photo,
+      invoiceId
+    } = await form.validateFields();
+
+    postReason({
+      pipelineItemId: draggableId,
+      description: description,
+      photo,
+      invoiceId,
+      reason: 'no thing',
+      reasonType: 'win'
+    }, {
+      onSuccess: () => {
+        changeStageWon({
+          id: draggableId,
+          newStageId: newStageId,
+          oldStageId: oldStageId,
+        }, {
+          onSuccess: () => {
+            queryClient.invalidateQueries(GET_PIPELINE_ITEM_BY_ID);
+            queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
+            toggleModalChangeStageWon();
+            startFireworks();
+          }
+        })
       }
-    );
+    })
   }
 
   const handleToggleModalChangeStageWon = (
@@ -200,17 +218,17 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
         hasSubmitMethod={handleChangeStageWon}
         hasForm={true}
       >
-        <Row>
-          <UploadInvoice />
-          <Col style={{ padding: '20px' }} span={12}>
-            <Form
-              form={form}
-              layout='vertical'
-            >
+        <Form
+          form={form}
+          layout='vertical'
+        >
+          <Row>
+            <UploadInvoice form={form} />
+            <Col style={{ padding: '20px' }} span={12}>
               <VerificationForm />
-            </Form>
-          </Col>
-        </Row>
+            </Col>
+          </Row>
+        </Form>
       </CreateModal>
     </>
   );

@@ -147,7 +147,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
             sorter={(a, b) => moment(a.createdAt).diff(moment(b.createdAt))}
           />
 
-          <Column title="Actions" dataIndex="actions" key="actions" width={150}
+          <Column title="Action" dataIndex="action" key="action" width={150}
             render={(_, record: any) => (
               <Space size='small' style={{ width: '100%' }}>
                 <>

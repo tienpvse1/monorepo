@@ -11,4 +11,9 @@ export class CreateReasonDto {
   description: string;
   @IsEnum(ReasonType)
   reasonType: ReasonType;
+  @IsString()
+  photo: string;
+
+  @IsString()
+  invoiceId: string;
 }

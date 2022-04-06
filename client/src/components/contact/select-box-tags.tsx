@@ -6,13 +6,30 @@ export const SelectBoxTags = () => {
 
   return (
     <Form.Item
-      name="tags"
+      name="tagIds"
       label="Tags"
+      initialValue={[]}
     >
-      <Select>
+      <Select
+        mode="multiple"
+        tagRender={({ value, closable, onClose }) => (
+          <Tag
+            color={data.find((tag) => tag.id == value).color}
+            onMouseDown={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+            }}
+            closable={closable}
+            onClose={onClose}
+            style={{ marginRight: 3 }}
+          >
+            {data.find((tag) => tag.id == value).name}
+          </Tag>
+        )}
+      >
         {data?.map((tag) => (
-          <Option value={tag.id} key={tag.id}>
-            <Tag color={tag.color} key={tag.id}>
+          <Option value={tag.id} key={tag.id} >
+            <Tag color={tag.color} key={tag.id} >
               {tag.name}
             </Tag>
           </Option>

@@ -172,12 +172,6 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
           >
             <Row>
               <Col span={24}>
-                {
-                  data.isLose &&
-                  <MyForm label='Reason Lost'>
-                    {data.reason?.reason}
-                  </MyForm>
-                }
                 <MyForm label='Description'>
                   {data.description}
                 </MyForm>

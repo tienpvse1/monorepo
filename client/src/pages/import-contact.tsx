@@ -19,9 +19,9 @@ import PreviewTable from '@components/import-contact/preview-table';
 import { Is } from '@common/is';
 const { Step } = Steps;
 const ImportContact: React.FC = () => {
-  const [importedContacts, setImportedContacts] = useState<CreateContactDto[]>(
-    []
-  );
+  const [importedContacts, setImportedContacts] = useState<
+    Partial<CreateContactDto>[]
+  >([]);
   const [previewContacts, setPreviewContacts] = useState<CreateContactDto[]>(
     []
   );
@@ -32,7 +32,7 @@ const ImportContact: React.FC = () => {
   ] = useCookies([PUBLIC_USER_INFO]);
   const { data: contacts } = useContacts(id);
   return (
-    <div>
+    <div className='container-page'>
       <Steps>
         <Step
           status={importedContacts.length > 0 ? 'finish' : 'process'}
