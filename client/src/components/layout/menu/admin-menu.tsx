@@ -1,6 +1,7 @@
 import {
   AppstoreOutlined,
   BranchesOutlined,
+  CarryOutOutlined,
   CoffeeOutlined,
   SettingOutlined,
   SketchOutlined,
@@ -37,6 +38,22 @@ export const AdminMenuSider = ({ style }: MenuSiderAdminProps) => {
         >
           Dashboard
         </Menu.Item>
+        <Menu.Item
+          key='account'
+          style={style}
+          icon={<TeamOutlined style={style} />}
+          onClick={() => navigate('/administration/account')}
+        >
+          Account
+        </Menu.Item>
+        <Menu.Item
+          key='activity'
+          style={style}
+          icon={<CarryOutOutlined style={style} />}
+          onClick={() => navigate('/administration/activity')}
+        >
+          Activity
+        </Menu.Item>
 
         <Menu.Item
           key='pipeline'
@@ -67,14 +84,6 @@ export const AdminMenuSider = ({ style }: MenuSiderAdminProps) => {
           icon={<SettingOutlined style={style} />}
         >
           Subscription
-        </Menu.Item>
-        <Menu.Item
-          key='account'
-          style={style}
-          icon={<TeamOutlined style={style} />}
-          onClick={() => navigate('/administration/account')}
-        >
-          Account
         </Menu.Item>
       </Menu>
     </>

@@ -19,9 +19,9 @@ import PreviewTable from '@components/import-contact/preview-table';
 import { Is } from '@common/is';
 const { Step } = Steps;
 const ImportContact: React.FC = () => {
-  const [importedContacts, setImportedContacts] = useState<CreateContactDto[]>(
-    []
-  );
+  const [importedContacts, setImportedContacts] = useState<
+    Partial<CreateContactDto>[]
+  >([]);
   const [previewContacts, setPreviewContacts] = useState<CreateContactDto[]>(
     []
   );
