@@ -30,6 +30,7 @@ const ViewContactDetails = () => {
                   description1={data.jobPosition}
                   description2={data.phone}
                   email={data.email}
+                  photo={data.photo}
                 />
               </div>
             </Col>
