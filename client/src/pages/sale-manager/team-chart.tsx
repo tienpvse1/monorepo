@@ -19,7 +19,7 @@ const TeamChart = () => {
   ) => {
     return array.filter((value) =>
       moment(value.createdAt, DEFAULT)
-        .isBetween(moment(beforeTime, DEFAULT), moment(afterTime, DEFAULT))).length
+        .isBetween(moment(beforeTime, DEFAULT), moment(afterTime, DEFAULT), undefined, '[]')).length
   }
 
   useEffect(() => {
