@@ -11,7 +11,7 @@ interface OpportunityTitleLostProps {
 export const OpportunityTitleLost: React.FC<OpportunityTitleLostProps> = ({
   opportunityLost = 0,
   totalOpportunity = 0,
-  revenue
+  revenue = 0
 }) => {
   return (
     <>
