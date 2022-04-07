@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import { AccountRepository } from 'src/modules/account/account.repository';
 import { getCustomRepository } from 'typeorm';
 import { seedCompanies } from './modules/company/company.seeder';
+import { seedContacts } from './modules/contact/contact.seeder';
 
 @Injectable()
 export class AppService implements OnApplicationBootstrap {
@@ -25,5 +26,6 @@ export class AppService implements OnApplicationBootstrap {
       });
     }
     seedCompanies(10);
+    seedContacts(70);
   }
 }
