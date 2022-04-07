@@ -6,7 +6,6 @@ interface ColumnPlotProps {
 }
 
 export const ColumnPlot: React.FC<ColumnPlotProps> = ({ data }) => {
-  // const paletteSemanticPink = '#f8cbca';
   const brandColor = ThemeColor.primaryColor;
   const config: any = {
     data: data,
@@ -16,15 +15,6 @@ export const ColumnPlot: React.FC<ColumnPlotProps> = ({ data }) => {
     xField: 'salesMan',
     yField: 'opportunity',
     color: brandColor,
-    // seriesField: 'temp',
-    // color: (value: any) => {
-    //   console.log("dataColor:", value);
-    //   if (value <= 3) {
-    //     return paletteSemanticPink;
-    //   }
-
-    //   return brandColor;
-    // },
     label: {
       position: 'middle',
       style: {
