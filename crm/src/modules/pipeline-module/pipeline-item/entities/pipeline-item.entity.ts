@@ -29,6 +29,9 @@ export class PipelineItem extends BaseEntity {
   @Column({ name: 'expected_closing', type: 'date', nullable: true })
   expectedClosing: Date;
 
+  @Column({ name: 'expected_revenue', default: '0' })
+  expectedRevenue: number
+
   @Column({ type: 'longtext', nullable: true })
   description: string;
 
