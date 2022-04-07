@@ -80,7 +80,8 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
       expectedClosing,
       courseId,
       quantity,
-      priority
+      priority,
+      expectedRevenue
     } = record;
     createOpportunity(
       {
@@ -91,6 +92,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
         description,
         expectedClosing: expectedClosing ? expectedClosing.format(DEFAULT) : '',
         priority,
+        expectedRevenue: expectedRevenue ? Number(expectedRevenue) : 0,
         opportunityRevenue: {
           courseId,
           quantity,
