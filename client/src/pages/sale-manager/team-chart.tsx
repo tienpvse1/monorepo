@@ -91,7 +91,7 @@ const TeamChart = () => {
       />
       <Row gutter={[16, 20]}>
         {teamFilter?.map((team) => (
-          <Col key={team.id} span={12}>
+          <Col key={team.id} span={16}>
             <Card
               key={team.id}
               title={team.name}
@@ -103,7 +103,7 @@ const TeamChart = () => {
                   }}
                 />
               }
-              style={{ width: 450, height: 300 }}
+              style={{ width: 800, height: 300 }}
             >
               <ColumnPlot data={team.account} />
             </Card>

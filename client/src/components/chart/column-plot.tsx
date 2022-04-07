@@ -10,7 +10,7 @@ export const ColumnPlot: React.FC<ColumnPlotProps> = ({ data }) => {
   const brandColor = ThemeColor.primaryColor;
   const config: any = {
     data: data,
-    width: 420,
+    width: 800,
     height: 200,
     autoFit: true,
     xField: 'salesMan',
