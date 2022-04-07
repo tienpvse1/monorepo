@@ -1,5 +1,5 @@
 import { DeleteOutlined, FormOutlined } from "@ant-design/icons";
-import { Button, Form, FormInstance, Modal, Space, Table } from "antd"
+import { Button, FormInstance, Modal, Space, Table } from "antd"
 import Column from "antd/lib/table/Column"
 import { useToggle } from "@hooks/useToggle";
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
@@ -33,7 +33,6 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
   const { mutate: createCompany } = useCreateCompany();
   const { mutate: deleteCompany } = useDeleteCompany();
 
-  const [form] = Form.useForm<any>();
   const [isOpenModal, toggleCreateModal] = useToggle();
 
 
@@ -74,110 +73,108 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
 
   return (
     <>
-      <Form form={form}>
-        <Table
-          loading={isLoading}
-          dataSource={dataSource}
-          tableLayout='fixed'
-          rowSelection={{
-            type: 'checkbox',
-            ...rowSelection,
-          }}
-          title={() => <CompanyTitleTable setDataCompany={setDataCompany} toggleCreateModal={toggleCreateModal} />}
-          pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
-          size={'small'}
-          rowKey={(record) => record.id}
-        >
-          <Column
-            title="Name"
-            dataIndex="name"
-            key="name"
-            render={(_, record: any) => (
-              <Link className='my-link' to={`view-details/${record.id}`}>
-                {record.name}
-              </Link>
-            )}
-            sorter={(a, b) => ('' + a.name).localeCompare(b.name)}
-          />
+      <Table
+        loading={isLoading}
+        dataSource={dataSource}
+        tableLayout='fixed'
+        rowSelection={{
+          type: 'checkbox',
+          ...rowSelection,
+        }}
+        title={() => <CompanyTitleTable setDataCompany={setDataCompany} toggleCreateModal={toggleCreateModal} />}
+        pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
+        size={'small'}
+        rowKey={(record) => record.id}
+      >
+        <Column
+          title="Name"
+          dataIndex="name"
+          key="name"
+          render={(_, record: any) => (
+            <Link className='my-link' to={`view-details/${record.id}`}>
+              {record.name}
+            </Link>
+          )}
+          sorter={(a, b) => ('' + a.name).localeCompare(b.name)}
+        />
 
-          <Column
-            title="Phone"
-            dataIndex="mobile"
-            key="mobile"
-            render={(_, record: any) => (
-              <Link className='my-link' to={`view-details/${record.id}`}>
-                {record.mobile}
-              </Link>
-            )}
+        <Column
+          title="Phone"
+          dataIndex="mobile"
+          key="mobile"
+          render={(_, record: any) => (
+            <Link className='my-link' to={`view-details/${record.id}`}>
+              {record.mobile}
+            </Link>
+          )}
 
-          />
+        />
 
-          <Column
-            title="City"
-            dataIndex="city"
-            key="city"
-            render={(_, record: any) => (
-              <Link className='my-link' to={`view-details/${record.id}`}>
-                {record.city?.admin_name}
-              </Link>
-            )}
-            sorter={(a, b) => ('' + a.city?.name).localeCompare(b.city?.name)}
-          />
-          <Column
-            title="Country"
-            dataIndex="country"
-            key="country"
-            render={(_, record: any) => (
-              <Link className='my-link' to={`view-details/${record.id}`}>
-                {record.country}
-              </Link>
-            )}
-            sorter={(a, b) => ('' + a.country).localeCompare(b.country)}
-          />
+        <Column
+          title="City"
+          dataIndex="city"
+          key="city"
+          render={(_, record: any) => (
+            <Link className='my-link' to={`view-details/${record.id}`}>
+              {record.city?.admin_name}
+            </Link>
+          )}
+          sorter={(a, b) => ('' + a.city?.name).localeCompare(b.city?.name)}
+        />
+        <Column
+          title="Country"
+          dataIndex="country"
+          key="country"
+          render={(_, record: any) => (
+            <Link className='my-link' to={`view-details/${record.id}`}>
+              {record.country}
+            </Link>
+          )}
+          sorter={(a, b) => ('' + a.country).localeCompare(b.country)}
+        />
 
-          <Column
-            title="Created Date"
-            dataIndex="createdAt"
-            key="createdAt"
-            render={(_, record: any) => (
-              <Link className='my-link' to={`view-details/${record.id}`}>
-                {moment(record.createdAt).format(CRUD_AT)}
-              </Link>
-            )}
-            sorter={(a, b) => moment(a.createdAt).diff(moment(b.createdAt))}
-          />
+        <Column
+          title="Created Date"
+          dataIndex="createdAt"
+          key="createdAt"
+          render={(_, record: any) => (
+            <Link className='my-link' to={`view-details/${record.id}`}>
+              {moment(record.createdAt).format(CRUD_AT)}
+            </Link>
+          )}
+          sorter={(a, b) => moment(a.createdAt).diff(moment(b.createdAt))}
+        />
 
-          <Column title="Action" dataIndex="action" key="action" width={150}
-            render={(_, record: any) => (
-              <Space size='small' style={{ width: '100%' }}>
-                <>
-                  <Button
-                    type='ghost'
-                    shape='round'
-                    onClick={() => navigate(`view-details/${record.id}`)}
-                  >
-                    <FormOutlined />
-                  </Button>
+        <Column title="Action" dataIndex="action" key="action" width={150}
+          render={(_, record: any) => (
+            <Space size='small' style={{ width: '100%' }}>
+              <>
+                <Button
+                  type='ghost'
+                  shape='round'
+                  onClick={() => navigate(`view-details/${record.id}`)}
+                >
+                  <FormOutlined />
+                </Button>
 
-                  <Button
-                    type='default'
-                    onClick={() => showDeleteConfirm(() => deleteCompany(record.id, {
-                      onSuccess: () => {
-                        queryClient.invalidateQueries(QUERY_COMPANIES);
-                        message.success('Deleted company successfully!');
-                      }
-                    }))}
-                    shape='round'
-                    danger
-                  >
-                    <DeleteOutlined />
-                  </Button>
-                </>
-              </Space>
-            )}
-          />
-        </Table>
-      </Form>
+                <Button
+                  type='default'
+                  onClick={() => showDeleteConfirm(() => deleteCompany(record.id, {
+                    onSuccess: () => {
+                      queryClient.invalidateQueries(QUERY_COMPANIES);
+                      message.success('Deleted company successfully!');
+                    }
+                  }))}
+                  shape='round'
+                  danger
+                >
+                  <DeleteOutlined />
+                </Button>
+              </>
+            </Space>
+          )}
+        />
+      </Table>
       <CreateModal
         autoToggleModel={false}
         autoResetFields={false}

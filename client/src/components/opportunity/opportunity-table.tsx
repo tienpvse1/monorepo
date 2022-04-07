@@ -1,5 +1,5 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
-import { Button, Form, Space, Table } from 'antd';
+import { Button, Space, Table } from 'antd';
 import Column from 'antd/lib/table/Column';
 import { useToggle } from '@hooks/useToggle';
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
@@ -17,6 +17,9 @@ import { removeDuplicate } from '@util/array';
 import { dateFormat } from '@constance/date-format';
 import { useHandleNavigate } from '@hooks/useHandleNavigate';
 import numberSeparator from "number-separator";
+import { useMemo } from 'react';
+import { PUBLIC_USER_INFO } from '@constance/cookie';
+import { useCookies } from 'react-cookie';
 
 const { DEFAULT } = dateFormat;
 
@@ -50,10 +53,35 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
   searchMethod,
   queryKey
 }) => {
+  const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
+  const isRoleSaleManager = () => {
+    return public_user_info.role.name === 'sale_manager';
+  }
+  //filter sale person for manager
+  const handleFilter = () => {
+    if (isRoleSaleManager()) {
+      const accountFilter = dataSource?.filter((value) => value.account?.id !== public_user_info.id)
+      const accountFormat = accountFilter?.map((value) => ({
+        text: `${value.account?.firstName} ${value.account?.lastName}`,
+        value: `${value.account?.firstName} ${value.account?.lastName}`
+      }))
+      const account = removeDuplicate(accountFormat, 'value');
+      account?.unshift({
+        text: 'My Opportunity',
+        value: `${public_user_info.firstName} ${public_user_info.lastName}`
+      })
+      return account;
+    }
+  }
+  const arrayFilter = useMemo(() => handleFilter(), [dataSource])
+  
+  //filter stage
   const stageFilter = dataSource?.map((opportunity) => ({
     text: opportunity.pipelineColumn?.name,
     value: opportunity.pipelineColumn?.name,
   }));
+
+  //hooks
   const navigate = useNavigate();
   const { navigateRole } = useHandleNavigate();
 
@@ -62,7 +90,6 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
   const queryClient = useQueryClient();
 
   const [isOpenModal, toggleCreateModal] = useToggle();
-  const [form] = Form.useForm<any>();
 
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
@@ -111,56 +138,57 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
 
   return (
     <>
-      <Form form={form}>
-        <Table
-          scroll={{ x: 1300 }}
-          loading={isLoading}
-          dataSource={dataSource}
-          tableLayout='fixed'
-          rowSelection={{
-            type: 'checkbox',
-            ...rowSelection,
-          }}
-          title={() => (
-            <OpportunityTitleTable
-              setDataOpportunity={setDataOpportunity}
-              searchMethod={searchMethod}
-              toggleCreateModal={toggleCreateModal}
-            />
+      <Table
+        scroll={{ x: isRoleSaleManager() ? 1300 : 0 }}
+        loading={isLoading}
+        dataSource={dataSource}
+        tableLayout='fixed'
+        rowSelection={{
+          type: 'checkbox',
+          ...rowSelection,
+        }}
+        title={() => (
+          <OpportunityTitleTable
+            setDataOpportunity={setDataOpportunity}
+            searchMethod={searchMethod}
+            toggleCreateModal={toggleCreateModal}
+          />
+        )}
+        pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
+        size={'small'}
+        rowKey={(record) => record.id}
+      >
+        <Column
+          title='Name'
+          dataIndex='name'
+          key='name'
+          width={200}
+          render={(_, record: IPipelineItem) => (
+            <Link className='my-link' to={`view-details/${record.id}`}>
+              {record.name}
+            </Link>
           )}
-          pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
-          size={'small'}
-          rowKey={(record) => record.id}
-        >
-          <Column
-            title='Name'
-            dataIndex='name'
-            key='name'
-            render={(_, record: IPipelineItem) => (
-              <Link className='my-link' to={`view-details/${record.id}`}>
-                {record.name}
+          sorter={(a, b) => ('' + a.name).localeCompare(b.name)}
+        />
+
+        <Column
+          title='Contact Name'
+          dataIndex='contactName'
+          key='contactName'
+          width={150}
+          render={(_, record: IPipelineItem) => (
+            <>
+              <Link className='my-link' to={`${navigateRole}contact/view-details/${record.contact.id}`}>
+                {record.contact?.name}
               </Link>
-            )}
-            sorter={(a, b) => ('' + a.name).localeCompare(b.name)}
-          />
+            </>
+          )}
+          sorter={(a, b) =>
+            ('' + a.contact.name).localeCompare(b.contact.name)
+          }
+        />
 
-          <Column
-            title='Contact Name'
-            dataIndex='contactName'
-            key='contactName'
-            width={200}
-            render={(_, record: IPipelineItem) => (
-              <>
-                <Link className='my-link' to={`${navigateRole}contact/view-details/${record.contact.id}`}>
-                  {record.contact?.name}
-                </Link>
-              </>
-            )}
-            sorter={(a, b) =>
-              ('' + a.contact.name).localeCompare(b.contact.name)
-            }
-          />
-
+        {isRoleSaleManager() &&
           <Column
             title='Salesperson'
             dataIndex='accountId'
@@ -173,116 +201,118 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                 </Link>
               </>
             )}
-            sorter={(a, b) =>
-              ('' + a.account?.username).localeCompare(b.account?.username)
-            }
+            filters={arrayFilter}
+            filterSearch={true}
+            onFilter={(value, record) => {
+              let fullName = `${record.account?.firstName} ${record.account?.lastName}`
+              return fullName.indexOf(value as string) === 0
+            }}
           />
+        }
 
-          <Column
-            title='Expected Revenue'
-            dataIndex='expectedRevenue'
-            key='expectedRevenue'
-            width={150}
-            align='right'
-            render={(_, record: IPipelineItem) => (
-              <Link className='my-link' to={`view-details/${record.id}`}>
-                {numberSeparator(record.expectedRevenue, '.')}đ
-              </Link>
-            )}
-            sorter={(a, b) => a.expectedRevenue - b.expectedRevenue}
-          />
+        <Column
+          title='Expected Revenue'
+          dataIndex='expectedRevenue'
+          key='expectedRevenue'
+          width={150}
+          render={(_, record: IPipelineItem) => (
+            <Link className='my-link' to={`view-details/${record.id}`}>
+              {numberSeparator(record.expectedRevenue, '.')}đ
+            </Link>
+          )}
+          sorter={(a, b) => a.expectedRevenue - b.expectedRevenue}
+        />
 
-          <Column
-            title='Stage'
-            dataIndex='stage'
-            key='stage'
-            width={100}
-            render={(_, record: IPipelineItem) => (
-              <Link className='my-link' to={`view-details/${record.id}`}>
-                {record.pipelineColumn.name}
-              </Link>
-            )}
-            filters={removeDuplicate(stageFilter, 'value')}
-            onFilter={(value, record) =>
-              record.pipelineColumn.name.indexOf(value as string) === 0
-            }
-          />
-          <Column
-            title='Is Lost'
-            dataIndex='isLose'
-            key='isLose'
-            width={100}
-            render={(_, record: IPipelineItem) => (
-              <span>{record.isLose ? 'Yes' : 'No'}</span>
-            )}
-            filters={[{
-              text: 'Yes',
-              value: true
-            }, {
-              text: 'No',
-              value: false
-            }]}
-            onFilter={(value, record) => record.isLose === value}
-          />
+        <Column
+          title='Stage'
+          dataIndex='stage'
+          key='stage'
+          width={100}
+          render={(_, record: IPipelineItem) => (
+            <Link className='my-link' to={`view-details/${record.id}`}>
+              {record.pipelineColumn.name}
+            </Link>
+          )}
+          filters={removeDuplicate(stageFilter, 'value')}
+          onFilter={(value, record) =>
+            record.pipelineColumn.name.indexOf(value as string) === 0
+          }
+        />
+        <Column
+          title='Is Lost'
+          dataIndex='isLose'
+          key='isLose'
+          width={100}
+          render={(_, record: IPipelineItem) => (
+            <span>{record.isLose ? 'Yes' : 'No'}</span>
+          )}
+          filters={[{
+            text: 'Yes',
+            value: true
+          }, {
+            text: 'No',
+            value: false
+          }]}
+          onFilter={(value, record) => record.isLose === value}
+        />
 
-          <Column
-            title='Close Date'
-            dataIndex='expectedClosing'
-            key='expectedClosing'
-            width={150}
-            render={(_, record: IPipelineItem) => (
-              <Link className='my-link' to={`view-details/${record.id}`}>
-                {record.expectedClosing}
-              </Link>
-            )}
-            sorter={(a, b) =>
-              moment(a.expectedClosing).diff(moment(b.expectedClosing))
-            }
-          />
+        <Column
+          title='Close Date'
+          dataIndex='expectedClosing'
+          key='expectedClosing'
+          width={150}
+          render={(_, record: IPipelineItem) => (
+            <Link className='my-link' to={`view-details/${record.id}`}>
+              {record.expectedClosing}
+            </Link>
+          )}
+          sorter={(a, b) =>
+            moment(a.expectedClosing).diff(moment(b.expectedClosing))
+          }
+        />
 
-          <Column
-            title='Action'
-            dataIndex='action'
-            key='action'
-            fixed={'right'}
-            width={125}
-            render={(_, record: IPipelineItem) => (
-              <Space size='small' style={{ width: '100%' }}>
-                <>
-                  <Button
-                    type='ghost'
-                    shape='round'
-                    onClick={() => navigate(`view-details/${record.id}`)}
-                  >
-                    <FormOutlined />
-                  </Button>
+        <Column
+          title='Action'
+          dataIndex='action'
+          key='action'
+          fixed={'right'}
+          width={125}
+          render={(_, record: IPipelineItem) => (
+            <Space size='small' style={{ width: '100%' }}>
+              <>
+                <Button
+                  type='ghost'
+                  shape='round'
+                  onClick={() => navigate(`view-details/${record.id}`)}
+                >
+                  <FormOutlined />
+                </Button>
 
-                  <Button
-                    disabled={record.pipelineColumn?.isWon || record.isLose && true}
-                    type='default'
-                    onClick={() =>
-                      showDeleteConfirm(() =>
-                        removePipelineItems(record.id, {
-                          onSuccess: () => {
-                            queryClient.invalidateQueries(queryKey);
-                            message.success(
-                              'Deleted opportunity successfully !'
-                            );
-                          },
-                        })
-                      )
-                    }
-                    shape='round'
-                    danger
-                  >
-                    <DeleteOutlined />
-                  </Button>
-                </>
-              </Space>
-            )}
-          />
-        </Table>
-      </Form>
+                <Button
+                  disabled={record.pipelineColumn?.isWon || record.isLose && true}
+                  type='default'
+                  onClick={() =>
+                    showDeleteConfirm(() =>
+                      removePipelineItems(record.id, {
+                        onSuccess: () => {
+                          queryClient.invalidateQueries(queryKey);
+                          message.success(
+                            'Deleted opportunity successfully !'
+                          );
+                        },
+                      })
+                    )
+                  }
+                  shape='round'
+                  danger
+                >
+                  <DeleteOutlined />
+                </Button>
+              </>
+            </Space>
+          )}
+        />
+      </Table>
       <CreateModal
         title='New Opportunity'
         callback={handleCreateOpportunity}

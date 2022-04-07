@@ -4,7 +4,7 @@ import { useDeleteContact } from '@modules/contact/mutation/contact.delete';
 import {
   QUERY_CONTACTS,
 } from '@modules/contact/query/contact.get';
-import { Button, Form, Space, Table, Tag } from 'antd';
+import { Button, Space, Table, Tag } from 'antd';
 import Column from 'antd/lib/table/Column';
 import { useMemo } from 'react';
 import { client } from '../../App';
@@ -89,7 +89,6 @@ export const ContactTable: React.FC<ContactTableProps> = ({
   }))
 
   //handle method
-  const [form] = Form.useForm<IContact>();
   const [isOpenModal, toggleCreateModal] = useToggle();
   const navigate = useNavigate();
   const { navigateRole } = useHandleNavigate();
@@ -105,151 +104,150 @@ export const ContactTable: React.FC<ContactTableProps> = ({
 
   return (
     <>
-      <Form form={form}>
-        <Table
-          loading={isLoading}
-          tableLayout='fixed'
-          rowSelection={{
-            type: 'checkbox',
-            ...rowSelection,
+      <Table
+        loading={isLoading}
+        tableLayout='fixed'
+        rowSelection={{
+          type: 'checkbox',
+          ...rowSelection,
+        }}
+        title={() => <ContactHeader setDataContact={setDataContact} toggleCreateModal={toggleCreateModal} />}
+        pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
+        dataSource={dataSource}
+        size={'small'}
+        rowKey={(record) => record.id}
+      >
+        <Column
+          title='Name'
+          dataIndex='name'
+          key='name'
+          render={(_, record: IContact) => (
+            <Link className='my-link' to={`view-details/${record.id}`}>
+              {record.name}
+            </Link>
+          )}
+          sorter={(a, b) => ('' + a.name).localeCompare(b.name)}
+        />
+        <Column
+          title='Email'
+          dataIndex='email'
+          key='email'
+          render={(_, record: IContact) => (
+            <Link className='my-link' to={`view-details/${record.id}`}>
+              {record.email}
+            </Link>
+          )}
+          sorter={(a, b) => ('' + a.email).localeCompare(b.email)}
+        />
+        <Column
+          title='Phone Number'
+          dataIndex='phone'
+          key='phone'
+          render={(_, record: IContact) => (
+            <Link className='my-link' to={`view-details/${record.id}`}>
+              {record.phone}
+            </Link>
+          )}
+        />
+        <Column
+          title='Company'
+          dataIndex='companyName'
+          key='companyName'
+          render={(_, record: IContact) => (
+            <Link className='my-link' to={`${navigateRole}company/view-details/${record.company.id}`}>
+              {record.company.name}
+            </Link>
+          )}
+          filters={removeDuplicate(companyFilter, 'value')}
+          filterSearch={true}
+          onFilter={(value, record) =>
+            record.company.name.indexOf(value as string) === 0
+          }
+        />
+        <Column
+          title='Job Position'
+          dataIndex='jobPosition'
+          key='jobPosition'
+          render={(_, record: IContact) => (
+            <Link className='my-link' to={`view-details/${record?.id}`}>
+              {record.jobPosition}
+            </Link>
+          )}
+          sorter={(a, b) => ('' + a.jobPosition).localeCompare(b.jobPosition)}
+        />
+
+        <Column
+          title='Tags'
+          dataIndex='tags'
+          key='tags'
+          render={(_, record: IContact) => (
+            record.tags.map((tag) => (
+              <Tag
+                style={{ marginTop: '3px' }}
+                color={tag.color}
+                key={tag.id}
+              >
+                {tag.name}
+              </Tag>
+            ))
+          )}
+          filters={removeDuplicate(tagsFilter, 'value')}
+          filterSearch={true}
+          onFilter={(value, record) =>
+            record.tags.some((tag) => tag.name === value)
+          }
+        />
+
+        <Column
+          title='Created By'
+          dataIndex='username'
+          key='username'
+          width={120}
+          render={(_, record: IContact) => (
+            <Link className="my-link" to={`view-details/${record?.id}`} >
+              {record?.account?.firstName} {record?.account?.lastName}
+            </Link>
+          )}
+          filters={arrayFilter}
+          defaultFilteredValue={[`${public_user_info.firstName} ${public_user_info.lastName}`]}
+          filterSearch={true}
+          onFilter={(value, record) => {
+            let fullName = `${record.account?.firstName} ${record.account?.lastName}`
+            return fullName.indexOf(value as string) === 0
           }}
-          title={() => <ContactHeader setDataContact={setDataContact} toggleCreateModal={toggleCreateModal} />}
-          pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
-          dataSource={dataSource}
-          size={'small'}
-          rowKey={(record) => record.id}
-        >
-          <Column
-            title='Name'
-            dataIndex='name'
-            key='name'
-            render={(_, record: IContact) => (
-              <Link className='my-link' to={`view-details/${record.id}`}>
-                {record.name}
-              </Link>
-            )}
-            sorter={(a, b) => ('' + a.name).localeCompare(b.name)}
-          />
-          <Column
-            title='Email'
-            dataIndex='email'
-            key='email'
-            render={(_, record: IContact) => (
-              <Link className='my-link' to={`view-details/${record.id}`}>
-                {record.email}
-              </Link>
-            )}
-            sorter={(a, b) => ('' + a.email).localeCompare(b.email)}
-          />
-          <Column
-            title='Phone Number'
-            dataIndex='phone'
-            key='phone'
-            render={(_, record: IContact) => (
-              <Link className='my-link' to={`view-details/${record.id}`}>
-                {record.phone}
-              </Link>
-            )}
-          />
-          <Column
-            title='Company'
-            dataIndex='companyName'
-            key='companyName'
-            render={(_, record: IContact) => (
-              <Link className='my-link' to={`${navigateRole}company/view-details/${record.company.id}`}>
-                {record.company.name}
-              </Link>
-            )}
-            filters={removeDuplicate(companyFilter, 'value')}
-            filterSearch={true}
-            onFilter={(value, record) =>
-              record.company.name.indexOf(value as string) === 0
-            }
-          />
-          <Column
-            title='Job Position'
-            dataIndex='jobPosition'
-            key='jobPosition'
-            render={(_, record: IContact) => (
-              <Link className='my-link' to={`view-details/${record?.id}`}>
-                {record.jobPosition}
-              </Link>
-            )}
-            sorter={(a, b) => ('' + a.jobPosition).localeCompare(b.jobPosition)}
-          />
+        />
 
-          <Column
-            title='Tags'
-            dataIndex='tags'
-            key='tags'
-            render={(_, record: IContact) => (
-              record.tags.map((tag) => (
-                <Tag
-                  style={{ marginTop: '3px' }}
-                  color={tag.color}
-                  key={tag.id}
+        <Column
+          title='Action'
+          dataIndex='action'
+          key='action'
+          fixed={'right'}
+          render={(_, record: IContact) => (
+            <Space size='small' style={{ width: '100%' }}>
+              <>
+                <Button
+                  type='ghost'
+                  shape='round'
+                  onClick={() => navigate(`view-details/${record.id}`)}
                 >
-                  {tag.name}
-                </Tag>
-              ))
-            )}
-            filters={removeDuplicate(tagsFilter, 'value')}
-            filterSearch={true}
-            onFilter={(value, record) =>
-              record.tags.some((tag) => tag.name === value)
-            }
-          />
+                  <FormOutlined />
+                </Button>
 
-          <Column
-            title='Created By'
-            dataIndex='username'
-            key='username'
-            width={120}
-            render={(_, record: IContact) => (
-              <Link className="my-link" to={`view-details/${record?.id}`} >
-                {record?.account?.firstName} {record?.account?.lastName}
-              </Link>
-            )}
-            filters={arrayFilter}
-            defaultFilteredValue={[`${public_user_info.firstName} ${public_user_info.lastName}`]}
-            filterSearch={true}
-            onFilter={(value, record) => {
-              let fullName = `${record.account?.firstName} ${record.account?.lastName}`
-              return fullName.indexOf(value as string) === 0
-            }}
-          />
-
-          <Column
-            title='Action'
-            dataIndex='action'
-            key='action'
-            render={(_, record: IContact) => (
-              <Space size='small' style={{ width: '100%' }}>
-                <>
-                  <Button
-                    type='ghost'
-                    shape='round'
-                    onClick={() => navigate(`view-details/${record.id}`)}
-                  >
-                    <FormOutlined />
-                  </Button>
-
-                  <Button
-                    type='default'
-                    onClick={() =>
-                      showDeleteConfirm(() => deleteContact(record.id))
-                    }
-                    shape='round'
-                    danger
-                  >
-                    <DeleteOutlined />
-                  </Button>
-                </>
-              </Space>
-            )}
-          />
-        </Table>
-      </Form>
+                <Button
+                  type='default'
+                  onClick={() =>
+                    showDeleteConfirm(() => deleteContact(record.id))
+                  }
+                  shape='round'
+                  danger
+                >
+                  <DeleteOutlined />
+                </Button>
+              </>
+            </Space>
+          )}
+        />
+      </Table>
       <CreateModal
         title='New Contact'
         callback={handleCreateContact}
