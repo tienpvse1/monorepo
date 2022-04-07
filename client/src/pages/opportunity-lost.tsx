@@ -27,6 +27,9 @@ export const OpportunityLost: React.FC<OpportunityLostProps> = ({
       <OpportunityTitleLost
         totalOpportunity={data?.length}
         opportunityLost={data?.filter((value) => value.isLose).length}
+        revenue={dataFilterLose.reduce((acc, value) => {
+          return acc + value.expectedRevenue
+        }, 0)}
       />
       <div className='container-page'>
         <List

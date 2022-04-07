@@ -75,8 +75,8 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
           <Descriptions.Item label='Stages'>
             {pipeline?.pipelineColumns?.length}
           </Descriptions.Item>
-          <Descriptions.Item label='Expected revenue'>
-            160k$
+          <Descriptions.Item label='Won Opportunity'>
+            {pipeline?.pipelineColumns.find((item) => item.isWon).pipelineItems.length}
           </Descriptions.Item>
         </Descriptions>
       </PageHeader>

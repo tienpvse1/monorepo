@@ -166,6 +166,17 @@ export const ContactTable: React.FC<ContactTableProps> = ({
               record.company.name.indexOf(value as string) === 0
             }
           />
+          <Column
+            title='Job Position'
+            dataIndex='jobPosition'
+            key='jobPosition'
+            render={(_, record: IContact) => (
+              <Link className='my-link' to={`view-details/${record?.id}`}>
+                {record.jobPosition}
+              </Link>
+            )}
+            sorter={(a, b) => ('' + a.jobPosition).localeCompare(b.jobPosition)}
+          />
 
           <Column
             title='Tags'

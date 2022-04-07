@@ -8,16 +8,18 @@ import { useCookies } from 'react-cookie';
 import { PipelineItems } from './items';
 import { ColumnHeaderName } from './pipeline-column/column-header-name';
 import { FormEditColumnName } from './pipeline-column/edit-column-name-form';
+import CountUp from 'react-countup';
 
 interface PipeLineColumnProps {
   pipelineColumn: IPipelineColumn;
   index: number;
 }
-
 export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
   pipelineColumn,
   index,
 }) => {
+  console.log("changed");
+
   const [showCreateItemForm, setShowCreateItemForm] = useToggle();
   const [showInput, setShowInput] = useToggle();
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
@@ -67,9 +69,12 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
               />
             )}
           </div>
-          {/* //TODO: this price total is still hard-coded */}
           <div className='price-total'>
-            <span>15.000.000 đ</span>
+            <span>
+              <CountUp end={pipelineColumn.pipelineItems.reduce((acc, item) => {
+                return acc + item.expectedRevenue
+              }, 0)} duration={0.5} separator='.' />đ
+            </span>
           </div>
 
           {!handleIsRoleAdmin() && !pipelineColumn.isWon &&

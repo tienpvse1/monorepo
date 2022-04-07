@@ -16,6 +16,8 @@ import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipelin
 import { removeDuplicate } from '@util/array';
 import { dateFormat } from '@constance/date-format';
 import { useHandleNavigate } from '@hooks/useHandleNavigate';
+import numberSeparator from "number-separator";
+
 const { DEFAULT } = dateFormat;
 
 interface OpportunitiesTableProps {
@@ -184,7 +186,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             align='right'
             render={(_, record: IPipelineItem) => (
               <Link className='my-link' to={`view-details/${record.id}`}>
-                {record.expectedRevenue}
+                {numberSeparator(record.expectedRevenue, '.')}đ
               </Link>
             )}
             sorter={(a, b) => a.expectedRevenue - b.expectedRevenue}
