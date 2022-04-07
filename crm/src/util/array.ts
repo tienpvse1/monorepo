@@ -8,3 +8,7 @@ export const checkDuplicate = <Field>(value: Field[], prop: keyof Field) => {
 
   return isDuplicate;
 };
+
+export const randomlySelect = <T>(array: T[]): T => {
+  return array[Math.floor(Math.random() * array.length)];
+};

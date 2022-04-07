@@ -25,6 +25,7 @@
     "@adminjs/express": "^4.0.1",
     "@adminjs/nestjs": "^4.0.0",
     "@adminjs/typeorm": "^2.0.1",
+    "@faker-js/faker": "^6.1.2",
     "@nestjs-modules/mailer": "^1.6.1",
     "@nestjs/axios": "^0.0.7",
     "@nestjs/common": "^8.0.0",
