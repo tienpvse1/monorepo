@@ -71,9 +71,13 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
           </div>
           <div className='price-total'>
             <span>
-              <CountUp end={pipelineColumn.pipelineItems.reduce((acc, item) => {
-                return acc + item.expectedRevenue
-              }, 0)} duration={0.5} separator='.' />đ
+              <CountUp
+                end={pipelineColumn.pipelineItems.reduce((acc, item) => {
+                  return acc + item.expectedRevenue
+                }, 0)}
+                duration={0.5}
+                separator='.'
+              />đ
             </span>
           </div>
 
