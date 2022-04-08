@@ -23,9 +23,10 @@ import { ConfigModule } from '../config/config.module';
     }),
     KnexModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         config: {
+          client: 'mysql2',
           connection: {
             host: config.get<string>('app.dbHost'),
             port: config.get<number>('database.port'),
