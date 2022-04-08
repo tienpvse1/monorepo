@@ -70,9 +70,7 @@ export const getContactsById = async (contactId: string) => {
 };
 export const searchContacts = async (text: string) => {
   const query = RequestQueryBuilder.create({
-    join: [
-      { field: 'account' },
-    ],
+    join: [{ field: 'account' }],
     search: {
       $or: [
         {
@@ -106,9 +104,10 @@ export const useContactsWithEmailLike = (queryKey: string) =>
     }
   );
 
-export const useContacts = (accountId: string) =>
+export const useContacts = (accountId: string, suspense = false) =>
   useQuery([QUERY_CONTACTS, accountId], () => getContacts(accountId), {
     enabled: Boolean(accountId),
+    suspense,
   });
 
 export const useQueryAllContacts = () =>
