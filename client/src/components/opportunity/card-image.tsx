@@ -5,7 +5,7 @@ import Meta from 'antd/lib/card/Meta';
 interface CardImageProps {
   title?: string;
   email?: string;
-  photo?: any;
+  photo?: string;
   description1?: string;
   description2?: string;
 }
@@ -15,7 +15,7 @@ export const CardImage: React.FC<CardImageProps> = ({
   email,
   photo,
   description1,
-  description2
+  description2,
 }) => {
   return (
     <>
@@ -23,10 +23,7 @@ export const CardImage: React.FC<CardImageProps> = ({
         bordered={false}
         cover={
           <div style={{ padding: 20 }}>
-            <Image
-              alt='example'
-              src={photo ? photo : imagePlaceHolderUrl}
-            />
+            <Image alt='example' src={photo ? photo : imagePlaceHolderUrl} />
           </div>
         }
       >
@@ -59,5 +56,5 @@ export const CardImage: React.FC<CardImageProps> = ({
         </div>
       </Card>
     </>
-  )
-}
+  );
+};
