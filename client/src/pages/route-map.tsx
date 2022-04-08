@@ -37,6 +37,8 @@ const DealStatistic = lazy(
   () => import('@components/statistic/deal-statistic')
 );
 const SaleManage = lazy(() => import('@pages/sale-manager/sale-manage'));
+const Team = lazy(() => import('@pages/sale-manager/team'));
+const TeamChart = lazy(() => import('@pages/sale-manager/team-chart'));
 const SaleManagerDashboard = lazy(() => import('./sale-manager/dashboard'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
 const PipelineManager = lazy(() => import('@pages/sale-manager/pipeline'));
@@ -278,7 +280,17 @@ export const route: RouteObject[] = [
       },
       {
         path: 'sale-manage',
-        element: <SaleManage />,
+        element: <Team />,
+        children: [
+          {
+            index: true,
+            element: <SaleManage />
+          }, 
+          {
+            path: 'team-chart',
+            element: <TeamChart />
+          }
+        ]
       },
       {
         path: 'pipeline',

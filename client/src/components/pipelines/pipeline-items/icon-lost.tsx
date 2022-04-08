@@ -27,7 +27,9 @@ export const IconLost: React.FC<IconLostProps> = ({
         createReason({
           ...record,
           pipelineItemId: cardData.id,
-          reasonType: 'lose'
+          reasonType: 'lose',
+          invoiceId: '',
+          photo: ''
         })
         queryClient.refetchQueries(GET_PIPELINE_DESIGN);
         message.success('Lost opportunity success!')

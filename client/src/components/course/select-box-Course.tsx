@@ -9,9 +9,10 @@ const { Option } = Select;
 
 interface SelectBoxCourseProps {
   courseId?: string;
+  styleFormItem?: React.CSSProperties;
 }
 
-export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({ courseId }) => {
+export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({ courseId, styleFormItem }) => {
   const [courses, setCourses] = useState<CourseData[]>();
   const [text, setText] = useState<string>('');
   const [debounced] = useDebouncedValue(text, 400);
@@ -28,6 +29,9 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({ courseId }) =>
         getCourses('', 5).then((value) => setCourses(value.data));
       }
     }
+    return () => {
+      setCourses([])
+    }
   }, [debounced])
 
   return (
@@ -36,7 +40,7 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({ courseId }) =>
         name='courseId'
         label='Course'
         initialValue={courses?.length > 0 && courses?.[0].code}
-        style={{ width: 'calc(80% - 10px)', marginRight: '10px' }}
+        style={styleFormItem}
         rules={[{ required: true, message: 'Please choose a course' }]}
       >
         <Select

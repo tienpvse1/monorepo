@@ -8,6 +8,7 @@ import { useQueryClient } from 'react-query';
 import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-item.get';
 import { useCreateReason } from '@modules/reason/mutation/reason.post';
 import { useLoseOpportunity } from '@modules/pipeline-items/mutation/pipeline-item.patch';
+import numberSeparator from "number-separator";
 
 interface OpportunityTitleDetailsProps {
   opportunity?: IPipelineItem;
@@ -103,7 +104,7 @@ export const OpportunityTitleDetails: React.FC<
                 {moment(new Date(opportunity.createdAt)).fromNow()}
               </Descriptions.Item>
               <Descriptions.Item label='Expected revenue'>
-                160k$
+                {numberSeparator(opportunity.expectedRevenue, '.')}đ
               </Descriptions.Item>
               <Descriptions.Item label='Expected closing'>
                 {opportunity.expectedClosing ?

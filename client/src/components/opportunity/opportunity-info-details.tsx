@@ -3,6 +3,8 @@ import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.ent
 import { getCoursesById } from '@modules/product/query/products.get';
 import { Badge, Col, Row, Typography } from 'antd';
 import { useEffect, useState } from 'react';
+import numberSeparator from "number-separator";
+
 const { Paragraph } = Typography;
 
 interface OpportunityInfoDetailsProps {
@@ -50,7 +52,7 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
           </MyForm>
 
           <MyForm label='Expected Revenue'>
-            {opportunity.expectedRevenue}
+            {numberSeparator(opportunity.expectedRevenue, '.')}đ
           </MyForm>
           <MyForm label='Course name' customStyle={{ height: '100%' }}>
             <Paragraph style={{ marginBottom: 0 }}>

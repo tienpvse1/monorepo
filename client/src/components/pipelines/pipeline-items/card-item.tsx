@@ -24,6 +24,7 @@ import { ThemeColor } from '@constance/color';
 import moment from 'moment';
 const Planned = lazy(() => import('@components/schedule/planned'));
 const { Meta } = Card;
+import numberSeparator from "number-separator";
 
 interface PipelineCardItemProps {
   cardData: IPipelineItem;
@@ -93,7 +94,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData, is
                   fontWeight: 400
                 }}
               >
-                15.000.000đ
+                {numberSeparator(cardData.expectedRevenue, '.')}đ
               </div>
               <div style={{ fontSize: 16 }}>{cardData?.contact?.name}</div>
               <Divider
