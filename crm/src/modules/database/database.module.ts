@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { KnexModule } from 'nestjs-knex';
 import { ConfigModule } from '../config/config.module';
 @Module({
   imports: [
@@ -18,6 +19,21 @@ import { ConfigModule } from '../config/config.module';
         logger: 'advanced-console',
         synchronize: true,
         logging: false,
+      }),
+    }),
+    KnexModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigModule],
+      useFactory: (config: ConfigService) => ({
+        config: {
+          connection: {
+            host: config.get<string>('app.dbHost'),
+            port: config.get<number>('database.port'),
+            user: 'root',
+            password: config.get<string>('database.password'),
+            database: config.get<string>('database.name'),
+          },
+        },
       }),
     }),
   ],
