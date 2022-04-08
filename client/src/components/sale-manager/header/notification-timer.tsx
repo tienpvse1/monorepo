@@ -6,6 +6,7 @@ import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useCookies } from 'react-cookie';
 import { IAccount } from '@interfaces/account';
 import { nanoid } from 'nanoid';
+import moment from 'moment';
 interface NotificationTimeProps {
   data: ISchedule;
   pushNotification: (data: INotification) => void;
@@ -17,7 +18,9 @@ export const NotificationTime: React.FC<NotificationTimeProps> = ({
 }) => {
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
   useTimer({
-    expiryTimestamp: new Date(data.dueDate),
+    expiryTimestamp: moment(new Date(data.dueDate))
+      .subtract(1, 'minute')
+      .toDate(),
     onExpire: () =>
       pushNotification({
         sender: CRM_BOT as IAccount,
