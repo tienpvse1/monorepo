@@ -62,6 +62,7 @@ export const getContactsById = async (contactId: string) => {
       { field: 'company' },
       { field: 'account.team' },
       { field: 'pipelineItems' },
+      { field: 'pipelineItems.pipelineColumn' },
       { field: 'tags' },
     ],
   }).query(false);
@@ -70,9 +71,7 @@ export const getContactsById = async (contactId: string) => {
 };
 export const searchContacts = async (text: string) => {
   const query = RequestQueryBuilder.create({
-    join: [
-      { field: 'account' },
-    ],
+    join: [{ field: 'account' }],
     search: {
       $or: [
         {

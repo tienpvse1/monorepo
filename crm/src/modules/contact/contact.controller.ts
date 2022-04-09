@@ -39,6 +39,7 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
     join: {
       noteWorthies: {},
       pipelineItems: {},
+      'pipelineItems.pipelineColumn': {},
       account: {},
       company: {},
       'account.team': {},
