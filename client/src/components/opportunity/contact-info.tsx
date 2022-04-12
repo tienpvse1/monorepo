@@ -11,15 +11,15 @@ interface ContactInfoProps {
 export const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
   return (
     <div>
-      <span style={{ fontSize: '17px' }}>
+      {/* //TODO: this field is still hard-coded */}
+      {/* <span style={{ fontSize: '17px' }}>
         <p style={{ fontWeight: '600', fontSize: '20px' }}>{data.title}</p>
         <span style={{ fontWeight: '600' }}>
-          {/* {handleUndefinedString(data.expectedRevenue.toString())}$ */}
+          {handleUndefinedString(data.expectedRevenue.toString())}$
         </span>{' '}
         at
-        {/* //TODO: this field is still hard-coded */}
         <span style={{ fontWeight: '600' }}> 69.96%</span>
-      </span>
+      </span> */}
       <InfoWrapper contactId={data.contact.id} title='Communication options'>
         <Descriptions
           column={2}

@@ -11,7 +11,7 @@ export const OpportunityInfoReason: React.FC<OpportunityInfoReasonProps> = ({ da
   return (
     <>
       <Row gutter={[24, 0]}>
-        {data.reasonType == 'win' ? <>
+        {data?.reasonType == 'win' ? <>
           <Col span={10}>
             <Image
               src={data?.photo}
@@ -35,7 +35,7 @@ export const OpportunityInfoReason: React.FC<OpportunityInfoReasonProps> = ({ da
         </> : <>
           <Col span={24} style={{height: '100%'}}>
             <MyForm fontSizeLabel={'16px'} label='Reason Lost'>
-              {data.reason}
+              {data?.reason}
             </MyForm>
             <MyForm
               fontSizeLabel={'16px'}
@@ -43,7 +43,7 @@ export const OpportunityInfoReason: React.FC<OpportunityInfoReasonProps> = ({ da
               customStyle={{ height: '100%' }}
             >
               <Paragraph style={{ marginBottom: 0 }}>
-                {data.description}
+                {data?.description}
               </Paragraph>
             </MyForm>
           </Col>
