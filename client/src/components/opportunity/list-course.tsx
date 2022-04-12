@@ -1,7 +1,7 @@
 import { envVars } from "@env/var.env";
 import { course_Detail } from "@modules/product/entity/product.entity";
 import { getCoursesById } from "@modules/product/query/products.get";
-import { Descriptions, PageHeader, Table, Tag } from "antd";
+import { Descriptions, PageHeader, Spin, Table, Tag } from "antd";
 import Column from "antd/lib/table/Column";
 import moment from "moment";
 import { useQuery } from "react-query";
@@ -17,10 +17,9 @@ export const LIST_SUBJECT_OF_COURSE = 'list-subject-of-course';
 
 export const ListCourse: React.FC<ListCourseProps> = ({ courseId, quantity }) => {
   const { data, isLoading } = useQuery(LIST_SUBJECT_OF_COURSE, () => getCoursesById(courseId))
-  console.log("dataCourse:", data);
 
   return (
-    <>
+    <Spin spinning={isLoading}>
       <PageHeader
         className='site-page-header'
         style={{ padding: '10px' }}
@@ -58,7 +57,6 @@ export const ListCourse: React.FC<ListCourseProps> = ({ courseId, quantity }) =>
         </Descriptions>
       </PageHeader>
       <Table
-        loading={isLoading}
         dataSource={data?.data[0].course_Detail}
         tableLayout='fixed'
         title={() =>
@@ -110,6 +108,6 @@ export const ListCourse: React.FC<ListCourseProps> = ({ courseId, quantity }) =>
         />
 
       </Table>
-    </>
+    </Spin>
   )
 }
