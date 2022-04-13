@@ -14,6 +14,7 @@ import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { User } from 'src/common/decorators/user.decorator';
 import { InternalServerEvent } from 'src/constance/event';
 import { AUTHORIZATION } from 'src/constance/swagger';
+import { InternalSendNotificationPayload } from 'src/modules/notification/dto/internal-send-notification.dto';
 import { AssignAccountToOpportunityDto } from './dto/assign-account.dto';
 import {
   CreatePipelineItemDto,
@@ -27,7 +28,6 @@ import {
 import { PipelineItem } from './entities/pipeline-item.entity';
 import { GenerateNestedIdPipe } from './generate-nested-id.pipe';
 import { PipelineItemService } from './pipeline-item.service';
-import { InternalSendNotificationPayload } from 'src/modules/notification/dto/internal-send-notification.dto';
 @Controller('pipeline-item')
 @ApiBearerAuth(AUTHORIZATION)
 @ApiTags('pipeline item')
@@ -141,8 +141,6 @@ export class PipelineItemController {
   }
   @Patch('restore/:id')
   restore(@Param('id') id: string) {
-    return this.service.update(id, {
-      isLose: false,
-    });
+    return this.service.restorePipelineItem(id);
   }
 }
