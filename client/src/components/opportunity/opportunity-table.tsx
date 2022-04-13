@@ -1,5 +1,5 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
-import { Button, Space, Table } from 'antd';
+import { Button, Space, Table, Tag } from 'antd';
 import Column from 'antd/lib/table/Column';
 import { useToggle } from '@hooks/useToggle';
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
@@ -74,7 +74,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
     }
   }
   const arrayFilter = useMemo(() => handleFilter(), [dataSource])
-  
+
   //filter stage
   const stageFilter = dataSource?.map((opportunity) => ({
     text: opportunity.pipelineColumn?.name,
@@ -239,18 +239,22 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
           }
         />
         <Column
-          title='Is Lost'
+          title='Status'
           dataIndex='isLose'
           key='isLose'
           width={100}
           render={(_, record: IPipelineItem) => (
-            <span>{record.isLose ? 'Yes' : 'No'}</span>
+            <Tag
+              color={record.isLose ? 'default' : 'green'}
+            >
+              {record.isLose ? 'Lost' : 'Alive'}
+            </Tag>
           )}
           filters={[{
-            text: 'Yes',
+            text: 'Lost',
             value: true
           }, {
-            text: 'No',
+            text: 'Alive',
             value: false
           }]}
           onFilter={(value, record) => record.isLose === value}

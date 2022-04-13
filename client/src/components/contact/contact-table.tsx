@@ -80,7 +80,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
 
   //filter tags
   const arrayTags: any = dataSource?.map((contact) => {
-    return contact.tags.map((tag) => tag.name)
+    return contact.tags?.map((tag) => tag.name)
   })
   const arrayConcatTags = [].concat.apply([], arrayTags);
   const tagsFilter = arrayConcatTags.map((value) => ({
@@ -154,8 +154,8 @@ export const ContactTable: React.FC<ContactTableProps> = ({
           dataIndex='companyName'
           key='companyName'
           render={(_, record: IContact) => (
-            <Link className='my-link' to={`${navigateRole}company/view-details/${record.company.id}`}>
-              {record.company.name}
+            <Link className='my-link' to={`${navigateRole}company/view-details/${record.company?.id}`}>
+              {record.company?.name}
             </Link>
           )}
           filters={removeDuplicate(companyFilter, 'value')}
@@ -181,7 +181,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
           dataIndex='tags'
           key='tags'
           render={(_, record: IContact) => (
-            record.tags.map((tag) => (
+            record.tags?.map((tag) => (
               <Tag
                 style={{ marginTop: '3px' }}
                 color={tag.color}

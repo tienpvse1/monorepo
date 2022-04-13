@@ -26,7 +26,7 @@ export const isPostalCode = {
 }
 
 export const isRevenue: any = {
-  pattern: /(^[1-9]\d*$)/,
+  pattern: /(^[0-9]\d*$)/,
   message: 'This field must be a positive integer.'
 }
 
