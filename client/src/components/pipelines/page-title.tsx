@@ -67,7 +67,7 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
           </>
         }
       >
-        <Descriptions size='small' column={3}>
+        <Descriptions size='middle' labelStyle={{fontSize: '16px'}} column={3}>
           <Descriptions.Item label='Total opportunity'>
             {totalOpportunity}
           </Descriptions.Item>
