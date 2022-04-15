@@ -332,7 +332,21 @@ export const route: RouteObject[] = [
       },
       {
         path: 'contact',
-        element: <ManagerContact />,
+        element: <Contact />,
+        children: [
+          {
+            index: true,
+            element: <ListOfAllContact />,
+          },
+          {
+            path: 'view-details/:id',
+            element: <ViewContactDetails />,
+          },
+          {
+            path: 'import-contact',
+            element: <AddContact />,
+          },
+        ],
       },
       {
         path: 'opportunities',
