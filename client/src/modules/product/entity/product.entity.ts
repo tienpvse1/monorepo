@@ -21,6 +21,21 @@ export interface CourseData {
   courseTypeId: number;
   isActive: boolean;
   isDeleted: boolean;
+  course_Detail: course_Detail[];
+}
+
+export interface subjectDetail {
+  code: string;
+  isActive: boolean;
+  name: string;
+}
+
+export interface course_Detail {
+  courseId: number;
+  duration: number;
+  id: number;
+  isActive: boolean;
+  subjectDetail: subjectDetail;
 }
 
 export interface Paging {

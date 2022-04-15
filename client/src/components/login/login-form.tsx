@@ -5,15 +5,16 @@ import { Role } from '@interfaces/type-roles';
 import { IAuthDto } from '@modules/auth/dto/auth.dto';
 import { authenticateUser } from '@modules/auth/mutation/auth.post';
 import { useCourseServiceAuth } from '@modules/auth/mutation/course-service.post';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, Spin } from 'antd';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
+import { LoadingOutlined } from '@ant-design/icons';
 import Modal from './modal';
 export const COURSE_SERVICE_TOKEN = 'course-service-token';
 export const LoginForm = () => {
   const { mutate: authenticateCourseSystem } = useCourseServiceAuth();
   const navigate = useNavigate();
-  const { mutate, error, reset } = useMutation(authenticateUser, {
+  const { mutate, error, reset, isLoading } = useMutation(authenticateUser, {
     onSuccess: (data) => {
       savePermissions(data.publicData.role.permissions);
       authenticateCourseSystem(
@@ -47,6 +48,13 @@ export const LoginForm = () => {
   const handleLogin = async (authDto: IAuthDto) => {
     mutate(authDto);
   };
+
+  if (isLoading) {
+    return <Spin
+      indicator={<LoadingOutlined style={{ fontSize: 130 }} spin />}
+      style={{ paddingTop: '30px' }}
+    />
+  }
 
   return (
     <>

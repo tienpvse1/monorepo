@@ -1,9 +1,9 @@
-import { OpportunityTitleLost } from "@components/opportunity/opportunity-title-lost"
-import { SearchBar } from "@components/search-bar"
-import { useHandleNavigate } from "@hooks/useHandleNavigate";
-import { IPipelineItem } from "@modules/pipeline-items/entity/pipeline-items.entity";
-import { List, Typography } from "antd"
-import { Link } from "react-router-dom"
+import { OpportunityTitleLost } from '@components/opportunity/opportunity-title-lost';
+import { SearchBar } from '@components/search-bar';
+import { useHandleNavigate } from '@hooks/useHandleNavigate';
+import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
+import { List, Typography } from 'antd';
+import { Link } from 'react-router-dom';
 
 interface OpportunityLostProps {
   dataSource?: IPipelineItem[];
@@ -18,11 +18,10 @@ export const OpportunityLost: React.FC<OpportunityLostProps> = ({
   data,
   isLoading,
   setDataOpportunityLost,
-  searchMethod
+  searchMethod,
 }) => {
-  const dataFilterLose = dataSource?.filter((value) => value.isLose)
-  console.log("dataFilterLose:", dataFilterLose);
-  
+  const dataFilterLose = dataSource?.filter((value) => value.isLose);
+
   const { navigateRole } = useHandleNavigate();
   return (
     <>
@@ -30,17 +29,17 @@ export const OpportunityLost: React.FC<OpportunityLostProps> = ({
         totalOpportunity={data?.length}
         opportunityLost={data?.filter((value) => value.isLose).length}
         revenue={dataFilterLose?.reduce((acc, value) => {
-          return acc + value.expectedRevenue
+          return acc + value.expectedRevenue;
         }, 0)}
       />
       <div className='container-page'>
         <List
           loading={isLoading}
-          size="small"
+          size='small'
           style={{ paddingLeft: '50px', paddingRight: '50px' }}
           header={
             <SearchBar
-              placeholder="Search for name opportunity, email..."
+              placeholder='Search for name opportunity, email...'
               width={'40%'}
               float='right'
               setData={setDataOpportunityLost}
@@ -48,28 +47,41 @@ export const OpportunityLost: React.FC<OpportunityLostProps> = ({
             />
           }
           dataSource={dataFilterLose}
-          renderItem={item => (
+          renderItem={(item) => (
             <List.Item key={item.id}>
               <List.Item.Meta
                 title={
-                  <Link className="my-link" to={`${navigateRole}opportunities/view-details/${item.id}`}>{item.name}</Link>
+                  <Link
+                    className='my-link'
+                    to={`${navigateRole}opportunities/view-details/${item.id}`}
+                  >
+                    {item.name}
+                  </Link>
                 }
                 description={
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span>{item.contact.email}</span>
-                    <span >
-                      <Typography.Text mark>{item.reason?.reason}</Typography.Text>
+                  <div
+                    style={{ display: 'flex', justifyContent: 'space-between' }}
+                  >
+                    <span>{item.contact?.email}</span>
+                    <span>
+                      <Typography.Text mark>
+                        {item.reason?.reason}
+                      </Typography.Text>
                     </span>
                     <span></span>
                   </div>
                 }
               />
-              <Link className="my-link" to={`/opportunities/view-details/${item.id}`}>View Details</Link>
+              <Link
+                className='my-link'
+                to={`/opportunities/view-details/${item.id}`}
+              >
+                View Details
+              </Link>
             </List.Item>
           )}
-        >
-        </List>
+        ></List>
       </div>
     </>
-  )
-}
+  );
+};

@@ -39,6 +39,8 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
     join: {
       noteWorthies: {},
       pipelineItems: {},
+      'pipelineItems.schedules': {},
+      'pipelineItems.pipelineColumn': {},
       account: {},
       company: {},
       'account.team': {},
@@ -96,7 +98,7 @@ export class ContactController {
   @Delete(':id')
   @HistoryLog('Deleted a contact')
   delete(@Param('id') id: string) {
-    return this.service.softDelete(id);
+    return this.service.softDelete(id, { relations: ['pipelineItems'] });
   }
 
   @Patch('add-tag/:id')

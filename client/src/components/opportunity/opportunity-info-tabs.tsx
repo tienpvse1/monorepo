@@ -5,6 +5,7 @@ import { OpportunityDetails } from '@components/opportunity/opportunity-details'
 import { OpportunityNotes } from './opportunity-notes';
 import { ListSchedules } from './list-schedules';
 import { OpportunityInfoReason } from './opportunity-info-reason';
+import { ListCourse } from './list-course';
 const { TabPane } = Tabs;
 
 interface OpportunityInfoTabsProps {
@@ -57,8 +58,14 @@ export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }
         <TabPane tab='Notes' key='4'>
           <OpportunityNotes data={data.contact} />
         </TabPane>
+        <TabPane tab='Course' key='5'>
+          <ListCourse
+            courseId={data.opportunityRevenue.courseId}
+            quantity={data.opportunityRevenue.quantity}
+          />
+        </TabPane>
         {(data.pipelineColumn.isWon || data.isLose) &&
-          <TabPane tab='Reason' key='5'>
+          <TabPane tab='Reason' key='6'>
             <OpportunityInfoReason data={data.reason} />
           </TabPane>}
       </Tabs>

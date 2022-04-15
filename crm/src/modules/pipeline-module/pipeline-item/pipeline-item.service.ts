@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
+import { InjectKnex, Knex } from 'nestjs-knex';
 import { BaseService } from 'src/base/nestjsx.service';
 import { InternalServerEvent } from 'src/constance/event';
 import { AccountRepository } from 'src/modules/account/account.repository';
 import { ContactRepository } from 'src/modules/contact/contact.repository';
 import { InternalSendNotificationPayload } from 'src/modules/notification/dto/internal-send-notification.dto';
 import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
+import { Reason } from 'src/modules/reason/entities/reason.entity';
 import { reIndexItems } from 'src/util/pipeline-column';
 // import { reIndexItems } from 'src/util/pipeline-column';
 import { getCustomRepository, getRepository, Repository } from 'typeorm';
@@ -22,6 +25,7 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     @InjectRepository(PipelineItem)
     repository: Repository<PipelineItem>,
     private eventEmitter: EventEmitter2,
+    @InjectKnex() private knex: Knex,
   ) {
     super(repository);
   }
@@ -216,5 +220,19 @@ export class PipelineItemService extends BaseService<PipelineItem> {
       senderId: managerId,
     };
     this.eventEmitter.emit(InternalServerEvent.SEND_NOTIFICATION, payload);
+  }
+
+  async restorePipelineItem(id: string) {
+    const pipelineItem = await this.findOneItem({
+      where: { id },
+      relations: ['reason'],
+    });
+    this.knex<Reason>('reason').where('id', pipelineItem.reason.id).del();
+    return this.knex<PipelineItem>('pipeline_item')
+      .where('id', '=', id)
+      .update({
+        // @ts-ignore
+        is_lose: false,
+      });
   }
 }

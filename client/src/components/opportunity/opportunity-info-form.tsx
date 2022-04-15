@@ -41,6 +41,8 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
         <Form.Item
           name="expectedClosing"
           label="Close Date"
+          required
+          rules={[isRequired('Close Date is required')]}
         >
           <DatePicker style={{ width: '100%' }} />
         </Form.Item>
@@ -66,6 +68,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
           name="expectedRevenue"
           label="Expected Revenue"
           rules={[isRevenue]}
+          initialValue={'0'}
         >
           <Input suffix={"đ"} style={{ height: '40px', borderRadius: '5px' }} />
         </Form.Item>

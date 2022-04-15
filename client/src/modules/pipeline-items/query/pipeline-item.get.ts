@@ -54,6 +54,10 @@ export const getPipelineByAccountID = async (accountId: string) => {
         operator: '$eq',
         value: accountId,
       },
+      {
+        field: 'deletedAt',
+        operator: '$isnull',
+      },
     ],
     sort: [{ field: 'createdAt', order: 'DESC' }],
   }).query(false);
@@ -106,8 +110,8 @@ export const searchPipelineItem = async (text: string, accountId?: string) => {
             },
             {
               'contact.email': {
-                $cont: text
-              }
+                $cont: text,
+              },
             },
             {
               'account.firstName': {
@@ -152,8 +156,8 @@ export const searchAllPipelineItem = async (text: string) => {
         },
         {
           'contact.email': {
-            $cont: text
-          }
+            $cont: text,
+          },
         },
         {
           'account.firstName': {
