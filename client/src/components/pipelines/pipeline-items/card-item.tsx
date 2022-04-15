@@ -24,14 +24,18 @@ import { ThemeColor } from '@constance/color';
 import moment from 'moment';
 const Planned = lazy(() => import('@components/schedule/planned'));
 const { Meta } = Card;
-import numberSeparator from "number-separator";
+import numberSeparator from 'number-separator';
+import { QUERY_UPCOMING_SCHEDULES } from '@modules/schedule/query/schedule.get';
 
 interface PipelineCardItemProps {
   cardData: IPipelineItem;
-  isWon: boolean
+  isWon: boolean;
 }
 
-export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData, isWon }) => {
+export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
+  cardData,
+  isWon,
+}) => {
   const [isDropdownVisible, toggleDropdown] = useBooleanToggle(false);
   const [value, toggle] = useBooleanToggle(false);
   const { mutate } = useCreateSchedule();
@@ -39,7 +43,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData, is
   const onDeletePipeLineItem = () => removePipelineItems(cardData.id);
   const navigate = useNavigate();
   const handleViewDetailClick = () => {
-    navigate(`/opportunities/view-details/${cardData.id}`)
+    navigate(`/opportunities/view-details/${cardData.id}`);
   };
 
   const handleSubmit = (value: any) => {
@@ -48,7 +52,10 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData, is
       pipelineItemId: cardData.id,
     };
     mutate(schedule, {
-      onSuccess: () => client.refetchQueries(GET_PIPELINE_DESIGN),
+      onSettled: () => {
+        client.refetchQueries(GET_PIPELINE_DESIGN);
+        client.refetchQueries(QUERY_UPCOMING_SCHEDULES);
+      },
     });
   };
 
@@ -91,7 +98,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData, is
                 style={{
                   fontSize: 16,
                   color: ThemeColor.primaryTextColor,
-                  fontWeight: 400
+                  fontWeight: 400,
                 }}
               >
                 {numberSeparator(cardData.expectedRevenue, '.')}đ
@@ -108,12 +115,13 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData, is
                 }}
               >
                 <Space size={'middle'}>
-                  {isWon ?
+                  {isWon ? (
                     <>
                       <MailOutlined style={{ fontSize: 18 }} />
                       <ClockCircleOutlined style={{ fontSize: 18 }} />
                       <SmileOutlined style={{ fontSize: 18 }} />
-                    </> :
+                    </>
+                  ) : (
                     <>
                       <MailOutlined style={{ fontSize: 18 }} />
                       <Dropdown
@@ -132,21 +140,27 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({ cardData, is
                       >
                         <ClockCircleOutlined
                           onClick={() => toggleDropdown()}
-                          style={{ fontSize: 18, cursor: 'pointer', color: cardData.schedules?.length > 0 ? '#FFB300' : '' }}
+                          style={{
+                            fontSize: 18,
+                            cursor: 'pointer',
+                            color:
+                              cardData.schedules?.length > 0 ? '#FFB300' : '',
+                          }}
                         />
                       </Dropdown>
                       <IconLost cardData={cardData} />
                     </>
-                  }
+                  )}
 
                   <Tag style={{ marginLeft: 5, borderRadius: 5 }}>
-                    {moment(cardData.createdAt).format("MMMM Do")}
+                    {moment(cardData.createdAt).format('MMMM Do')}
                   </Tag>
-
                 </Space>
-                {cardData.account.photo ?
-                  <Avatar src={cardData.account.photo} /> :
-                  <Avatar icon={<UserOutlined />} />}
+                {cardData.account.photo ? (
+                  <Avatar src={cardData.account.photo} />
+                ) : (
+                  <Avatar icon={<UserOutlined />} />
+                )}
               </div>
             </>
           }
