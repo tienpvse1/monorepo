@@ -19,9 +19,9 @@ export const CompanyInfoTabs: React.FC<CompanyInfoTabsProps> = ({
         <TabPane tab="Contacts" key="2">
           <ListContactsOfCompany dataSource={company.contacts}/>
         </TabPane>
-        <TabPane tab="Notes" key="3">
+        {/* <TabPane tab="Notes" key="3">
           Notes
-        </TabPane>
+        </TabPane> */}
       </Tabs>
     </>
   )

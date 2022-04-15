@@ -2,23 +2,21 @@ import { MyForm } from '@components/form/my-form';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { getCoursesById } from '@modules/product/query/products.get';
 import { Badge, Col, Row, Typography } from 'antd';
-import { useEffect, useState } from 'react';
+import numberSeparator from "number-separator";
+import { useQuery } from 'react-query';
+
 const { Paragraph } = Typography;
 
 interface OpportunityInfoDetailsProps {
   opportunity: IPipelineItem;
 }
 
+export const COURSE_NAME = 'course-name';
+
 export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
   opportunity,
 }) => {
-
-  const [courseName, setCourseName] = useState<string>();
-
-  useEffect(() => {
-    getCoursesById(opportunity.opportunityRevenue.courseId)
-      .then((value) => setCourseName(value.data[0].name))
-  }, [])
+  const { data } = useQuery(COURSE_NAME, () => getCoursesById(opportunity.opportunityRevenue.courseId));
 
   const handlePriority = (value: number) => {
     let node = <Badge color={'blue'} text='Low' />;
@@ -50,11 +48,11 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
           </MyForm>
 
           <MyForm label='Expected Revenue'>
-            {opportunity.expectedRevenue}
+            {numberSeparator(opportunity.expectedRevenue, '.')}đ
           </MyForm>
           <MyForm label='Course name' customStyle={{ height: '100%' }}>
             <Paragraph style={{ marginBottom: 0 }}>
-              {courseName}
+              {data?.data[0].name}
             </Paragraph>
           </MyForm>
           <MyForm label='Expected sold quantity'>

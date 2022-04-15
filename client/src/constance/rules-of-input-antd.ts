@@ -25,6 +25,11 @@ export const isPostalCode = {
   message: 'Postal code consists of 5 numeric characters.'
 }
 
+export const isRevenue: any = {
+  pattern: /(^[0-9]\d*$)/,
+  message: 'This field must be a positive integer.'
+}
+
 export const isQuantity: any = {
   type: 'number',
   min: 1,

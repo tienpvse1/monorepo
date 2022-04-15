@@ -1,5 +1,5 @@
 import { SelectBoxCourse } from '@components/course/select-box-Course';
-import { isRequired } from '@constance/rules-of-input-antd';
+import { isRequired, isRevenue } from '@constance/rules-of-input-antd';
 import { ICreatePipelineItemsDto } from '@modules/pipeline-items/dto/create-pipeline-items.dto';
 import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
@@ -20,6 +20,7 @@ interface SubmittedObject {
   quantity: number;
   courseId: string;
   pipelineColumnId: string;
+  expectedRevenue: number;
 }
 
 export const CreateCardItem: FC<CreateCardItemProps> = ({
@@ -30,12 +31,14 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
   const [form] = Form.useForm<SubmittedObject>();
   const queryClient = useQueryClient();
 
+
   const handleSubmit = (value: SubmittedObject) => {
-    const { quantity, courseId, name, contactId } = value;
+    const { quantity, courseId, name, contactId, expectedRevenue } = value;
     const data: ICreatePipelineItemsDto = {
       columnId: pipelineColumnID,
       contactId,
       name,
+      expectedRevenue: expectedRevenue ? Number(expectedRevenue) : 0,
       opportunityRevenue: {
         courseId,
         quantity
@@ -44,22 +47,10 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
     createNewItems(data, {
       onSuccess: () => {
         queryClient.refetchQueries(GET_PIPELINE_DESIGN);
-        console.log("refecth:", GET_PIPELINE_DESIGN);
-        
         toggleClose();
       },
     });
   };
-
-  // const handleSelect = (contactIdSelected: string) => {
-  //   const contactSelected = data?.find((contact) => {
-  //     return contact.id == contactIdSelected;
-  //   });
-
-  //   form.setFieldsValue({
-  //     name: `${contactSelected.name}'s opportunity`
-  //   });
-  // };
 
   return (
     <>
@@ -93,16 +84,26 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
           </Form.Item>
 
           <SelectBoxCourse />
+          <Input.Group compact>
+            <Form.Item
+              name="expectedRevenue"
+              label="Expected Revenue"
+              style={{ width: 'calc(70% - 10px)', marginRight: '10px' }}
+              rules={[isRevenue]}
+            >
+              <Input suffix={"đ"} style={{ height: '40px', borderRadius: '5px' }} />
+            </Form.Item>
 
-          <Form.Item
-            label='Expected sold quantity'
-            rules={[{ type: 'number', min: 1, max: 99 }]}
-            name='quantity'
-            initialValue={1}
-          >
-            <InputNumber className='my-input-number' />
-          </Form.Item>
-
+            <Form.Item
+              label='Quantity'
+              rules={[{ type: 'number', min: 1, max: 99 }]}
+              name='quantity'
+              initialValue={1}
+              style={{ width: '30%' }}
+            >
+              <InputNumber style={{ width: '100%' }} className='my-input-number' />
+            </Form.Item>
+          </Input.Group>
           <Button htmlType='submit' type='primary'>
             Save
           </Button>

@@ -1,4 +1,5 @@
 
+import { ArrowRightOutlined } from '@ant-design/icons';
 import { OpportunityHistoryType } from '@modules/opportunity-history/entity/opportunity-history.entity';
 import { useOpportunityHistory } from '@modules/opportunity-history/query/opportunity-history.get';
 import { getHistoryDate } from '@util/date';
@@ -23,11 +24,11 @@ export const OpportunityTimeLine: React.FC<ThirdColumnProps> = ({
                 label={getHistoryDate(item.createdAt)}
                 key={item.id}
               >
-                Moved from{' '}
+                Stage:{' '}
                 <Tag color={'blue'}>
                   {item.description.split(/from|to/)[1]}
                 </Tag>
-                to{' '}
+                <ArrowRightOutlined /> {' '}
                 <Tag color={'error'}>
                   {item.description.split(/from|to/)[2]}
                 </Tag>

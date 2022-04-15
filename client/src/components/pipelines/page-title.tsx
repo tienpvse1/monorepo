@@ -67,7 +67,7 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
           </>
         }
       >
-        <Descriptions size='small' column={3}>
+        <Descriptions size='middle' labelStyle={{fontSize: '16px'}} column={3}>
           <Descriptions.Item label='Total opportunity'>
             {totalOpportunity}
           </Descriptions.Item>
@@ -75,8 +75,8 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
           <Descriptions.Item label='Stages'>
             {pipeline?.pipelineColumns?.length}
           </Descriptions.Item>
-          <Descriptions.Item label='Expected revenue'>
-            160k$
+          <Descriptions.Item label='Won Opportunity'>
+            {pipeline?.pipelineColumns.find((item) => item.isWon).pipelineItems.length}
           </Descriptions.Item>
         </Descriptions>
       </PageHeader>

@@ -1,5 +1,5 @@
 import { ProductHeader } from '@components/product/header';
-import { CourseData } from '@modules/product/entity/product.entity';
+import { CourseData, course_Detail } from '@modules/product/entity/product.entity';
 import { useCourses } from '@modules/product/query/products.get';
 import { Table } from 'antd';
 import moment from 'moment';
@@ -10,6 +10,51 @@ const Product = () => {
   const [size, setSize] = useState(10);
   const [search, setSearch] = useState('');
   const { data, isLoading } = useCourses(search, size, page);
+  const expandedRowRender = (data: CourseData) => {
+    const nestedColumns: any = [
+      {
+        title: 'No.',
+        key: 'index',
+        render: (_, __, index) => (++index),
+        width: 70
+      },
+      {
+        title: 'Name',
+        key: 'name',
+        dataIndex: 'name',
+        render: (_, record: course_Detail) => (
+          <span>
+            {record.subjectDetail.name}
+          </span>
+        ),
+      },
+      {
+        title: 'Code',
+        key: 'code',
+        render: (_, record: course_Detail) => (
+          <span>
+            {record.subjectDetail.code}
+          </span>
+        ),
+      },
+      {
+        title: 'Is Active',
+        key: 'country',
+        render: (_, record: course_Detail) => (
+          <span>{record.subjectDetail.isActive ? 'True' : 'False'}</span>
+        )
+      }
+    ];
+
+    return (
+      <Table
+        columns={nestedColumns}
+        dataSource={data.course_Detail}
+        pagination={false}
+      />
+    );
+  };
+
   return (
     <div className='container-page'>
       <ProductHeader setSearch={setSearch} />
@@ -26,6 +71,7 @@ const Product = () => {
         }}
         dataSource={data?.data}
         rowKey={(record) => record.id}
+        expandedRowRender={(record) => expandedRowRender(record)}
       >
         <Table.Column title='Id' dataIndex='id' key='id' />
         <Table.Column title='Name' dataIndex='name' key='nme' />

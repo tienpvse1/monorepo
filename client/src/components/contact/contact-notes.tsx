@@ -5,7 +5,6 @@ import { IContact } from '@modules/contact/entity/contact.entity';
 import { useUpdateContact } from '@modules/contact/mutation/contact.patch';
 import { QUERY_CONTACTS_BY_ID } from '@modules/contact/query/contact.get';
 import { Alert, Button, Form, Input, message, Space } from 'antd';
-import React from 'react'
 import { useQueryClient } from 'react-query';
 
 interface ContactNotesProps {

@@ -17,7 +17,7 @@ import { useCookies } from "react-cookie";
 import { PUBLIC_USER_INFO } from "@constance/cookie";
 import { useReassignAccount } from "@modules/pipeline-items/mutation/pipeline-item.patch";
 import { OpportunityAdditionalForm } from "./opportunity-additional-form";
-const { CRUD_AT } = dateFormat;
+const { CRUD_AT, DEFAULT } = dateFormat;
 
 interface OpportunityDetailsProps {
   data: IPipelineItem
@@ -70,8 +70,10 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
       const value = await form.validateFields();
       updateOpportunity({
         id: data.id,
-        contactId: value.contactId,
         name: value.name,
+        priority: value.priority,
+        expectedRevenue: value.expectedRevenue ? Number(value.expectedRevenue) : 0,
+        expectedClosing: value.expectedClosing ? value.expectedClosing.format(DEFAULT) : '',
         opportunityRevenue: {
           courseId: value.courseId,
           quantity: value.quantity
@@ -131,6 +133,7 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
           <Row gutter={[24, 0]}>
             <OpportunityInfoForm
               disabledCompany={true}
+              disabledContact={true}
               contact={data.contact}
               showStageInput={false}
               courseId={data.opportunityRevenue.courseId}
