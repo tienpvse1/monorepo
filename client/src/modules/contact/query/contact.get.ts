@@ -1,4 +1,5 @@
 import { instance } from '@axios';
+import { IPaginate } from '@common/paginate';
 import { controllers } from '@constance/controllers';
 import { RequestQueryBuilder } from '@nestjsx/crud-request';
 import { useQuery } from 'react-query';
@@ -9,6 +10,7 @@ const { CONTACT } = controllers;
 export const QUERY_CONTACTS = 'query-contacts';
 export const QUERY_CONTACTS_LIKE_EMAIL = 'query-contacts';
 export const QUERY_CONTACTS_BY_ID = 'query-contact-by-id';
+export const QUERY_PAGINATED_CONTACTS = 'query-paginated-contacts';
 
 const getContacts = async (accountId: string) => {
   const query = RequestQueryBuilder.create({
@@ -110,10 +112,22 @@ export const useContactsWithEmailLike = (queryKey: string) =>
       useErrorBoundary: true,
     }
   );
+export const getPaginatedContacts = async (size: number, page: number) => {
+  const query = RequestQueryBuilder.create({
+    offset: page * (size - 1),
+    limit: size,
+    join: ['tags'],
+  }).query(false);
+  const { data } = await instance.get<IPaginate<IContact>>(
+    `${CONTACT}?${query}`
+  );
+  return data;
+};
 
-export const useContacts = (accountId: string) =>
+export const useContacts = (accountId: string, suspense = false) =>
   useQuery([QUERY_CONTACTS, accountId], () => getContacts(accountId), {
     enabled: Boolean(accountId),
+    suspense,
   });
 
 export const useQueryAllContacts = () =>
@@ -125,3 +139,8 @@ export const useQueryContactsById = (contactId: string) =>
   useQuery(QUERY_CONTACTS_BY_ID, () => getContactsById(contactId), {
     enabled: Boolean(contactId),
   });
+
+export const usePaginatedContacts = (size: number, page: number) =>
+  useQuery([QUERY_PAGINATED_CONTACTS, size, page], () =>
+    getPaginatedContacts(size, page)
+  );
