@@ -15,6 +15,7 @@ export const VerificationForm = () => {
       <Form.Item
         name="description"
         label="Description"
+        initialValue={''}
       >
         <Input.TextArea
           showCount

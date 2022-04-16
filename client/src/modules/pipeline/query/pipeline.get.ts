@@ -11,8 +11,6 @@ export const getPipelineUser = async () => {
 };
 
 export const useGetPipeLineUser = () => {
-  const { data, isLoading } = useQuery(GET_PIPELINE_DESIGN, getPipelineUser, {
-    staleTime: Infinity,
-  });
+  const { data, isLoading } = useQuery(GET_PIPELINE_DESIGN, getPipelineUser);
   return { data, isLoading };
 };
