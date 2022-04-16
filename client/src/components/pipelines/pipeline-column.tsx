@@ -18,8 +18,6 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
   pipelineColumn,
   index,
 }) => {
-  console.log("changed");
-
   const [showCreateItemForm, setShowCreateItemForm] = useToggle();
   const [showInput, setShowInput] = useToggle();
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);

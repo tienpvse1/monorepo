@@ -47,6 +47,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
     createNewItems(data, {
       onSuccess: () => {
         queryClient.refetchQueries(GET_PIPELINE_DESIGN);
+        queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
         toggleClose();
       },
     });

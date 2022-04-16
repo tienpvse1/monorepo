@@ -1,11 +1,9 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
-import { Is } from '@common/is';
 import { CreateModal } from '@components/modal/create-modal';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { dateFormat } from '@constance/date-format';
 import { useHandleNavigate } from '@hooks/useHandleNavigate';
 import { useToggle } from '@hooks/useToggle';
-import { useBooleanToggle } from '@mantine/hooks';
 import { IContact } from '@modules/contact/entity/contact.entity';
 import { useDeleteContact } from '@modules/contact/mutation/contact.delete';
 import { useInsertContact } from '@modules/contact/mutation/contact.post';
@@ -23,7 +21,7 @@ import { CreateContactForm } from './create-contact-form';
 const { DEFAULT } = dateFormat;
 
 const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {},
+  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
   getCheckboxProps: (record: any) => ({
     disabled: record.name === 'Disabled User',
     name: record.name,

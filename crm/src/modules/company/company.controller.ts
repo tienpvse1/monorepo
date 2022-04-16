@@ -26,6 +26,8 @@ import { Company } from './entities/company.entity';
   query: {
     join: {
       contacts: {},
+      'contacts.pipelineItems': {},
+      // 'contacts.pipelineItems.pipelineColumn': {},
       city: {},
     },
   },

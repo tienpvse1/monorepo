@@ -84,7 +84,9 @@ const ListAllOpportunityLost = lazy(
 );
 const MyCalendar = lazy(() => import('@components/schedule/calendar'));
 const ListSchedule = lazy(() => import('@components/schedule/list'));
-
+const Rank = lazy(
+  () => import('@pages/rank')
+);
 export const route: RouteObject[] = [
   {
     path: '/login',
@@ -219,6 +221,10 @@ export const route: RouteObject[] = [
       {
         path: 'tag',
         element: <Tag />,
+      },
+      {
+        path: 'rank',
+        element: <Rank />,
       },
       {
         path: 'opportunities',
