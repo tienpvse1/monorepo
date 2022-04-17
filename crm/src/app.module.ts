@@ -45,6 +45,7 @@ import { TagModule } from './modules/tag/tag.module';
 import { TeamModule } from './modules/team/team.module';
 import { WebhookModule } from './modules/webhook/webhook.module';
 import { ActivityTypeModule } from './modules/activity-type/activity-type.module';
+import { CourseModule } from './modules/course/course.module';
 
 @Module({
   imports: [
@@ -87,6 +88,7 @@ import { ActivityTypeModule } from './modules/activity-type/activity-type.module
     InboxModule,
     CityModule,
     ActivityTypeModule,
+    CourseModule,
   ],
   providers: [GlobalModule, AppService],
   controllers: [AppController],
