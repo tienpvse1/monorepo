@@ -84,6 +84,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
             queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
             toggleModalChangeStageWon();
             startFireworks();
+            form.resetFields();
           }
         })
       }

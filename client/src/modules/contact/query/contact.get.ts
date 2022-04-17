@@ -35,6 +35,7 @@ const getAllContacts = async () => {
       { field: 'pipelineItems' },
       { field: 'pipelineItems.schedules' },
       { field: 'pipelineItems.pipelineColumn' },
+      { field: 'pipelineItems.opportunityRevenue' },
     ],
     sort: [{ field: 'createdAt', order: 'DESC' }],
   }).query(false);

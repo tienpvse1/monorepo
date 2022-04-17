@@ -1,11 +1,12 @@
 import { PageHeader, Radio, Tabs } from "antd";
-import { CompanyRankingTable } from "@components/company/company-ranking-table";
+import { CompanyRankingRevenue } from "@components/company/company-ranking-revenue";
 import { CompanyRankingCourse } from "@components/company/company-ranking-course";
-import { ContactRankingTable } from "@components/contact/contact-ranking-table";
+import { ContactRankingRevenue } from "@components/contact/contact-ranking-revenue";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import { Is } from "@common/is";
 import { FileDoneOutlined, FireOutlined } from "@ant-design/icons";
+import { ContactRankingCourse } from "@components/contact/contact-ranking-course";
 const { TabPane } = Tabs;
 const Rank = () => {
   const [view, setView] = useState<'revenue' | 'courseSold'>('revenue');
@@ -50,10 +51,10 @@ const Rank = () => {
             <Is condition={view === 'revenue'}>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="Company" key="1" >
-                  <CompanyRankingTable />
+                  <CompanyRankingRevenue />
                 </TabPane>
                 <TabPane tab="Contact" key="2" >
-                  <ContactRankingTable />
+                  <ContactRankingRevenue />
                 </TabPane>
               </Tabs>
             </Is>
@@ -63,7 +64,7 @@ const Rank = () => {
                   <CompanyRankingCourse />
                 </TabPane>
                 <TabPane tab="Contact" key="2" >
-                  <h1>Contact course </h1>
+                  <ContactRankingCourse />
                 </TabPane>
               </Tabs>
             </Is>

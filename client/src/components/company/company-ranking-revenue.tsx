@@ -8,14 +8,17 @@ import { dateFormat } from "@constance/date-format";
 import { useEffect, useState } from "react";
 const { CRUD_AT } = dateFormat;
 
-export const CompanyRankingTable = () => {
+export const CompanyRankingRevenue = () => {
   const { data, isLoading } = useCompanies();
   const [dataMap, setDataMap] = useState<ICompany[]>();
 
   const handleRevenue = (record: ICompany) =>
     record?.contacts?.reduce((acc, contact) => {
       return acc + contact?.pipelineItems?.reduce((acc2, item) => {
-        return acc2 + item.expectedRevenue;
+        if (item.pipelineColumn.isWon)
+          return acc2 + item.expectedRevenue;
+        else
+          return 0;
       }, 0)
     }, 0)
 

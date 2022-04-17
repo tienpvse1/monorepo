@@ -8,7 +8,7 @@ import numberSeparator from "number-separator";
 import { useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 
-export const ContactRankingTable = () => {
+export const ContactRankingRevenue = () => {
   const { data, isLoading } = useQueryAllContacts();
   const [dataMap, setDataMap] = useState<IContact[]>();
 

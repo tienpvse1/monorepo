@@ -73,7 +73,7 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
                 end={pipelineColumn.pipelineItems.reduce((acc, item) => {
                   return acc + item.expectedRevenue
                 }, 0)}
-                duration={0.5}
+                duration={0.3}
                 separator='.'
               />đ
             </span>

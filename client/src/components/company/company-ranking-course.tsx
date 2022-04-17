@@ -1,52 +1,66 @@
 import { ICompany } from '@modules/company/entity/company.entity';
 import { useCompanies } from '@modules/company/query/company.get';
-import { Table } from 'antd'
+import { Table, Tag } from 'antd'
 import Column from 'antd/lib/table/Column'
 import { useEffect, useState } from 'react';
+import moment from 'moment';
+import { dateFormat } from "@constance/date-format";
+const { CRUD_AT } = dateFormat;
 
 export const CompanyRankingCourse = () => {
-  const { data } = useCompanies();
+  const { data, isLoading } = useCompanies();
   const [dataMap, setDataMap] = useState<ICompany[]>();
 
-  console.log("dataCom:", data);
-  
-
-  const handleRevenue = (record: ICompany) =>
-    record?.contacts?.reduce((acc, contact) => {
-      return acc + contact?.pipelineItems?.reduce((acc2, item) => {
-        return acc2 + item.expectedRevenue;
-      }, 0)
+  const handleCourseQuantity = (record: any) =>
+    record.courses.reduce((acc, course) => {
+      return acc + course.quantity;
     }, 0)
 
-  // const handleRank = (revenue: number) => {
-  //   if (revenue >= 100000000) {
-  //     return <Tag color={'gold'}>Gold</Tag>
-  //   }
-  //   if (revenue >= 50000000) {
-  //     return <Tag color={'default'}>Silver</Tag>
-  //   } else {
-  //     return <Tag color={'volcano'}>Bronze</Tag>
-  //   }
-  // }
 
-  // useEffect(() => {
-  //   const dataMap = data?.map((value) => (
-  //     {
-  //       ...value,
-  //       revenue: handleRevenue(value)
-  //     }
-  //   ))
-  //     .sort((a, b) => b.revenue - a.revenue)
-  //     .map((newValue, index) => ({ ...newValue, index: ++index }))
+  const handleCourse = (record: ICompany) => {
+    let array: any[];
+    array = record?.contacts?.map((value) => {
+      return value.pipelineItems.map((item) => (
+        {
+          courseId: item.opportunityRevenue.courseId,
+          quantity: item.opportunityRevenue.quantity,
+          createdAt: item.createdAt
+        }
+      ))
+    })
+    let newArray = [].concat.apply([], array);
+    return newArray;
+  }
 
-  //   setDataMap(dataMap);
-  // }, [data])
+  const handleRank = (course: number) => {
+    if (course >= 3) {
+      return <Tag color={'gold'}>Gold</Tag>
+    }
+    if (course >= 2) {
+      return <Tag color={'default'}>Silver</Tag>
+    } else {
+      return <Tag color={'volcano'}>Bronze</Tag>
+    }
+  }
+
+  useEffect(() => {
+    const dataMap = data?.map((value) => (
+      {
+        ...value,
+        courses: handleCourse(value)
+      }
+    ))
+      .sort((a, b) => handleCourseQuantity(b) - handleCourseQuantity(a))
+      .map((newValue, index) => ({ ...newValue, index: ++index }))
+
+    setDataMap(dataMap);
+  }, [data])
 
   return (
     <Table
       style={{ paddingTop: '15px' }}
-      // loading={isLoading}
-      // dataSource={dataMap}
+      loading={isLoading}
+      dataSource={dataMap}
       tableLayout='fixed'
       title={() => <span style={{ fontSize: '20px' }}>Top Company</span>}
       pagination={
@@ -61,20 +75,15 @@ export const CompanyRankingCourse = () => {
       <Column
         title="No."
         width={50}
-      // render={(_, record: any) => (
-      //   <span>{record.index}</span>
-      // )}
+        render={(_, record: any) => (
+          <span>{record.index}</span>
+        )}
       />
 
       <Column
         title="Name"
         dataIndex="name"
         key="name"
-      // render={(_, record: ICompany) => (
-      //   <span>
-      //     {record.name}
-      //   </span>
-      // )}
       />
 
       <Column
@@ -87,31 +96,33 @@ export const CompanyRankingCourse = () => {
         title="Purchased Course"
         dataIndex="course"
         key="course"
-      // render={(value) => (
-      //   <span>
-      //     {numberSeparator(value, '.')}đ
-      //   </span>
-      // )}
+        align='center'
+        width={150}
+        render={(_, record: any) => (
+          <span>
+            {handleCourseQuantity(record)}
+          </span>
+        )}
       />
       <Column
         title="Rank"
         dataIndex="rank"
         key="rank"
         width={100}
-      // render={(_, record: any) => (
-      //   handleRank(record.revenue)
-      // )}
+        render={(_, record: any) => (
+          handleRank(handleCourseQuantity(record))
+        )}
       />
 
       <Column
         title="Created Date"
         dataIndex="createdAt"
         key="createdAt"
-      // render={(_, record: any) => (
-      //   <span >
-      //     {moment(record.createdAt).format(CRUD_AT)}
-      //   </span>
-      // )}
+        render={(_, record: any) => (
+          <span >
+            {moment(record.createdAt).format(CRUD_AT)}
+          </span>
+        )}
       />
     </Table>
   )

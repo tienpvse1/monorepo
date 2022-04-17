@@ -41,6 +41,7 @@ export class CompanyService extends BaseService<Company> {
         'contacts',
         'contacts.pipelineItems',
         'contacts.pipelineItems.pipelineColumn',
+        'contacts.pipelineItems.opportunityRevenue',
       ],
       loadEagerRelations: false,
     });

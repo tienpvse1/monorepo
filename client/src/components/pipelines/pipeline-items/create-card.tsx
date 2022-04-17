@@ -1,7 +1,7 @@
 import { SelectBoxCourse } from '@components/course/select-box-Course';
 import { isRequired, isRevenue } from '@constance/rules-of-input-antd';
 import { ICreatePipelineItemsDto } from '@modules/pipeline-items/dto/create-pipeline-items.dto';
-import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
+import { useCreateNewItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { Button, Card, Form, Input, InputNumber } from 'antd';
 import { FC } from 'react';
@@ -27,7 +27,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
   pipelineColumnID,
   toggleClose,
 }) => {
-  const { mutate: createNewItems } = usePostPipelineItems();
+  const { mutate: createNewItems } = useCreateNewItems();
   const [form] = Form.useForm<SubmittedObject>();
   const queryClient = useQueryClient();
 

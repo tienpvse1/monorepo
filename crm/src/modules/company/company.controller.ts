@@ -36,6 +36,7 @@ import { Company } from './entities/company.entity';
       contacts: {},
       'contacts.pipelineItems': { alias: 'items' },
       'contacts.pipelineItems.pipelineColumn': {},
+      'contacts.pipelineItems.opportunityRevenue': {},
       city: {},
     },
   },
