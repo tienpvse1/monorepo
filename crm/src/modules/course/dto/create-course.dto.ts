@@ -8,9 +8,6 @@ export class CreateCourseDto {
   course_Type?: any;
 }
 
-export class RawCourse{
-
-}
 // {
 //   "id": 3120,
 //   "name": "VJC Induction and Orientation - Batch 48",
@@ -26,5 +23,5 @@ export class RawCourse{
 //     "course_Type_Id": 1,
 //     "str_Name": "Initial"
 //   },
-  
+
 // }
