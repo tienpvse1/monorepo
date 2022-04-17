@@ -19,6 +19,7 @@ import { ConfigModule } from '../config/config.module';
         logger: 'advanced-console',
         synchronize: true,
         logging: false,
+        connectTimeout: 30000,
       }),
     }),
     KnexModule.forRootAsync({
