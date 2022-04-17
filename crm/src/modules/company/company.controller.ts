@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -26,6 +34,8 @@ import { Company } from './entities/company.entity';
   query: {
     join: {
       contacts: {},
+      'contacts.pipelineItems': { alias: 'items' },
+      'contacts.pipelineItems.pipelineColumn': {},
       city: {},
     },
   },
@@ -36,6 +46,11 @@ import { Company } from './entities/company.entity';
 @ApiTags('company')
 export class CompanyController {
   constructor(public service: CompanyService) {}
+
+  @Get('with-column')
+  async withPipelineColumn() {
+    return this.service.getWithColumn();
+  }
 
   @Delete(':id')
   @HistoryLog('deleted an company')
