@@ -15,6 +15,7 @@ import { Role } from 'src/modules/role/entities/role.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
 import { Session } from 'src/modules/session/entities/session.entity';
 import { Team } from 'src/modules/team/entities/team.entity';
+import { AutomationEmailTemplate } from 'src/modules/automation-email-template/entities/automation-email-template.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -125,6 +126,9 @@ export class Account extends BaseEntity {
   @ManyToOne(() => Team, (team) => team.accounts)
   @JoinColumn({ name: 'team_id' })
   team: Team;
+
+  @OneToMany(() => AutomationEmailTemplate, (templates) => templates.account)
+  automationEmailTemplates: AutomationEmailTemplate[];
 
   // hash the password before save or update it in database
   @BeforeInsert()

@@ -76,13 +76,16 @@ export class PipelineItemController {
   @UsePipes(GenerateNestedIdPipe)
   @HistoryLog('Add a new opportunity')
   @ApiBody({ type: CreateSinglePipelineItemDto })
-  addOpportunity(
+  async addOpportunity(
     @Body() item: CreateSinglePipelineItemDto,
     @User('id') accountId: string,
   ) {
-    this.service.createPipelineItemForSale(item, accountId);
-
-    return item;
+    const result = await this.service.createPipelineItemForSale(
+      item,
+      accountId,
+    );
+    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED);
+    return result;
   }
   @Post('manager')
   @UsePipes(GenerateNestedIdPipe)
