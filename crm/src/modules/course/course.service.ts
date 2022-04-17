@@ -1,26 +1,27 @@
+import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
-import { CreateCourseDto } from './dto/create-course.dto';
-import { UpdateCourseDto } from './dto/update-course.dto';
-
+import { InjectRepository } from '@nestjs/typeorm';
+import { BaseService } from 'src/base/nestjsx.service';
+import { Repository } from 'typeorm';
+import { Course } from './entities/course.entity';
 @Injectable()
-export class CourseService {
-  create(createCourseDto: CreateCourseDto) {
-    return 'This action adds a new course';
+export class CourseService extends BaseService<Course> {
+  constructor(@InjectRepository(Course) repository: Repository<Course>) {
+    super(repository);
   }
 
-  findAll() {
-    return `This action returns all course`;
-  }
+  async crawlData(data: { data: Course[]; paging: any }) {
+    const courses: Course[] = data.data;
 
-  findOne(id: number) {
-    return `This action returns a #${id} course`;
-  }
-
-  update(id: number, updateCourseDto: UpdateCourseDto) {
-    return `This action updates a #${id} course`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} course`;
+    courses.forEach((course) => {
+      const courseEndDate = faker.date.future(3);
+      const entity = {
+        ...course,
+        startDate: faker.date.past(),
+        endDate: courseEndDate,
+        certificateExp: faker.date.future(2, courseEndDate),
+      };
+      this.repository.insert(entity);
+    });
   }
 }
