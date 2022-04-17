@@ -46,7 +46,7 @@ export const ContactRankingTable = () => {
 
   const handleRevenue = (record: IContact) =>
     record.pipelineItems.reduce((acc, item) => {
-      if(item.pipelineColumn.isWon)
+      if (item.pipelineColumn.isWon)
         return acc + item.expectedRevenue;
       else
         return 0;
@@ -67,10 +67,11 @@ export const ContactRankingTable = () => {
 
   return (
     <Table
+      style={{ paddingTop: '15px' }}
       loading={isLoading}
       dataSource={dataMap}
       tableLayout='fixed'
-      title={() => <span style={{ fontSize: '18px' }}>Top Contact</span>}
+      title={() => <span style={{ fontSize: '20px' }}>Top Contact</span>}
       pagination={
         {
           position: ['bottomCenter'],

@@ -13,7 +13,7 @@ export const getCompanies = async () => {
     join: [
       { field: 'contacts' },
       { field: 'contacts.pipelineItems' },
-      { field: 'contacts.pipelineItems.pipelineColumn' },
+      // { field: 'contacts.pipelineItems.opportunityRevenue' },
       { field: 'city' },
     ],
     sort: [{ field: 'createdAt', order: 'DESC' }]

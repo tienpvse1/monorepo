@@ -1,5 +1,6 @@
 import { PageHeader, Radio, Tabs } from "antd";
 import { CompanyRankingTable } from "@components/company/company-ranking-table";
+import { CompanyRankingCourse } from "@components/company/company-ranking-course";
 import { ContactRankingTable } from "@components/contact/contact-ranking-table";
 import { nanoid } from "nanoid";
 import { useState } from "react";
@@ -30,7 +31,7 @@ const Rank = () => {
               {
                 label: (
                   <span>
-                   <FileDoneOutlined /> Course Sold
+                   <FileDoneOutlined /> Purchased Course
                   </span>
                 ),
                 value: 'courseSold',
@@ -59,7 +60,7 @@ const Rank = () => {
             <Is condition={view === 'courseSold'}>
               <Tabs defaultActiveKey="1">
                 <TabPane tab="Company" key="1" >
-                  <h1>company course </h1>
+                  <CompanyRankingCourse />
                 </TabPane>
                 <TabPane tab="Contact" key="2" >
                   <h1>Contact course </h1>

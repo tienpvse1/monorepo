@@ -45,10 +45,11 @@ export const CompanyRankingTable = () => {
 
   return (
     <Table
+      style={{paddingTop: '15px'}}
       loading={isLoading}
       dataSource={dataMap}
       tableLayout='fixed'
-      title={() => <span style={{ fontSize: '18px' }}>Top Company</span>}
+      title={() => <span style={{ fontSize: '20px' }}>Top Company</span>}
       pagination={
         {
           position: ['bottomCenter'],
@@ -78,9 +79,9 @@ export const CompanyRankingTable = () => {
       />
 
       <Column
-        title="Phone"
-        dataIndex="mobile"
-        key="mobile"
+        title="Email"
+        dataIndex="email"
+        key="email"
       />
 
       <Column
