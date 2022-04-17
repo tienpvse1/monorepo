@@ -2,20 +2,23 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
+import { nanoid } from 'nanoid';
 import { InjectKnex, Knex } from 'nestjs-knex';
 import { BaseService } from 'src/base/nestjsx.service';
 import { InternalServerEvent } from 'src/constance/event';
 import { AccountRepository } from 'src/modules/account/account.repository';
-import { ContactRepository } from 'src/modules/contact/contact.repository';
 import { InternalSendNotificationPayload } from 'src/modules/notification/dto/internal-send-notification.dto';
-import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
+import { KnexCreateOpportunityRevenueDto } from 'src/modules/opportunity-revenue/dto/create-opportunity-revenue.dto';
 import { Reason } from 'src/modules/reason/entities/reason.entity';
 import { reIndexItems } from 'src/util/pipeline-column';
 // import { reIndexItems } from 'src/util/pipeline-column';
-import { getCustomRepository, getRepository, Repository } from 'typeorm';
+import { getCustomRepository, Repository } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { PipelineColumnRepository } from '../pipeline-column/pipeline-column.repository';
-import { CreateSinglePipelineItemDto } from './dto/create-pipeline-item.dto';
+import {
+  CreateSinglePipelineItemDto,
+  KnexCreatePipelineItemForSaleDto,
+} from './dto/create-pipeline-item.dto';
 import { ChangeStageDto } from './dto/update-pipeline-item.dto';
 import { PipelineItem } from './entities/pipeline-item.entity';
 
@@ -92,41 +95,42 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     item.pipelineColumn = column;
     return item.save();
   }
+
   async createPipelineItemForSale(
     dto: CreateSinglePipelineItemDto,
     accountId: string,
   ) {
-    const { columnId, contactId, opportunityRevenue, ...rest } = dto;
+    const {
+      columnId,
+      contactId,
+      opportunityRevenue,
+      expectedClosing,
+      expectedRevenue,
+      ...rest
+    } = dto;
+    const pipelineItemId = nanoid(10);
+    // create pipeline item
+    await this.knex<KnexCreatePipelineItemForSaleDto>('pipeline_item').insert({
+      id: pipelineItemId,
+      account_id: accountId,
+      pipeline_column_id: columnId,
+      contact_id: contactId,
+      expected_closing: new Date(expectedClosing),
+      expected_revenue: expectedRevenue,
+      ...rest,
+    });
 
-    const contactRepository = getCustomRepository(ContactRepository);
-    const accountRepository = getCustomRepository(AccountRepository);
-    const columnRepository = getCustomRepository(PipelineColumnRepository);
-    const revenueRepository = getRepository(OpportunityRevenue);
+    // create revenue, attach created pipeline item's id to this revenue
+    await this.knex<KnexCreateOpportunityRevenueDto>(
+      'opportunity_revenue',
+    ).insert({
+      id: nanoid(10),
+      course_id: opportunityRevenue.courseId,
+      quantity: opportunityRevenue.quantity,
+      pipeline_item_id: pipelineItemId,
+    });
 
-    const [account, contact, pipelineColumn] = await Promise.all([
-      accountRepository.findOneItem({ where: { id: accountId } }),
-      contactRepository.findOneItem({ where: { id: contactId } }),
-      columnRepository.findOneItem({ where: { id: columnId } }),
-    ]);
-    const revenue = await revenueRepository
-      .create({
-        quantity: opportunityRevenue.quantity,
-        courseId: opportunityRevenue.courseId,
-      })
-      .save();
-
-    const createdPipelineItem = await this.repository
-      .create({
-        ...rest,
-        account,
-        contact,
-        pipelineColumn,
-        opportunityRevenue: revenue,
-        createBy: account,
-      })
-      .save();
-
-    return createdPipelineItem;
+    return this.findOneItem({ where: { id: pipelineItemId } });
   }
 
   async createPipelineItem(
@@ -135,37 +139,28 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     managerId: string,
   ) {
     const { columnId, contactId, opportunityRevenue, ...rest } = dto;
+    const pipelineItemId = nanoid(10);
+    // create pipeline item
+    await this.knex<KnexCreatePipelineItemForSaleDto>('pipeline_item').insert({
+      id: pipelineItemId,
+      account_id: accountId,
+      creator_id: managerId,
+      pipeline_column_id: columnId,
+      contact_id: contactId,
+      ...rest,
+    });
 
-    const contactRepository = getCustomRepository(ContactRepository);
-    const accountRepository = getCustomRepository(AccountRepository);
-    const columnRepository = getCustomRepository(PipelineColumnRepository);
-    const revenueRepository = getRepository(OpportunityRevenue);
+    // create revenue, attach created pipeline item's id to this revenue
+    await this.knex<KnexCreateOpportunityRevenueDto>(
+      'opportunity_revenue',
+    ).insert({
+      id: nanoid(10),
+      course_id: opportunityRevenue.courseId,
+      quantity: opportunityRevenue.quantity,
+      pipeline_item_id: pipelineItemId,
+    });
 
-    const [account, manager, contact, pipelineColumn] = await Promise.all([
-      accountRepository.findOneItem({ where: { id: accountId } }),
-      accountRepository.findOneItem({ where: { id: managerId } }),
-      contactRepository.findOneItem({ where: { id: contactId } }),
-      columnRepository.findOneItem({ where: { id: columnId } }),
-    ]);
-    const revenue = await revenueRepository
-      .create({
-        quantity: opportunityRevenue.quantity,
-        courseId: opportunityRevenue.courseId,
-      })
-      .save();
-
-    const createdPipelineItem = await this.repository
-      .create({
-        ...rest,
-        account,
-        contact,
-        pipelineColumn,
-        opportunityRevenue: revenue,
-        createBy: manager,
-      })
-      .save();
-
-    return createdPipelineItem;
+    return this.findOneItem({ where: { id: pipelineItemId } });
   }
 
   async assignAccount(id: string, accountId: string, managerId: string) {

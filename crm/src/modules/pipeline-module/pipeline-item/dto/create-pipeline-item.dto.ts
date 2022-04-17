@@ -94,3 +94,19 @@ export class ParsedCreateSinglePipelineItemDto {
 
   noteWorthies?: CreateNoteWorthyDto[];
 }
+
+export class KnexCreatePipelineItemForSaleDto {
+  id: string;
+  account_id: string;
+
+  contact_id: string;
+  creator_id?: string;
+
+  pipeline_column_id: string;
+
+  name: string;
+  expected_revenue?: number;
+  priority?: number;
+  expected_closing?: Date;
+  description?: string;
+}

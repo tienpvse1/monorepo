@@ -1,5 +1,6 @@
 import { BaseEntity } from 'src/base/entity.base';
-import { Column, Entity } from 'typeorm';
+import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity()
 export class Course extends BaseEntity {
@@ -25,4 +26,10 @@ export class Course extends BaseEntity {
   course_Type?: any;
   @Column({ name: 'course_detail', type: 'json', nullable: true })
   course_Detail?: any;
+
+  /**
+   * relations
+   */
+  @OneToMany(() => OpportunityRevenue, (revenue) => revenue.course)
+  opportunityRevenues: OpportunityRevenue[];
 }
