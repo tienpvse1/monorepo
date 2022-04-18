@@ -12,6 +12,7 @@ import { QUERY_CONTACTS } from '@modules/contact/query/contact.get';
 import { removeDuplicate } from '@util/array';
 import { Button, Empty, message, Modal, Space, Table, Tag } from 'antd';
 import Column from 'antd/lib/table/Column';
+import moment from 'moment';
 import { useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Link, useNavigate } from 'react-router-dom';
@@ -110,6 +111,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
   return (
     <>
       <Table
+        scroll={{ x: 1300 }}
         loading={isLoading}
         tableLayout='fixed'
         rowSelection={{
@@ -230,9 +232,22 @@ export const ContactTable: React.FC<ContactTableProps> = ({
         }
 
         <Column
+          title="Created Date"
+          dataIndex="createdAt"
+          key="createdAt"
+          render={(_, record: any) => (
+            <Link className='my-link' to={`view-details/${record.id}`}>
+              {moment(record.createdAt).format(DEFAULT)}
+            </Link>
+          )}
+          sorter={(a, b) => moment(a.createdAt).diff(moment(b.createdAt))}
+        />
+
+        <Column
           title='Action'
           dataIndex='action'
           key='action'
+          width={125}
           fixed={'right'}
           render={(_, record: IContact) => (
             <Space size='small' style={{ width: '100%' }}>
