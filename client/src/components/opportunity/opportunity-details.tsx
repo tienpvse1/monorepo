@@ -48,7 +48,8 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
       contactId: data.contact.id,
       companyName: data.contact.company.id,
       priority: data.priority,
-      courseId: data.opportunityRevenue.courseId
+      courseId: data.opportunityRevenue.course?.id,
+      quantity: data.opportunityRevenue.quantity
     });
   };
   const handleToggleEditForm2 = () => {
@@ -72,7 +73,7 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
         id: data.id,
         name: value.name,
         priority: value.priority,
-        expectedRevenue: value.expectedRevenue ? Number(value.expectedRevenue) : 0,
+        expectedRevenue: value.expectedRevenue ? Number(value.expectedRevenue) * value.quantity : 0,
         expectedClosing: value.expectedClosing ? value.expectedClosing.format(DEFAULT) : '',
         opportunityRevenue: {
           courseId: value.courseId,
@@ -136,7 +137,8 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
               disabledContact={true}
               contact={data.contact}
               showStageInput={false}
-              courseId={data.opportunityRevenue.courseId}
+              courseId={data.opportunityRevenue.course?.id}
+              form={form}
             />
             <Col style={{ textAlign: 'right' }} span={24}>
               <Space>

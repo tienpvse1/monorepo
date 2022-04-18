@@ -9,8 +9,9 @@ import { useEffect, useState } from "react";
 const { CRUD_AT } = dateFormat;
 
 export const CompanyRankingRevenue = () => {
-  const { data, isLoading } = useCompanies();
+  const { data } = useCompanies();
   const [dataMap, setDataMap] = useState<ICompany[]>();
+  const [loading, setLoading] = useState(true);
 
   const handleRevenue = (record: ICompany) =>
     record?.contacts?.reduce((acc, contact) => {
@@ -44,12 +45,13 @@ export const CompanyRankingRevenue = () => {
       .map((newValue, index) => ({ ...newValue, index: ++index }))
 
     setDataMap(dataMap);
+    setLoading(false);
   }, [data])
 
   return (
     <Table
       style={{paddingTop: '15px'}}
-      loading={isLoading}
+      loading={loading}
       dataSource={dataMap}
       tableLayout='fixed'
       title={() => <span style={{ fontSize: '20px' }}>Top Company</span>}

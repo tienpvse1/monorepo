@@ -1,9 +1,7 @@
 import { MyForm } from '@components/form/my-form';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { getCoursesById } from '@modules/product/query/products.get';
 import { Badge, Col, Row, Typography } from 'antd';
 import numberSeparator from "number-separator";
-import { useQuery } from 'react-query';
 
 const { Paragraph } = Typography;
 
@@ -16,8 +14,6 @@ export const COURSE_NAME = 'course-name';
 export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
   opportunity,
 }) => {
-  const { data } = useQuery(COURSE_NAME, () => getCoursesById(opportunity.opportunityRevenue.courseId));
-
   const handlePriority = (value: number) => {
     let node = <Badge color={'blue'} text='Low' />;
     switch (value) {
@@ -52,7 +48,7 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
           </MyForm>
           <MyForm label='Course name' customStyle={{ height: '100%' }}>
             <Paragraph style={{ marginBottom: 0 }}>
-              {data?.data[0].name}
+              {opportunity.opportunityRevenue.course?.name}
             </Paragraph>
           </MyForm>
           <MyForm label='Expected sold quantity'>

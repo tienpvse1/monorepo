@@ -38,7 +38,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
       columnId: pipelineColumnID,
       contactId,
       name,
-      expectedRevenue: expectedRevenue ? Number(expectedRevenue) : 0,
+      expectedRevenue: expectedRevenue ? Number(expectedRevenue) * quantity : 0,
       opportunityRevenue: {
         courseId,
         quantity
@@ -84,12 +84,13 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
             <Input placeholder='Opportunity name...' />
           </Form.Item>
 
-          <SelectBoxCourse />
+          <SelectBoxCourse form={form} />
+
           <Input.Group compact>
             <Form.Item
               name="expectedRevenue"
               label="Expected Revenue"
-              style={{ width: 'calc(70% - 10px)', marginRight: '10px' }}
+              style={{ width: 'calc(70% - 10px)', marginRight: '10px', display: 'none' }}
               rules={[isRevenue]}
             >
               <Input suffix={"đ"} style={{ height: '40px', borderRadius: '5px' }} />

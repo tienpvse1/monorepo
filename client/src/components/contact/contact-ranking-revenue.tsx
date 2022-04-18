@@ -9,8 +9,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 
 export const ContactRankingRevenue = () => {
-  const { data, isLoading } = useQueryAllContacts();
+  const { data } = useQueryAllContacts();
   const [dataMap, setDataMap] = useState<IContact[]>();
+  const [loading, setLoading] = useState(true);
 
   //filter created by follow account id
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
@@ -63,12 +64,13 @@ export const ContactRankingRevenue = () => {
       .map((newValue, index) => ({ ...newValue, index: ++index }))
 
     setDataMap(dataMap);
+    setLoading(false);
   }, [data])
 
   return (
     <Table
       style={{ paddingTop: '15px' }}
-      loading={isLoading}
+      loading={loading}
       dataSource={dataMap}
       tableLayout='fixed'
       title={() => <span style={{ fontSize: '20px' }}>Top Contact</span>}
@@ -151,9 +153,6 @@ export const ContactRankingRevenue = () => {
           </span>
         )}
         filters={arrayFilter}
-        // defaultFilteredValue={[
-        //   `${public_user_info.firstName} ${public_user_info.lastName}`,
-        // ]}
         filterSearch={true}
         onFilter={(value, record) => {
           let fullName = `${record.account?.firstName} ${record.account?.lastName}`;

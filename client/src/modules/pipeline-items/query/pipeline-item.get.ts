@@ -18,6 +18,7 @@ export const getPipelineItemById = async (id: string) => {
       { field: 'pipelineColumn' },
       { field: 'opportunityRevenue' },
       { field: 'opportunityRevenue.product' },
+      { field: 'opportunityRevenue.course' },
       { field: 'account' },
       { field: 'account.team' },
       { field: 'contact' },

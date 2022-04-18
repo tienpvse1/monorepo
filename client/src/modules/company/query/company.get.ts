@@ -15,6 +15,7 @@ export const getCompanies = async () => {
       { field: 'contacts.pipelineItems' },
       { field: 'contacts.pipelineItems.pipelineColumn' },
       { field: 'contacts.pipelineItems.opportunityRevenue' },
+      { field: 'contacts.pipelineItems.opportunityRevenue.course' },
       { field: 'city' },
     ],
     sort: [{ field: 'createdAt', order: 'DESC' }]

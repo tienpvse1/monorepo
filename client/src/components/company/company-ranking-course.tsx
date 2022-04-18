@@ -8,28 +8,36 @@ import { dateFormat } from "@constance/date-format";
 const { CRUD_AT } = dateFormat;
 
 export const CompanyRankingCourse = () => {
-  const { data, isLoading } = useCompanies();
+  const { data } = useCompanies();
   const [dataMap, setDataMap] = useState<ICompany[]>();
+  const [loading, setLoading] = useState(true);
+
 
   const handleCourseQuantity = (record: any) =>
-    record.courses.reduce((acc, course) => {
+    record.reduce((acc: number, course: any) => {
       return acc + course.quantity;
     }, 0)
-
 
   const handleCourse = (record: ICompany) => {
     let array: any[];
     array = record?.contacts?.map((value) => {
-      return value.pipelineItems.map((item) => (
-        {
-          courseId: item.opportunityRevenue.courseId,
-          quantity: item.opportunityRevenue.quantity,
-          createdAt: item.createdAt
+      return value.pipelineItems.map((item) => {
+        if (item.pipelineColumn.isWon)
+          return {
+            courseId: item.opportunityRevenue.courseId,
+            quantity: item.opportunityRevenue.quantity,
+            createdAt: item.createdAt
+          }
+        else {
+          return {};
         }
-      ))
+      })
     })
-    let newArray = [].concat.apply([], array);
-    return newArray;
+    let newArray = [].concat.apply([], array).filter(value => Object.keys(value).length !== 0);
+    return {
+      courseDetail: newArray,
+      totalQty: handleCourseQuantity(newArray)
+    };
   }
 
   const handleRank = (course: number) => {
@@ -50,16 +58,17 @@ export const CompanyRankingCourse = () => {
         courses: handleCourse(value)
       }
     ))
-      .sort((a, b) => handleCourseQuantity(b) - handleCourseQuantity(a))
+      .sort((a, b) => b.courses.totalQty - a.courses.totalQty)
       .map((newValue, index) => ({ ...newValue, index: ++index }))
 
     setDataMap(dataMap);
+    setLoading(false);
   }, [data])
 
   return (
     <Table
       style={{ paddingTop: '15px' }}
-      loading={isLoading}
+      loading={loading}
       dataSource={dataMap}
       tableLayout='fixed'
       title={() => <span style={{ fontSize: '20px' }}>Top Company</span>}
@@ -100,7 +109,7 @@ export const CompanyRankingCourse = () => {
         width={150}
         render={(_, record: any) => (
           <span>
-            {handleCourseQuantity(record)}
+            {record.courses.totalQty}
           </span>
         )}
       />
@@ -110,7 +119,7 @@ export const CompanyRankingCourse = () => {
         key="rank"
         width={100}
         render={(_, record: any) => (
-          handleRank(handleCourseQuantity(record))
+          handleRank(record.courses.totalQty)
         )}
       />
 

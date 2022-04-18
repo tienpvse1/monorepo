@@ -1,15 +1,19 @@
-import { Form, Input, Row } from 'antd'
+import { Form, FormInstance, Input, Row } from 'antd'
 import { WrapperModalForm } from '@components/modal/modal-wrapper-form'
 import { OpportunityInfoForm } from './opportunity-info-form'
 import { OpportunityAdditionalForm } from './opportunity-additional-form'
 import { isNotWhiteSpace } from '@constance/rules-of-input-antd'
 
-export const CreateOpportunityForm = () => {
+interface CreateOpportunityFormProps {
+  form: FormInstance;
+}
+
+export const CreateOpportunityForm: React.FC<CreateOpportunityFormProps> = ({ form }) => {
   return (
     <>
       <WrapperModalForm titleName='Opportunity Information' >
         <Row gutter={[24, 0]}>
-          <OpportunityInfoForm  />
+          <OpportunityInfoForm form={form}/>
         </Row>
       </WrapperModalForm>
 

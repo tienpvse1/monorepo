@@ -15,7 +15,7 @@ export const DashBoard: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [
     {
-      public_user_info: { firstName, lastName, id },
+      public_user_info: { id },
     },
   ] = useCookies([PUBLIC_USER_INFO]);
 
@@ -27,7 +27,6 @@ export const DashBoard: React.FC = () => {
   return (
     <>
       <h1>
-        Hello {firstName} {lastName}
         <div
           style={{
             display: 'flex',
