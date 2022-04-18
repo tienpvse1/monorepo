@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Patch,
   Post,
@@ -10,6 +11,7 @@ import {
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
+import { Public } from 'src/common/decorators/public.decorator';
 import { User } from 'src/common/decorators/user.decorator';
 import { ContactService } from './contact.service';
 import { CreateContactPipe } from './create-contact.pipe';
@@ -78,6 +80,17 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
 export class ContactController {
   constructor(public readonly service: ContactService) {}
 
+  @Public()
+  @Get('in-date')
+  getInDate() {
+    return this.service.repository
+      .createQueryBuilder('contact')
+      .where('Month(birth) = :month', { month: new Date().getMonth() + 1 })
+      .andWhere('Day(birth) = :day', { day: new Date().getDate() })
+      .leftJoinAndSelect('contact.pipelineItems', 'pipelineItems')
+      .leftJoinAndSelect('pipelineItems.account', 'account')
+      .getMany();
+  }
   @Post()
   createOne(@Body() dto: CreateContactDto, @User('id') id: string) {
     return this.service.createOneContact(dto, id);

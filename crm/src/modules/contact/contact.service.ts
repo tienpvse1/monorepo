@@ -16,6 +16,7 @@ export class ContactService extends BaseService<Contact> {
   constructor(@InjectRepository(Contact) repository: ContactRepository) {
     super(repository);
   }
+
   async createOneContact(dto: CreateContactDto, accountId: string) {
     const accountRepository = getCustomRepository(AccountRepository);
     const tagRepository = getRepository(Tag);

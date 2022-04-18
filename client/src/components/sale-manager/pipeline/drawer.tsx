@@ -3,9 +3,7 @@ import { imagePlaceHolderUrl } from '@constance/image';
 import { useSaleAccounts } from '@modules/account/get/account.get';
 import { useQueryAllContacts } from '@modules/contact/query/contact.get';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import {
-  useStages
-} from '@modules/pipeline-column/query/pipeline-column.get';
+import { useStages } from '@modules/pipeline-column/query/pipeline-column.get';
 import { ICreatePipelineItemForManager } from '@modules/pipeline-items/dto/create-pipeline-items.dto';
 import { useCreatePipelineItemForManager } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { useCourses } from '@modules/product/query/products.get';
@@ -18,12 +16,13 @@ import {
   Divider,
   Drawer,
   Form,
-  Input, notification, Row,
+  Input,
+  notification,
+  Row,
   Select,
-  Space
+  Space,
 } from 'antd';
 import moment from 'moment';
-
 
 interface CreateOpportunityProps {
   visible: boolean;
@@ -84,7 +83,7 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
   return (
     <>
       <Drawer
-        title='Create a new account'
+        title='Create a Opportunity'
         width={720}
         onClose={onClose}
         visible={visible}
@@ -147,13 +146,11 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
                       .includes(input.toLowerCase());
                   }}
                 >
-                  {contacts
-                    ?.filter((item, index) => index < 5)
-                    .map((contact) => (
-                      <Select.Option key={contact.id} value={contact.id}>
-                        {contact.name}
-                      </Select.Option>
-                    ))}
+                  {contacts.map((contact) => (
+                    <Select.Option key={contact.id} value={contact.id}>
+                      {contact.name}
+                    </Select.Option>
+                  ))}
                 </Select>
               </Form.Item>
             </Col>
@@ -263,7 +260,7 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
                   {courses?.data
                     .filter((_item, index) => index < 5)
                     .map((course) => (
-                      <Select.Option key={course.code} value={course.code}>
+                      <Select.Option key={course.id} value={course.id}>
                         {course.name}
                       </Select.Option>
                     ))}
