@@ -1,26 +1,67 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAutomationEmailTemplateDto } from './dto/create-automation-email-template.dto';
-import { UpdateAutomationEmailTemplateDto } from './dto/update-automation-email-template.dto';
+import { OnEvent } from '@nestjs/event-emitter';
+import { InjectRepository } from '@nestjs/typeorm';
+import { BaseService } from 'src/base/nestjsx.service';
+import { Roles } from 'src/constance';
+import { InternalServerEvent } from 'src/constance/event';
+import { Repository } from 'typeorm';
+import { AccountService } from '../account/account.service';
+import { Contact } from '../contact/entities/contact.entity';
+import { CreateMailerDto } from '../mailer/dto/create-mailer.dto';
+import { EmailService } from '../mailer/mailer.service';
+import {
+  AutomationEmailTemplate,
+  EmailTemplateType,
+} from './entities/automation-email-template.entity';
 
+export interface IEmailEvent {
+  type: EmailTemplateType;
+  contact: Contact;
+}
 @Injectable()
-export class AutomationEmailTemplateService {
-  create(createAutomationEmailTemplateDto: CreateAutomationEmailTemplateDto) {
-    return 'This action adds a new automationEmailTemplate';
+export class AutomationEmailTemplateService extends BaseService<AutomationEmailTemplate> {
+  constructor(
+    @InjectRepository(AutomationEmailTemplate)
+    repository: Repository<AutomationEmailTemplate>,
+    private mailerService: EmailService,
+    private accountService: AccountService,
+  ) {
+    super(repository);
+  }
+  @OnEvent(InternalServerEvent.EMAIL_EVENT)
+  sendEmail({ type, contact }: IEmailEvent) {
+    if (type === EmailTemplateType.BIRTHDAY) {
+      this.sendBirthdayCelebration(contact);
+    }
   }
 
-  findAll() {
-    return `This action returns all automationEmailTemplate`;
-  }
+  async sendBirthdayCelebration(contact: Contact) {
+    const [account, template] = await Promise.all([
+      this.accountService.findOneItem({
+        where: {
+          role: {
+            name: Roles.SYSTEM,
+          },
+        },
+      }),
+      this.findOneItem({
+        where: {
+          type: EmailTemplateType.BIRTHDAY,
+        },
+      }),
+    ]);
+    if (!account || !template) return;
 
-  findOne(id: number) {
-    return `This action returns a #${id} automationEmailTemplate`;
-  }
-
-  update(id: number, updateAutomationEmailTemplateDto: UpdateAutomationEmailTemplateDto) {
-    return `This action updates a #${id} automationEmailTemplate`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} automationEmailTemplate`;
+    const mail: CreateMailerDto = {
+      subject: 'Happy birthday',
+      to: [
+        {
+          email: contact.email,
+          isTag: false,
+        },
+      ],
+      value: template.html,
+    };
+    this.mailerService.sendEmail(mail, '127.0.0.1', account.id);
   }
 }
