@@ -122,10 +122,10 @@ export const ContactRankingRevenue = () => {
 
       />
       <Column
-        title="Opportunities"
+        title="Won Opportunity"
         dataIndex="opportunities"
         key="opportunities"
-        width={110}
+        width={130}
         align="center"
         render={(_, record: IContact) => (
           <span>

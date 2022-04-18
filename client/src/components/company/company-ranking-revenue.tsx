@@ -42,6 +42,7 @@ export const CompanyRankingRevenue = () => {
     ))
       .sort((a, b) => b.revenue - a.revenue)
       .map((newValue, index) => ({ ...newValue, index: ++index }))
+    console.log("dataMap:", dataMap);
 
     setDataMap(dataMap);
     setLoading(false);
@@ -75,6 +76,7 @@ export const CompanyRankingRevenue = () => {
         title="Name"
         dataIndex="name"
         key="name"
+        width={160}
         render={(_, record: ICompany) => (
           <span>
             {record.name}
@@ -86,19 +88,35 @@ export const CompanyRankingRevenue = () => {
         title="Email"
         dataIndex="email"
         key="email"
+        width={250}
       />
 
       <Column
         title="Revenue"
         dataIndex="revenue"
         key="revenue"
-        width={170}
         render={(value) => (
           <span>
             {numberSeparator(value, '.')}đ
           </span>
         )}
       />
+
+      <Column
+        title="Won Opportunity"
+        dataIndex="opportunities"
+        key="opportunities"
+        width={130}
+        align="center"
+        render={(_, record: ICompany) => (
+          <span>
+            {record.contacts.reduce((acc, value) => {
+              return acc + value.pipelineItems.length
+            }, 0)}
+          </span>
+        )}
+      />
+
       <Column
         title="Rank"
         dataIndex="rank"

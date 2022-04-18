@@ -153,6 +153,7 @@ export const ContactRankingCourse = () => {
         title="Created By"
         dataIndex="username"
         key="username"
+        width={120}
         render={(_, record: any) => (
           <span >
             {record?.account?.firstName} {record?.account?.lastName}
