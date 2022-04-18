@@ -42,7 +42,7 @@ export class CompanyService extends BaseService<Company> {
         'contacts.pipelineItems',
         'contacts.pipelineItems.pipelineColumn',
         'contacts.pipelineItems.opportunityRevenue',
-        // 'contacts.pipelineItems.opportunityRevenue.course',
+        'contacts.pipelineItems.opportunityRevenue.course',
       ],
       loadEagerRelations: false,
     });

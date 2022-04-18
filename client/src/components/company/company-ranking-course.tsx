@@ -11,7 +11,12 @@ export const CompanyRankingCourse = () => {
   const { data } = useCompanies();
   const [dataMap, setDataMap] = useState<ICompany[]>();
   const [loading, setLoading] = useState(true);
+  data.map((value) =>
+    value.contacts.map((contact) =>
+      contact.pipelineItems = contact.pipelineItems.filter((item) => item.opportunityRevenue !== null)))
 
+  console.log("dataCompany:", data);
+  
 
   const handleCourseQuantity = (record: any) =>
     record.reduce((acc: number, course: any) => {
@@ -24,8 +29,8 @@ export const CompanyRankingCourse = () => {
       return value.pipelineItems.map((item) => {
         if (item.pipelineColumn.isWon)
           return {
-            courseId: item.opportunityRevenue.courseId,
-            quantity: item.opportunityRevenue.quantity,
+            courseId: item.opportunityRevenue?.courseId,
+            quantity: item.opportunityRevenue?.quantity,
             createdAt: item.createdAt
           }
         else {

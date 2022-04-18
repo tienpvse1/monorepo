@@ -55,7 +55,7 @@ export const LoginForm = () => {
     setLoading(true);
   };
 
-  if (loading) {
+  if (loading && !error) {
     return <Spin
       indicator={<LoadingOutlined style={{ fontSize: 130 }} spin />}
       style={{ paddingTop: '30px' }}
@@ -64,7 +64,7 @@ export const LoginForm = () => {
 
   return (
     <>
-      {error && <Modal reset={reset} />}
+      {error && <Modal setLoading={setLoading} reset={reset} />}
       <Form
         name='normal_login'
         className='login-form'

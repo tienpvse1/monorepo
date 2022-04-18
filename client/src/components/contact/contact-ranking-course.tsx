@@ -11,6 +11,8 @@ export const ContactRankingCourse = () => {
   const { data } = useQueryAllContacts();
   const [dataMap, setDataMap] = useState<IContact[]>();
   const [loading, setLoading] = useState(true);
+  data.map((value) =>
+    value.pipelineItems = value.pipelineItems.filter((item) => item.opportunityRevenue !== null))
 
   //filter created by follow account id
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
@@ -43,8 +45,8 @@ export const ContactRankingCourse = () => {
     array = record.pipelineItems.map((item) => {
       if (item.pipelineColumn.isWon)
         return {
-          courseId: item.opportunityRevenue.courseId,
-          quantity: item.opportunityRevenue.quantity,
+          courseId: item.opportunityRevenue?.courseId,
+          quantity: item.opportunityRevenue?.quantity,
           createdAt: item.createdAt
         }
       else {
