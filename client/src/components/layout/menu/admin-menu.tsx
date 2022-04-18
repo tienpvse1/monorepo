@@ -3,6 +3,7 @@ import {
   BranchesOutlined,
   CarryOutOutlined,
   CoffeeOutlined,
+  MailOutlined,
   SettingOutlined,
   SketchOutlined,
   TeamOutlined,
@@ -84,6 +85,14 @@ export const AdminMenuSider = ({ style }: MenuSiderAdminProps) => {
           icon={<SettingOutlined style={style} />}
         >
           Subscription
+        </Menu.Item>
+        <Menu.Item
+          key='email'
+          style={style}
+          onClick={() => navigate('/administration/email')}
+          icon={<MailOutlined style={style} />}
+        >
+          Email
         </Menu.Item>
       </Menu>
     </>
