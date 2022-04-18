@@ -32,21 +32,23 @@ interface ContactTableProps {
   dataSource: IContact[];
   isLoading: boolean;
   setDataContact: (value: []) => void;
+  queryKey: string;
 }
 
 export const ContactTable: React.FC<ContactTableProps> = ({
   dataSource,
   isLoading,
   setDataContact,
+  queryKey
 }) => {
   const [deleteItem, setDeleteItem] = useState<IContact>(null);
   //CRUD api
   const { mutate: deleteContact } = useDeleteContact(() => {
-    client.invalidateQueries(QUERY_CONTACTS);
+    client.invalidateQueries([QUERY_CONTACTS, queryKey]);
     message.success('Delete successfully !');
   });
   const { mutate: insertContact } = useInsertContact(() => {
-    client.invalidateQueries(QUERY_CONTACTS);
+    client.invalidateQueries([QUERY_CONTACTS, queryKey]);
     message.success('Create new successfully !');
   });
 

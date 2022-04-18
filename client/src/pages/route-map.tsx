@@ -71,6 +71,9 @@ const AccountantLayout = lazy(() => import('@common/accountant-layout'));
 const ListOfAllContact = lazy(
   () => import('@components/admin/list-of-all-contacts')
 );
+const SalesContactList = lazy(
+  () => import('@components/sale/sales-contact-list')
+);
 
 const SalesOpportunityLost = lazy(
   () => import('@components/sale/sales-opportunity-lost')
@@ -110,7 +113,7 @@ export const route: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <ListOfAllContact />,
+            element: <SalesContactList />,
           },
           {
             path: 'view-details/:id',

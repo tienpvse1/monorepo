@@ -29,6 +29,7 @@ const SalesContactList = () => {
         dataSource={dataContact}
         isLoading={isLoading}
         setDataContact={setDataContact}
+        queryKey={'sale'}
       />
     </div>
   )

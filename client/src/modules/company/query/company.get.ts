@@ -12,6 +12,7 @@ export const getCompanies = async () => {
   const query = RequestQueryBuilder.create({
     join: [
       { field: 'contacts' },
+      { field: 'contacts.account' },
       { field: 'contacts.pipelineItems' },
       { field: 'contacts.pipelineItems.pipelineColumn' },
       { field: 'contacts.pipelineItems.opportunityRevenue' },

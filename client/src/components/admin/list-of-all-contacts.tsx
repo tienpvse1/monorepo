@@ -22,6 +22,7 @@ const ListOfAllContact = () => {
         dataSource={dataContact}
         isLoading={isLoading}
         setDataContact={setDataContact}
+        queryKey={'sale-manager'}
       />
     </div>
   )

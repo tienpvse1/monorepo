@@ -14,7 +14,15 @@ export const QUERY_PAGINATED_CONTACTS = 'query-paginated-contacts';
 
 const getContacts = async (accountId: string) => {
   const query = RequestQueryBuilder.create({
-    join: [{ field: 'account' }, { field: 'company' }],
+    join: [
+      { field: 'account' },
+      { field: 'company' },
+      { field: 'tags' },
+      { field: 'pipelineItems' },
+      { field: 'pipelineItems.schedules' },
+      { field: 'pipelineItems.pipelineColumn' },
+      { field: 'pipelineItems.opportunityRevenue' },
+    ],
     filter: [
       {
         field: 'account.id',
@@ -22,6 +30,7 @@ const getContacts = async (accountId: string) => {
         value: accountId,
       },
     ],
+    sort: [{ field: 'createdAt', order: 'DESC' }],
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
   return data;
@@ -127,13 +136,13 @@ export const getPaginatedContacts = async (size: number, page: number) => {
 };
 
 export const useContacts = (accountId: string, suspense = false) =>
-  useQuery([QUERY_CONTACTS, accountId], () => getContacts(accountId), {
+  useQuery([QUERY_CONTACTS, 'sale'], () => getContacts(accountId), {
     enabled: Boolean(accountId),
     suspense,
   });
 
 export const useQueryAllContacts = () =>
-  useQuery(QUERY_CONTACTS, () => getAllContacts(), {
+  useQuery([QUERY_CONTACTS, 'sale-manager'], () => getAllContacts(), {
     placeholderData: [],
   });
 
