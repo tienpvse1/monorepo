@@ -12,6 +12,8 @@ export class Course extends BaseEntity {
   startDate: Date;
   @Column({ name: 'end_date' })
   endDate: Date;
+  @Column({ type: 'float', default: 10000000 })
+  price: number;
 
   @Column({ name: 'number_of_trainee', nullable: true })
   numberOfTrainee: number;
