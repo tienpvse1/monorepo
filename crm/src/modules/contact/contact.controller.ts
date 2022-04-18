@@ -42,6 +42,7 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
       'pipelineItems.schedules': {},
       'pipelineItems.pipelineColumn': {},
       'pipelineItems.opportunityRevenue': {},
+      'pipelineItems.opportunityRevenue.course': {},
       account: {},
       company: {},
       'account.team': {},

@@ -3,10 +3,9 @@ import Column from "antd/lib/table/Column";
 import { useCompanies } from '@modules/company/query/company.get';
 import { ICompany } from "@modules/company/entity/company.entity";
 import numberSeparator from "number-separator";
-import moment from "moment";
-import { dateFormat } from "@constance/date-format";
 import { useEffect, useState } from "react";
-const { CRUD_AT } = dateFormat;
+import { TypeOfCompany } from '@components/company/type-of-company';
+
 
 export const CompanyRankingRevenue = () => {
   const { data } = useCompanies();
@@ -50,7 +49,7 @@ export const CompanyRankingRevenue = () => {
 
   return (
     <Table
-      style={{paddingTop: '15px'}}
+      style={{ paddingTop: '15px' }}
       loading={loading}
       dataSource={dataMap}
       tableLayout='fixed'
@@ -93,6 +92,7 @@ export const CompanyRankingRevenue = () => {
         title="Revenue"
         dataIndex="revenue"
         key="revenue"
+        width={170}
         render={(value) => (
           <span>
             {numberSeparator(value, '.')}đ
@@ -110,15 +110,15 @@ export const CompanyRankingRevenue = () => {
       />
 
       <Column
-        title="Created Date"
-        dataIndex="createdAt"
-        key="createdAt"
-        render={(_, record: any) => (
-          <span >
-            {moment(record.createdAt).format(CRUD_AT)}
-          </span>
+        title="Type"
+        dataIndex="type"
+        key="type"
+        width={120}
+        render={(text) => (
+          <TypeOfCompany type={text} />
         )}
       />
+
     </Table>
   )
 }

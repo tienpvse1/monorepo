@@ -11,8 +11,9 @@ export const ContactRankingCourse = () => {
   const { data } = useQueryAllContacts();
   const [dataMap, setDataMap] = useState<IContact[]>();
   const [loading, setLoading] = useState(true);
-  data.map((value) =>
-    value.pipelineItems = value.pipelineItems.filter((item) => item.opportunityRevenue !== null))
+
+  console.log("dataContact:", data);
+
 
   //filter created by follow account id
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
@@ -84,6 +85,10 @@ export const ContactRankingCourse = () => {
 
     setDataMap(dataMap);
     setLoading(false);
+    
+    return () => {
+      setDataMap([]);
+    }
   }, [data])
 
   return (

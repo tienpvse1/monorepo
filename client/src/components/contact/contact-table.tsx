@@ -4,6 +4,7 @@ import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { dateFormat } from '@constance/date-format';
 import { useHandleNavigate } from '@hooks/useHandleNavigate';
 import { useToggle } from '@hooks/useToggle';
+import { Role } from '@interfaces/type-roles';
 import { IContact } from '@modules/contact/entity/contact.entity';
 import { useDeleteContact } from '@modules/contact/mutation/contact.delete';
 import { useInsertContact } from '@modules/contact/mutation/contact.post';
@@ -42,6 +43,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
   queryKey
 }) => {
   const [deleteItem, setDeleteItem] = useState<IContact>(null);
+
   //CRUD api
   const { mutate: deleteContact } = useDeleteContact(() => {
     client.invalidateQueries([QUERY_CONTACTS, queryKey]);
@@ -92,6 +94,10 @@ export const ContactTable: React.FC<ContactTableProps> = ({
   const [isOpenModal, toggleCreateModal] = useToggle();
   const navigate = useNavigate();
   const { navigateRole } = useHandleNavigate();
+
+  const isRoleSaleManager = () => {
+    return public_user_info.role.name === Role.SALE_MANAGER;
+  }
 
   const handleCreateContact = (record: any) => {
     insertContact({
@@ -200,27 +206,28 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             record.tags.some((tag) => tag.name === value)
           }
         />
-
-        <Column
-          title='Created By'
-          dataIndex='username'
-          key='username'
-          width={120}
-          render={(_, record: IContact) => (
-            <Link className='my-link' to={`view-details/${record?.id}`}>
-              {record?.account?.firstName} {record?.account?.lastName}
-            </Link>
-          )}
-          filters={arrayFilter}
-          defaultFilteredValue={[
-            `${public_user_info.firstName} ${public_user_info.lastName}`,
-          ]}
-          filterSearch={true}
-          onFilter={(value, record) => {
-            let fullName = `${record.account?.firstName} ${record.account?.lastName}`;
-            return fullName.indexOf(value as string) === 0;
-          }}
-        />
+        {isRoleSaleManager() &&
+          <Column
+            title='Created By'
+            dataIndex='username'
+            key='username'
+            width={120}
+            render={(_, record: IContact) => (
+              <Link className='my-link' to={`view-details/${record?.id}`}>
+                {record?.account?.firstName} {record?.account?.lastName}
+              </Link>
+            )}
+            filters={arrayFilter}
+            defaultFilteredValue={[
+              `${public_user_info.firstName} ${public_user_info.lastName}`,
+            ]}
+            filterSearch={true}
+            onFilter={(value, record) => {
+              let fullName = `${record.account?.firstName} ${record.account?.lastName}`;
+              return fullName.indexOf(value as string) === 0;
+            }}
+          />
+        }
 
         <Column
           title='Action'

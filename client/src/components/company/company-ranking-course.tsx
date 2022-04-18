@@ -1,22 +1,17 @@
 import { ICompany } from '@modules/company/entity/company.entity';
-import { useCompanies } from '@modules/company/query/company.get';
+import { useCompaniesWithColumn } from '@modules/company/query/company.get';
 import { Table, Tag } from 'antd'
 import Column from 'antd/lib/table/Column'
 import { useEffect, useState } from 'react';
 import moment from 'moment';
+import { TypeOfCompany } from '@components/company/type-of-company';
 import { dateFormat } from "@constance/date-format";
 const { CRUD_AT } = dateFormat;
 
 export const CompanyRankingCourse = () => {
-  const { data } = useCompanies();
+  const { data } = useCompaniesWithColumn();
   const [dataMap, setDataMap] = useState<ICompany[]>();
   const [loading, setLoading] = useState(true);
-  data.map((value) =>
-    value.contacts.map((contact) =>
-      contact.pipelineItems = contact.pipelineItems.filter((item) => item.opportunityRevenue !== null)))
-
-  console.log("dataCompany:", data);
-  
 
   const handleCourseQuantity = (record: any) =>
     record.reduce((acc: number, course: any) => {
@@ -29,7 +24,8 @@ export const CompanyRankingCourse = () => {
       return value.pipelineItems.map((item) => {
         if (item.pipelineColumn.isWon)
           return {
-            courseId: item.opportunityRevenue?.courseId,
+            courseId: item.opportunityRevenue?.course.id,
+            courseName: item.opportunityRevenue?.course.name,
             quantity: item.opportunityRevenue?.quantity,
             createdAt: item.createdAt
           }
@@ -70,6 +66,43 @@ export const CompanyRankingCourse = () => {
     setLoading(false);
   }, [data])
 
+  const expandedRowRender = (data: any) => {
+    const nestedColumns: any = [
+      {
+        title: 'Course ID',
+        key: 'courseId',
+        dataIndex: 'courseId',
+      },
+      {
+        title: 'Course Name',
+        key: 'courseName',
+        dataIndex: 'courseName'
+      },
+      {
+        title: 'Quantity',
+        key: 'quantity',
+        dataIndex: 'quantity',
+        align: 'center'
+      },
+      {
+        title: 'Created Date',
+        key: 'createdAt',
+        dataIndex: 'createdAt',
+        render: (_, record: any) => (
+          <span>{moment(record.createdAt).format(CRUD_AT)}</span>
+        )
+      }
+    ];
+
+    return (
+      <Table
+        columns={nestedColumns}
+        dataSource={data.courses.courseDetail}
+        pagination={false}
+      />
+    );
+  };
+
   return (
     <Table
       style={{ paddingTop: '15px' }}
@@ -85,6 +118,7 @@ export const CompanyRankingCourse = () => {
       }
       size={'small'}
       rowKey={(record) => record.id}
+      expandedRowRender={(record) => expandedRowRender(record)}
     >
       <Column
         title="No."
@@ -129,13 +163,12 @@ export const CompanyRankingCourse = () => {
       />
 
       <Column
-        title="Created Date"
-        dataIndex="createdAt"
-        key="createdAt"
-        render={(_, record: any) => (
-          <span >
-            {moment(record.createdAt).format(CRUD_AT)}
-          </span>
+        title="Type"
+        dataIndex="type"
+        key="type"
+        width={120}
+        render={(text) => (
+          <TypeOfCompany type={text} />
         )}
       />
     </Table>
