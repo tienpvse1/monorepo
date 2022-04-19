@@ -11,7 +11,7 @@ import { CreateScheduleForm } from '@components/schedule/create-schedule-form';
 import { useBooleanToggle } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.delete';
-import { Avatar, Button, Card, Divider, Dropdown, Space, Tag } from 'antd';
+import { Avatar, Button, Card, Divider, Dropdown, Rate, Space, Tag } from 'antd';
 import { lazy, Suspense } from 'react';
 import { PopoverAction } from '../../popover/popover-action';
 import { ICreateScheduleDto } from '@modules/schedule/dto/create-schedule.dto';
@@ -36,6 +36,8 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
   cardData,
   isWon,
 }) => {
+  console.log("cardData:", cardData);
+
   const [isDropdownVisible, toggleDropdown] = useBooleanToggle(false);
   const [value, toggle] = useBooleanToggle(false);
   const { mutate } = useCreateSchedule();
@@ -104,6 +106,13 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
                 {numberSeparator(cardData.expectedRevenue, '.')}đ
               </div>
               <div style={{ fontSize: 16 }}>{cardData?.contact?.name}</div>
+              <Rate
+                tooltips={['Low', 'Medium', 'Important']}
+                disabled
+                value={cardData.priority + 1}
+                count={3}
+                style={{fontSize: '18px', float: 'right'}}
+              />
               <Divider
                 style={{ marginBottom: 6, borderTop: '1px solid #D4D4D8' }}
               />
