@@ -2,13 +2,15 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Patch,
   Post,
+  Query,
   UsePipes,
 } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
-import { Crud } from '@nestjsx/crud';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Crud, CrudController } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { User } from 'src/common/decorators/user.decorator';
 import { ContactService } from './contact.service';
@@ -41,6 +43,8 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
       pipelineItems: {},
       'pipelineItems.schedules': {},
       'pipelineItems.pipelineColumn': {},
+      'pipelineItems.opportunityRevenue': { alias: 'pipelineRevenue' },
+      'pipelineItems.opportunityRevenue.course': {},
       account: {},
       company: {},
       'account.team': {},
@@ -75,8 +79,30 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
     ],
   },
 })
-export class ContactController {
+export class ContactController implements CrudController<Contact> {
   constructor(public readonly service: ContactService) {}
+  get base(): CrudController<Contact> {
+    return this;
+  }
+
+  @Get('relations')
+  @ApiOperation({
+    parameters: [
+      {
+        name: 'relations',
+        in: 'query',
+        schema: {
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+        },
+      },
+    ],
+  })
+  getRelations(@Query('relations') relations: string[]) {
+    return this.service.findRelations(relations);
+  }
 
   @Post()
   createOne(@Body() dto: CreateContactDto, @User('id') id: string) {

@@ -29,5 +29,6 @@ import { Email } from './entities/mailer.entity';
       }),
     }),
   ],
+  exports: [EmailService],
 })
 export class MailerModule {}

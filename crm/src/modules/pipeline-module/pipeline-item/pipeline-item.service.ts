@@ -138,7 +138,13 @@ export class PipelineItemService extends BaseService<PipelineItem> {
     accountId: string,
     managerId: string,
   ) {
-    const { columnId, contactId, opportunityRevenue, ...rest } = dto;
+    const {
+      columnId,
+      contactId,
+      opportunityRevenue,
+      expectedClosing,
+      ...rest
+    } = dto;
     const pipelineItemId = nanoid(10);
     // create pipeline item
     await this.knex<KnexCreatePipelineItemForSaleDto>('pipeline_item').insert({
@@ -146,6 +152,7 @@ export class PipelineItemService extends BaseService<PipelineItem> {
       account_id: accountId,
       creator_id: managerId,
       pipeline_column_id: columnId,
+      expected_closing: new Date(expectedClosing),
       contact_id: contactId,
       ...rest,
     });
