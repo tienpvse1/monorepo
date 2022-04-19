@@ -4,8 +4,11 @@ import { useQueryAllContacts } from "@modules/contact/query/contact.get";
 import { removeDuplicate } from "@util/array";
 import { Table, Tag } from "antd"
 import Column from "antd/lib/table/Column"
+import moment from "moment";
 import { useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
+import { dateFormat } from "@constance/date-format";
+const { CRUD_AT } = dateFormat;
 
 export const ContactRankingCourse = () => {
   const { data } = useQueryAllContacts();
@@ -46,7 +49,8 @@ export const ContactRankingCourse = () => {
     array = record.pipelineItems.map((item) => {
       if (item.pipelineColumn.isWon)
         return {
-          courseId: item.opportunityRevenue?.courseId,
+          courseId: item.opportunityRevenue?.course.id,
+          courseName: item.opportunityRevenue?.course.name,
           quantity: item.opportunityRevenue?.quantity,
           createdAt: item.createdAt
         }
@@ -85,11 +89,48 @@ export const ContactRankingCourse = () => {
 
     setDataMap(dataMap);
     setLoading(false);
-    
+
     return () => {
       setDataMap([]);
     }
   }, [data])
+
+  const expandedRowRender = (data: any) => {
+    const nestedColumns: any = [
+      {
+        title: 'Course ID',
+        key: 'courseId',
+        dataIndex: 'courseId',
+      },
+      {
+        title: 'Course Name',
+        key: 'courseName',
+        dataIndex: 'courseName'
+      },
+      {
+        title: 'Quantity',
+        key: 'quantity',
+        dataIndex: 'quantity',
+        align: 'center'
+      },
+      {
+        title: 'Created Date',
+        key: 'createdAt',
+        dataIndex: 'createdAt',
+        render: (_, record: any) => (
+          <span>{moment(record.createdAt).format(CRUD_AT)}</span>
+        )
+      }
+    ];
+
+    return (
+      <Table
+        columns={nestedColumns}
+        dataSource={data.courses.courseDetail}
+        pagination={false}
+      />
+    );
+  };
 
   return (
     <Table
@@ -106,6 +147,7 @@ export const ContactRankingCourse = () => {
       }
       size={'small'}
       rowKey={(record) => record.id}
+      expandedRowRender={(record) => expandedRowRender(record)}
     >
       <Column
         title="No."

@@ -41,7 +41,7 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
       pipelineItems: {},
       'pipelineItems.schedules': {},
       'pipelineItems.pipelineColumn': {},
-      'pipelineItems.opportunityRevenue': {},
+      'pipelineItems.opportunityRevenue': { alias: 'flag' },
       'pipelineItems.opportunityRevenue.course': {},
       account: {},
       company: {},
