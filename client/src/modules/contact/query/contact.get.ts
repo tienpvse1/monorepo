@@ -91,7 +91,11 @@ export const getContactsById = async (contactId: string) => {
 };
 export const searchContacts = async (text: string) => {
   const query = RequestQueryBuilder.create({
-    join: [{ field: 'account' }],
+    join: [
+      { field: 'account' },
+      { field: 'company' },
+      { field: 'tags' },
+    ],
     search: {
       $or: [
         {
@@ -107,6 +111,45 @@ export const searchContacts = async (text: string) => {
         {
           phone: {
             $cont: text,
+          },
+        },
+      ],
+    },
+  }).query(false);
+  const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
+  return data;
+};
+export const searchContactsOwner = async (text: string, accountId: string) => {
+  const query = RequestQueryBuilder.create({
+    join: [
+      { field: 'account' },
+      { field: 'company' },
+      { field: 'tags' },
+    ],
+    search: {
+      $and: [
+        {
+          $or: [
+            {
+              name: {
+                $cont: text,
+              },
+            },
+            {
+              email: {
+                $cont: text,
+              },
+            },
+            {
+              phone: {
+                $cont: text,
+              },
+            },
+          ],
+        },
+        {
+          'account.id': {
+            $eq: accountId,
           },
         },
       ],

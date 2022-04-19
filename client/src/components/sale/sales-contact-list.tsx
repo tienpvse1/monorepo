@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import { ContactTable } from "@components/contact/contact-table";
 import { useEffect, useState } from "react";
 import { IContact } from "@modules/contact/entity/contact.entity";
+import { searchContactsOwner } from '@modules/contact/query/contact.get';
 
 const SalesContactList = () => {
 
@@ -30,6 +31,7 @@ const SalesContactList = () => {
         isLoading={isLoading}
         setDataContact={setDataContact}
         queryKey={'sale'}
+        searchMethod={searchContactsOwner}
       />
     </div>
   )

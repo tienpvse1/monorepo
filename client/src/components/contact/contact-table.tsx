@@ -35,13 +35,15 @@ interface ContactTableProps {
   isLoading: boolean;
   setDataContact: (value: []) => void;
   queryKey: string;
+  searchMethod: (text: string, id?: string) => Promise<any>;
 }
 
 export const ContactTable: React.FC<ContactTableProps> = ({
   dataSource,
   isLoading,
   setDataContact,
-  queryKey
+  queryKey,
+  searchMethod
 }) => {
   const [deleteItem, setDeleteItem] = useState<IContact>(null);
 
@@ -122,6 +124,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
           <ContactHeader
             setDataContact={setDataContact}
             toggleCreateModal={toggleCreateModal}
+            searchMethod={searchMethod}
           />
         )}
         pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
@@ -144,6 +147,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
           title='Email'
           dataIndex='email'
           key='email'
+          width={200}
           render={(_, record: IContact) => (
             <Link className='my-link' to={`view-details/${record.id}`}>
               {record.email}
@@ -155,6 +159,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
           title='Phone Number'
           dataIndex='phone'
           key='phone'
+          width={150}
           render={(_, record: IContact) => (
             <Link className='my-link' to={`view-details/${record.id}`}>
               {record.phone}
@@ -179,6 +184,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             record.company.name.indexOf(value as string) === 0
           }
         />
+
         <Column
           title='Job Position'
           dataIndex='jobPosition'
@@ -220,9 +226,6 @@ export const ContactTable: React.FC<ContactTableProps> = ({
               </Link>
             )}
             filters={arrayFilter}
-            defaultFilteredValue={[
-              `${public_user_info.firstName} ${public_user_info.lastName}`,
-            ]}
             filterSearch={true}
             onFilter={(value, record) => {
               let fullName = `${record.account?.firstName} ${record.account?.lastName}`;
@@ -235,6 +238,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
           title="Created Date"
           dataIndex="createdAt"
           key="createdAt"
+          width={120}
           render={(_, record: any) => (
             <Link className='my-link' to={`view-details/${record.id}`}>
               {moment(record.createdAt).format(DEFAULT)}
