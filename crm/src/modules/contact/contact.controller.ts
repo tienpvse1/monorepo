@@ -6,12 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UsePipes,
 } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
-import { Crud } from '@nestjsx/crud';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Crud, CrudController } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
-import { Public } from 'src/common/decorators/public.decorator';
 import { User } from 'src/common/decorators/user.decorator';
 import { ContactService } from './contact.service';
 import { CreateContactPipe } from './create-contact.pipe';
@@ -43,6 +43,8 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
       pipelineItems: {},
       'pipelineItems.schedules': {},
       'pipelineItems.pipelineColumn': {},
+      'pipelineItems.opportunityRevenue': {},
+      'pipelineItems.opportunityRevenue.course': {},
       account: {},
       company: {},
       'account.team': {},
@@ -77,20 +79,31 @@ import { UpdateContactPipePipe } from './update-contact-pipe.pipe';
     ],
   },
 })
-export class ContactController {
+export class ContactController implements CrudController<Contact> {
   constructor(public readonly service: ContactService) {}
-
-  @Public()
-  @Get('in-date')
-  getInDate() {
-    return this.service.repository
-      .createQueryBuilder('contact')
-      .where('Month(birth) = :month', { month: new Date().getMonth() + 1 })
-      .andWhere('Day(birth) = :day', { day: new Date().getDate() })
-      .leftJoinAndSelect('contact.pipelineItems', 'pipelineItems')
-      .leftJoinAndSelect('pipelineItems.account', 'account')
-      .getMany();
+  get base(): CrudController<Contact> {
+    return this;
   }
+
+  @Get('relations')
+  @ApiOperation({
+    parameters: [
+      {
+        name: 'relations',
+        in: 'query',
+        schema: {
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+        },
+      },
+    ],
+  })
+  getRelations(@Query('relations') relations: string[]) {
+    return this.service.findRelations(relations);
+  }
+
   @Post()
   createOne(@Body() dto: CreateContactDto, @User('id') id: string) {
     return this.service.createOneContact(dto, id);

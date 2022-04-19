@@ -154,4 +154,10 @@ export class ContactService extends BaseService<Contact> {
     }
     return this.repository.update(id, rest);
   }
+
+  async findRelations(relations: string[]) {
+    return this.find({
+      relations,
+    });
+  }
 }
