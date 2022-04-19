@@ -27,6 +27,7 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
+import { DiscountCode } from 'src/modules/discount-code/entities/discount-code.entity';
 @Entity()
 export class Account extends BaseEntity {
   @Column()
@@ -115,6 +116,8 @@ export class Account extends BaseEntity {
 
   @OneToMany(() => Notification, (notification) => notification.receiver)
   inboxNotifications: Notification[];
+  @OneToMany(() => DiscountCode, (discountCode) => discountCode.createdBy)
+  discountCodes: DiscountCode[];
 
   @OneToMany(() => Notification, (notification) => notification.sender)
   sentNotifications: Notification[];

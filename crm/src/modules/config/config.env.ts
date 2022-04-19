@@ -6,6 +6,7 @@ export const appConfig = () => ({
     dbHost: process.env.MYSQL_HOST || 'localhost',
     version: process.env.APP_VERSION || 'localhost',
     idLength: process.env.ID_LENGTH || 10,
+    appDomain: process.env.APP_DOMAIN || 'http://kienvt.tech',
   },
   database: {
     password: process.env.MYSQL_ROOT_PASSWORD || '123456',
