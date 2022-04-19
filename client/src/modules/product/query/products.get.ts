@@ -33,7 +33,8 @@ export const getCourses = async (search = '', size = 10, index = 1) => {
 
 export const getMyCourses = async (search = '', size = 10, page = 1) => {
   const query = RequestQueryBuilder.create({
-    offset: page,
+    offset: page * (size - 1),
+    page: page,
     limit: size,
     search: {
       name: {
