@@ -57,10 +57,7 @@ export class CourseService extends BaseService<Course> {
         { startDate: today },
       )
       .getMany();
-    return {
-      ...result,
-      type: 'course_start',
-    };
+    return result.map((item) => ({ ...item, type: 'course_start' }));
   }
   async getAlmostEndCourse() {
     const today = moment(new Date()).add(1, 'days').format('YYYY/MM/DD');
@@ -74,9 +71,6 @@ export class CourseService extends BaseService<Course> {
       )
 
       .getMany();
-    return {
-      ...result,
-      type: 'course_end',
-    };
+    return result.map((item) => ({ ...item, type: 'course_end' }));
   }
 }

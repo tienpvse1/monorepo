@@ -32,7 +32,6 @@ export class TasksService {
 
   @Cron(CronExpression.EVERY_DAY_AT_9AM)
   async sendExpireCourseNotification() {
-    this.logger.debug('called, check your db now');
     const courses = await this.courseService.getExpireCert();
     const system = await this.accountService.findOneItem({
       where: {
@@ -44,6 +43,54 @@ export class TasksService {
         const notification: InternalSendNotificationPayload = {
           description: `Certificate for course ${course.name} for ${revenue.pipelineItem.contact.name}  almost expired`,
           name: 'Certification expire',
+          senderId: system.id,
+          receiverId: revenue.pipelineItem.account.id,
+        };
+        this.eventEmitter.emit(
+          InternalServerEvent.SEND_NOTIFICATION,
+          notification,
+        );
+      }
+    }
+  }
+  @Cron(CronExpression.EVERY_DAY_AT_9AM)
+  async sendStartCourseNotification() {
+    const courses = await this.courseService.getAlmostStartCourse();
+    const system = await this.accountService.findOneItem({
+      where: {
+        email: 'gmail@gmail.com',
+      },
+    });
+    for (const course of courses) {
+      for (const revenue of course.opportunityRevenues) {
+        const notification: InternalSendNotificationPayload = {
+          description: `Course ${course.name} is about to start make sure to remind ${revenue.pipelineItem.contact.name}`,
+          name: 'Course start',
+          senderId: system.id,
+          receiverId: revenue.pipelineItem.account.id,
+        };
+        this.eventEmitter.emit(
+          InternalServerEvent.SEND_NOTIFICATION,
+          notification,
+        );
+      }
+    }
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_9AM)
+  async sendCourseEndNotification() {
+    this.logger.debug('called, check your db now');
+    const courses = await this.courseService.getAlmostEndCourse();
+    const system = await this.accountService.findOneItem({
+      where: {
+        email: 'gmail@gmail.com',
+      },
+    });
+    for (const course of courses) {
+      for (const revenue of course.opportunityRevenues) {
+        const notification: InternalSendNotificationPayload = {
+          description: `Course ${course.name} almost end, make sure to remind ${revenue.pipelineItem.contact.name}`,
+          name: 'Course end',
           senderId: system.id,
           receiverId: revenue.pipelineItem.account.id,
         };
