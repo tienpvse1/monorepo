@@ -75,7 +75,7 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
           pipelineItemId: data.id,
           description: record.description,
           photo: record.photo,
-          invoiceId: record.invoiceId,
+          invoiceId: '',
           reason: 'no thing',
           reasonType: 'win'
         }, {
@@ -131,7 +131,7 @@ export const OpportunityStep: React.FC<OpportunityStepProps> = ({ data }) => {
       </Steps>
       <CreateModal
         title="Successful Confirmation"
-        bodyStyle={{ height: '350px' }}
+        bodyStyle={{ height: '260px' }}
         width={900}
         isOpenModal={isVisible}
         toggleCreateModal={toggleModalChangeStageWon}

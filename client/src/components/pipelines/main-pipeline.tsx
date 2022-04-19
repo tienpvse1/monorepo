@@ -66,7 +66,6 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
       oldStageId,
       description,
       photo,
-      invoiceId,
       startColumnName,
       finishColumnName
     } = await form.validateFields();
@@ -75,7 +74,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
       pipelineItemId: draggableId,
       description: description,
       photo,
-      invoiceId,
+      invoiceId: '',
       reason: 'no thing',
       reasonType: 'win'
     }, {
@@ -231,7 +230,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
       />
       <CreateModal
         title="Successful Confirmation"
-        bodyStyle={{ height: '350px' }}
+        bodyStyle={{ height: '260px' }}
         width={900}
         isOpenModal={isVisible}
         toggleCreateModal={toggleModalChangeStageWon}
