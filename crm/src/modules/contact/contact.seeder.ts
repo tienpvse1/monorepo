@@ -31,7 +31,7 @@ export const seedContacts = async (quantity: number) => {
     .execute();
   await service.createManyContact(
     {
-      bulk: Array(numberToGet)
+      bulk: Array(numberToGet || 70)
         .fill(1)
         .map(() => ({
           address: faker.address.streetAddress(),

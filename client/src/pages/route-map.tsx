@@ -3,8 +3,6 @@ import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
 import Statistic from './statistic';
-const EmailContent = lazy(() => import('./email-content'));
-const Activity = lazy(() => import('./administration/activity'));
 const Inbox = lazy(() => import('./inbox'));
 const Email = lazy(() => import('./email'));
 const Tag = lazy(() => import('@pages/tag'));
@@ -21,10 +19,13 @@ const SignUpPage = lazy(() => import('@pages/signup'));
 const Layout = lazy(() => import('@common/user-layout'));
 const ProfilePage = lazy(() => import('@pages/profile'));
 const MapStatistic = lazy(() => import('./map-statistic'));
+const EmailContent = lazy(() => import('./email-content'));
 const Account = lazy(() => import('./administration/account'));
 const AddContact = lazy(() => import('@pages/import-contact'));
 const AdminLayout = lazy(() => import('@common/admin-layout'));
 const EmailCompose = lazy(() => import('@pages/email-compose'));
+const Activity = lazy(() => import('./administration/activity'));
+const EmailDesign = lazy(() => import('./administration/email'));
 const Opportunities = lazy(() => import('@pages/opportunities'));
 const LostOpportunity = lazy(() => import('./lost-opportunity'));
 const SentItem = lazy(() => import('@components/sent-email/item'));
@@ -282,6 +283,10 @@ export const route: RouteObject[] = [
       {
         path: '/administration/activity',
         element: <Activity />,
+      },
+      {
+        path: '/administration/email',
+        element: <EmailDesign />,
       },
     ],
   },

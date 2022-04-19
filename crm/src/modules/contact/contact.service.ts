@@ -16,6 +16,7 @@ export class ContactService extends BaseService<Contact> {
   constructor(@InjectRepository(Contact) repository: ContactRepository) {
     super(repository);
   }
+
   async createOneContact(dto: CreateContactDto, accountId: string) {
     const accountRepository = getCustomRepository(AccountRepository);
     const tagRepository = getRepository(Tag);
@@ -152,5 +153,11 @@ export class ContactService extends BaseService<Contact> {
       return this.repository.save(newObject);
     }
     return this.repository.update(id, rest);
+  }
+
+  async findRelations(relations: string[]) {
+    return this.find({
+      relations,
+    });
   }
 }
