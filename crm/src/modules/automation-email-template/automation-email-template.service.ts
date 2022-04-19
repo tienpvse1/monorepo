@@ -73,22 +73,29 @@ export class AutomationEmailTemplateService extends BaseService<AutomationEmailT
 
   async createEmailTemplate(dto: CreateAutomationEmailTemplateDto) {
     try {
-      const id = nanoid(10);
-      await this.knex<KnexAutomationEmailTemplate>(
-        'automation_email_template',
-      ).insert({
-        ...dto,
-        id,
+      const template = await this.repository.findOne({
+        where: { type: EmailTemplateType.BIRTHDAY },
       });
-      return { id };
+      if (!template) {
+        const id = nanoid(10);
+        await this.knex<KnexAutomationEmailTemplate>(
+          'automation_email_template',
+        ).insert({
+          ...dto,
+          id,
+        });
+        return { id };
+      }
+      this.updateEmailTemplate(dto, template.id);
     } catch (error) {
-      throw new BadRequestException('cannot create email template');
+      throw new BadRequestException('cannot save email template');
     }
   }
 
-  async updateEmailTemplate(dto: UpdateAutomationEmailTemplateDto, id: string) {
-    return this.knex<KnexAutomationEmailTemplate>('automation_email_template')
-      .update(dto)
-      .where({ id });
+  async updateEmailTemplate(
+    { account_id, ...dto }: UpdateAutomationEmailTemplateDto,
+    id: string,
+  ) {
+    return this.repository.update(id, dto);
   }
 }
