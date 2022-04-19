@@ -42,6 +42,7 @@ services:
       APP_SECRET_TOKEN: 4aa42a671f36fa5a01b4640eae7db406970073ba8bfa83420b074c19a0e286cff3d8ed418dfa40d493748016164b0f5986fac0ec700906157f934651e1a6bf1a
       MYSQL_HOST: 172.17.0.1
       APP_VERSION: 0.1
+      APP_DOMAIN: http://kienvt.tech/api/v1
       # google strategy config
       GOOGLE_CLIENT_ID: 584576118618-dosui734g677u72dh002gvddhrdmuh4k.apps.googleusercontent.com
       GOOGLE_SECRET_KEY: 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
