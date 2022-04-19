@@ -30,7 +30,7 @@ export class TasksService {
     //   .leftJoin('account', 'pipeline_item.account_id', '=', 'account.id');
   }
 
-  // @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_DAY_AT_9AM)
   async sendExpireCourseNotification() {
     this.logger.debug('called, check your db now');
     const courses = await this.courseService.getExpireCert();
@@ -45,7 +45,7 @@ export class TasksService {
           description: `Certificate for course ${course.name} for ${revenue.pipelineItem.contact.name}  almost expired`,
           name: 'Certification expire',
           senderId: system.id,
-          receiverId: revenue.pipelineItem.contact.account.id,
+          receiverId: revenue.pipelineItem.account.id,
         };
         this.eventEmitter.emit(
           InternalServerEvent.SEND_NOTIFICATION,

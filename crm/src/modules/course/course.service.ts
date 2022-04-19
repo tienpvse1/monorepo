@@ -40,8 +40,8 @@ export class CourseService extends BaseService<Course> {
       )
       .leftJoinAndSelect('course.opportunityRevenues', 'courseRevenue')
       .leftJoinAndSelect('courseRevenue.pipelineItem', 'item')
+      .leftJoinAndSelect('item.account', 'account')
       .leftJoinAndSelect('item.contact', 'contact')
-      .leftJoinAndSelect('contact.account', 'account')
       .getMany();
     return result.map((item) => ({ type: 'certificate_exp', ...item }));
   }
