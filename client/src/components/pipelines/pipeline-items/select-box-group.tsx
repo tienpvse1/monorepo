@@ -1,8 +1,11 @@
+import { PUBLIC_USER_INFO } from "@constance/cookie";
 import { isRequired } from "@constance/rules-of-input-antd";
+import { Role } from "@interfaces/type-roles";
 import { useCompanies } from "@modules/company/query/company.get";
 import { IContact } from "@modules/contact/entity/contact.entity";
 import { Form, Select } from "antd"
 import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 const { Option } = Select;
 
 interface SelectBoxGroupProps {
@@ -19,6 +22,7 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
 
   const [dataContact, setDataContact] = useState<IContact[]>([]);
   const { data: companies } = useCompanies();
+  const [{ public_user_info: { id, role: { name } } }] = useCookies([PUBLIC_USER_INFO]);
 
   useEffect(() => {
     if (contact) {
@@ -29,7 +33,10 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
 
   const handleSelected = (companyId: string) => {
     const data = companies?.find((value) => companyId === value.id);
-    setDataContact(data.contacts)
+    if (name === Role.SALE_MANAGER)
+      setDataContact(data.contacts)
+    else
+      setDataContact(data.contacts.filter((contact) => contact.account.id === id))
   }
   return (
     <>

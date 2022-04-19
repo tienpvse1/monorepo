@@ -3,14 +3,18 @@ import { SearchBar } from '@components/search-bar';
 import { Col, Row, Button, Space } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { envVars } from '@env/var.env';
-import { searchContacts } from '@modules/contact/query/contact.get';
 
 interface ContactHeaderProps {
   toggleCreateModal: () => void;
   setDataContact: (value: []) => void;
+  searchMethod: (text: string, id?: string) => Promise<any>;
 }
 
-export const ContactHeader: React.FC<ContactHeaderProps> = ({ toggleCreateModal, setDataContact }) => {
+export const ContactHeader: React.FC<ContactHeaderProps> = ({
+  toggleCreateModal,
+  setDataContact,
+  searchMethod
+}) => {
   const navigate = useNavigate();
   const handleImportClick = () => {
     navigate('import-contact');
@@ -70,7 +74,7 @@ export const ContactHeader: React.FC<ContactHeaderProps> = ({ toggleCreateModal,
               setData={setDataContact}
               width={400}
               placeholder='Search for name, email or phone number'
-              getApi={searchContacts}
+              getApi={searchMethod}
             />
           </Space>
         </Col>

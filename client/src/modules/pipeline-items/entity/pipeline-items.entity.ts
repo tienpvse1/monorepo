@@ -4,7 +4,7 @@ import { IContact } from '@modules/contact/entity/contact.entity';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
 import { ISchedule } from '@modules/schedule/entity/schedule.entity';
 import { INoteWorthy } from '../dto/create-pipeline-items.dto';
-import { IProduct } from '@modules/product/entity/product.entity';
+import { CourseData, IProduct } from '@modules/product/entity/product.entity';
 import { IReason } from '@modules/reason/entity/reason.entity';
 
 export interface IPipelineItem extends IBase {
@@ -42,4 +42,5 @@ export interface IOpportunityRevenue {
   product?: IProduct;
   productId?: string;
   courseId?: string;
+  course?: CourseData;
 }

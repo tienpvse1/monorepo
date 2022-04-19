@@ -1,11 +1,10 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
-import { Is } from '@common/is';
 import { CreateModal } from '@components/modal/create-modal';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { dateFormat } from '@constance/date-format';
 import { useHandleNavigate } from '@hooks/useHandleNavigate';
 import { useToggle } from '@hooks/useToggle';
-import { useBooleanToggle } from '@mantine/hooks';
+import { Role } from '@interfaces/type-roles';
 import { IContact } from '@modules/contact/entity/contact.entity';
 import { useDeleteContact } from '@modules/contact/mutation/contact.delete';
 import { useInsertContact } from '@modules/contact/mutation/contact.post';
@@ -13,6 +12,7 @@ import { QUERY_CONTACTS } from '@modules/contact/query/contact.get';
 import { removeDuplicate } from '@util/array';
 import { Button, Empty, message, Modal, Space, Table, Tag } from 'antd';
 import Column from 'antd/lib/table/Column';
+import moment from 'moment';
 import { useMemo, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { Link, useNavigate } from 'react-router-dom';
@@ -23,7 +23,7 @@ import { CreateContactForm } from './create-contact-form';
 const { DEFAULT } = dateFormat;
 
 const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => {},
+  onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
   getCheckboxProps: (record: any) => ({
     disabled: record.name === 'Disabled User',
     name: record.name,
@@ -34,21 +34,26 @@ interface ContactTableProps {
   dataSource: IContact[];
   isLoading: boolean;
   setDataContact: (value: []) => void;
+  queryKey: string;
+  searchMethod: (text: string, id?: string) => Promise<any>;
 }
 
 export const ContactTable: React.FC<ContactTableProps> = ({
   dataSource,
   isLoading,
   setDataContact,
+  queryKey,
+  searchMethod
 }) => {
   const [deleteItem, setDeleteItem] = useState<IContact>(null);
+
   //CRUD api
   const { mutate: deleteContact } = useDeleteContact(() => {
-    client.invalidateQueries(QUERY_CONTACTS);
+    client.invalidateQueries([QUERY_CONTACTS, queryKey]);
     message.success('Delete successfully !');
   });
   const { mutate: insertContact } = useInsertContact(() => {
-    client.invalidateQueries(QUERY_CONTACTS);
+    client.invalidateQueries([QUERY_CONTACTS, queryKey]);
     message.success('Create new successfully !');
   });
 
@@ -93,6 +98,10 @@ export const ContactTable: React.FC<ContactTableProps> = ({
   const navigate = useNavigate();
   const { navigateRole } = useHandleNavigate();
 
+  const isRoleSaleManager = () => {
+    return public_user_info.role.name === Role.SALE_MANAGER;
+  }
+
   const handleCreateContact = (record: any) => {
     insertContact({
       ...record,
@@ -104,6 +113,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
   return (
     <>
       <Table
+        scroll={{ x: 1300 }}
         loading={isLoading}
         tableLayout='fixed'
         rowSelection={{
@@ -114,6 +124,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
           <ContactHeader
             setDataContact={setDataContact}
             toggleCreateModal={toggleCreateModal}
+            searchMethod={searchMethod}
           />
         )}
         pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
@@ -136,6 +147,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
           title='Email'
           dataIndex='email'
           key='email'
+          width={200}
           render={(_, record: IContact) => (
             <Link className='my-link' to={`view-details/${record.id}`}>
               {record.email}
@@ -147,6 +159,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
           title='Phone Number'
           dataIndex='phone'
           key='phone'
+          width={150}
           render={(_, record: IContact) => (
             <Link className='my-link' to={`view-details/${record.id}`}>
               {record.phone}
@@ -171,6 +184,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             record.company.name.indexOf(value as string) === 0
           }
         />
+
         <Column
           title='Job Position'
           dataIndex='jobPosition'
@@ -200,32 +214,44 @@ export const ContactTable: React.FC<ContactTableProps> = ({
             record.tags.some((tag) => tag.name === value)
           }
         />
+        {isRoleSaleManager() &&
+          <Column
+            title='Created By'
+            dataIndex='username'
+            key='username'
+            width={120}
+            render={(_, record: IContact) => (
+              <Link className='my-link' to={`view-details/${record?.id}`}>
+                {record?.account?.firstName} {record?.account?.lastName}
+              </Link>
+            )}
+            filters={arrayFilter}
+            filterSearch={true}
+            onFilter={(value, record) => {
+              let fullName = `${record.account?.firstName} ${record.account?.lastName}`;
+              return fullName.indexOf(value as string) === 0;
+            }}
+          />
+        }
 
         <Column
-          title='Created By'
-          dataIndex='username'
-          key='username'
+          title="Created Date"
+          dataIndex="createdAt"
+          key="createdAt"
           width={120}
-          render={(_, record: IContact) => (
-            <Link className='my-link' to={`view-details/${record?.id}`}>
-              {record?.account?.firstName} {record?.account?.lastName}
+          render={(_, record: any) => (
+            <Link className='my-link' to={`view-details/${record.id}`}>
+              {moment(record.createdAt).format(DEFAULT)}
             </Link>
           )}
-          filters={arrayFilter}
-          defaultFilteredValue={[
-            `${public_user_info.firstName} ${public_user_info.lastName}`,
-          ]}
-          filterSearch={true}
-          onFilter={(value, record) => {
-            let fullName = `${record.account?.firstName} ${record.account?.lastName}`;
-            return fullName.indexOf(value as string) === 0;
-          }}
+          sorter={(a, b) => moment(a.createdAt).diff(moment(b.createdAt))}
         />
 
         <Column
           title='Action'
           dataIndex='action'
           key='action'
+          width={125}
           fixed={'right'}
           render={(_, record: IContact) => (
             <Space size='small' style={{ width: '100%' }}>

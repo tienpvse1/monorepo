@@ -37,7 +37,8 @@ export const UploadInvoice: React.FC<UploadInvoiceProps> = ({ form }) => {
             paddingBottom: '15px'
           }}
         >
-          Upload image (if available):
+          <span style={{color: 'red'}}>*</span> {' '}
+          Upload image (required):
         </div>
         <Upload
           beforeUpload={(file) => handleOnChangeUpload(file)}

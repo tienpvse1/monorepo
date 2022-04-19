@@ -34,8 +34,10 @@ import { Company } from './entities/company.entity';
   query: {
     join: {
       contacts: {},
+      'contacts.account': {},
       'contacts.pipelineItems': { alias: 'items' },
       'contacts.pipelineItems.pipelineColumn': {},
+      'contacts.pipelineItems.opportunityRevenue': {},
       city: {},
     },
   },

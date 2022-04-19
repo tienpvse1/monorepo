@@ -4,8 +4,8 @@ import { controllers } from '@constance/controllers';
 import { getCookies } from '@cookies';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { ICourse, IProduct } from '../entity/product.entity';
-const { PRODUCT } = controllers;
+import { CourseData, ICourse, IProduct } from '../entity/product.entity';
+const { PRODUCT, COURSE } = controllers;
 
 export const QUERY_COURSES = 'query-courses';
 export const getAllProduct = async () => {
@@ -47,3 +47,13 @@ export const useCourses = (search = '', size = 10, index = 1) =>
   useQuery([QUERY_COURSES, search, size, index], () =>
     getCourses(search, size, index)
   );
+
+export const getMyCoursesById = async (courseId: string) => {
+  const { data } = await instance.get<CourseData>(`${COURSE}/${courseId}`);
+  return data;
+}
+
+export const useQueryMyCoursesById = (courseId: string) =>
+  useQuery([QUERY_COURSES, courseId], () => getMyCoursesById(courseId), {
+    enabled: Boolean(courseId)
+  })

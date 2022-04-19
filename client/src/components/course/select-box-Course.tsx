@@ -1,22 +1,27 @@
 import { useDebouncedValue } from '@mantine/hooks';
 import { CourseData } from '@modules/product/entity/product.entity';
-import { getCourses } from '@modules/product/query/products.get';
-import { Form, Select } from 'antd';
+import { getCourses, getMyCoursesById } from '@modules/product/query/products.get';
+import { Form, FormInstance, Select } from 'antd';
 import { useEffect, useRef, useState } from 'react';
-import { getCoursesById } from '@modules/product/query/products.get';
-
 const { Option } = Select;
 
 interface SelectBoxCourseProps {
   courseId?: string;
   styleFormItem?: React.CSSProperties;
+  form: FormInstance;
 }
 
-export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({ courseId, styleFormItem }) => {
+export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
+  courseId,
+  styleFormItem,
+  form
+}) => {
+
   const [courses, setCourses] = useState<CourseData[]>();
   const [text, setText] = useState<string>('');
   const [debounced] = useDebouncedValue(text, 400);
   const isMounted = useRef(false);
+  const [waiting, setWaiting] = useState(false);
 
   useEffect(() => {
     if (isMounted.current) {
@@ -24,7 +29,14 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({ courseId, styl
     } else {
       isMounted.current = true;
       if (courseId) {
-        getCoursesById(courseId).then((value) => setCourses(value.data));
+        setWaiting(true);
+        getMyCoursesById(courseId).then((value) => {
+          setCourses([value]);
+          form.setFieldsValue({
+            expectedRevenue: value.price
+          })
+          setWaiting(false);
+        });
       } else {
         getCourses('', 5).then((value) => setCourses(value.data));
       }
@@ -44,8 +56,18 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({ courseId, styl
         rules={[{ required: true, message: 'Please choose a course' }]}
       >
         <Select
+          loading={waiting}
           showSearch
           onSearch={(value) => setText(value)}
+          onSelect={(courseId: string) => {
+            setWaiting(true);
+            getMyCoursesById(courseId).then((value) => {
+              form.setFieldsValue({
+                expectedRevenue: value.price
+              })
+              setWaiting(false);
+            })
+          }}
           placeholder='Select a course'
           filterOption={(input, option) => {
             return option.children
@@ -56,7 +78,7 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({ courseId, styl
         >
           {courses?.filter((_item, index) => index < 5)
             .map((course) => (
-              <Option key={course.code} value={course.code}>
+              <Option key={course.id} value={course.id}>
                 {course.name}
               </Option>
             ))}
