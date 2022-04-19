@@ -5,6 +5,8 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
 @Entity({ name: 'discount_code' })
 export class DiscountCode extends BaseEntity {
+  @Column({ name: 'discount_name' })
+  name: string;
   @Column({ type: 'float', name: 'discount_amount' })
   discountAmount: number;
   @Column({ type: 'boolean', default: false })
@@ -26,6 +28,7 @@ export class DiscountCode extends BaseEntity {
 
 export class KnexDiscountCode {
   id: string;
+  discount_name: string;
   discount_amount: number;
   applied: boolean;
   expired_at: Date;
