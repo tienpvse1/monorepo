@@ -15,8 +15,8 @@ const Rank = () => {
       <PageHeader
         className='site-page-header'
         onBack={() => window.history.back()}
-        title='Rank'
-        subTitle='an overview of your work'
+        title='Ranking'
+        subTitle='list of each company, contact by revenue and course'
         extra={[
           <Radio.Group
             key={nanoid()}
