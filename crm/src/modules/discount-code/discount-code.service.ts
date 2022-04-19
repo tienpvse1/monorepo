@@ -89,8 +89,10 @@ export class DiscountCodeService extends BaseService<DiscountCode> {
           }vnd</h3>
           <h2 style="color: red">Now only ${
             pipelineItem.opportunityRevenue.course.price *
-            pipelineItem.opportunityRevenue.quantity *
-            dto.discount_amount
+              pipelineItem.opportunityRevenue.quantity -
+            pipelineItem.opportunityRevenue.course.price *
+              pipelineItem.opportunityRevenue.quantity *
+              dto.discount_amount
           }</h2>
           <a href="${this.configService.get<string>(
             'app.appDomain',
