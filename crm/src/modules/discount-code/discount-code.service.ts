@@ -68,7 +68,8 @@ export class DiscountCodeService extends BaseService<DiscountCode> {
           },
         ],
         value: `
-          <h1>Claim your ${dto.discount_amount * 100}% discount</h1>
+          <h1>${dto.discount_name}</h1>
+          <h3>Claim your ${dto.discount_amount * 100}% discount</h3>
           <table>
             <tr>
               <th>NO.</th>
