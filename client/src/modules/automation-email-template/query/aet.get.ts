@@ -26,4 +26,5 @@ export const useAET = (type: EmailTemplateType, suspense = true) =>
   useQuery([QUERY_AET, type], () => getEmailTemplates(type), {
     enabled: Boolean(type),
     suspense,
+    retry: false,
   });
