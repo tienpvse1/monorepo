@@ -6,7 +6,7 @@ import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { Course } from './entities/course.entity';
-
+import * as moment from 'moment';
 @Controller('course')
 @Crud({
   dto: {
@@ -23,6 +23,20 @@ export class CourseController {
     public readonly service: CourseService,
     @InjectKnex() private knex: Knex,
   ) {}
+
+  @Get('expire-course')
+  getExpireCourse() {
+    const today = moment(new Date()).add(7, 'days').format('YYYY/MM/DD');
+    return this.service.repository
+      .createQueryBuilder('course')
+      .select()
+      .where(
+        `(select 
+          CAST(course.certificate_exp AS DATE) as create_date) = :date`,
+        { date: today },
+      )
+      .getMany();
+  }
 
   @Post('crawl')
   crawlCourses(@Body() data: { data: Course[]; paging: any }) {

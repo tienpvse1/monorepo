@@ -1,6 +1,6 @@
 import { BaseEntity } from 'src/base/entity.base';
 import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 
 @Entity()
 export class Course extends BaseEntity {
@@ -21,6 +21,7 @@ export class Course extends BaseEntity {
   @Column({ name: 'is_active' })
   isActive: boolean;
 
+  @Index()
   @Column({ name: 'certificate_exp' })
   certificateExp: Date;
 
