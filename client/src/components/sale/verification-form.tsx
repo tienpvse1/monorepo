@@ -1,5 +1,4 @@
 import { Form, Input } from "antd";
-import { isRequired } from "@constance/rules-of-input-antd";
 
 export const VerificationForm = () => {
   return (
@@ -7,20 +6,21 @@ export const VerificationForm = () => {
       <Form.Item
         name="invoiceId"
         label="Invoice ID"
-        required
-        rules={[isRequired('Tax Id is required')]}
+        initialValue={''}
+        style={{ display: 'none' }}
       >
         <Input maxLength={14} />
       </Form.Item>
       <Form.Item
         name="description"
         label="Description"
+        initialValue={''}
       >
         <Input.TextArea
           showCount
           maxLength={150}
           placeholder="Write description..."
-          rows={4}
+          rows={5}
         />
       </Form.Item>
       {/* hidden input */}

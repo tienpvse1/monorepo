@@ -10,11 +10,13 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { LoadingOutlined } from '@ant-design/icons';
 import Modal from './modal';
+import { useState } from 'react';
 export const COURSE_SERVICE_TOKEN = 'course-service-token';
 export const LoginForm = () => {
   const { mutate: authenticateCourseSystem } = useCourseServiceAuth();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { mutate, error, reset, isLoading } = useMutation(authenticateUser, {
+  const { mutate, error, reset } = useMutation(authenticateUser, {
     onSuccess: (data) => {
       savePermissions(data.publicData.role.permissions);
       authenticateCourseSystem(
@@ -41,15 +43,19 @@ export const LoginForm = () => {
               navigate('/', { replace: true });
             }
           },
+          onSuccess: () => {
+            setLoading(false);
+          }
         }
       );
     },
   });
   const handleLogin = async (authDto: IAuthDto) => {
     mutate(authDto);
+    setLoading(true);
   };
 
-  if (isLoading) {
+  if (loading && !error) {
     return <Spin
       indicator={<LoadingOutlined style={{ fontSize: 130 }} spin />}
       style={{ paddingTop: '30px' }}
@@ -58,7 +64,7 @@ export const LoginForm = () => {
 
   return (
     <>
-      {error && <Modal reset={reset} />}
+      {error && <Modal setLoading={setLoading} reset={reset} />}
       <Form
         name='normal_login'
         className='login-form'

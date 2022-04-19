@@ -11,13 +11,15 @@ export interface IProduct extends IBase {
 }
 
 export interface CourseData {
-  id: number;
+  id: string;
   name: string;
   code: string;
   startDate: string;
   endDate: string;
   companyId?: any;
   numberOfTrainee: number;
+  price: number;
+  certificateExp: string;
   courseTypeId: number;
   isActive: boolean;
   isDeleted: boolean;

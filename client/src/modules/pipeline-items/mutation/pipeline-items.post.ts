@@ -34,5 +34,8 @@ export const usePostPipelineItems = () =>
   useMutation(postPipelineItems, {
     ...handleMutationResponse(GET_PIPELINE_DESIGN),
   });
+export const useCreateNewItems = () =>
+  useMutation(postPipelineItems);
+
 export const useCreatePipelineItemForManager = () =>
   useMutation(createPipelineItemForManager);

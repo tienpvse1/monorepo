@@ -19,6 +19,7 @@ export const SelectBoxStage = () => {
         >
           <Select>
             {pipelineColumns?.map((column) => (
+              !column.isWon &&
               <Option key={column.id} value={column.id}>
                 {column.name}
               </Option>

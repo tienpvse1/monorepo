@@ -15,7 +15,7 @@ import { useQueryClient } from "react-query";
 import { useDeleteCompany } from "@modules/company/mutation/company.delete";
 import { ICompany } from "@modules/company/entity/company.entity";
 import { Link, useNavigate } from "react-router-dom";
-const { CRUD_AT } = dateFormat;
+const { DEFAULT } = dateFormat;
 
 interface CompanyTableProps {
   dataSource: ICompany[];
@@ -139,7 +139,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
           key="createdAt"
           render={(_, record: any) => (
             <Link className='my-link' to={`view-details/${record.id}`}>
-              {moment(record.createdAt).format(CRUD_AT)}
+              {moment(record.createdAt).format(DEFAULT)}
             </Link>
           )}
           sorter={(a, b) => moment(a.createdAt).diff(moment(b.createdAt))}

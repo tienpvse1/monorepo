@@ -62,6 +62,7 @@ import { PipelineItemService } from './pipeline-item.service';
       reason: {},
       'account.team': {},
       'opportunityRevenue.product': {},
+      'opportunityRevenue.course': {},
       'contact.company': {},
     },
   },

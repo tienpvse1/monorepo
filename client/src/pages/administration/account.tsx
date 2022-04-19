@@ -6,7 +6,7 @@ import { useBooleanToggle } from '@mantine/hooks';
 const Account: React.FC = ({}) => {
   const [isVisible, toggle] = useBooleanToggle(false);
   return (
-    <div>
+    <div className='container-page'>
       <CreateAccountDrawer isVisible={isVisible} toggle={toggle} />
       <div>
         <AccountHeader toggle={toggle} />

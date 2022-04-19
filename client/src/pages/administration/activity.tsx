@@ -26,7 +26,7 @@ const Activity: React.FC<ActivityProps> = ({}) => {
     });
   };
   return (
-    <div>
+    <div className='container-page'>
       <Drawer
         title='Add activity'
         placement='right'

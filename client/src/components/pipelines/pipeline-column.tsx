@@ -18,8 +18,6 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
   pipelineColumn,
   index,
 }) => {
-  console.log("changed");
-
   const [showCreateItemForm, setShowCreateItemForm] = useToggle();
   const [showInput, setShowInput] = useToggle();
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
@@ -75,7 +73,7 @@ export const PipeLineColumn: React.FC<PipeLineColumnProps> = ({
                 end={pipelineColumn.pipelineItems.reduce((acc, item) => {
                   return acc + item.expectedRevenue
                 }, 0)}
-                duration={0.5}
+                duration={0.3}
                 separator='.'
               />đ
             </span>
