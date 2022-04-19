@@ -30,6 +30,7 @@ export interface subjectDetail {
   code: string;
   isActive: boolean;
   name: string;
+  id: string;
 }
 
 export interface course_Detail {
@@ -52,4 +53,8 @@ export interface Paging {
 export interface ICourse {
   data: CourseData[];
   paging: Paging;
+  count: number;
+  page: number;
+  pageCount: number;
+  total: number
 }
