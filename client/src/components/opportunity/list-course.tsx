@@ -1,11 +1,15 @@
-import { envVars } from "@env/var.env";
-import { CourseData, course_Detail } from "@modules/product/entity/product.entity";
-import { Descriptions, PageHeader, Table, Tag } from "antd";
-import Column from "antd/lib/table/Column";
-import moment from "moment";
-import { dateFormat } from "@constance/date-format";
+import { envVars } from '@env/var.env';
+import {
+  CourseData,
+  course_Detail,
+} from '@modules/product/entity/product.entity';
+import { Descriptions, PageHeader, Table, Tag } from 'antd';
+import Column from 'antd/lib/table/Column';
+import moment from 'moment';
+import { dateFormat } from '@constance/date-format';
 const { DEFAULT } = dateFormat;
-import numberSeparator from "number-separator";
+import numberSeparator from 'number-separator';
+import { useRandomCourse } from '@modules/product/query/products.get';
 
 interface ListCourseProps {
   courseId: string;
@@ -15,12 +19,22 @@ interface ListCourseProps {
 
 export const LIST_SUBJECT_OF_COURSE = 'list-subject-of-course';
 
-export const ListCourse: React.FC<ListCourseProps> = ({ courseId, quantity, course }) => {
-
+export const ListCourse: React.FC<ListCourseProps> = ({
+  courseId,
+  quantity,
+  course,
+}) => {
+  const { data: randomCourse } = useRandomCourse();
   const handleSubString = (string: string) => {
-    let array = string.split("-");
-    return <>{array[0]}<br />{array[1]}</>;
-  }
+    let array = string.split('-');
+    return (
+      <>
+        {array[0]}
+        <br />
+        {array[1]}
+      </>
+    );
+  };
 
   return (
     <>
@@ -40,15 +54,24 @@ export const ListCourse: React.FC<ListCourseProps> = ({ courseId, quantity, cour
                 color: 'rgba(0,0,0,0.7)',
                 fontWeight: '700',
                 marginLeft: '10px',
-                height: '100%'
+                height: '100%',
               }}
             >
-              {course.name.length >= 50 ? handleSubString(course.name) : course.name}
+              {course.name.length >= 50
+                ? handleSubString(course.name)
+                : course.name}
               <br />
-              <Tag color={'green'}>Is Active: {course.isActive ? 'True' : 'False'}</Tag>
-              <Tag color={'error'}>Unit Price: {numberSeparator(course.price, '.')}đ</Tag>
-              <Tag color={'geekblue'}>Quantity Orders: {quantity}</Tag><br />
-              <Tag color={'cyan'}>Certificate Exp: {moment(course.certificateExp).format(DEFAULT)}</Tag>
+              <Tag color={'green'}>
+                Is Active: {course.isActive ? 'True' : 'False'}
+              </Tag>
+              <Tag color={'error'}>
+                Unit Price: {numberSeparator(course.price, '.')}đ
+              </Tag>
+              <Tag color={'geekblue'}>Quantity Orders: {quantity}</Tag>
+              <br />
+              <Tag color={'cyan'}>
+                Certificate Exp: {moment(course.certificateExp).format(DEFAULT)}
+              </Tag>
             </span>
           </div>
         }
@@ -68,31 +91,35 @@ export const ListCourse: React.FC<ListCourseProps> = ({ courseId, quantity, cour
       <Table
         dataSource={course.course_Detail}
         tableLayout='fixed'
-        title={() =>
+        title={() => (
           <span
             style={{
               fontSize: '14px',
               color: 'rgba(0,0,0,0.7)',
               fontWeight: '700',
-              marginLeft: '10px'
+              marginLeft: '10px',
             }}
           >
             Subject:
-          </span>}
+          </span>
+        )}
         pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
         size={'small'}
         rowKey={(record) => record.id}
+        expandable={{
+          expandedRowRender: () => (
+            <p style={{ marginLeft: 100, marginTop: 10 }}>
+              Suggested course: {randomCourse.name}
+            </p>
+          ),
+        }}
       >
+        <Column title='No.' width={50} render={(_, __, index) => ++index} />
         <Column
-          title="No."
-          width={50}
-          render={(_, __, index) => (++index)}
-        />
-        <Column
-          title="Name"
-          dataIndex="name"
+          title='Name'
+          dataIndex='name'
           width={270}
-          key="name"
+          key='name'
           render={(_, record: course_Detail) => (
             <span>{record.subjectDetail.name}</span>
           )}
@@ -108,15 +135,14 @@ export const ListCourse: React.FC<ListCourseProps> = ({ courseId, quantity, cour
         />
 
         <Column
-          title="Is Active"
-          dataIndex="isActive"
-          key="isActive"
+          title='Is Active'
+          dataIndex='isActive'
+          key='isActive'
           render={(_, record: course_Detail) => (
             <span>{record.subjectDetail.isActive ? 'True' : 'False'}</span>
           )}
         />
-
       </Table>
     </>
-  )
-}
+  );
+};

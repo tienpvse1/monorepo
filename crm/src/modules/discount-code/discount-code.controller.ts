@@ -1,11 +1,14 @@
-import { Body, Controller, Get, Ip, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Ip, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { User } from 'src/common/decorators/user.decorator';
 import { getIp } from 'src/util/ip';
 import { DiscountCodeService } from './discount-code.service';
 import { CreateDiscountCodeDto } from './dto/create-discount-code.dto';
-import { UpdateDiscountCodeDto } from './dto/update-discount-code.dto';
+import {
+  AssignDiscountCode,
+  UpdateDiscountCodeDto,
+} from './dto/update-discount-code.dto';
 import { DiscountCode } from './entities/discount-code.entity';
 
 @Controller('discount-code')
@@ -43,5 +46,10 @@ export class DiscountCodeController {
   @Get('apply/:id')
   apply(@Param('id') id: string) {
     return this.service.applyDiscountCode(id);
+  }
+
+  @Patch('assign/:id')
+  assignDiscountCode(@Param('id') id: string, dto: AssignDiscountCode) {
+    this.service.assignDiscountCode(id, dto.pipelineItemId);
   }
 }

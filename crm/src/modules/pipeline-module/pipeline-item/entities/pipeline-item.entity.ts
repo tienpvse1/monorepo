@@ -47,10 +47,9 @@ export class PipelineItem extends BaseEntity {
     { cascade: true },
   )
   opportunityRevenue: OpportunityRevenue;
-  @OneToOne(() => DiscountCode, (discountCode) => discountCode.pipelineItem, {
-    cascade: true,
-  })
-  discountCode: DiscountCode;
+  @ManyToOne(() => DiscountCode, (discountCode) => discountCode.pipelineItem)
+  @JoinColumn({ name: 'discount_code_id' })
+  discountCodes: DiscountCode[];
 
   @OneToOne(() => Reason, (reason) => reason.pipelineItem, { cascade: true })
   reason: Reason;
