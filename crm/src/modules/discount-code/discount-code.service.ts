@@ -6,6 +6,7 @@ import { InjectKnex, Knex } from 'nestjs-knex';
 import { BaseService } from 'src/base/nestjsx.service';
 import { Repository } from 'typeorm';
 import { AccountService } from '../account/account.service';
+import { KnexAssignCode } from 'src/modules/pipeline-module/pipeline-item/dto/update-pipeline-item.dto';
 import { EmailService } from '../mailer/mailer.service';
 import { PipelineItemService } from '../pipeline-module/pipeline-item/pipeline-item.service';
 import { CreateDiscountCodeDto } from './dto/create-discount-code.dto';
@@ -33,6 +34,13 @@ export class DiscountCodeService extends BaseService<DiscountCode> {
     creatorId: string,
   ) {
     const id = nanoid(10);
+    if (!dto.pipeline_item_id) {
+      const createdId = await this.createDiscountCodeWithoutAssignToCustomer(
+        dto,
+        creatorId,
+      );
+      return this.findOneItem({ where: { id: createdId } });
+    }
     const [pipelineItem, account] = await Promise.all([
       this.pipelineItemService.findOneItem({
         where: {
@@ -107,5 +115,28 @@ export class DiscountCodeService extends BaseService<DiscountCode> {
   }
   applyDiscountCode(id: string) {
     this.repository.update(id, { applied: true });
+  }
+
+  async createDiscountCodeWithoutAssignToCustomer(
+    dto: CreateDiscountCodeDto,
+    creatorId: string,
+  ) {
+    const id = nanoid(10);
+    await this.knex<KnexDiscountCode>('discount_code').insert({
+      ...dto,
+      account_id: creatorId,
+      expired_at: new Date(dto.expired_at),
+      id,
+      applied: false,
+    });
+    return id;
+  }
+
+  async assignDiscountCode(discountId: string, pipelineItemId: string) {
+    this.knex<KnexAssignCode>('discount_code')
+      .update({
+        discount_code_id: pipelineItemId,
+      })
+      .where({ id: discountId });
   }
 }
