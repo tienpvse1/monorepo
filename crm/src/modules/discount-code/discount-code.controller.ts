@@ -50,6 +50,6 @@ export class DiscountCodeController {
 
   @Patch('assign/:id')
   assignDiscountCode(@Param('id') id: string, dto: AssignDiscountCode) {
-    this.service.assignDiscountCode(id, dto);
+    this.service.assignDiscountCode(id, dto.pipelineItemId);
   }
 }
