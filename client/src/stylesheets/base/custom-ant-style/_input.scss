@@ -22,3 +22,9 @@
 #expectedRevenue {
     height: 30px;
 }
+
+.my-input {
+    .ant-input {
+        height: 30px;
+    }
+}

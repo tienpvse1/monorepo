@@ -1,6 +1,6 @@
 import { MyForm } from '@components/form/my-form';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { Badge, Col, Row, Typography } from 'antd';
+import { Badge, Col, Row, Tag, Typography } from 'antd';
 import numberSeparator from "number-separator";
 
 const { Paragraph } = Typography;
@@ -45,6 +45,14 @@ export const OpportunityInfoDetails: React.FC<OpportunityInfoDetailsProps> = ({
 
           <MyForm label='Expected Revenue'>
             {numberSeparator(opportunity.expectedRevenue, '.')}đ
+            {opportunity.discountCode &&
+              <Tag
+                color={'red'}
+                style={{ marginLeft: '5px' }}
+              >
+                -{`${opportunity.discountCode.discountAmount * 100}`}%
+              </Tag>
+            }
           </MyForm>
           <MyForm label='Course name' customStyle={{ height: '100%' }}>
             <Paragraph style={{ marginBottom: 0 }}>

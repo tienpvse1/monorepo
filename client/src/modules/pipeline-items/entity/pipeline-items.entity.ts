@@ -35,6 +35,7 @@ export interface IPipelineItem extends IBase {
   opportunityRevenue: IOpportunityRevenue;
   isLose: boolean;
   reason: IReason;
+  discountCode: IDiscount;
 }
 
 export interface IOpportunityRevenue {
@@ -43,4 +44,10 @@ export interface IOpportunityRevenue {
   productId?: string;
   courseId?: string;
   course?: CourseData;
+}
+
+export interface IDiscount extends IBase {
+  applied: boolean;
+  discountAmount: number;
+  expireAt: string;
 }

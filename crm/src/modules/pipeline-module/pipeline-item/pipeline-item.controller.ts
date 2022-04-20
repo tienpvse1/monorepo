@@ -54,6 +54,7 @@ import { PipelineItemService } from './pipeline-item.service';
     join: {
       account: {},
       contact: {},
+      discountCode: {},
       tags: {},
       schedules: {},
       noteWorthies: {},

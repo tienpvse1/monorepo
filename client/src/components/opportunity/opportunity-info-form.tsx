@@ -1,6 +1,6 @@
-import { isQuantity, isRequired, isNotWhiteSpace, isRevenue } from '@constance/rules-of-input-antd'
+import { isRequired, isNotWhiteSpace, isRevenue } from '@constance/rules-of-input-antd'
 import { SelectBoxCourse } from '@components/course/select-box-Course';
-import { Badge, Col, DatePicker, Form, FormInstance, Input, InputNumber, Select } from 'antd'
+import { Badge, Col, DatePicker, Form, FormInstance, Input, Select } from 'antd'
 import { SelectBoxStage } from '@components/opportunity/select-box-stage';
 import { SelectBoxGroup } from '@components/pipelines/pipeline-items/select-box-group';
 import { IContact } from '@modules/contact/entity/contact.entity';
@@ -11,6 +11,7 @@ interface OpportunityInfoFormProps {
   disabledCompany?: boolean;
   disabledContact?: boolean;
   courseId?: string;
+  quantityOrder?: number;
   form: FormInstance;
 }
 
@@ -20,6 +21,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
   disabledCompany = false,
   disabledContact = false,
   courseId,
+  quantityOrder = 1,
   form
 }) => {
 
@@ -48,9 +50,9 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
         >
           <DatePicker style={{ width: '100%' }} />
         </Form.Item>
+        {showStageInput && <SelectBoxStage />}
       </Col>
       <Col span={12}>
-        {showStageInput && <SelectBoxStage />}
 
         <Form.Item name='priority' label='Priority' initialValue={1}>
           <Select>
@@ -78,10 +80,11 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
 
         <SelectBoxCourse
           courseId={courseId}
+          quantityOrder={quantityOrder}
           form={form}
         />
 
-        <Form.Item
+        {/* <Form.Item
           name="quantity"
           label="Quantity"
           rules={[isQuantity]}
@@ -89,7 +92,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
           style={{ width: '20%' }}
         >
           <InputNumber className="my-input-number" />
-        </Form.Item>
+        </Form.Item> */}
       </Col>
     </>
   )
