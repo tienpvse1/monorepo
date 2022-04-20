@@ -13,6 +13,7 @@ interface OpportunityInfoFormProps {
   courseId?: string;
   quantityOrder?: number;
   form: FormInstance;
+  expectedRevenue: number;
 }
 
 export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
@@ -22,6 +23,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
   disabledContact = false,
   courseId,
   quantityOrder = 1,
+  expectedRevenue = 0,
   form
 }) => {
 
@@ -81,6 +83,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
         <SelectBoxCourse
           courseId={courseId}
           quantityOrder={quantityOrder}
+          expectedRevenue={expectedRevenue}
           form={form}
         />
 

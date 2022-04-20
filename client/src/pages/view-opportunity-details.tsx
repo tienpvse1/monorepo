@@ -10,9 +10,6 @@ const ViewOpportunityDetails = () => {
   const params = useParams();
   const { data, isLoading } = usePipelineItem(params.id);
 
-  console.log("dataO:", data);
-  
-
   if (isLoading)
     return <SkeletonPageDetails />;
 

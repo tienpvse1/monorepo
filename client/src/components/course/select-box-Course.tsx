@@ -14,13 +14,15 @@ const { DEFAULT } = dateFormat;
 interface SelectBoxCourseProps {
   courseId?: string;
   quantityOrder?: number;
+  expectedRevenue?: number;
   styleFormItem?: React.CSSProperties;
   form: FormInstance;
 }
 
 export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
   courseId,
-  quantityOrder,
+  quantityOrder = 1,
+  expectedRevenue = 0,
   styleFormItem,
   form
 }) => {
@@ -28,7 +30,6 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
   const [courses, setCourses] = useState<CourseData[]>();
   const [text, setText] = useState<string>('');
   const [revenue, setRevenue] = useState<number>(0);
-  // const [discountAmount, setDiscountAmount] = useState<number>(0);
   const ref = useRef<number>(0);
   const [debounced] = useDebouncedValue(text, 400);
   const isMounted = useRef(false);
@@ -44,9 +45,11 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
         setWaiting(true);
         getMyCoursesById(courseId).then((value) => {
           setCourses([value]);
-          setRevenue(value.price * quantityOrder);
-          ref.current = value.price;
+          ref.current = expectedRevenue / quantityOrder;
+          form.setFieldsValue({ expectedRevenue: ref.current })
+          setRevenue(expectedRevenue);
           setWaiting(false);
+          
         });
       } else {
         getCourses('', 5).then((value) => setCourses(value.data));
@@ -79,8 +82,9 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
               })
               setRevenue(value.price);
               ref.current = value.price;
-              setWaiting(false);
+              form.resetFields(['discountCode']);
               setDisabled(false);
+              setWaiting(false);
             })
           }}
           placeholder='Select a course'
@@ -110,6 +114,7 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
             setRevenue(revenue - (revenue * discount))
             ref.current = ref.current - (ref.current * discount)
             form.setFieldsValue({ expectedRevenue: ref.current })
+            
           }}
         >
           {discount?.map((value) => (

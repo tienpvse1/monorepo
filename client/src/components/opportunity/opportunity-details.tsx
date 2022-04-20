@@ -139,6 +139,7 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
               showStageInput={false}
               courseId={data.opportunityRevenue.course?.id}
               quantityOrder={data.opportunityRevenue.quantity}
+              expectedRevenue={data.expectedRevenue}
               form={form}
             />
             <Col style={{ textAlign: 'right' }} span={24}>
