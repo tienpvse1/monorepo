@@ -13,12 +13,12 @@ export const CompanyRankingRevenue = () => {
   const [loading, setLoading] = useState(true);
 
   const handleRevenue = (record: ICompany) =>
-    record?.contacts?.reduce((acc, contact) => {
-      return acc + contact?.pipelineItems?.reduce((acc2, item) => {
+    record.contacts.reduce((acc, contact) => {
+      return acc + contact.pipelineItems.reduce((acc2, item) => {
         if (item.pipelineColumn.isWon)
           return acc2 + item.expectedRevenue;
         else
-          return 0;
+          return acc2;
       }, 0)
     }, 0)
 

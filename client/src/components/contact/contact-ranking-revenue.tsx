@@ -50,7 +50,7 @@ export const ContactRankingRevenue = () => {
       if (item.pipelineColumn.isWon)
         return acc + item.expectedRevenue;
       else
-        return 0;
+        return acc;
     }, 0)
 
   useEffect(() => {

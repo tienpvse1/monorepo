@@ -28,4 +28,5 @@ export enum controllers {
   TAG = 'tag',
   ROLE = 'role',
   AET = 'automation-email-template',
+  DISCOUNT_CODE = 'discount-code'
 }
