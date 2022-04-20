@@ -27,14 +27,18 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
   form
 }) => {
   const { data: discount } = useQueryDiscount();
+
   const [courses, setCourses] = useState<CourseData[]>();
   const [text, setText] = useState<string>('');
   const [revenue, setRevenue] = useState<number>(0);
-  const ref = useRef<number>(0);
-  const [debounced] = useDebouncedValue(text, 400);
-  const isMounted = useRef(false);
   const [waiting, setWaiting] = useState(false);
   const [disabled, setDisabled] = useState(true);
+
+  const ref = useRef<number>(0);
+  const coursePrice = useRef<number>(0);
+  const isMounted = useRef(false);
+
+  const [debounced] = useDebouncedValue(text, 400);
 
   useEffect(() => {
     if (isMounted.current) {
@@ -49,7 +53,7 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
           form.setFieldsValue({ expectedRevenue: ref.current })
           setRevenue(expectedRevenue);
           setWaiting(false);
-          
+
         });
       } else {
         getCourses('', 5).then((value) => setCourses(value.data));
@@ -73,7 +77,7 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
           loading={waiting}
           showSearch
           onSearch={(value) => setText(value)}
-          onSelect={(courseId: string) => {
+          onChange={(courseId: string) => {
             setWaiting(true);
             getMyCoursesById(courseId).then((value) => {
               form.setFieldsValue({
@@ -81,7 +85,7 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
                 quantity: 1
               })
               setRevenue(value.price);
-              ref.current = value.price;
+              coursePrice.current = value.price;
               form.resetFields(['discountCode']);
               setDisabled(false);
               setWaiting(false);
@@ -110,11 +114,10 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
       >
         <Select
           disabled={disabled}
-          onSelect={(discount: number) => {
-            setRevenue(revenue - (revenue * discount))
-            ref.current = ref.current - (ref.current * discount)
+          onChange={(discount: number) => {
+            ref.current = coursePrice.current - (coursePrice.current * discount)
+            setRevenue(ref.current)
             form.setFieldsValue({ expectedRevenue: ref.current })
-            
           }}
         >
           {discount?.map((value) => (
