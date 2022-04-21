@@ -36,8 +36,6 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
   cardData,
   isWon,
 }) => {
-  console.log("cardData:", cardData);
-
   const [isDropdownVisible, toggleDropdown] = useBooleanToggle(false);
   const [value, toggle] = useBooleanToggle(false);
   const { mutate } = useCreateSchedule();
