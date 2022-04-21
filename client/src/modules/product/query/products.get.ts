@@ -10,6 +10,7 @@ const { PRODUCT, COURSE } = controllers;
 
 export const QUERY_COURSES = 'query-courses';
 export const QUERY_MY_COURSES = 'query-my-courses';
+export const QUERY_RANDOM_COURSE = 'query-random-course';
 export const getAllProduct = async () => {
   const { data } = await instance.get<IProduct[]>(`${PRODUCT}`);
   return data;
@@ -74,9 +75,17 @@ export const useMyCourses = (search = '', size = 10, index = 1) =>
 export const getMyCoursesById = async (courseId: string) => {
   const { data } = await instance.get<CourseData>(`${COURSE}/${courseId}`);
   return data;
-}
+};
+
+export const randomlySelectCourse = async () => {
+  const { data } = await instance.get<CourseData>(`${COURSE}/random`);
+  return data;
+};
 
 export const useQueryMyCoursesById = (courseId: string) =>
   useQuery([QUERY_COURSES, courseId], () => getMyCoursesById(courseId), {
-    enabled: Boolean(courseId)
-  })
+    enabled: Boolean(courseId),
+  });
+
+export const useRandomCourse = () =>
+  useQuery(QUERY_RANDOM_COURSE, randomlySelectCourse);

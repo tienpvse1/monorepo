@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/base/entity.base';
 import { Account } from 'src/modules/account/entities/account.entity';
 import { Contact } from 'src/modules/contact/entities/contact.entity';
+import { DiscountCode } from 'src/modules/discount-code/entities/discount-code.entity';
 import { OpportunityHistory } from 'src/modules/opportunity-history/entities/opportunity-history.entity';
 import { OpportunityRevenue } from 'src/modules/opportunity-revenue/entities/opportunity-revenue.entity';
 import { Reason } from 'src/modules/reason/entities/reason.entity';
@@ -46,6 +47,9 @@ export class PipelineItem extends BaseEntity {
     { cascade: true },
   )
   opportunityRevenue: OpportunityRevenue;
+  @ManyToOne(() => DiscountCode, (discountCode) => discountCode.pipelineItem)
+  @JoinColumn({ name: 'discount_code_id' })
+  discountCodes: DiscountCode[];
 
   @OneToOne(() => Reason, (reason) => reason.pipelineItem, { cascade: true })
   reason: Reason;

@@ -10,3 +10,8 @@ export class ChangeStageDto {
   newStageId: string;
   index?: number;
 }
+
+export class KnexAssignCode {
+  discount_code_id: string;
+  id: string;
+}

@@ -49,6 +49,7 @@ import { SessionModule } from './modules/session/session.module';
 import { TagModule } from './modules/tag/tag.module';
 import { TeamModule } from './modules/team/team.module';
 import { WebhookModule } from './modules/webhook/webhook.module';
+import { DiscountCodeModule } from './modules/discount-code/discount-code.module';
 @Module({
   imports: [
     RootSchedule.forRoot(),
@@ -93,6 +94,7 @@ import { WebhookModule } from './modules/webhook/webhook.module';
     ActivityTypeModule,
     CourseModule,
     AutomationEmailTemplateModule,
+    DiscountCodeModule,
   ],
   providers: [GlobalModule, AppService, TasksService],
   controllers: [AppController],
