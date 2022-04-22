@@ -30,10 +30,10 @@ export const MyListItem: React.FC<MyListItemProps> = ({
   isActive,
   index
 }) => {
+
   const { hovered, ref } = useHover();
   const [isModalVisible, toggleModal] = useToggle();
-  console.log("item:", item);
-  
+
   return (
     <>
       <div

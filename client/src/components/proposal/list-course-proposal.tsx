@@ -27,9 +27,6 @@ export const ListCourseProposal: React.FC<ListCourseProposalProps> = ({ flag = f
   const [tabId, setTabId] = useState<any>(1);
   const [isModalVisible, toggleModal] = useToggle();
 
-  console.log("data:", data);
-  
-
   const isActive = (id: number) => {
     return tabId === id;
   }
@@ -65,7 +62,7 @@ export const ListCourseProposal: React.FC<ListCourseProposalProps> = ({ flag = f
                 avatar={<Avatar src={`${envVars.VITE_BE_DOMAIN}/files/box.png`} />}
                 title={
                   <>
-                    <a href="">
+                    <a onClick={toggleModal}>
                       {item?.name}
                     </a> <br />
                     <Tag color='volcano'>
