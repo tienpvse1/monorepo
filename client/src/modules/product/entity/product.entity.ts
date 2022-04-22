@@ -25,6 +25,7 @@ export interface CourseData {
   isActive: boolean;
   isDeleted: boolean;
   course_Detail: course_Detail[];
+  course_detail: course_Detail[];
 }
 
 export interface subjectDetail {

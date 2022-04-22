@@ -20,7 +20,7 @@ export const ListCourseEndDate: React.FC<ListCourseEndDateProps> = ({ mountPropo
       public_user_info: { id },
     },
   ] = useCookies([PUBLIC_USER_INFO]);
-  const { data: apiD } = useQueryPipelineByAccountId(id);
+  const { data } = useQueryPipelineByAccountId(id);
 
   const handleFilterMoment = (
     array: IPipelineItem[],
@@ -32,9 +32,7 @@ export const ListCourseEndDate: React.FC<ListCourseEndDateProps> = ({ mountPropo
         .isBetween(moment(beforeTime, DEFAULT), moment(afterTime, DEFAULT), undefined, '[]'))
   }
 
-  const dataFilter = apiD?.filter((value) => value.pipelineColumn.isWon)
-  console.log("dataFilter:", dataFilter);
-  console.log("apiRs:", handleFilterMoment(dataFilter));
+  const dataFilter = data?.filter((value) => value.pipelineColumn.isWon)
 
   const [tabId, setTabId] = useState<any>(0);
 
@@ -43,7 +41,8 @@ export const ListCourseEndDate: React.FC<ListCourseEndDateProps> = ({ mountPropo
   }
   const onActiveTab = (id: number) => {
     setTabId(id);
-    mountProposal(true);
+    if(id !== tabId)
+      mountProposal(true);
   }
 
   return (
