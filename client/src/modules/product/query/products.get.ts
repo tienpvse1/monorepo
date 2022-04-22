@@ -88,4 +88,6 @@ export const useQueryMyCoursesById = (courseId: string) =>
   });
 
 export const useRandomCourse = () =>
-  useQuery(QUERY_RANDOM_COURSE, randomlySelectCourse);
+  useQuery(QUERY_RANDOM_COURSE, randomlySelectCourse, {
+    staleTime: Infinity
+  });

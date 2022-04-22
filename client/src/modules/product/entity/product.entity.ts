@@ -18,6 +18,7 @@ export interface CourseData {
   endDate: string;
   companyId?: any;
   numberOfTrainee: number;
+  number_of_trainee: number;
   price: number;
   certificateExp: string;
   courseTypeId: number;

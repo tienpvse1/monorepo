@@ -311,7 +311,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
               )}
               {deleteItem && deleteItem.pipelineItems.length > 0 && (
                 <li>
-                  expected revenue:{' '}
+                  Expected revenue:{' '}
                   <span style={{ textDecoration: 'underline' }}>
                     {deleteItem.pipelineItems.length > 0 &&
                       deleteItem?.pipelineItems.reduce(
@@ -325,7 +325,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
                   <span style={{ textDecoration: 'underline' }}>
                     {deleteItem.pipelineItems.reduce(
                       // @ts-ignore
-                      (a, b) => a.schedules.length + b.schedules.length
+                      (a, b) => a.schedules?.length + b.schedules?.length
                     )}
                   </span>{' '}
                   scheduled activity

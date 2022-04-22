@@ -49,6 +49,8 @@ export const getPipelineByAccountID = async (accountId: string) => {
       { field: 'account' },
       { field: 'contact' },
       { field: 'reason' },
+      { field: 'opportunityRevenue' },
+      { field: 'opportunityRevenue.course' },
     ],
     filter: [
       {

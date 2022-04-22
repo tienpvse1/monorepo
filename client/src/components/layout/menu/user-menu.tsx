@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
+  AlertOutlined,
   BranchesOutlined,
   CalendarOutlined,
   ContactsOutlined,
@@ -83,6 +84,13 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       style,
       onClick: () => navigate('/lost-opportunities'),
       icon: <UserDeleteOutlined style={style} />,
+    },
+    {
+      key: 'proposal',
+      label: 'Proposal',
+      style,
+      onClick: () => navigate('/proposal'),
+      icon: <AlertOutlined style={style}/>,
     },
     {
       key: 'product',
