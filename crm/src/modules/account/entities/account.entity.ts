@@ -15,6 +15,7 @@ import { Role } from 'src/modules/role/entities/role.entity';
 import { Schedule } from 'src/modules/schedule/entities/schedule.entity';
 import { Session } from 'src/modules/session/entities/session.entity';
 import { Team } from 'src/modules/team/entities/team.entity';
+import { AutomationEmailTemplate } from 'src/modules/automation-email-template/entities/automation-email-template.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -26,6 +27,7 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
+import { DiscountCode } from 'src/modules/discount-code/entities/discount-code.entity';
 @Entity()
 export class Account extends BaseEntity {
   @Column()
@@ -114,6 +116,8 @@ export class Account extends BaseEntity {
 
   @OneToMany(() => Notification, (notification) => notification.receiver)
   inboxNotifications: Notification[];
+  @OneToMany(() => DiscountCode, (discountCode) => discountCode.createdBy)
+  discountCodes: DiscountCode[];
 
   @OneToMany(() => Notification, (notification) => notification.sender)
   sentNotifications: Notification[];
@@ -125,6 +129,9 @@ export class Account extends BaseEntity {
   @ManyToOne(() => Team, (team) => team.accounts)
   @JoinColumn({ name: 'team_id' })
   team: Team;
+
+  @OneToMany(() => AutomationEmailTemplate, (templates) => templates.account)
+  automationEmailTemplates: AutomationEmailTemplate[];
 
   // hash the password before save or update it in database
   @BeforeInsert()

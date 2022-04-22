@@ -11,13 +11,15 @@ export interface IProduct extends IBase {
 }
 
 export interface CourseData {
-  id: number;
+  id: string;
   name: string;
   code: string;
   startDate: string;
   endDate: string;
   companyId?: any;
   numberOfTrainee: number;
+  price: number;
+  certificateExp: string;
   courseTypeId: number;
   isActive: boolean;
   isDeleted: boolean;
@@ -28,6 +30,7 @@ export interface subjectDetail {
   code: string;
   isActive: boolean;
   name: string;
+  id: string;
 }
 
 export interface course_Detail {
@@ -50,4 +53,8 @@ export interface Paging {
 export interface ICourse {
   data: CourseData[];
   paging: Paging;
+  count: number;
+  page: number;
+  pageCount: number;
+  total: number
 }

@@ -1,9 +1,9 @@
 import { SelectBoxCourse } from '@components/course/select-box-Course';
-import { isRequired, isRevenue } from '@constance/rules-of-input-antd';
+import { isRequired } from '@constance/rules-of-input-antd';
 import { ICreatePipelineItemsDto } from '@modules/pipeline-items/dto/create-pipeline-items.dto';
-import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
+import { useCreateNewItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
-import { Button, Card, Form, Input, InputNumber } from 'antd';
+import { Button, Card, Form, Input } from 'antd';
 import { FC } from 'react';
 import { useQueryClient } from 'react-query';
 import { SelectBoxGroup } from './select-box-group';
@@ -27,7 +27,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
   pipelineColumnID,
   toggleClose,
 }) => {
-  const { mutate: createNewItems } = usePostPipelineItems();
+  const { mutate: createNewItems } = useCreateNewItems();
   const [form] = Form.useForm<SubmittedObject>();
   const queryClient = useQueryClient();
 
@@ -38,7 +38,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
       columnId: pipelineColumnID,
       contactId,
       name,
-      expectedRevenue: expectedRevenue ? Number(expectedRevenue) : 0,
+      expectedRevenue: expectedRevenue ? Number(expectedRevenue) * quantity : 0,
       opportunityRevenue: {
         courseId,
         quantity
@@ -47,6 +47,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
     createNewItems(data, {
       onSuccess: () => {
         queryClient.refetchQueries(GET_PIPELINE_DESIGN);
+        queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
         toggleClose();
       },
     });
@@ -83,27 +84,8 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
             <Input placeholder='Opportunity name...' />
           </Form.Item>
 
-          <SelectBoxCourse />
-          <Input.Group compact>
-            <Form.Item
-              name="expectedRevenue"
-              label="Expected Revenue"
-              style={{ width: 'calc(70% - 10px)', marginRight: '10px' }}
-              rules={[isRevenue]}
-            >
-              <Input suffix={"đ"} style={{ height: '40px', borderRadius: '5px' }} />
-            </Form.Item>
+          <SelectBoxCourse form={form} />
 
-            <Form.Item
-              label='Quantity'
-              rules={[{ type: 'number', min: 1, max: 99 }]}
-              name='quantity'
-              initialValue={1}
-              style={{ width: '30%' }}
-            >
-              <InputNumber style={{ width: '100%' }} className='my-input-number' />
-            </Form.Item>
-          </Input.Group>
           <Button htmlType='submit' type='primary'>
             Save
           </Button>

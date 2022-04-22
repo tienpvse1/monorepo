@@ -19,6 +19,8 @@ import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { startFireworks } from '@util/firework';
 import { UploadInvoice } from '@components/sale/upload-invoice';
 import { useCreateReason } from '@modules/reason/mutation/reason.post';
+import { usePostOpportunityHistory } from '@modules/opportunity-history/mutation/opportunity-history.post';
+import { OpportunityHistoryType } from '@modules/opportunity-history/entity/opportunity-history.entity';
 
 interface MainPipelineProps {
   data: IPipeline;
@@ -42,6 +44,8 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
   const [form] = Form.useForm<any>();
   const [visible, setModalCreateStage] = useToggle();
   const [isVisible, toggleModalChangeStageWon] = useToggle();
+  const { mutateAsync: mutateOpportunityHistory } = usePostOpportunityHistory();
+
   const queryClient = useQueryClient();
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
   const { mutate: changeStageWon } = useChangeStage();
@@ -62,14 +66,15 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
       oldStageId,
       description,
       photo,
-      invoiceId
+      startColumnName,
+      finishColumnName
     } = await form.validateFields();
 
     postReason({
       pipelineItemId: draggableId,
       description: description,
       photo,
-      invoiceId,
+      invoiceId: '',
       reason: 'no thing',
       reasonType: 'win'
     }, {
@@ -80,10 +85,21 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
           oldStageId: oldStageId,
         }, {
           onSuccess: () => {
-            queryClient.invalidateQueries(GET_PIPELINE_ITEM_BY_ID);
-            queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
-            toggleModalChangeStageWon();
-            startFireworks();
+            mutateOpportunityHistory({
+              newStageID: newStageId,
+              oldStageId: oldStageId,
+              description: `moved from ${startColumnName} to ${finishColumnName}`,
+              pipelineItemId: draggableId,
+              type: OpportunityHistoryType.CHANGE_STATE,
+            }, {
+              onSuccess: () => {
+                queryClient.invalidateQueries(GET_PIPELINE_ITEM_BY_ID);
+                queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
+                toggleModalChangeStageWon();
+                startFireworks();
+                form.resetFields();
+              }
+            });
           }
         })
       }
@@ -93,12 +109,15 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
   const handleToggleModalChangeStageWon = (
     oldStageId: string,
     newStageId: string,
-    draggableId: string
+    draggableId: string,
+    finishColumnName: string
   ) => {
     form.setFieldsValue({
       oldStageId,
       newStageId,
-      draggableId
+      draggableId,
+      finishColumnName,
+      startColumnName: newPipeLine.pipelineColumns.find((column) => column.id === oldStageId).name
     })
     toggleModalChangeStageWon();
   }
@@ -130,7 +149,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
       }
 
       if (finishColumn === stageWon?.id) {
-        handleToggleModalChangeStageWon(startColumn, stageWon.id, draggableId);
+        handleToggleModalChangeStageWon(startColumn, stageWon.id, draggableId, stageWon.name);
         return;
       }
 
@@ -211,7 +230,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
       />
       <CreateModal
         title="Successful Confirmation"
-        bodyStyle={{ height: '350px' }}
+        bodyStyle={{ height: '260px' }}
         width={900}
         isOpenModal={isVisible}
         toggleCreateModal={toggleModalChangeStageWon}

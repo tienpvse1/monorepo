@@ -12,12 +12,21 @@ export const getCompanies = async () => {
   const query = RequestQueryBuilder.create({
     join: [
       { field: 'contacts' },
+      { field: 'contacts.account' },
+      { field: 'contacts.pipelineItems' },
+      { field: 'contacts.pipelineItems.pipelineColumn' },
+      { field: 'contacts.pipelineItems.opportunityRevenue' },
       { field: 'city' },
     ],
     sort: [{ field: 'createdAt', order: 'DESC' }]
   }).query(false);
 
   const { data } = await instance.get<ICompany[]>(`${COMPANY}?${query}`);
+  return data;
+};
+
+export const getCompaniesWithColumn = async () => {
+  const { data } = await instance.get<ICompany[]>(`${COMPANY}/with-column`);
   return data;
 };
 
@@ -74,6 +83,7 @@ export const searchCompany = async (text: string) => {
 };
 
 export const useCompanies = () => useQuery(QUERY_COMPANIES, getCompanies);
+export const useCompaniesWithColumn = () => useQuery([QUERY_COMPANIES, 'with-column'], getCompaniesWithColumn);
 
 export const useQueryCompanyById = (companyId: string) =>
   useQuery(QUERY_COMPANY_DETAILS, () => getCompanyById(companyId), {

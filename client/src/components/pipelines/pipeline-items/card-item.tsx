@@ -11,7 +11,16 @@ import { CreateScheduleForm } from '@components/schedule/create-schedule-form';
 import { useBooleanToggle } from '@mantine/hooks';
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.delete';
-import { Avatar, Button, Card, Divider, Dropdown, Space, Tag } from 'antd';
+import {
+  Avatar,
+  Button,
+  Card,
+  Divider,
+  Dropdown,
+  Rate,
+  Space,
+  Tag,
+} from 'antd';
 import { lazy, Suspense } from 'react';
 import { PopoverAction } from '../../popover/popover-action';
 import { ICreateScheduleDto } from '@modules/schedule/dto/create-schedule.dto';
@@ -88,6 +97,15 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
           width: '100%',
           height: '100%',
           borderRadius: 5,
+          backgroundColor:
+            new Date(cardData.expectedClosing).getTime() > new Date().getTime()
+              ? 'rgba(255,15,15,0.5)'
+              : moment(cardData.expectedClosing)
+                  .add(7, 'd')
+                  .toDate()
+                  .getTime() > new Date().getTime()
+              ? 'rgba(255,204,0, 0.2)'
+              : 'white',
           boxShadow: '0px 0px 9px 0px rgba(0, 0, 0, 0.1)',
         }}
       >
@@ -104,6 +122,13 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
                 {numberSeparator(cardData.expectedRevenue, '.')}đ
               </div>
               <div style={{ fontSize: 16 }}>{cardData?.contact?.name}</div>
+              <Rate
+                tooltips={['Low', 'Medium', 'Important']}
+                disabled
+                value={cardData.priority + 1}
+                count={3}
+                style={{ fontSize: '18px', float: 'right' }}
+              />
               <Divider
                 style={{ marginBottom: 6, borderTop: '1px solid #D4D4D8' }}
               />

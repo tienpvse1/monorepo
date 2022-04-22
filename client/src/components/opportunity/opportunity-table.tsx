@@ -1,5 +1,5 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
-import { Button, Space, Table, Tag } from 'antd';
+import { Button, Form, Space, Table, Tag } from 'antd';
 import Column from 'antd/lib/table/Column';
 import { useToggle } from '@hooks/useToggle';
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
@@ -53,6 +53,8 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
   searchMethod,
   queryKey
 }) => {
+  const [form] = Form.useForm<SubmitFormCreateOpportunity>();
+
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
   const isRoleSaleManager = () => {
     return public_user_info.role.name === 'sale_manager';
@@ -99,7 +101,8 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
     }),
   };
 
-  const handleCreateOpportunity = (record: SubmitFormCreateOpportunity) => {
+  const handleCreateOpportunity = async () => {
+    const record = await form.validateFields();
     const {
       name,
       columnId,
@@ -121,7 +124,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
         description,
         expectedClosing: expectedClosing ? expectedClosing.format(DEFAULT) : '',
         priority,
-        expectedRevenue: expectedRevenue ? Number(expectedRevenue) : 0,
+        expectedRevenue: expectedRevenue ? Number(expectedRevenue) * quantity : 0,
         opportunityRevenue: {
           courseId,
           quantity,
@@ -131,6 +134,8 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
         onSuccess: () => {
           queryClient.refetchQueries(queryKey);
           message.success('Created opportunity successfully !');
+          toggleCreateModal();
+          form.resetFields();
         },
       }
     );
@@ -319,11 +324,17 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
       </Table>
       <CreateModal
         title='New Opportunity'
-        callback={handleCreateOpportunity}
+        hasSubmitMethod={handleCreateOpportunity}
         isOpenModal={isOpenModal}
         toggleCreateModal={toggleCreateModal}
+        hasForm={true}
       >
-        <CreateOpportunityForm />
+        <Form
+          form={form}
+          layout='vertical'
+        >
+          <CreateOpportunityForm form={form}/>
+        </Form>
       </CreateModal>
     </>
   );

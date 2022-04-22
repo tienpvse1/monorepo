@@ -8,6 +8,7 @@ import {
   FundOutlined,
   GlobalOutlined,
   LineChartOutlined,
+  SketchOutlined,
   SolutionOutlined,
   TagOutlined,
   UserDeleteOutlined,
@@ -133,6 +134,13 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       style,
       onClick: () => navigate('/tag'),
       icon: <TagOutlined style={style} />,
+    },
+    {
+      key: 'rank',
+      label: 'Rank',
+      style,
+      onClick: () => navigate('/rank'),
+      icon: <SketchOutlined style={style}/>,
     },
   ];
 

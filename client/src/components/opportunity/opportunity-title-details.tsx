@@ -69,6 +69,13 @@ export const OpportunityTitleDetails: React.FC<
                     Lost
                   </Button>
                 )}
+                {/* <Button
+                  className='button-ant-custom-style'
+                  type='primary'
+                  size='middle'
+                >
+                  Discount
+                </Button> */}
               </>
             }
             title={
@@ -105,6 +112,14 @@ export const OpportunityTitleDetails: React.FC<
               </Descriptions.Item>
               <Descriptions.Item label='Expected revenue'>
                 {numberSeparator(opportunity.expectedRevenue, '.')}đ
+                {opportunity.discountCode &&
+                  <Tag
+                    color={'red'}
+                    style={{ marginLeft: '5px' }}
+                  >
+                    -{`${opportunity.discountCode.discountAmount * 100}`}%
+                  </Tag>
+                }
               </Descriptions.Item>
               <Descriptions.Item label='Expected closing'>
                 {opportunity.expectedClosing ?

@@ -1,6 +1,6 @@
-import { isQuantity, isRequired, isNotWhiteSpace, isRevenue } from '@constance/rules-of-input-antd'
+import { isRequired, isNotWhiteSpace, isRevenue } from '@constance/rules-of-input-antd'
 import { SelectBoxCourse } from '@components/course/select-box-Course';
-import { Badge, Col, DatePicker, Form, Input, InputNumber, Select } from 'antd'
+import { Badge, Col, DatePicker, Form, FormInstance, Input, Select } from 'antd'
 import { SelectBoxStage } from '@components/opportunity/select-box-stage';
 import { SelectBoxGroup } from '@components/pipelines/pipeline-items/select-box-group';
 import { IContact } from '@modules/contact/entity/contact.entity';
@@ -11,6 +11,9 @@ interface OpportunityInfoFormProps {
   disabledCompany?: boolean;
   disabledContact?: boolean;
   courseId?: string;
+  quantityOrder?: number;
+  form: FormInstance;
+  expectedRevenue: number;
 }
 
 export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
@@ -18,7 +21,10 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
   contact,
   disabledCompany = false,
   disabledContact = false,
-  courseId
+  courseId,
+  quantityOrder = 1,
+  expectedRevenue = 0,
+  form
 }) => {
 
   return (
@@ -46,9 +52,9 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
         >
           <DatePicker style={{ width: '100%' }} />
         </Form.Item>
+        {showStageInput && <SelectBoxStage />}
       </Col>
       <Col span={12}>
-        {showStageInput && <SelectBoxStage />}
 
         <Form.Item name='priority' label='Priority' initialValue={1}>
           <Select>
@@ -69,26 +75,27 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
           label="Expected Revenue"
           rules={[isRevenue]}
           initialValue={'0'}
+          style={{ display: 'none' }}
         >
           <Input suffix={"đ"} style={{ height: '40px', borderRadius: '5px' }} />
         </Form.Item>
 
-        <Input.Group compact>
-          <SelectBoxCourse
-            courseId={courseId}
-            styleFormItem={{ width: 'calc(80% - 10px)', marginRight: '10px' }}
-          />
+        <SelectBoxCourse
+          courseId={courseId}
+          quantityOrder={quantityOrder}
+          expectedRevenue={expectedRevenue}
+          form={form}
+        />
 
-          <Form.Item
-            name="quantity"
-            label="Quantity"
-            rules={[isQuantity]}
-            initialValue={1}
-            style={{ width: '20%' }}
-          >
-            <InputNumber style={{ width: '100%' }} className="my-input-number" />
-          </Form.Item>
-        </Input.Group>
+        {/* <Form.Item
+          name="quantity"
+          label="Quantity"
+          rules={[isQuantity]}
+          initialValue={1}
+          style={{ width: '20%' }}
+        >
+          <InputNumber className="my-input-number" />
+        </Form.Item> */}
       </Col>
     </>
   )

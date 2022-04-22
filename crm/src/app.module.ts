@@ -33,6 +33,11 @@ import { PermissionModule } from './modules/permission/permission.module';
 import { PipelineColumnModule } from './modules/pipeline-module/pipeline-column/pipeline-column.module';
 // import { ContactFormModule } from './modules/contact-modules/contact-form/contact-form.module';
 // import { ContactFormFieldModule } from './modules/contact-modules/contact-form-field/contact-form-field.module';
+import { ScheduleModule as RootSchedule } from '@nestjs/schedule';
+import { TasksService } from './cron/cron.service';
+import { ActivityTypeModule } from './modules/activity-type/activity-type.module';
+import { AutomationEmailTemplateModule } from './modules/automation-email-template/automation-email-template.module';
+import { CourseModule } from './modules/course/course.module';
 import { PipelineItemModule } from './modules/pipeline-module/pipeline-item/pipeline-item.module';
 import { PipelineModule } from './modules/pipeline-module/pipeline/pipeline.module';
 import { ProductAccountModule } from './modules/product-account/product-account.module';
@@ -44,10 +49,10 @@ import { SessionModule } from './modules/session/session.module';
 import { TagModule } from './modules/tag/tag.module';
 import { TeamModule } from './modules/team/team.module';
 import { WebhookModule } from './modules/webhook/webhook.module';
-import { ActivityTypeModule } from './modules/activity-type/activity-type.module';
-
+import { DiscountCodeModule } from './modules/discount-code/discount-code.module';
 @Module({
   imports: [
+    RootSchedule.forRoot(),
     ConfigModule,
     DatabaseModule,
     AuthModule,
@@ -87,8 +92,11 @@ import { ActivityTypeModule } from './modules/activity-type/activity-type.module
     InboxModule,
     CityModule,
     ActivityTypeModule,
+    CourseModule,
+    AutomationEmailTemplateModule,
+    DiscountCodeModule,
   ],
-  providers: [GlobalModule, AppService],
+  providers: [GlobalModule, AppService, TasksService],
   controllers: [AppController],
 })
 export class AppModule implements NestModule {

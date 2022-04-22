@@ -34,4 +34,17 @@ export class CompanyService extends BaseService<Company> {
     }
     return this.repository.update(id, { ...rest });
   }
+
+  async getWithColumn() {
+    return this.repository.find({
+      relations: [
+        'contacts',
+        'contacts.pipelineItems',
+        'contacts.pipelineItems.pipelineColumn',
+        'contacts.pipelineItems.opportunityRevenue',
+        'contacts.pipelineItems.opportunityRevenue.course',
+      ],
+      loadEagerRelations: false,
+    });
+  }
 }

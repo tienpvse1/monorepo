@@ -32,6 +32,19 @@ export class PipelineService {
     reIndexColumn(sortColumns(column));
     return column;
   }
+  async findPipeline() {
+    const queryBuilder =
+      getRepository(PipelineColumn).createQueryBuilder('pipelineColumn');
+    const column = await queryBuilder
+      .leftJoinAndSelect('pipelineColumn.pipelineItems', 'pipelineItems')
+      .leftJoinAndSelect('pipelineItems.schedules', 'schedules')
+      .leftJoinAndSelect('pipelineItems.contact', 'contact')
+      .leftJoinAndSelect('pipelineItems.account', 'account')
+      .getMany();
+
+    reIndexColumn(sortColumns(column));
+    return column;
+  }
 
   async updateColumns(pipelineColumns: PipelineColumn[]) {
     for (const { index, id } of pipelineColumns) {

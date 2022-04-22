@@ -62,6 +62,7 @@ export const OpportunityInfoTabs: React.FC<OpportunityInfoTabsProps> = ({ data }
           <ListCourse
             courseId={data.opportunityRevenue.courseId}
             quantity={data.opportunityRevenue.quantity}
+            course={data.opportunityRevenue.course}
           />
         </TabPane>
         {(data.pipelineColumn.isWon || data.isLose) &&

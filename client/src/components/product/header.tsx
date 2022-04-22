@@ -16,6 +16,7 @@ export const ProductHeader: React.FC<ProductHeaderProps> = ({ setSearch }) => {
         subTitle='courses from VJAA system'
         extra={[
           <Input.Search
+            key={'search-input-course'}
             enterButton={
               <Button
                 style={{ height: '40px', width: '35px' }}

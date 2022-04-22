@@ -7,6 +7,7 @@ export enum InternalServerEvent {
   TEAM_UPDATED = 'team-updated',
   WEBHOOK_SENT_EVENT = 'webhook-sent-event',
   WEBHOOK_SENT_TEST_EVENT = 'webhook-sent-test-event',
+  EMAIL_EVENT = 'email-event',
 }
 
 export enum SocketReceiveEvent {

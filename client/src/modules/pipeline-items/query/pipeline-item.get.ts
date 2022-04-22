@@ -15,9 +15,11 @@ export const getPipelineItemById = async (id: string) => {
   const queryBuilder = RequestQueryBuilder.create({
     join: [
       { field: 'noteWorthies' },
+      { field: 'discountCode' },
       { field: 'pipelineColumn' },
       { field: 'opportunityRevenue' },
       { field: 'opportunityRevenue.product' },
+      { field: 'opportunityRevenue.course' },
       { field: 'account' },
       { field: 'account.team' },
       { field: 'contact' },

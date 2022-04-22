@@ -14,7 +14,15 @@ export const QUERY_PAGINATED_CONTACTS = 'query-paginated-contacts';
 
 const getContacts = async (accountId: string) => {
   const query = RequestQueryBuilder.create({
-    join: [{ field: 'account' }, { field: 'company' }],
+    join: [
+      { field: 'account' },
+      { field: 'company' },
+      { field: 'tags' },
+      { field: 'pipelineItems' },
+      { field: 'pipelineItems.schedules' },
+      { field: 'pipelineItems.pipelineColumn' },
+      { field: 'pipelineItems.opportunityRevenue' },
+    ],
     filter: [
       {
         field: 'account.id',
@@ -22,6 +30,7 @@ const getContacts = async (accountId: string) => {
         value: accountId,
       },
     ],
+    sort: [{ field: 'createdAt', order: 'DESC' }],
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
   return data;
@@ -34,6 +43,9 @@ const getAllContacts = async () => {
       { field: 'tags' },
       { field: 'pipelineItems' },
       { field: 'pipelineItems.schedules' },
+      { field: 'pipelineItems.pipelineColumn' },
+      { field: 'pipelineItems.opportunityRevenue' },
+      { field: 'pipelineItems.opportunityRevenue.course' },
     ],
     sort: [{ field: 'createdAt', order: 'DESC' }],
   }).query(false);
@@ -79,7 +91,11 @@ export const getContactsById = async (contactId: string) => {
 };
 export const searchContacts = async (text: string) => {
   const query = RequestQueryBuilder.create({
-    join: [{ field: 'account' }],
+    join: [
+      { field: 'account' },
+      { field: 'company' },
+      { field: 'tags' },
+    ],
     search: {
       $or: [
         {
@@ -95,6 +111,45 @@ export const searchContacts = async (text: string) => {
         {
           phone: {
             $cont: text,
+          },
+        },
+      ],
+    },
+  }).query(false);
+  const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
+  return data;
+};
+export const searchContactsOwner = async (text: string, accountId: string) => {
+  const query = RequestQueryBuilder.create({
+    join: [
+      { field: 'account' },
+      { field: 'company' },
+      { field: 'tags' },
+    ],
+    search: {
+      $and: [
+        {
+          $or: [
+            {
+              name: {
+                $cont: text,
+              },
+            },
+            {
+              email: {
+                $cont: text,
+              },
+            },
+            {
+              phone: {
+                $cont: text,
+              },
+            },
+          ],
+        },
+        {
+          'account.id': {
+            $eq: accountId,
           },
         },
       ],
@@ -125,13 +180,13 @@ export const getPaginatedContacts = async (size: number, page: number) => {
 };
 
 export const useContacts = (accountId: string, suspense = false) =>
-  useQuery([QUERY_CONTACTS, accountId], () => getContacts(accountId), {
+  useQuery([QUERY_CONTACTS, 'sale'], () => getContacts(accountId), {
     enabled: Boolean(accountId),
     suspense,
   });
 
 export const useQueryAllContacts = () =>
-  useQuery(QUERY_CONTACTS, () => getAllContacts(), {
+  useQuery([QUERY_CONTACTS, 'sale-manager'], () => getAllContacts(), {
     placeholderData: [],
   });
 
