@@ -48,6 +48,7 @@ export const ListCourseProposal: React.FC<ListCourseProposalProps> = ({ flag = f
     toggleCreateModal()
     form.setFieldsValue({
       courseId: data.id,
+      expectedRevenue: data.price
     })
   }
 

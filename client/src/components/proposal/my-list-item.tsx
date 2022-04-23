@@ -41,6 +41,7 @@ export const MyListItem: React.FC<MyListItemProps> = ({
     form.resetFields();
     form.setFieldsValue({
       name: item.name,
+      contactId: item.contact.id,
       companyName: item.contact.company.id
     });
   }

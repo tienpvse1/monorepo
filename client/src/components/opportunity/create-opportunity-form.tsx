@@ -18,8 +18,9 @@ export const CreateOpportunityForm: React.FC<CreateOpportunityFormProps> = ({ fo
       <WrapperModalForm titleName='Opportunity Information' >
         <Row gutter={[24, 0]}>
           <OpportunityInfoForm
-            courseId={dataSetField.courseId}
-            companyId={dataSetField.companyName}
+            courseId={dataSetField?.courseId}
+            companyId={dataSetField?.companyName}
+            expectedRevenue={Number(dataSetField?.expectedRevenue)}
             form={form}
           />
         </Row>
