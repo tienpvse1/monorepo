@@ -40,7 +40,6 @@ export const ListCourseEndDate: React.FC<ListCourseEndDateProps> = ({ mountPropo
     console.log('123');
     
     form.setFieldsValue({
-      name: dataFinal?.[0].name,
       contactId: dataFinal?.[0].contact.id,
       companyName: dataFinal?.[0].contact.company.id
     })

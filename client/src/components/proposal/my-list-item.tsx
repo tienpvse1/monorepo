@@ -40,7 +40,6 @@ export const MyListItem: React.FC<MyListItemProps> = ({
     onActiveTab(index);
     form.resetFields();
     form.setFieldsValue({
-      name: item.name,
       contactId: item.contact.id,
       companyName: item.contact.company.id
     });

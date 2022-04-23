@@ -26,8 +26,7 @@ const Proposal = () => {
     reload();
   }
 
-  console.log("getF:", form.getFieldsValue(['contactId', 'companyName', 'courseId', 'expectedRevenue']));
-
+  // console.log("getF:", form.getFieldsValue(['contactId', 'companyName', 'courseId', 'expectedRevenue']));
 
   const handleCreateOpportunity = async () => {
     const record = await form.validateFields();

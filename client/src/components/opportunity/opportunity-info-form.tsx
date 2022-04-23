@@ -37,7 +37,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
           label="Name"
           required
           rules={[isRequired('Opportunity name is required'), isNotWhiteSpace]}>
-          <Input />
+          <Input autoFocus/>
         </Form.Item>
 
         <SelectBoxGroup
