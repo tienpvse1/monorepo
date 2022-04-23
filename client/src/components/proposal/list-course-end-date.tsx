@@ -38,8 +38,8 @@ export const ListCourseEndDate: React.FC<ListCourseEndDateProps> = ({ mountPropo
 
   useEffect(() => {
     form.setFieldsValue({
-      contactId: dataFinal?.[0].contact.id,
-      companyName: dataFinal?.[0].contact.company.id
+      contactId: dataFinal?.[0]?.contact?.id,
+      companyName: dataFinal?.[0]?.contact?.company.id
     })
   }, [data])
 

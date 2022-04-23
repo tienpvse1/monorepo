@@ -119,7 +119,7 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
           onChange={(discount: number) => {
             ref.current = coursePrice.current - (coursePrice.current * discount)
             setRevenue(ref.current)
-            form.setFieldsValue({ expectedRevenue: ref.current })
+            form.setFieldsValue({ expectedRevenue: ref.current, quantity: 1 })
           }}
         >
           <Option key='none' value={0}>

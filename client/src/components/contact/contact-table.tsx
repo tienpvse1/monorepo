@@ -1,4 +1,4 @@
-import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
+import { CrownOutlined, DeleteOutlined, ExclamationCircleOutlined, FormOutlined, ScheduleOutlined, SketchOutlined } from '@ant-design/icons';
 import { CreateModal } from '@components/modal/create-modal';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { dateFormat } from '@constance/date-format';
@@ -10,7 +10,7 @@ import { useDeleteContact } from '@modules/contact/mutation/contact.delete';
 import { useInsertContact } from '@modules/contact/mutation/contact.post';
 import { QUERY_CONTACTS } from '@modules/contact/query/contact.get';
 import { removeDuplicate } from '@util/array';
-import { Button, Empty, message, Modal, Space, Table, Tag } from 'antd';
+import { Button, Empty, List, message, Modal, Space, Table, Tag } from 'antd';
 import Column from 'antd/lib/table/Column';
 import moment from 'moment';
 import { useMemo, useState } from 'react';
@@ -19,6 +19,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { client } from '../../App';
 import { ContactHeader } from './contact-header';
 import { CreateContactForm } from './create-contact-form';
+import numberSeparator from "number-separator";
 
 const { DEFAULT } = dateFormat;
 
@@ -46,6 +47,9 @@ export const ContactTable: React.FC<ContactTableProps> = ({
   searchMethod
 }) => {
   const [deleteItem, setDeleteItem] = useState<IContact>(null);
+
+  console.log('deleteItem:', deleteItem);
+
 
   //CRUD api
   const { mutate: deleteContact } = useDeleteContact(() => {
@@ -288,54 +292,75 @@ export const ContactTable: React.FC<ContactTableProps> = ({
       <Modal
         onCancel={() => setDeleteItem(null)}
         visible={deleteItem != null}
-        title='Are you sure want to delete'
+        title={
+          <span style={{ display: 'flex', alignItems: 'center', fontSize: '18px' }}>
+            <ExclamationCircleOutlined
+              style={{
+                fontSize: '20px',
+                marginRight: '10px',
+                color: '#F9A825'
+              }}
+            />
+            Are you sure want to delete ?
+          </span>
+        }
         onOk={() =>
           deleteContact(deleteItem.id, {
-            onSettled: () => {
+            onSuccess: () => {
               client.refetchQueries(QUERY_CONTACTS);
               setDeleteItem(null);
             },
           })
         }
       >
-        <div>
+        <>
           {deleteItem && deleteItem.pipelineItems.length > 0 ? (
-            <ul>
-              {deleteItem && deleteItem.pipelineItems.length > 0 && (
-                <li>
-                  <span style={{ textDecoration: 'underline' }}>
-                    {deleteItem?.pipelineItems.length}
-                  </span>{' '}
-                  opportunity
-                </li>
-              )}
-              {deleteItem && deleteItem.pipelineItems.length > 0 && (
-                <li>
-                  Expected revenue:{' '}
-                  <span style={{ textDecoration: 'underline' }}>
-                    {deleteItem.pipelineItems.length > 0 &&
-                      deleteItem?.pipelineItems.reduce(
-                        (a, b) => a.expectedClosing + b.expectedRevenue
-                      )}
-                  </span>
-                </li>
-              )}
-              {deleteItem && deleteItem.pipelineItems.length > 0 && (
-                <li>
-                  <span style={{ textDecoration: 'underline' }}>
-                    {deleteItem.pipelineItems.reduce(
-                      // @ts-ignore
-                      (a, b) => a.schedules?.length + b.schedules?.length
-                    )}
-                  </span>{' '}
-                  scheduled activity
-                </li>
-              )}
-            </ul>
+            <List
+              header={
+                <div style={{ fontSize: '17px', marginTop: '-15px' }}>
+                  Contact Dependencies:
+                </div>}
+              bordered={false}
+            >
+              {deleteItem && deleteItem.pipelineItems.length > 0 &&
+                <>
+                  <List.Item>
+                    <Tag
+                      icon={<CrownOutlined />}
+                      style={{ fontSize: '16px' }}
+                      color={'#FBC02D'}
+                    >
+                      Opportunity:
+                    </Tag> {deleteItem?.pipelineItems.length}
+                  </List.Item>
+                  <List.Item>
+                    <Tag
+                      icon={<SketchOutlined />}
+                      style={{ fontSize: '16px' }}
+                      color={'#f50'}
+                    >
+                      Expected revenue:
+                    </Tag>
+                    {numberSeparator(deleteItem?.pipelineItems.reduce((acc, value) =>
+                      acc + value.expectedRevenue, 0), '.')}đ
+                  </List.Item>
+                  <List.Item >
+                    <Tag
+                      icon={<ScheduleOutlined />}
+                      color={'#7E57C2'}
+                      style={{ fontSize: '16px' }}
+                    >
+                      Scheduled activity:
+                    </Tag> {deleteItem.pipelineItems.reduce((acc, value) =>
+                      acc + value.schedules.length, 0)}
+                  </List.Item>
+                </>
+              }
+            </List>
           ) : (
-            <Empty description='no dependent' />
+            <Empty description='No Dependent' />
           )}
-        </div>
+        </>
       </Modal>
     </>
   );
