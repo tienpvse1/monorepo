@@ -25,8 +25,13 @@ export const ListCourse: React.FC<ListCourseProps> = ({
   course,
 }) => {
   // const { data: randomCourse } = useRandomCourse();
-  const handleSubString = (string: string) => {
-    let array = string.split('-');
+
+  const addStr = (str: string, index: number, stringToAdd: string) => {
+    return str.substring(0, index) + stringToAdd + str.substring(index, str.length);
+  }
+
+  const handleSubString = () => {
+    let array = addStr(course.name, course.name.indexOf(' ', 42), "flag").split('flag');
     return (
       <>
         {array[0]}
@@ -58,7 +63,7 @@ export const ListCourse: React.FC<ListCourseProps> = ({
               }}
             >
               {course.name.length >= 50
-                ? handleSubString(course.name)
+                ? handleSubString()
                 : course.name}
               <br />
               <Tag color={'green'}>
@@ -67,7 +72,7 @@ export const ListCourse: React.FC<ListCourseProps> = ({
               <Tag color={'error'}>
                 Unit Price: {numberSeparator(course.price, '.')}đ
               </Tag>
-              {quantity && <Tag color={'geekblue'}>Quantity Orders: {quantity}</Tag>} 
+              {quantity && <Tag color={'geekblue'}>Quantity Orders: {quantity}</Tag>}
               <br />
               <Tag color={'cyan'}>
                 Certificate Exp: {moment(course.certificateExp).format(DEFAULT)}
@@ -103,16 +108,16 @@ export const ListCourse: React.FC<ListCourseProps> = ({
             Subject:
           </span>
         )}
-        pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
+        pagination={false}
         size={'small'}
         rowKey={(record) => record.id}
-        // expandable={{
-        //   expandedRowRender: () => (
-        //     <p style={{ marginLeft: 100, marginTop: 10 }}>
-        //       Suggested course: {randomCourse.name}
-        //     </p>
-        //   ),
-        // }}
+      // expandable={{
+      //   expandedRowRender: () => (
+      //     <p style={{ marginLeft: 100, marginTop: 10 }}>
+      //       Suggested course: {randomCourse.name}
+      //     </p>
+      //   ),
+      // }}
       >
         <Column title='No.' width={50} render={(_, __, index) => ++index} />
         <Column

@@ -1,5 +1,5 @@
 import { envVars } from "@env/var.env"
-import { Avatar, List, Modal, Tag } from "antd"
+import { Avatar, FormInstance, List, Modal, Tag } from "antd"
 import { useHover } from '@mantine/hooks';
 import { FileSearchOutlined } from "@ant-design/icons";
 import { ThemeColor } from "@constance/color";
@@ -17,6 +17,7 @@ interface MyListItemProps {
   onActiveTab: (id: number) => void;
   isActive: (id: number) => boolean;
   index: number;
+  form: FormInstance;
 }
 
 const getItemStyle = () => ({
@@ -28,18 +29,28 @@ export const MyListItem: React.FC<MyListItemProps> = ({
   item,
   onActiveTab,
   isActive,
-  index
+  index,
+  form
 }) => {
 
   const { hovered, ref } = useHover();
   const [isModalVisible, toggleModal] = useToggle();
+
+  const onClickListItem = () => {
+    onActiveTab(index);
+    form.resetFields();
+    form.setFieldsValue({
+      name: item.name,
+      companyName: item.contact.company.id
+    });
+  }
 
   return (
     <>
       <div
         className="my-list-item"
         ref={ref}
-        onClick={() => onActiveTab(index)}
+        onClick={onClickListItem}
       >
         <List.Item style={isActive(index) ? getItemStyle() : {}}>
           <List.Item.Meta

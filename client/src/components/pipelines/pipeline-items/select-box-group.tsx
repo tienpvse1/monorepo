@@ -12,12 +12,14 @@ interface SelectBoxGroupProps {
   contact?: IContact;
   disabledCompany?: boolean;
   disabledContact?: boolean;
+  companyId?: string;
 }
 
 export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
   contact,
   disabledCompany = false,
-  disabledContact = false
+  disabledContact = false,
+  companyId
 }) => {
 
   const [dataContact, setDataContact] = useState<IContact[]>([]);
@@ -29,7 +31,15 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
       const data = companies?.find((value) => value.id === contact?.company?.id)
       setDataContact(data?.contacts);
     }
-  }, [companies])
+    console.log('companyId:', companyId);
+    
+    if (companyId) {
+      const data = companies?.find((value) => value.id === companyId)
+      console.log("companyFind:", data);
+      
+      setDataContact(data?.contacts);
+    }
+  }, [companies, companyId])
 
   const handleSelected = (companyId: string) => {
     const data = companies?.find((value) => companyId === value.id);

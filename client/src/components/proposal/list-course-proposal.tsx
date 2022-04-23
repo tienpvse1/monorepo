@@ -1,7 +1,7 @@
 import { envVars } from "@env/var.env";
 import { useHover } from "@mantine/hooks";
 import { QUERY_RANDOM_COURSE, useRandomCourse } from "@modules/product/query/products.get";
-import { Avatar, List, Modal, Tag } from "antd";
+import { Avatar, FormInstance, List, Modal, Tag } from "antd";
 import { useEffect, useState } from "react";
 import { FileAddOutlined, FileSearchOutlined } from "@ant-design/icons";
 import moment from "moment";
@@ -18,9 +18,11 @@ import { ListCourse } from "@components/opportunity/list-course";
 
 interface ListCourseProposalProps {
   flag: boolean;
+  toggleCreateModal: () => void;
+  form: FormInstance;
 }
 
-export const ListCourseProposal: React.FC<ListCourseProposalProps> = ({ flag = false }) => {
+export const ListCourseProposal: React.FC<ListCourseProposalProps> = ({ flag = false, toggleCreateModal, form }) => {
   const queryClient = useQueryClient();
   const { data, isLoading } = useRandomCourse();
   const { hovered, ref } = useHover();
@@ -42,13 +44,20 @@ export const ListCourseProposal: React.FC<ListCourseProposalProps> = ({ flag = f
     queryClient.refetchQueries(QUERY_RANDOM_COURSE);
   }, [flag])
 
+  const onClickCreate = () => {
+    toggleCreateModal()
+    form.setFieldsValue({
+      courseId: data.id,
+    })
+  }
+
   return (
     <>
       <List
         rowKey={() => nanoid(5)}
         loading={isLoading}
         itemLayout="horizontal"
-        header={<span>List Course Proposal</span>}
+        header={<span style={{fontSize: '16px'}}>List Course Proposal</span>}
         dataSource={[data]}
         size='small'
         renderItem={(item, index) => (
@@ -84,7 +93,7 @@ export const ListCourseProposal: React.FC<ListCourseProposalProps> = ({ flag = f
                     {hovered &&
                       <>
                         <span style={{ float: 'right' }} >
-                          <FileAddOutlined style={{ fontSize: '18px' }} />
+                          <FileAddOutlined  onClick={onClickCreate} style={{ fontSize: '18px' }} />
                         </span>
                         <span style={{ float: 'right', marginRight: '5px' }} >
                           <FileSearchOutlined onClick={() => toggleModal()} style={{ fontSize: '18px' }} />
