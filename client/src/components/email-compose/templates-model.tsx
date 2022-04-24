@@ -46,6 +46,7 @@ export const MyModal: React.FC<ITemplateModel> = ({
         title='Save your template'
         visible={modal === 'saveTemplate'}
         onCancel={() => setModal('false')}
+        okButtonProps={{ style: { display: 'none' } }}
       >
         <TemplateSelection design={design} onClose={handleClose} />
       </Modal>
