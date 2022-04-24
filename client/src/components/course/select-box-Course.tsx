@@ -50,10 +50,11 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
         getMyCoursesById(courseId).then((value) => {
           setCourses([value]);
           ref.current = expectedRevenue / quantityOrder;
+          coursePrice.current = value.price;
           form.setFieldsValue({ expectedRevenue: ref.current })
           setRevenue(expectedRevenue);
           setWaiting(false);
-
+          setDisabled(false);
         });
       } else {
         getCourses('', 5).then((value) => setCourses(value.data));
@@ -111,15 +112,19 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
       <Form.Item
         name='discountCode'
         label='Discount'
+        initialValue={0}
       >
         <Select
           disabled={disabled}
           onChange={(discount: number) => {
             ref.current = coursePrice.current - (coursePrice.current * discount)
             setRevenue(ref.current)
-            form.setFieldsValue({ expectedRevenue: ref.current })
+            form.setFieldsValue({ expectedRevenue: ref.current, quantity: 1 })
           }}
         >
+          <Option key='none' value={0}>
+            None
+          </Option>
           {discount?.map((value) => (
             <Option key={value.id} value={value.discountAmount}>
               <Tag color={'red'}>
