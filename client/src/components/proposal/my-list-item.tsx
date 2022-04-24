@@ -1,5 +1,5 @@
 import { envVars } from "@env/var.env"
-import { Avatar, FormInstance, List, Modal, Tag } from "antd"
+import { Avatar, Button, FormInstance, List, Modal, Tag } from "antd"
 import { useHover } from '@mantine/hooks';
 import { FileSearchOutlined } from "@ant-design/icons";
 import { ThemeColor } from "@constance/color";
@@ -92,8 +92,10 @@ export const MyListItem: React.FC<MyListItemProps> = ({
         width={600}
         bodyStyle={{ height: '450px' }}
         visible={isModalVisible}
-        onOk={toggleModal}
         onCancel={toggleModal}
+        footer={[
+          <Button type="primary" onClick={toggleModal}>OK</Button>
+        ]}
       >
         <ListCourse
           course={item.opportunityRevenue.course}

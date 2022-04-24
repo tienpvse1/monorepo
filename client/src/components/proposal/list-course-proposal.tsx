@@ -1,7 +1,7 @@
 import { envVars } from "@env/var.env";
 import { useHover } from "@mantine/hooks";
 import { QUERY_RANDOM_COURSE, useRandomCourse } from "@modules/product/query/products.get";
-import { Avatar, FormInstance, List, Modal, Tag } from "antd";
+import { Avatar, Button, FormInstance, List, Modal, Tag } from "antd";
 import { useEffect, useState } from "react";
 import { FileAddOutlined, FileSearchOutlined } from "@ant-design/icons";
 import moment from "moment";
@@ -112,10 +112,12 @@ export const ListCourseProposal: React.FC<ListCourseProposalProps> = ({ flag = f
         title="Course Detail"
         style={{ top: 20 }}
         width={600}
-        bodyStyle={{ height: '450px' }}
+        bodyStyle={{ height: '450px', overflowX: 'auto' }}
         visible={isModalVisible}
-        onOk={toggleModal}
         onCancel={toggleModal}
+        footer={[
+          <Button type="primary" onClick={toggleModal}>OK</Button>
+        ]}
       >
         <ListCourse
           course={data}
