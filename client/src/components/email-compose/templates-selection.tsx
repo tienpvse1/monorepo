@@ -22,15 +22,19 @@ export const TemplateSelection: React.FC<TemplateSelectionProps> = ({
   const [name, setName] = useState('');
   if (isLoading) return <Spin size='large' />;
 
+  const handleSave = () => {
+    setClicked(false);
+    mutate({
+      design,
+      name,
+    });
+    setName('');
+    onClose();
+  };
+
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      setClicked(false);
-      mutate({
-        design,
-        name,
-      });
-      setName('');
-      onClose();
+      handleSave();
     }
   };
 
@@ -104,18 +108,27 @@ export const TemplateSelection: React.FC<TemplateSelectionProps> = ({
           Save as
         </Button>
         {clicked && (
-          <Input
-            suffix={
-              <Button
-                icon={<CloseOutlined />}
-                type='link'
-                onClick={toggleClicked}
-              />
-            }
-            onKeyDown={handleKeyDown}
-            onChange={(e) => setName(e.target.value)}
-            placeholder='Basic usage'
-          />
+          <div
+            style={{
+              display: 'flex',
+            }}
+          >
+            <Input
+              suffix={
+                <Button
+                  icon={<CloseOutlined />}
+                  type='link'
+                  onClick={toggleClicked}
+                />
+              }
+              onKeyDown={handleKeyDown}
+              onChange={(e) => setName(e.target.value)}
+              placeholder='Basic usage'
+            />
+            <Button style={{
+              height: '50px'
+            }} onClick={handleSave}>Ok</Button>
+          </div>
         )}
       </div>
     </div>
