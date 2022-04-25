@@ -98,7 +98,7 @@ const EmailCompose: React.FC = () => {
         />
       </Suspense>
       {/* <AutoComplete dataSource={dataSource} /> */}
-
+      <span style={{fontSize: '16px'}}>To: </span>
       <Select
         style={{ width: '100%' }}
         mode='multiple'
@@ -112,8 +112,6 @@ const EmailCompose: React.FC = () => {
         }
         onChange={(value: string) => {
           setTo(value);
-          console.log("value:", value);
-          
         }}
       >
         <Select.OptGroup label='Contacts'>
@@ -129,13 +127,13 @@ const EmailCompose: React.FC = () => {
           ))}
         </Select.OptGroup>
       </Select>
-
+      <br/>
+      <span style={{fontSize: '16px'}}>Subject:</span>
       <Input
         placeholder='Email subject'
         onChange={(e) => setSubject(e.target.value)}
         type='email'
       />
-
       <EmailEditor
         ref={emailEditorRef}
         options={{
