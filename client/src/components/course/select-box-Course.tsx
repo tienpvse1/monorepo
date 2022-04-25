@@ -87,6 +87,7 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
               })
               setRevenue(value.price);
               coursePrice.current = value.price;
+              ref.current = value.price;
               form.resetFields(['discountCode']);
               setDisabled(false);
               setWaiting(false);

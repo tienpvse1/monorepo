@@ -38,6 +38,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
   const handleSubmit = (value: SubmittedObject) => {
     const { quantity, courseId, name, contactId, expectedRevenue } = value;
     const data: ICreatePipelineItemsDto = {
+      priority: 1,
       columnId: pipelineColumnID,
       contactId,
       name,
