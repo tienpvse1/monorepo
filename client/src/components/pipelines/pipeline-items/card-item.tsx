@@ -35,6 +35,7 @@ const Planned = lazy(() => import('@components/schedule/planned'));
 const { Meta } = Card;
 import numberSeparator from 'number-separator';
 import { QUERY_UPCOMING_SCHEDULES } from '@modules/schedule/query/schedule.get';
+import { warningExpectedClosing } from '@util/date';
 
 interface PipelineCardItemProps {
   cardData: IPipelineItem;
@@ -97,15 +98,15 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
           width: '100%',
           height: '100%',
           borderRadius: 5,
-          backgroundColor:
-            new Date(cardData.expectedClosing).getTime() > new Date().getTime()
-              ? 'rgba(255,15,15,0.5)'
-              : moment(cardData.expectedClosing)
-                  .add(7, 'd')
-                  .toDate()
-                  .getTime() > new Date().getTime()
-              ? 'rgba(255,204,0, 0.2)'
-              : 'white',
+          // backgroundColor:
+          //   new Date(cardData.expectedClosing).getTime() > new Date().getTime()
+          //     ? 'rgba(255,15,15,0.5)'
+          //     : moment(cardData.expectedClosing)
+          //       .add(7, 'd')
+          //       .toDate()
+          //       .getTime() > new Date().getTime()
+          //       ? 'rgba(255,204,0, 0.2)'
+          //       : 'white',
           boxShadow: '0px 0px 9px 0px rgba(0, 0, 0, 0.1)',
         }}
       >
@@ -120,6 +121,32 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
                 }}
               >
                 {numberSeparator(cardData.expectedRevenue, '.')}đ
+
+                {!cardData.expectedClosing ?
+                  <Tag
+                    style={{ float: 'right', fontSize: '15px' }}
+                    color='blue'
+                  >
+                    No Closing Date
+                  </Tag>
+                  : new Date(cardData.expectedClosing).getTime() < new Date().getTime()
+                    ?
+                    <Tag
+                      style={{ float: 'right', fontSize: '15px' }}
+                      color='red'
+                    >
+                      Out Of Date
+                    </Tag>
+                    : warningExpectedClosing(cardData.expectedClosing)
+                      ?
+                      <Tag
+                        style={{ float: 'right', fontSize: '15px' }}
+                        color='warning'
+                      >
+                        About To Expire
+                      </Tag>
+                      : ''
+                }
               </div>
               <div style={{ fontSize: 16 }}>{cardData?.contact?.name}</div>
               <Rate

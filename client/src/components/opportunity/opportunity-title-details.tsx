@@ -9,6 +9,7 @@ import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-
 import { useCreateReason } from '@modules/reason/mutation/reason.post';
 import { useLoseOpportunity } from '@modules/pipeline-items/mutation/pipeline-item.patch';
 import numberSeparator from "number-separator";
+import { warningExpectedClosing } from '@util/date';
 
 interface OpportunityTitleDetailsProps {
   opportunity?: IPipelineItem;
@@ -124,6 +125,29 @@ export const OpportunityTitleDetails: React.FC<
               <Descriptions.Item label='Expected closing'>
                 {opportunity.expectedClosing ?
                   moment(new Date(opportunity.expectedClosing)).fromNow() : ''}
+
+                {!opportunity.expectedClosing ?
+                  <Tag style={{ fontSize: '14px' }} color='blue'>
+                    No Closing Date
+                  </Tag> :
+                  new Date(opportunity.expectedClosing).getTime() < new Date().getTime()
+                    ?
+                    <Tag
+                      style={{ fontSize: '14px', marginLeft: '5px' }}
+                      color='red'
+                    >
+                      Out Of Date
+                    </Tag>
+                    : warningExpectedClosing(opportunity.expectedClosing)
+                      ?
+                      <Tag
+                        style={{ fontSize: '14px', marginLeft: '5px' }}
+                        color='warning'
+                      >
+                        About To Expire
+                      </Tag>
+                      : ''
+                }
               </Descriptions.Item>
             </Descriptions>
           </PageHeader>

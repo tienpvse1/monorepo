@@ -7,6 +7,8 @@ import { Button, Card, Form, Input } from 'antd';
 import { FC } from 'react';
 import { useQueryClient } from 'react-query';
 import { SelectBoxGroup } from './select-box-group';
+// import { dateFormat } from '@constance/date-format';
+// const { DEFAULT } = dateFormat;
 
 interface CreateCardItemProps {
   pipelineColumnID: string;
@@ -21,6 +23,7 @@ interface SubmittedObject {
   courseId: string;
   pipelineColumnId: string;
   expectedRevenue: number;
+  expectedClosing: any;
 }
 
 export const CreateCardItem: FC<CreateCardItemProps> = ({
@@ -38,6 +41,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
       columnId: pipelineColumnID,
       contactId,
       name,
+      // expectedClosing: expectedClosing ? expectedClosing.format(DEFAULT) : '',
       expectedRevenue: expectedRevenue ? Number(expectedRevenue) * quantity : 0,
       opportunityRevenue: {
         courseId,
@@ -83,6 +87,15 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
           >
             <Input placeholder='Opportunity name...' />
           </Form.Item>
+
+          {/* <Form.Item
+            name="expectedClosing"
+            label="Close Date"
+            required
+            rules={[isRequired('Close Date is required')]}
+          >
+            <DatePicker style={{ width: '100%' }} />
+          </Form.Item> */}
 
           <SelectBoxCourse form={form} />
 
