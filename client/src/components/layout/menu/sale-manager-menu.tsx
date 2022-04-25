@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
+  AlertOutlined,
   BranchesOutlined,
   CalendarOutlined,
   ContactsOutlined,
@@ -8,7 +9,9 @@ import {
   FundOutlined,
   LineChartOutlined,
   SolutionOutlined,
+  UserDeleteOutlined,
   UserOutlined,
+  WalletOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { ReactNode } from 'react';
@@ -72,6 +75,27 @@ export const SaleManagerMenuSider = ({ style }: SaleManagerSiderProps) => {
       style,
       onClick: () => navigate('/sale-manager/opportunities'),
       icon: <CrownOutlined style={style} />,
+    },
+    {
+      key: 'lost-opportunities',
+      label: 'Lost opportunity',
+      style,
+      onClick: () => navigate('/sale-manager/lost-opportunities'),
+      icon: <UserDeleteOutlined style={style} />,
+    },
+    {
+      key: 'proposal',
+      label: 'Proposal',
+      style,
+      onClick: () => navigate('/sale-manager/proposal'),
+      icon: <AlertOutlined style={style}/>,
+    },
+    {
+      key: 'product',
+      label: 'Courses',
+      style,
+      onClick: () => navigate('/sale-manager/product'),
+      icon: <WalletOutlined style={style} />,
     },
     {
       key: 'sale-manage',

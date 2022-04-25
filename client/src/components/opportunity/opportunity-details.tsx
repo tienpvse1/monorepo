@@ -73,6 +73,9 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
         id: data.id,
         name: value.name,
         priority: value.priority,
+        contactId: value.contactId,
+        //@ts-ignore
+        columnId: data.pipelineColumn.id,
         expectedRevenue: value.expectedRevenue ? Number(value.expectedRevenue) * value.quantity : 0,
         expectedClosing: value.expectedClosing ? value.expectedClosing.format(DEFAULT) : '',
         opportunityRevenue: {

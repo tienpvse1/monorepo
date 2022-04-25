@@ -60,8 +60,8 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
         >
           <DatePicker
             disabled={
-              form.getFieldsValue(['expectedClosing']).expectedClosing !== ''
-                ? true : false
+              form.getFieldsValue(['expectedClosing']).expectedClosing == '' ||
+                form.getFieldsValue(['expectedClosing']).expectedClosing == undefined ? false : true
             }
             style={{ width: '100%' }}
           />
