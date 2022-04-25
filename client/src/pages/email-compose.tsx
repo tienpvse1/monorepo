@@ -31,7 +31,7 @@ const EmailCompose: React.FC = () => {
 
   const { data: tags } = useTagsLike(debouncedFilter);
   const emailEditorRef = useRef<EmailEditor>(null);
-  const [to, setTo] = useState('');
+  const [to, setTo] = useState<any>('');
   const [targets, setTargets] = useState<string[]>([]);
   const [design, setDesign] = useState<Design>();
   const [subject, setSubject] = useState('');
@@ -110,6 +110,11 @@ const EmailCompose: React.FC = () => {
         onDeselect={(value: string) =>
           setTargets((prev) => prev.filter((item) => item !== value))
         }
+        onChange={(value: string) => {
+          setTo(value);
+          console.log("value:", value);
+          
+        }}
       >
         <Select.OptGroup label='Contacts'>
           {dataSource?.map((item) => (
@@ -168,7 +173,7 @@ const EmailCompose: React.FC = () => {
         }}
         onClick={() => {
           modal.warning(
-            warningProps(`this email will be sent to ${to}`, sendEmail)
+            warningProps(`${to.join(', ')}`, sendEmail)
           );
         }}
         type='primary'
