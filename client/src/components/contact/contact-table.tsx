@@ -292,6 +292,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
       <Modal
         onCancel={() => setDeleteItem(null)}
         visible={deleteItem != null}
+        bodyStyle={{height: '220px'}}
         title={
           <span style={{ display: 'flex', alignItems: 'center', fontSize: '18px' }}>
             <ExclamationCircleOutlined
