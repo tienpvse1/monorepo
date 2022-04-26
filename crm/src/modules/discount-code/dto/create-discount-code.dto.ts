@@ -1,5 +1,5 @@
 import { Optional } from '@nestjs/common';
-import { IsNumber, IsString, Length, Max, Min } from 'class-validator';
+import { IsNumber, IsString, Max, Min } from 'class-validator';
 
 export class CreateDiscountCodeDto {
   @IsNumber()
@@ -10,7 +10,6 @@ export class CreateDiscountCodeDto {
   @IsString()
   discount_name: string;
   expired_at: Date;
-  @Length(10)
   @Optional()
   pipeline_item_id?: string;
 }

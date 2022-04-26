@@ -7,6 +7,7 @@ import {
   FieldTimeOutlined,
   FundOutlined,
   LineChartOutlined,
+  PercentageOutlined,
   SolutionOutlined,
   UserOutlined,
 } from '@ant-design/icons';
@@ -95,6 +96,13 @@ export const SaleManagerMenuSider = ({ style }: SaleManagerSiderProps) => {
       icon: <LineChartOutlined style={style} />,
     },
     {
+      key: 'discount',
+      label: 'Discount',
+      style,
+      onClick: () => navigate('/sale-manager/discount'),
+      icon: <PercentageOutlined style={style} />,
+    },
+    {
       key: 'email',
       label: 'Email',
       style,
@@ -110,7 +118,7 @@ export const SaleManagerMenuSider = ({ style }: SaleManagerSiderProps) => {
         />
       ),
     },
-  ]
+  ];
 
   return (
     <>
