@@ -3,6 +3,7 @@ import {
   LineChartOutlined,
   PieChartOutlined,
 } from '@ant-design/icons';
+import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
 import { PageHeader as RootHeader, Radio, Row, Statistic, Tag } from 'antd';
 import { nanoid } from 'nanoid';
 interface PageHeaderProps {
@@ -10,9 +11,15 @@ interface PageHeaderProps {
     React.SetStateAction<'kanban' | 'lineChart' | 'pieChart'>
   >;
   view: 'kanban' | 'lineChart' | 'pieChart';
+  data: IPipelineItem[][];
 }
 
-export const PageHeader: React.FC<PageHeaderProps> = ({ setView, view }) => {
+export const PageHeader: React.FC<PageHeaderProps> = ({ setView, view, data }) => {
+
+  //@ts-ignore
+  const rs = [].concat.apply([], data)
+  const totalRevenue = rs.reduce((acc, value) => acc + value.expectedRevenue, 0)
+
   return (
     <>
       <RootHeader
@@ -61,13 +68,17 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ setView, view }) => {
           <Statistic title='Status' value='Up-to-date' />
           <Statistic
             title='Total'
-            prefix='$'
-            value={10568.08}
+            suffix='vnd'
+            value={totalRevenue}
             style={{
               margin: '0 32px',
             }}
           />
-          <Statistic title='Prorated Revenue' prefix='$' value={3345.08} />
+          <Statistic
+            title='Prorated Revenue'
+            suffix='%'
+            value={Math.round((totalRevenue - (totalRevenue * 0.15)) / (totalRevenue * 0.15) * 100) / 100}
+          />
         </Row>
       </RootHeader>
     </>
