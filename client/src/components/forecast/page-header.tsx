@@ -14,10 +14,10 @@ interface PageHeaderProps {
   data: IPipelineItem[][];
 }
 
-export const PageHeader: React.FC<PageHeaderProps> = ({ setView, view, data }) => {
-
+export const PageHeader: React.FC<PageHeaderProps> = ({ setView, view, data }) => {  
+  const newArray = data.filter((_, index) => index >= 1);
   //@ts-ignore
-  const rs = [].concat.apply([], data)
+  const rs = [].concat.apply([], newArray)
   const totalRevenue = rs.reduce((acc, value) => acc + value.expectedRevenue, 0)
 
   return (
@@ -77,7 +77,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ setView, view, data }) =
           <Statistic
             title='Prorated Revenue'
             suffix='%'
-            value={Math.round((totalRevenue - (totalRevenue * 0.15)) / (totalRevenue * 0.15) * 100) / 100}
+            value={Math.round((totalRevenue - (totalRevenue * 0.06)) / (totalRevenue * 0.06) * 100) / 100}
           />
         </Row>
       </RootHeader>

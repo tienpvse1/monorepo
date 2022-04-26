@@ -49,3 +49,18 @@ export const warningExpectedClosing = (
   afterTime = moment().add(7, 'days')
 ) => moment(expectedClosing, DEFAULT)
   .isBetween(moment(beforeTime, DEFAULT), moment(afterTime, DEFAULT), undefined, '[)')
+
+export const convertNumToDate = (number: number) => {
+  if (number == 1) return 'January';
+  if (number == 2) return 'February';
+  if (number == 3) return 'March';
+  if (number == 4) return 'April';
+  if (number == 5) return 'May';
+  if (number == 6) return 'June';
+  if (number == 7) return 'July';
+  if (number == 8) return 'August';
+  if (number == 9) return 'September';
+  if (number == 10) return 'October';
+  if (number == 11) return 'November';
+  if (number == 12) return 'December';
+};
