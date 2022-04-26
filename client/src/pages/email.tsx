@@ -33,7 +33,7 @@ const Email: React.FC<EmailProps> = ({}) => {
           ]}
         />
       </div>
-      <div style={{width: 'calc(100% - 250px)'}}>
+      <div>
         <Outlet />
       </div>
     </div>

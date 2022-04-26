@@ -98,8 +98,9 @@ const EmailCompose: React.FC = () => {
         />
       </Suspense>
       {/* <AutoComplete dataSource={dataSource} /> */}
-      <span style={{fontSize: '16px'}}>To: </span>
+      {/* <span style={{fontSize: '16px'}}>To: </span> */}
       <Select
+        placeholder={'To: '}
         style={{ width: '100%' }}
         mode='multiple'
         onSearch={(e) => {
@@ -127,12 +128,13 @@ const EmailCompose: React.FC = () => {
           ))}
         </Select.OptGroup>
       </Select>
-      <br/>
-      <span style={{fontSize: '16px'}}>Subject:</span>
+      {/* <br/> */}
+      {/* <span style={{fontSize: '16px'}}>Subject:</span> */}
       <Input
-        placeholder='Email subject'
+        placeholder='Email subject:'
         onChange={(e) => setSubject(e.target.value)}
         type='email'
+        style={{marginTop: '2px'}}
       />
       <EmailEditor
         ref={emailEditorRef}

@@ -31,7 +31,6 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
   const [form] = Form.useForm();
   const params = useParams();
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
-
   const isRoleManager = () => {
     return public_user_info.role.name === 'sale_manager';
   }
@@ -49,7 +48,8 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
       companyName: data.contact.company.id,
       priority: data.priority,
       courseId: data.opportunityRevenue.course?.id,
-      quantity: data.opportunityRevenue.quantity
+      quantity: data.opportunityRevenue.quantity,
+      discountCode: Math.abs(data.expectedRevenue - (data.opportunityRevenue.course.price * data.opportunityRevenue.quantity)) / (data.opportunityRevenue.course.price * data.opportunityRevenue.quantity)
     });
   };
   const handleToggleEditForm2 = () => {
