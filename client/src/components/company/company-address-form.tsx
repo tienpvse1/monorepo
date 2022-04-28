@@ -1,5 +1,5 @@
 import { SelectBoxProvinces } from '@components/signup/select-box-provinces'
-import { isNotWhiteSpace, isPostalCode, isTaxId } from '@constance/rules-of-input-antd';
+import { isNotWhiteSpace, isPostalCode, isTaxId, isRequired } from '@constance/rules-of-input-antd';
 import { useToggle } from '@hooks/useToggle';
 import { Col, Form, FormInstance, Input, Select } from 'antd'
 import { useState } from 'react';
@@ -78,7 +78,8 @@ export const CompanyAddressForm: React.FC<CompanyAddressFormProps> = ({
         <Form.Item
           name="taxId"
           label="Tax ID"
-          rules={[isTaxId]}
+          rules={[isTaxId, isRequired('Tax id is required')]}
+          required
         >
           <Input maxLength={13} />
         </Form.Item>

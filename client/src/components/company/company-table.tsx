@@ -58,9 +58,14 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
       },
       onError: (error: any) => {
         if (error.response) {
-          if (error.response.data.message.includes('Duplicate entry')) {
+          if (error.response.data.message.includes(`Duplicate entry '${rest.name}'`)) {
             Modal.error({
               title: `Company Name already exists !!`,
+              content: 'please try again later...',
+            });
+          } else if (error.response.data.message.includes(`Duplicate entry '${rest.email}'`)) {
+            Modal.error({
+              title: `Company Email already exists !!`,
               content: 'please try again later...',
             });
           } else {

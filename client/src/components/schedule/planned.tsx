@@ -63,7 +63,7 @@ const Planned: React.FC<PlannedProps> = ({
             closable
             closeIcon={
               <CheckCircleOutlined
-                onClick={() => removeSchedule(schedule.id)}
+                onClick={() => removeSchedule({ id: schedule.id, isDone: true })}
                 className="close-icon"
               />
             }
