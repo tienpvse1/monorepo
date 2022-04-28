@@ -2,10 +2,11 @@ import {
   AppstoreOutlined,
   BranchesOutlined,
   CarryOutOutlined,
-  CoffeeOutlined,
+  // CoffeeOutlined,
   MailOutlined,
-  SettingOutlined,
-  SketchOutlined,
+  TagsOutlined,
+  // SettingOutlined,
+  // SketchOutlined,
   TeamOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
@@ -53,7 +54,7 @@ export const AdminMenuSider = ({ style }: MenuSiderAdminProps) => {
           icon={<CarryOutOutlined style={style} />}
           onClick={() => navigate('/administration/activity')}
         >
-          Activity
+          Activity Type
         </Menu.Item>
 
         <Menu.Item
@@ -66,6 +67,15 @@ export const AdminMenuSider = ({ style }: MenuSiderAdminProps) => {
         </Menu.Item>
 
         <Menu.Item
+          key='contact-tags'
+          style={style}
+          onClick={() => navigate('/administration/contact-tags')}
+          icon={<TagsOutlined style={style} />}
+        >
+          Contact Tags
+        </Menu.Item>
+
+        {/* <Menu.Item
           key='claims'
           style={style}
           icon={<SketchOutlined style={style} />}
@@ -85,7 +95,7 @@ export const AdminMenuSider = ({ style }: MenuSiderAdminProps) => {
           icon={<SettingOutlined style={style} />}
         >
           Subscription
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item
           key='email'
           style={style}

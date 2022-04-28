@@ -48,9 +48,6 @@ export const ContactTable: React.FC<ContactTableProps> = ({
 }) => {
   const [deleteItem, setDeleteItem] = useState<IContact>(null);
 
-  console.log('deleteItem:', deleteItem);
-
-
   //CRUD api
   const { mutate: deleteContact } = useDeleteContact(() => {
     client.invalidateQueries([QUERY_CONTACTS, queryKey]);
@@ -59,6 +56,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
   const { mutate: insertContact } = useInsertContact(() => {
     client.invalidateQueries([QUERY_CONTACTS, queryKey]);
     message.success('Create new successfully !');
+    toggleCreateModal();
   });
 
   //filter created by follow account id
@@ -111,6 +109,19 @@ export const ContactTable: React.FC<ContactTableProps> = ({
       ...record,
       companyName: record.companyName,
       birth: record.birth ? record.birth.format(DEFAULT) : '',
+    }, {
+      onError: (error: any) => {
+        if (error.response) {
+          if (error.response.data.message.includes('Duplicate entry')) {
+            Modal.error({
+              title: `Contact Email already exists !!`,
+              content: 'please try again later...',
+            });
+          } else {
+            message.error(`${error}`);
+          }
+        }
+      }
     });
   };
 
@@ -286,12 +297,15 @@ export const ContactTable: React.FC<ContactTableProps> = ({
         callback={handleCreateContact}
         isOpenModal={isOpenModal}
         toggleCreateModal={toggleCreateModal}
+        autoToggleModel={false}
+        autoResetFields={false}
       >
         <CreateContactForm />
       </CreateModal>
       <Modal
         onCancel={() => setDeleteItem(null)}
         visible={deleteItem != null}
+        bodyStyle={{ height: '220px' }}
         title={
           <span style={{ display: 'flex', alignItems: 'center', fontSize: '18px' }}>
             <ExclamationCircleOutlined

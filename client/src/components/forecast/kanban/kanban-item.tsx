@@ -78,9 +78,7 @@ export const KanBanItem = (
                     description='This is the description'
                     avatar={
                       <Avatar
-                        src={
-                          item.photo ? item.photo : 'https://i.pravatar.cc/200'
-                        }
+                        src={item.account.photo}
                       />
                     }
                   ></Card.Meta>

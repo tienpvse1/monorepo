@@ -9,4 +9,5 @@ export interface ISchedule extends IBase {
   dueDate: string;
   account: IAccount;
   pipelineItem: IPipelineItem;
+  isDone: boolean;
 }

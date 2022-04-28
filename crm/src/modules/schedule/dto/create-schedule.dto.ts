@@ -16,6 +16,8 @@ export class CreateScheduleDto {
   summary: string;
   @Optional()
   note: string;
+  @Optional()
+  isDone: boolean;
   @IsDate()
   dueDate: Date;
   accountId: string;

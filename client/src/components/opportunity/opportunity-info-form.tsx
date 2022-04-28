@@ -15,6 +15,7 @@ interface OpportunityInfoFormProps {
   form: FormInstance;
   expectedRevenue?: number;
   companyId?: string;
+  autoFocusInputName?: boolean;
 }
 
 export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
@@ -26,8 +27,12 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
   companyId,
   quantityOrder = 1,
   expectedRevenue = 0,
+  autoFocusInputName = false,
   form
 }) => {
+
+  console.log("test:", form.getFieldsValue(['expectedClosing']));
+
 
   return (
     <>
@@ -37,7 +42,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
           label="Name"
           required
           rules={[isRequired('Opportunity name is required'), isNotWhiteSpace]}>
-          <Input autoFocus/>
+          <Input autoFocus={autoFocusInputName} />
         </Form.Item>
 
         <SelectBoxGroup
@@ -53,7 +58,13 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
           required
           rules={[isRequired('Close Date is required')]}
         >
-          <DatePicker style={{ width: '100%' }} />
+          <DatePicker
+            disabled={
+              form.getFieldsValue(['expectedClosing']).expectedClosing == '' ||
+                form.getFieldsValue(['expectedClosing']).expectedClosing == undefined ? false : true
+            }
+            style={{ width: '100%' }}
+          />
         </Form.Item>
         {showStageInput &&
           <Form.Item name='priority' label='Priority' initialValue={1}>

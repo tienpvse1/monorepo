@@ -28,6 +28,9 @@ export class Schedule extends BaseEntity {
   @Column({ type: 'longtext', nullable: true })
   note: string;
 
+  @Column({ default: false })
+  isDone: boolean;
+
   @ManyToOne(() => Account, (account) => account.schedules, {
     cascade: ['insert'],
     onUpdate: 'CASCADE',
