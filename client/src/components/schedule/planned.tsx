@@ -12,6 +12,10 @@ import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.ent
 import { useRemoveSchedule } from '@modules/schedule/mutation/schedule.delete';
 import { Alert, Button } from 'antd';
 import moment from 'moment';
+import { client } from '../../App';
+import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
+import { QUERY_UPCOMING_SCHEDULES } from '@modules/schedule/query/schedule.get';
+
 interface PlannedProps {
   toggleDropdown: () => void;
   cardData: IPipelineItem;
@@ -40,35 +44,43 @@ const Planned: React.FC<PlannedProps> = ({
       <div className='planned-title'>Planned</div>
 
       <div className='planned-list'>
-        {cardData.schedules.map((schedule) => (
-          <Alert
-            key={schedule.id}
-            className='planned-items'
-            message={schedule.summary}
-            description={
-              <>Due {moment(new Date(schedule.dueDate)).fromNow()}</>
-            }
-            type={
-              schedule.type == 'todo' && 'info' ||
-              schedule.type == 'email' && 'error' ||
-              schedule.type == 'meeting' && 'warning' || 'success'
-            }
-            showIcon
-            icon={
-              schedule.type == 'todo' && <FileTextOutlined /> ||
-              schedule.type == 'email' && <MailOutlined /> ||
-              schedule.type == 'meeting' && <CoffeeOutlined /> ||
-              schedule.type == 'call' && <PhoneOutlined /> || <PushpinOutlined />
-            }
-            closable
-            closeIcon={
-              <CheckCircleOutlined
-                onClick={() => removeSchedule({ id: schedule.id, isDone: true })}
-                className="close-icon"
-              />
-            }
-          />
-        ))}
+        {cardData.schedules.map((schedule) => {
+          if (schedule.isDone === false) {
+            return <Alert
+              key={schedule.id}
+              className='planned-items'
+              message={schedule.summary}
+              description={
+                <>Due {moment(new Date(schedule.dueDate)).fromNow()}</>
+              }
+              type={
+                schedule.type == 'todo' && 'info' ||
+                schedule.type == 'email' && 'error' ||
+                schedule.type == 'meeting' && 'warning' || 'success'
+              }
+              showIcon
+              icon={
+                schedule.type == 'todo' && <FileTextOutlined /> ||
+                schedule.type == 'email' && <MailOutlined /> ||
+                schedule.type == 'meeting' && <CoffeeOutlined /> ||
+                schedule.type == 'call' && <PhoneOutlined /> || <PushpinOutlined />
+              }
+              closable
+              closeIcon={
+                <CheckCircleOutlined
+                  onClick={() => removeSchedule({ id: schedule.id, isDone: true }, {
+                    onSuccess: () => {
+                      client.refetchQueries(GET_PIPELINE_DESIGN);
+                      client.refetchQueries(QUERY_UPCOMING_SCHEDULES);
+                    }
+                  })}
+                  className="close-icon"
+                />
+              }
+            />
+          }
+        }
+        )}
       </div>
 
       <Button

@@ -62,7 +62,11 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
       pipelineItemId: cardData.id,
     };
     mutate(schedule, {
-      onSettled: () => {
+      // onSettled: () => {
+      //   client.refetchQueries(GET_PIPELINE_DESIGN);
+      //   client.refetchQueries(QUERY_UPCOMING_SCHEDULES);
+      // },
+      onSuccess: () => {
         client.refetchQueries(GET_PIPELINE_DESIGN);
         client.refetchQueries(QUERY_UPCOMING_SCHEDULES);
       },
@@ -196,7 +200,8 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
                             fontSize: 18,
                             cursor: 'pointer',
                             color:
-                              cardData.schedules?.length > 0 ? '#FFB300' : '',
+                              (cardData.schedules?.length > 0 && cardData.schedules.some((value) => value.isDone === false)) ?
+                                '#FFB300' : '',
                           }}
                         />
                       </Dropdown>
