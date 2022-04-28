@@ -49,8 +49,7 @@ export const ContactInfoForm = () => {
         <Form.Item
           name="phone"
           label="Phone"
-          required
-          rules={[isRequired('Phone is required'), isPhoneNumber]}
+          rules={[isPhoneNumber]}
         >
           <Input />
         </Form.Item>

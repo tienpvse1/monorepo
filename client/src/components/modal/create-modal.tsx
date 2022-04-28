@@ -11,6 +11,7 @@ interface CreateModalProps {
   hasSubmitMethod?: () => void;
   autoToggleModel?: boolean;
   autoResetFields?: boolean;
+  destroyOnClose?: boolean;
 }
 
 export const CreateModal: React.FC<CreateModalProps> = ({
@@ -24,7 +25,8 @@ export const CreateModal: React.FC<CreateModalProps> = ({
   hasForm = false,
   hasSubmitMethod,
   autoToggleModel = true,
-  autoResetFields = true
+  autoResetFields = true,
+  destroyOnClose = false
 }) => {
   const [form] = Form.useForm<any>();
 
@@ -37,6 +39,7 @@ export const CreateModal: React.FC<CreateModalProps> = ({
 
   return (
     <Modal
+      destroyOnClose={destroyOnClose}
       className='modal-create'
       title={<h2 style={{ textAlign: 'center' }}>{title}</h2>}
       centered

@@ -49,25 +49,21 @@ export class ContactService extends BaseService<Contact> {
           type: 'company',
         })
         .save();
-      const { id } = await this.repository
-        .create({
-          ...rest,
-          company,
-          account,
-          tags,
-        })
-        .save();
-      return id;
+      const result = await this.createItem({
+        ...rest,
+        company,
+        account,
+        tags,
+      });
+      return result;
     } else {
-      const { id } = await this.repository
-        .create({
-          ...rest,
-          company,
-          account,
-          tags,
-        })
-        .save();
-      return id;
+      const result = await this.createItem({
+        ...rest,
+        company,
+        account,
+        tags,
+      });
+      return result;
     }
   }
   async createManyContact(
@@ -87,10 +83,10 @@ export class ContactService extends BaseService<Contact> {
         const tags = await tagRepository.find({
           where: { id: In(dto.tagIds) },
         });
-        const id = await this.createContact(dto, creator, tags);
+        const { id } = await this.createContact(dto, creator, tags);
         ids.push(id);
       } else {
-        const id = await this.createContact(dto, creator, []);
+        const { id } = await this.createContact(dto, creator, []);
         ids.push(id);
       }
     }

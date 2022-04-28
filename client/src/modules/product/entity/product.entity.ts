@@ -18,12 +18,14 @@ export interface CourseData {
   endDate: string;
   companyId?: any;
   numberOfTrainee: number;
+  number_of_trainee: number;
   price: number;
   certificateExp: string;
   courseTypeId: number;
   isActive: boolean;
   isDeleted: boolean;
   course_Detail: course_Detail[];
+  course_detail: course_Detail[];
 }
 
 export interface subjectDetail {

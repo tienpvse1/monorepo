@@ -5,4 +5,5 @@ export interface ICreateScheduleDto {
   dueDate: Date;
   accountId: string;
   pipelineItemId: string;
+  isDone: boolean;
 }

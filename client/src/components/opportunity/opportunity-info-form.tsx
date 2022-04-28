@@ -13,7 +13,9 @@ interface OpportunityInfoFormProps {
   courseId?: string;
   quantityOrder?: number;
   form: FormInstance;
-  expectedRevenue: number;
+  expectedRevenue?: number;
+  companyId?: string;
+  autoFocusInputName?: boolean;
 }
 
 export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
@@ -22,10 +24,15 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
   disabledCompany = false,
   disabledContact = false,
   courseId,
+  companyId,
   quantityOrder = 1,
   expectedRevenue = 0,
+  autoFocusInputName = false,
   form
 }) => {
+
+  console.log("test:", form.getFieldsValue(['expectedClosing']));
+
 
   return (
     <>
@@ -35,13 +42,14 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
           label="Name"
           required
           rules={[isRequired('Opportunity name is required'), isNotWhiteSpace]}>
-          <Input />
+          <Input autoFocus={autoFocusInputName} />
         </Form.Item>
 
         <SelectBoxGroup
           disabledContact={disabledContact}
           disabledCompany={disabledCompany}
           contact={contact}
+          companyId={companyId}
         />
 
         <Form.Item
@@ -50,25 +58,47 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
           required
           rules={[isRequired('Close Date is required')]}
         >
-          <DatePicker style={{ width: '100%' }} />
+          <DatePicker
+            disabled={
+              form.getFieldsValue(['expectedClosing']).expectedClosing == '' ||
+                form.getFieldsValue(['expectedClosing']).expectedClosing == undefined ? false : true
+            }
+            style={{ width: '100%' }}
+          />
         </Form.Item>
-        {showStageInput && <SelectBoxStage />}
+        {showStageInput &&
+          <Form.Item name='priority' label='Priority' initialValue={1}>
+            <Select>
+              <Select.Option value={2}>
+                <Badge color={'red'} text='Important' />
+              </Select.Option>
+              <Select.Option value={1}>
+                <Badge color={'yellow'} text='Medium' />
+              </Select.Option>
+              <Select.Option value={0}>
+                <Badge color={'blue'} text='Low' />
+              </Select.Option>
+            </Select>
+          </Form.Item>}
+
       </Col>
       <Col span={12}>
 
-        <Form.Item name='priority' label='Priority' initialValue={1}>
-          <Select>
-            <Select.Option value={2}>
-              <Badge color={'red'} text='Important' />
-            </Select.Option>
-            <Select.Option value={1}>
-              <Badge color={'yellow'} text='Medium' />
-            </Select.Option>
-            <Select.Option value={0}>
-              <Badge color={'blue'} text='Low' />
-            </Select.Option>
-          </Select>
-        </Form.Item>
+        {showStageInput ? <SelectBoxStage /> :
+          <Form.Item name='priority' label='Priority' initialValue={1}>
+            <Select>
+              <Select.Option value={2}>
+                <Badge color={'red'} text='Important' />
+              </Select.Option>
+              <Select.Option value={1}>
+                <Badge color={'yellow'} text='Medium' />
+              </Select.Option>
+              <Select.Option value={0}>
+                <Badge color={'blue'} text='Low' />
+              </Select.Option>
+            </Select>
+          </Form.Item>
+        }
 
         <Form.Item
           name="expectedRevenue"

@@ -229,6 +229,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
         pipelineId={data?.id}
       />
       <CreateModal
+        destroyOnClose={true}
         title="Successful Confirmation"
         bodyStyle={{ height: '260px' }}
         width={900}

@@ -26,7 +26,7 @@ export const authService = async (dto: {
   password: string;
 }) => {
   const { data } = await axios.post<ICourseAuthResult>(
-    'http://smapi.hisoft.vn/api/users/login',
+    'https://smapi.vjaa.edu.vn/api/users/login',
     dto
   );
   return data;

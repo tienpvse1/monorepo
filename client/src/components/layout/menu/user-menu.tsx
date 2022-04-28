@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
+  AlertOutlined,
   BranchesOutlined,
   CalendarOutlined,
   ContactsOutlined,
@@ -10,7 +11,7 @@ import {
   LineChartOutlined,
   SketchOutlined,
   SolutionOutlined,
-  TagOutlined,
+  // TagOutlined,
   UserDeleteOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
@@ -85,6 +86,13 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       icon: <UserDeleteOutlined style={style} />,
     },
     {
+      key: 'proposal',
+      label: 'Proposal',
+      style,
+      onClick: () => navigate('/proposal'),
+      icon: <AlertOutlined style={style}/>,
+    },
+    {
       key: 'product',
       label: 'Courses',
       style,
@@ -128,13 +136,13 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
         />
       ),
     },
-    {
-      key: 'tag',
-      label: 'Tags',
-      style,
-      onClick: () => navigate('/tag'),
-      icon: <TagOutlined style={style} />,
-    },
+    // {
+    //   key: 'tag',
+    //   label: 'Tags',
+    //   style,
+    //   onClick: () => navigate('/tag'),
+    //   icon: <TagOutlined style={style} />,
+    // },
     {
       key: 'rank',
       label: 'Rank',

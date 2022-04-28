@@ -1,5 +1,6 @@
 import { SelectBoxCourse } from '@components/course/select-box-Course';
 import { isRequired } from '@constance/rules-of-input-antd';
+import { useSendEmail } from '@modules/email/mutate/email.post';
 import { ICreatePipelineItemsDto } from '@modules/pipeline-items/dto/create-pipeline-items.dto';
 import { useCreateNewItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
@@ -7,6 +8,8 @@ import { Button, Card, Form, Input } from 'antd';
 import { FC } from 'react';
 import { useQueryClient } from 'react-query';
 import { SelectBoxGroup } from './select-box-group';
+// import { dateFormat } from '@constance/date-format';
+// const { DEFAULT } = dateFormat;
 
 interface CreateCardItemProps {
   pipelineColumnID: string;
@@ -21,6 +24,8 @@ interface SubmittedObject {
   courseId: string;
   pipelineColumnId: string;
   expectedRevenue: number;
+  expectedClosing: any;
+  contactEmail: string;
 }
 
 export const CreateCardItem: FC<CreateCardItemProps> = ({
@@ -30,14 +35,19 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
   const { mutate: createNewItems } = useCreateNewItems();
   const [form] = Form.useForm<SubmittedObject>();
   const queryClient = useQueryClient();
+  const onError = () => {
 
+  }
+  const { mutate: sendEmail } = useSendEmail(onError);
 
   const handleSubmit = (value: SubmittedObject) => {
-    const { quantity, courseId, name, contactId, expectedRevenue } = value;
+    const { quantity, courseId, name, contactId, expectedRevenue, contactEmail } = value;
     const data: ICreatePipelineItemsDto = {
+      priority: 1,
       columnId: pipelineColumnID,
       contactId,
       name,
+      // expectedClosing: expectedClosing ? expectedClosing.format(DEFAULT) : '',
       expectedRevenue: expectedRevenue ? Number(expectedRevenue) * quantity : 0,
       opportunityRevenue: {
         courseId,
@@ -48,6 +58,16 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
       onSuccess: () => {
         queryClient.refetchQueries(GET_PIPELINE_DESIGN);
         queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
+        sendEmail({
+          subject: 'Test send mail after save discount',
+          to: [{ email: contactEmail, isTag: false }],
+          value: `test send email after save discount`
+        }, {
+          onSuccess: () => {
+            console.log('send email success !')
+          }
+        })
+
         toggleClose();
       },
     });
@@ -73,7 +93,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
           onFinish={(value) => handleSubmit(value)}
         >
 
-          <SelectBoxGroup />
+          <SelectBoxGroup form={form} />
 
           <Form.Item
             label='Opportunity'
@@ -83,6 +103,15 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
           >
             <Input placeholder='Opportunity name...' />
           </Form.Item>
+
+          {/* <Form.Item
+            name="expectedClosing"
+            label="Close Date"
+            required
+            rules={[isRequired('Close Date is required')]}
+          >
+            <DatePicker style={{ width: '100%' }} />
+          </Form.Item> */}
 
           <SelectBoxCourse form={form} />
 

@@ -12,7 +12,7 @@ const cleanData = (data: IOpportunityHistory[]) => {
   const result: IOpportunityHistory[] = [];
   for (const history of data) {
     const itemInResult = result.find(
-      (item) => item.pipelineItem.id === history.pipelineItem.id
+      (item) => item.pipelineItem.id === history.pipelineItem?.id
     );
     if (!itemInResult) result.push(history);
   }

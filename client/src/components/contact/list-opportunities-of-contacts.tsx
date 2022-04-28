@@ -1,11 +1,15 @@
 import { dateFormat } from '@constance/date-format'
 import { envVars } from '@env/var.env'
 import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity'
-import { Table } from 'antd'
+import { Table, Tag } from 'antd'
 import Column from 'antd/lib/table/Column'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 const { DEFAULT } = dateFormat;
+import { removeDuplicate } from '@util/array';
+import { useState } from 'react'
+import numberSeparator from "number-separator";
+
 interface ListOfContactOpportunitiesProps {
   dataSource: IPipelineItem[]
 }
@@ -13,6 +17,17 @@ interface ListOfContactOpportunitiesProps {
 export const ListOpportunitiesOfContacts: React.FC<ListOfContactOpportunitiesProps> = ({
   dataSource
 }) => {
+
+  const [expectedRevenue, setExpectedRevenue] = useState(() => {
+    return dataSource.reduce((acc, value) => acc + value.expectedRevenue, 0);
+  });
+
+  //filter stage
+  const stageFilter = dataSource?.map((opportunity) => ({
+    text: opportunity.pipelineColumn?.name,
+    value: opportunity.pipelineColumn?.name,
+  }));
+
   return (
     <Table
       dataSource={dataSource}
@@ -39,16 +54,33 @@ export const ListOpportunitiesOfContacts: React.FC<ListOfContactOpportunitiesPro
       pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
       size={'small'}
       rowKey={(record) => record.id}
+      onChange={(_, __, ___, extra) => {
+        setExpectedRevenue(extra.currentDataSource.reduce((acc, value) =>
+          acc + value.expectedRevenue, 0))
+      }}
+      footer={() => (
+        <div style={{ marginTop: '5px' }}>
+          <Tag style={{ fontSize: '16px' }}>Total Estimated Revenue: </Tag>
+          <span style={{ fontSize: '16px' }}>{numberSeparator(expectedRevenue, '.')}đ</span>
+        </div>
+      )}
+      expandedRowRender={(record) =>
+        <span>Expected Revenue: {numberSeparator(record.expectedRevenue, '.')}đ</span>}
+      expandable={{
+        columnWidth: 35
+      }}
     >
       <Column
         title="No."
         width={50}
         render={(_, __, index) => (++index)}
       />
+
       <Column
         title="Name"
         dataIndex="name"
         key="name"
+        // width={150}
         render={(_, record: IPipelineItem) => (
           <Link className="my-link" to={`/opportunities/view-details/${record.id}`} >{record.name}</Link>
         )}
@@ -56,18 +88,38 @@ export const ListOpportunitiesOfContacts: React.FC<ListOfContactOpportunitiesPro
       />
 
       <Column
-        title='Is Lost'
+        title='Stage'
+        dataIndex='stage'
+        key='stage'
+        width={80}
+        render={(_, record: IPipelineItem) => (
+          <Link className='my-link' to={`view-details/${record.id}`}>
+            {record.pipelineColumn.name}
+          </Link>
+        )}
+        filters={removeDuplicate(stageFilter, 'value')}
+        onFilter={(value, record) =>
+          record.pipelineColumn.name.indexOf(value as string) === 0
+        }
+      />
+
+      <Column
+        title='Status'
         dataIndex='isLose'
         key='isLose'
-        width={100}
+        width={80}
         render={(_, record: IPipelineItem) => (
-          <span>{record.isLose ? 'Yes' : 'No'}</span>
+          <Tag
+            color={record.isLose ? 'default' : 'green'}
+          >
+            {record.isLose ? 'Lost' : 'Alive'}
+          </Tag>
         )}
         filters={[{
-          text: 'Yes',
+          text: 'Lost',
           value: true
         }, {
-          text: 'No',
+          text: 'Alive',
           value: false
         }]}
         onFilter={(value, record) => record.isLose === value}
@@ -77,6 +129,7 @@ export const ListOpportunitiesOfContacts: React.FC<ListOfContactOpportunitiesPro
         title="Assigned date"
         dataIndex="createdAt"
         key="createdAt"
+        width={130}
         render={(_, record: IPipelineItem) => (
           <Link className="my-link" to={`/opportunities/view-details/${record.id}`} >{moment(record.createdAt).format(DEFAULT)}</Link>
         )}
@@ -88,6 +141,7 @@ export const ListOpportunitiesOfContacts: React.FC<ListOfContactOpportunitiesPro
         title="Close Date"
         dataIndex="expectedClosing"
         key="expectedClosing"
+        width={110}
         render={(_, record: IPipelineItem) => (
           <Link className="my-link" to={`/opportunities/view-details/${record.id}`} >{record.expectedClosing}</Link>
         )}

@@ -31,7 +31,7 @@ interface OpportunitiesTableProps {
   searchMethod: (text: string, id?: string) => Promise<any>;
 }
 
-interface SubmitFormCreateOpportunity {
+export interface SubmitFormCreateOpportunity {
   columnId: string;
   contactId: string;
   expectedClosing: string | any;
@@ -44,6 +44,7 @@ interface SubmitFormCreateOpportunity {
   saleTeam: number;
   courseId: string;
   priority: number;
+  companyName: string;
 }
 
 export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({

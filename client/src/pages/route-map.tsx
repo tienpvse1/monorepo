@@ -30,7 +30,7 @@ const Opportunities = lazy(() => import('@pages/opportunities'));
 const LostOpportunity = lazy(() => import('./lost-opportunity'));
 const SentItem = lazy(() => import('@components/sent-email/item'));
 const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
-const ManagerContact = lazy(() => import('./sale-manager/contacts'));
+// const ManagerContact = lazy(() => import('./sale-manager/contacts'));
 const ManagerStatistic = lazy(() => import('./sale-manager/statistic'));
 const ListSentEmails = lazy(() => import('@components/sent-email/list'));
 const SoldCoursesStatistic = lazy(
@@ -88,9 +88,10 @@ const ListAllOpportunityLost = lazy(
 );
 const MyCalendar = lazy(() => import('@components/schedule/calendar'));
 const ListSchedule = lazy(() => import('@components/schedule/list'));
-const Rank = lazy(
-  () => import('@pages/rank')
-);
+const Rank = lazy(() => import('@pages/rank'));
+const Proposal = lazy(() => import('@pages/proposal'));
+
+
 export const route: RouteObject[] = [
   {
     path: '/login',
@@ -143,6 +144,10 @@ export const route: RouteObject[] = [
       {
         path: 'schedule',
         element: <MyCalendar />,
+      },
+      {
+        path: 'proposal',
+        element: <Proposal />
       },
       {
         path: 'statistic',
@@ -288,6 +293,10 @@ export const route: RouteObject[] = [
         path: '/administration/email',
         element: <EmailDesign />,
       },
+      {
+        path: 'contact-tags',
+        element: <Tag />,
+      },
     ],
   },
 
@@ -375,6 +384,18 @@ export const route: RouteObject[] = [
             element: <ViewOpportunityDetails />,
           },
         ],
+      },
+      {
+        path: 'lost-opportunities',
+        element: <LostOpportunity />,
+      },
+      {
+        path: 'proposal',
+        element: <Proposal />
+      },
+      {
+        path: 'product',
+        element: <Product />,
       },
       {
         path: 'forecast',

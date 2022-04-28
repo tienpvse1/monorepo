@@ -3,7 +3,7 @@ import { isRequired } from "@constance/rules-of-input-antd";
 import { Role } from "@interfaces/type-roles";
 import { useCompanies } from "@modules/company/query/company.get";
 import { IContact } from "@modules/contact/entity/contact.entity";
-import { Form, Select } from "antd"
+import { Form, FormInstance, Select } from "antd"
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 const { Option } = Select;
@@ -12,12 +12,16 @@ interface SelectBoxGroupProps {
   contact?: IContact;
   disabledCompany?: boolean;
   disabledContact?: boolean;
+  companyId?: string;
+  form?: FormInstance;
 }
 
 export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
   contact,
   disabledCompany = false,
-  disabledContact = false
+  disabledContact = false,
+  companyId,
+  form
 }) => {
 
   const [dataContact, setDataContact] = useState<IContact[]>([]);
@@ -29,7 +33,11 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
       const data = companies?.find((value) => value.id === contact?.company?.id)
       setDataContact(data?.contacts);
     }
-  }, [companies])
+    if (companyId) {
+      const data = companies?.find((value) => value.id === companyId)
+      setDataContact(data?.contacts);
+    }
+  }, [companies, companyId])
 
   const handleSelected = (companyId: string) => {
     const data = companies?.find((value) => companyId === value.id);
@@ -67,6 +75,12 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
           showSearch
           placeholder='Select a contact'
           optionFilterProp='children'
+          onChange={(_, value) => {
+            form.setFieldsValue({
+              //@ts-ignore
+              contactEmail: value.children[2]
+            })
+          }}
         >
           {dataContact?.map((contact) => (
             <Option key={contact.id} value={`${contact.id}`}>
@@ -74,6 +88,10 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
             </Option>
           ))}
         </Select>
+      </Form.Item>
+
+      <Form.Item name='contactEmail' style={{ display: 'none' }}>
+
       </Form.Item>
     </>
   )
