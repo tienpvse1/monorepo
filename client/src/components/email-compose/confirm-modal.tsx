@@ -25,5 +25,6 @@ export const warningProps = (
 ): ModalFuncProps => ({
   ...commonModalProps,
   content,
+  title: 'This email will be sent to',
   onOk,
 });

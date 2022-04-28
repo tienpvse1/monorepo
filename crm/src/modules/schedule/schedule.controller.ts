@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Param,
+  Patch,
   Post,
   UsePipes,
 } from '@nestjs/common';
@@ -38,7 +39,7 @@ import { ScheduleService } from './schedule.service';
     },
   },
   routes: {
-    exclude: ['createOneBase', 'deleteOneBase'],
+    exclude: ['createOneBase', 'deleteOneBase', 'updateOneBase'],
     updateOneBase: {
       decorators: [HistoryLog('updated an scheduled activity')],
     },
@@ -65,5 +66,10 @@ export class ScheduleController {
   @HistoryLog('Deleted an activity')
   delete(@Param('id') id: string) {
     return this.service.softDelete(id);
+  }
+
+  @Patch(':id')
+  updateSchedule(@Param('id') id: string, @Body() dto: UpdateScheduleDto) {
+    return this.service.update(id, dto);
   }
 }

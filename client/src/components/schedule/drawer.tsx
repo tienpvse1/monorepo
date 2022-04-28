@@ -14,6 +14,8 @@ export const ScheduleDrawer: React.FC<ScheduleDrawerProps> = ({
   isVisible,
   toggle,
 }) => {
+  console.log('schedule:', data);
+  
   return (
     <Drawer
       title='Upcoming activities'
@@ -28,15 +30,19 @@ export const ScheduleDrawer: React.FC<ScheduleDrawerProps> = ({
               marginTop: 15,
             }}
             message={
-              <span style={{ fontSize: '17px' }}>
-                {schedule.type.toUpperCase()}
-              </span>
+              <>
+                <span style={{ fontSize: '17px' }}>
+                  {schedule.type.toUpperCase()}
+                </span>
+                <span style={{float: 'right'}}>{schedule.pipelineItem.name}</span>
+              </>
             }
             description={
               <>
                 <span style={{ fontSize: '16px' }}>
                   {schedule.summary}
                 </span> <br />
+
                 <span style={{ fontSize: '12px', float: 'right' }}>
                   Due {moment(new Date(schedule.dueDate)).fromNow()}
                 </span>

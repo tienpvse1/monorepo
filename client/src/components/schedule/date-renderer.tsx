@@ -28,7 +28,7 @@ export const DateRenderer: React.FC<DateRendererProps> = ({ value, data }) => {
     <ul className='events'>
       {listData.map((item) => (
         <li key={item.id}>
-          <Badge status={'processing'} text={item.summary} />
+          <Badge color={item.isDone ? 'green' : ''} status={'processing'} text={item.summary} />
         </li>
       ))}
     </ul>

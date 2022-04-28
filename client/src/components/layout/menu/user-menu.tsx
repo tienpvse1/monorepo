@@ -11,7 +11,7 @@ import {
   LineChartOutlined,
   SketchOutlined,
   SolutionOutlined,
-  TagOutlined,
+  // TagOutlined,
   UserDeleteOutlined,
   WalletOutlined,
 } from '@ant-design/icons';
@@ -136,13 +136,13 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
         />
       ),
     },
-    {
-      key: 'tag',
-      label: 'Tags',
-      style,
-      onClick: () => navigate('/tag'),
-      icon: <TagOutlined style={style} />,
-    },
+    // {
+    //   key: 'tag',
+    //   label: 'Tags',
+    //   style,
+    //   onClick: () => navigate('/tag'),
+    //   icon: <TagOutlined style={style} />,
+    // },
     {
       key: 'rank',
       label: 'Rank',

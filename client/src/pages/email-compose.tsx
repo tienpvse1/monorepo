@@ -31,7 +31,7 @@ const EmailCompose: React.FC = () => {
 
   const { data: tags } = useTagsLike(debouncedFilter);
   const emailEditorRef = useRef<EmailEditor>(null);
-  const [to, setTo] = useState('');
+  const [to, setTo] = useState<any>('');
   const [targets, setTargets] = useState<string[]>([]);
   const [design, setDesign] = useState<Design>();
   const [subject, setSubject] = useState('');
@@ -98,8 +98,9 @@ const EmailCompose: React.FC = () => {
         />
       </Suspense>
       {/* <AutoComplete dataSource={dataSource} /> */}
-
+      {/* <span style={{fontSize: '16px'}}>To: </span> */}
       <Select
+        placeholder={'To: '}
         style={{ width: '100%' }}
         mode='multiple'
         onSearch={(e) => {
@@ -110,6 +111,9 @@ const EmailCompose: React.FC = () => {
         onDeselect={(value: string) =>
           setTargets((prev) => prev.filter((item) => item !== value))
         }
+        onChange={(value: string) => {
+          setTo(value);
+        }}
       >
         <Select.OptGroup label='Contacts'>
           {dataSource?.map((item) => (
@@ -124,13 +128,14 @@ const EmailCompose: React.FC = () => {
           ))}
         </Select.OptGroup>
       </Select>
-
+      {/* <br/> */}
+      {/* <span style={{fontSize: '16px'}}>Subject:</span> */}
       <Input
-        placeholder='Email subject'
+        placeholder='Email subject:'
         onChange={(e) => setSubject(e.target.value)}
         type='email'
+        style={{marginTop: '2px'}}
       />
-
       <EmailEditor
         ref={emailEditorRef}
         options={{
@@ -168,7 +173,7 @@ const EmailCompose: React.FC = () => {
         }}
         onClick={() => {
           modal.warning(
-            warningProps(`this email will be sent to ${to}`, sendEmail)
+            warningProps(`${to.join(', ')}`, sendEmail)
           );
         }}
         type='primary'

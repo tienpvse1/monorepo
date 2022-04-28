@@ -12,6 +12,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  Index,
 } from 'typeorm';
 
 @Entity({ name: 'contact' })
@@ -26,6 +27,7 @@ export class Contact extends BaseEntity {
   phone: string;
 
   @Column({ nullable: true })
+  @Index({ unique: true })
   email: string;
   @Column({
     default:

@@ -60,9 +60,9 @@ export const MyListItem: React.FC<MyListItemProps> = ({
                 <a onClick={toggleModal}>
                   {item.opportunityRevenue.course.name}
                 </a> <br />
-                <Tag color='volcano'>
+                {/* <Tag color='volcano'>
                   ID: {item.opportunityRevenue.course.id}
-                </Tag> <br />
+                </Tag> <br /> */}
                 <Tag color={'purple'}>
                   End Date: {moment(item.opportunityRevenue.course.endDate).format(DEFAULT)}
                 </Tag>
@@ -72,6 +72,9 @@ export const MyListItem: React.FC<MyListItemProps> = ({
               <>
                 <span>
                   <Text type="warning">Opportunity:</Text> {item.name}
+                </span> <br />
+                <span>
+                  <Text style={{ color: '#1565C0' }}>Company:</Text> {item.contact.company.name}
                 </span> <br />
                 <span>
                   <Text type="danger">Contact:</Text> {item.contact.name} - {item.contact.email}

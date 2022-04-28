@@ -58,7 +58,7 @@ const Activity: React.FC<ActivityProps> = ({}) => {
       <PageHeader
         className='site-page-header'
         onBack={() => null}
-        title='Activity'
+        title='Activity Type'
         subTitle='List of activity type sale can perform'
         extra={
           <Button onClick={() => toggle()} type='primary'>

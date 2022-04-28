@@ -17,6 +17,7 @@ export class Company extends BaseEntity {
   address: string;
 
   @Column({ nullable: true })
+  @Index({ unique: true })
   email: string;
 
   @Column({ nullable: true })

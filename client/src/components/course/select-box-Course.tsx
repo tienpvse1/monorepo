@@ -7,9 +7,9 @@ import { useEffect, useRef, useState } from 'react';
 const { Option } = Select;
 import numberSeparator from "number-separator";
 import { useQueryDiscount } from '@modules/discount/query/discount.get';
-import moment from 'moment';
-import { dateFormat } from '@constance/date-format';
-const { DEFAULT } = dateFormat;
+// import moment from 'moment';
+// import { dateFormat } from '@constance/date-format';
+// const { DEFAULT } = dateFormat;
 
 interface SelectBoxCourseProps {
   courseId?: string;
@@ -87,6 +87,7 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
               })
               setRevenue(value.price);
               coursePrice.current = value.price;
+              ref.current = value.price;
               form.resetFields(['discountCode']);
               setDisabled(false);
               setWaiting(false);
@@ -127,12 +128,13 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
           </Option>
           {discount?.map((value) => (
             <Option key={value.id} value={value.discountAmount}>
+              {value.name} {' - '}
               <Tag color={'red'}>
-                -{value.discountAmount * 100}%
+                {value.discountAmount * 100}% OFF
               </Tag>
-              <Tag color={'gold'}>
+              {/* <Tag color={'gold'}>
                 {`EXP: ${moment(value.expireAt).format(DEFAULT)}`}
-              </Tag>
+              </Tag> */}
             </Option>
           ))}
         </Select>

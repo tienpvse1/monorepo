@@ -52,7 +52,6 @@ const SaleManagerDashboard: React.FC<SaleManagerDashboardProps> = ({}) => {
     <div>
       <>
         <h1>
-          Hello sale manager
           <div
             style={{
               display: 'flex',
