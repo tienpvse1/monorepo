@@ -83,6 +83,8 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
             getMyCoursesById(courseId).then((value) => {
               form.setFieldsValue({
                 expectedRevenue: value.price,
+                courseName: value.name,
+                coursePrice: value.price,
                 quantity: 1
               })
               setRevenue(value.price);
@@ -176,6 +178,13 @@ export const SelectBoxCourse: React.FC<SelectBoxCourseProps> = ({
           />
         </Form.Item>
       </Input.Group>
+
+      <Form.Item name='courseName' style={{ display: 'none' }}>
+        <Input />
+      </Form.Item>
+      <Form.Item name='coursePrice' style={{ display: 'none' }}>
+        <Input />
+      </Form.Item>
     </>
   )
 }

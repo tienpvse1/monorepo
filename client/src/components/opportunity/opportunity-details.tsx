@@ -17,7 +17,9 @@ import { useCookies } from "react-cookie";
 import { PUBLIC_USER_INFO } from "@constance/cookie";
 import { useReassignAccount } from "@modules/pipeline-items/mutation/pipeline-item.patch";
 import { OpportunityAdditionalForm } from "./opportunity-additional-form";
+import { useSendEmail } from "@modules/email/mutate/email.post";
 const { CRUD_AT, DEFAULT } = dateFormat;
+import numberSeparator from "number-separator";
 
 interface OpportunityDetailsProps {
   data: IPipelineItem
@@ -37,6 +39,10 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
 
   const { mutate: updateOpportunity } = useUpdatePipelineItem();
   const { mutate: reassignAccount } = useReassignAccount();
+  const onError = () => {
+    message.error('Can not send email');
+  }
+  const { mutate: sendEmail } = useSendEmail(onError);
 
   const handleToggleEditForm1 = () => {
     toggleEditForm1();
@@ -102,6 +108,84 @@ export const OpportunityDetails: React.FC<OpportunityDetailsProps> = ({ data }) 
       }, {
         onSuccess: () => {
           message.success('Saved successfully !');
+          // console.log("valuePO:", value);
+
+          // console.log('a:',value.contactName, value.contactEmail, value.contactPhone, value.companyName, value.companyEmail, value.companyCity, value.courseName, value.quantity, value.discountCode, value.coursePrice, value.expectedRevenue);
+
+          //     sendEmail({
+          //       subject: 'VJAA CRM - Confirm Order Information',
+          //       to: [{ email: data.contact.email, isTag: false }],
+          //       value: `
+          //       <div class="invoice-box" style="
+          //   max-width: 800px;
+          //   margin: auto;
+          //   padding: 30px;
+          //   border: 1px solid #eee; 
+          //   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+          //   font-size: 16px;
+          //   line-height: 24px;
+          //   font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+          //   color: #555;
+          // ">
+          //     <h1>Order Information:</h1>
+          //     <table style="
+          //       width: 100%;
+          //        line-height: inherit;
+          //        text-align: left;
+          //        border-collapse: collapse;
+          //      ">
+          //         <tr class="information">
+          //             <td colspan="2" style="padding: 5px; vertical-align: top; padding-bottom: 40px;">
+          //                 <table style="
+          //                  width: 100%;
+          //                  line-height: inherit;
+          //                  text-align: left;
+          //                  border-collapse: collapse;
+          //                ">
+          //                     <tr>
+          //                         <td>
+          //                             Company name: ${data.contact.company.name} <br /> Email company: ${data.contact.company.email} <br /> City: ${data.contact.company.city.admin_name}
+          //                         </td>
+
+          //                         <td>
+          //                             Contact name: ${data.contact.name} <br /> Email contact: ${data.contact.email}<br /> Phone: ${data.contact.phone}
+          //                         </td>
+          //                     </tr>
+          //                 </table>
+          //             </td>
+          //         </tr>
+
+          //         <tr class="heading" style=" background: #eee;
+          //         border-bottom: 1px solid #ddd;
+          //         font-weight: bold;">
+          //             <td style="padding: 5px; vertical-align: top; text-align: left;">Item</td>
+          //             <td style="padding: 5px; vertical-align: top;">Quantity</td>
+          //             <td style="padding: 5px; vertical-align: top; text-align: center;">Discount (%)</td>
+          //             <td style="padding: 5px; vertical-align: top; text-align: right;">Price</td>
+          //         </tr>
+
+          //         <tr class="item" style="border-bottom: 1px solid #eee;">
+          //             <td style="padding: 5px; vertical-align: top; text-align: left; width: 50%;">${value.courseName}</td>
+          //             <td style="padding: 5px; vertical-align: top;">${value.quantity}</td>
+          //             <td style="padding: 5px; vertical-align: top; text-align: center;">${value.discountCode * 100}%</td>
+          //             <td style="padding: 5px; vertical-align: top; text-align: right;">${numberSeparator(value.coursePrice, '.')}vnd</td>
+          //         </tr>
+
+          //         <tr class="total" style=" border-top: 2px solid #eee;
+          //         font-weight: bold;">
+          //             <td style="padding: 5px; vertical-align: top;"></td>
+          //             <td style="padding: 5px; vertical-align: top;"></td>
+          //             <td style="padding: 5px; vertical-align: top;"></td>
+          //             <td style="padding: 5px; vertical-align: top; text-align: right;">Total: ${numberSeparator(value.expectedRevenue, '.')}vnd</td>
+          //         </tr>
+          //     </table>
+          // </div>
+          //       `
+          //     }, {
+          //       onSuccess: () => {
+          //         message.success('Created successfully !')
+          //       }
+          //     })
           toggleEditForm1();
         }
       })
