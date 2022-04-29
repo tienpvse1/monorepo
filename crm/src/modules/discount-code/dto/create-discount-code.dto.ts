@@ -10,7 +10,8 @@ export class CreateDiscountCodeDto {
   @IsString()
   discount_name: string;
   expired_at: Date;
-  // @Length(10)
-  // @Optional()
-  // pipeline_item_id?: string;
+  
+  @Length(10)
+  @Optional()
+  pipeline_item_id?: string;
 }
