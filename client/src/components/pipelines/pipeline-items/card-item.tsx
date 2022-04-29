@@ -35,7 +35,7 @@ const Planned = lazy(() => import('@components/schedule/planned'));
 const { Meta } = Card;
 import numberSeparator from 'number-separator';
 import { QUERY_UPCOMING_SCHEDULES } from '@modules/schedule/query/schedule.get';
-import { warningExpectedClosing } from '@util/date';
+import { handleColorSchedule, warningExpectedClosing } from '@util/date';
 
 interface PipelineCardItemProps {
   cardData: IPipelineItem;
@@ -199,9 +199,7 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
                           style={{
                             fontSize: 18,
                             cursor: 'pointer',
-                            color:
-                              (cardData.schedules?.length > 0 && cardData.schedules.some((value) => value.isDone === false)) ?
-                                '#FFB300' : '',
+                            color: handleColorSchedule(cardData.schedules)
                           }}
                         />
                       </Dropdown>

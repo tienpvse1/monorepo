@@ -1,4 +1,5 @@
 import { dateFormat } from '@constance/date-format';
+import { ISchedule } from '@modules/schedule/entity/schedule.entity';
 import moment, { Moment } from 'moment';
 const { DEFAULT } = dateFormat;
 
@@ -64,3 +65,21 @@ export const convertNumToDate = (number: number) => {
   if (number == 11) return 'November';
   if (number == 12) return 'December';
 };
+
+export const handleColorSchedule = (schedules: ISchedule[]) => {
+  const newSchedule = schedules.filter((value) => value.isDone === false);
+
+  if (newSchedule.length > 0
+    && newSchedule.some((value) => value.isDone === false)
+    && !newSchedule.some((value) => (new Date(value.dueDate).getTime() <= new Date().getTime()))) {
+
+    return '#FFB300';
+
+  } else if (newSchedule.length > 0 && newSchedule.some((value) => value.isDone === false)) {
+
+    return 'red';
+
+  } else {
+    return '';
+  }
+}

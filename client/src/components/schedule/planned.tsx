@@ -14,7 +14,7 @@ import { Alert, Button, Tag } from 'antd';
 import moment from 'moment';
 import { client } from '../../App';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
-import { QUERY_UPCOMING_SCHEDULES } from '@modules/schedule/query/schedule.get';
+// import { QUERY_UPCOMING_SCHEDULES } from '@modules/schedule/query/schedule.get';
 
 interface PlannedProps {
   toggleDropdown: () => void;
@@ -76,7 +76,7 @@ const Planned: React.FC<PlannedProps> = ({
                   onClick={() => removeSchedule({ id: schedule.id, isDone: true }, {
                     onSuccess: () => {
                       client.refetchQueries(GET_PIPELINE_DESIGN);
-                      client.refetchQueries(QUERY_UPCOMING_SCHEDULES);
+                      // client.refetchQueries(QUERY_UPCOMING_SCHEDULES);
                     }
                   })}
                   className="close-icon"
