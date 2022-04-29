@@ -169,7 +169,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
                                 <tr class="item" style="border-bottom: 1px solid #eee;">
                                     <td style="padding: 5px; vertical-align: top; text-align: left; width: 50%;">${data.opportunityRevenue.course.name}</td>
                                     <td style="padding: 5px; vertical-align: top; text-align: center;">${data.opportunityRevenue.quantity}</td>
-                                    <td style="padding: 5px; vertical-align: top; text-align: center;">${Math.abs(data.expectedRevenue - (data.opportunityRevenue.course.price * data.opportunityRevenue.quantity)) / (data.opportunityRevenue.course.price * data.opportunityRevenue.quantity)}</td>
+                                    <td style="padding: 5px; vertical-align: top; text-align: center;">${Math.abs(data.expectedRevenue - (data.opportunityRevenue.course.price * data.opportunityRevenue.quantity)) / (data.opportunityRevenue.course.price * data.opportunityRevenue.quantity)}%</td>
                                     <td style="padding: 5px; vertical-align: top; text-align: right;">${numberSeparator(data.opportunityRevenue.course.price, '.')}vnd</td>
                                 </tr>
 
