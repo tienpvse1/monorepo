@@ -113,6 +113,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
                         max-width: 800px;
                         margin: auto;
                         padding: 30px;
+                        padding-top: 0px;
                         border: 1px solid #eee; 
                         box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
                         font-size: 16px;
@@ -121,14 +122,12 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
                         color: #555;
 		                ">
                           <h1>Thank you for your purchase
-                              <div style="display: inline-block;
-                            transform: rotate(45deg);
-                            height: 24px;
-                            width: 12px;
-                            border-bottom: 7px solid #78b13f;
-                            border-right: 7px solid #78b13f;
-                            margin-left: 15px;
-                            "></div>
+                          <svg width="60" height="60" viewBox="5 -2 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                              d="M10.5858 13.4142L7.75735 10.5858L6.34314 12L10.5858 16.2427L17.6568 9.1716L16.2426 7.75739L10.5858 13.4142Z"
+                              fill="#78b13f"
+                          />
+                          </svg>
                           </h1>
 
                             <table style="
@@ -162,14 +161,14 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
                                 border-bottom: 1px solid #ddd;
                                 font-weight: bold;">
                                     <td style="padding: 5px; vertical-align: top; text-align: left;">Item</td>
-                                    <td style="padding: 5px; vertical-align: top;">Quantity</td>
+                                    <td style="padding: 5px; vertical-align: top; text-align: center;">Quantity</td>
                                     <td style="padding: 5px; vertical-align: top; text-align: center;">Discount (%)</td>
                                     <td style="padding: 5px; vertical-align: top; text-align: right;">Price</td>
                                 </tr>
 
                                 <tr class="item" style="border-bottom: 1px solid #eee;">
                                     <td style="padding: 5px; vertical-align: top; text-align: left; width: 50%;">${data.opportunityRevenue.course.name}</td>
-                                    <td style="padding: 5px; vertical-align: top;">${data.opportunityRevenue.quantity}</td>
+                                    <td style="padding: 5px; vertical-align: top; text-align: center;">${data.opportunityRevenue.quantity}</td>
                                     <td style="padding: 5px; vertical-align: top; text-align: center;">${Math.abs(data.expectedRevenue - (data.opportunityRevenue.course.price * data.opportunityRevenue.quantity)) / (data.opportunityRevenue.course.price * data.opportunityRevenue.quantity)}</td>
                                     <td style="padding: 5px; vertical-align: top; text-align: right;">${numberSeparator(data.opportunityRevenue.course.price, '.')}vnd</td>
                                 </tr>

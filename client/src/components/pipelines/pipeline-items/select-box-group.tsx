@@ -81,6 +81,8 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
           placeholder='Select a contact'
           optionFilterProp='children'
           onChange={(_, value) => {
+            console.log("value2:", value);
+            
             form.setFieldsValue({
               //@ts-ignore
               contactName: value.children[0],

@@ -83,6 +83,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
 			max-width: 800px;
 			margin: auto;
 			padding: 30px;
+      padding-top: 0px;
 			border: 1px solid #eee; 
 			box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 			font-size: 16px;
@@ -122,14 +123,14 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
             border-bottom: 1px solid #ddd;
             font-weight: bold;">
                 <td style="padding: 5px; vertical-align: top; text-align: left;">Item</td>
-                <td style="padding: 5px; vertical-align: top;">Quantity</td>
+                <td style="padding: 5px; vertical-align: top; text-align: center;">Quantity</td>
                 <td style="padding: 5px; vertical-align: top; text-align: center;">Discount (%)</td>
                 <td style="padding: 5px; vertical-align: top; text-align: right;">Price</td>
             </tr>
 
             <tr class="item" style="border-bottom: 1px solid #eee;">
                 <td style="padding: 5px; vertical-align: top; text-align: left; width: 50%;">${courseName}</td>
-                <td style="padding: 5px; vertical-align: top;">${quantity}</td>
+                <td style="padding: 5px; vertical-align: top; text-align: center;">${quantity}</td>
                 <td style="padding: 5px; vertical-align: top; text-align: center;">${discountCode * 100}%</td>
                 <td style="padding: 5px; vertical-align: top; text-align: right;">${numberSeparator(coursePrice, '.')}vnd</td>
             </tr>
@@ -139,7 +140,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
                 <td style="padding: 5px; vertical-align: top;"></td>
                 <td style="padding: 5px; vertical-align: top;"></td>
                 <td style="padding: 5px; vertical-align: top;"></td>
-                <td style="padding: 5px; vertical-align: top; text-align: right;">Total: ${numberSeparator(expectedRevenue, '.')}vnd</td>
+                <td style="padding: 5px; vertical-align: top; text-align: right;">Total: ${numberSeparator((expectedRevenue * quantity), '.')}vnd</td>
             </tr>
         </table>
     </div>
