@@ -19,7 +19,6 @@ export class DiscountCode extends BaseEntity {
    */
 
   @OneToMany(() => PipelineItem, (pipelineItem) => pipelineItem.discountCodes)
-  @JoinColumn({ name: 'pipeline_item_id' })
   pipelineItem: PipelineItem;
   @ManyToOne(() => Account, (account) => account.discountCodes)
   @JoinColumn({ name: 'account_id' })
