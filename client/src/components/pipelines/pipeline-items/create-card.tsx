@@ -124,7 +124,7 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
             font-weight: bold;">
                 <td style="padding: 5px; vertical-align: top; text-align: left;">Item</td>
                 <td style="padding: 5px; vertical-align: top; text-align: center;">Quantity</td>
-                <td style="padding: 5px; vertical-align: top; text-align: center;">Discount (%)</td>
+                <td style="padding: 5px; vertical-align: top; text-align: center; width: 14%;">Discount (%)</td>
                 <td style="padding: 5px; vertical-align: top; text-align: right;">Price</td>
             </tr>
 
