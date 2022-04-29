@@ -19,6 +19,7 @@ export class OpportunityRevenue extends BaseEntity {
     (pipelineItem) => pipelineItem.opportunityRevenue,
     {
       onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     },
   )
   @JoinColumn({ name: 'pipeline_item_id' })

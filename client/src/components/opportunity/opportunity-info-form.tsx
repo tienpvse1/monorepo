@@ -31,9 +31,6 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
   form
 }) => {
 
-  console.log("test:", form.getFieldsValue(['expectedClosing']));
-
-
   return (
     <>
       <Col span={12}>
