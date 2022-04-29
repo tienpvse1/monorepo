@@ -4,7 +4,7 @@ import { PipeLineColumn } from '@components/pipelines/pipeline-column';
 import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-horizontal';
 import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import { Button, Col, Form, Row } from 'antd';
+import { Button, Col, Form, message, Row } from 'antd';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { CreateColumnModal } from './pipeline-column/create-column-modal';
@@ -14,13 +14,15 @@ import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useCookies } from 'react-cookie';
 import { useChangeStage } from '@modules/pipeline-items/mutation/pipeline-items.update';
 import { useQueryClient } from 'react-query';
-import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-item.get';
+import { getPipelineItemById, GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-item.get';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { startFireworks } from '@util/firework';
 import { UploadInvoice } from '@components/sale/upload-invoice';
 import { useCreateReason } from '@modules/reason/mutation/reason.post';
 import { usePostOpportunityHistory } from '@modules/opportunity-history/mutation/opportunity-history.post';
 import { OpportunityHistoryType } from '@modules/opportunity-history/entity/opportunity-history.entity';
+import { useSendEmail } from '@modules/email/mutate/email.post';
+import numberSeparator from "number-separator";
 
 interface MainPipelineProps {
   data: IPipeline;
@@ -58,6 +60,10 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
   const handleIsRoleAdmin = () => {
     return public_user_info.role.name === 'admin' ? true : false
   }
+  const onError = () => {
+    message.error('Can not send email');
+  }
+  const { mutate: sendEmail } = useSendEmail(onError);
 
   const handleChangeStageWon = async () => {
     const {
@@ -98,6 +104,88 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
                 toggleModalChangeStageWon();
                 startFireworks();
                 form.resetFields();
+                getPipelineItemById(draggableId).then((data) => {
+                  sendEmail({
+                    subject: 'VJAA CRM - Thank You For Your Purchase !',
+                    to: [{ email: data.contact.email, isTag: false }],
+                    value: `
+                    <div class="invoice-box" style="
+                        max-width: 800px;
+                        margin: auto;
+                        padding: 30px;
+                        border: 1px solid #eee; 
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+                        font-size: 16px;
+                        line-height: 24px;
+                        font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+                        color: #555;
+		                ">
+                          <h1>Thank you for your purchase
+                              <div style="display: inline-block;
+                            transform: rotate(45deg);
+                            height: 24px;
+                            width: 12px;
+                            border-bottom: 7px solid #78b13f;
+                            border-right: 7px solid #78b13f;
+                            margin-left: 15px;
+                            "></div>
+                          </h1>
+
+                            <table style="
+                              width: 100%;
+                              line-height: inherit;
+                              text-align: left;
+                              border-collapse: collapse;
+                            ">
+                                <tr class="information">
+                                    <td colspan="2" style="padding: 5px; vertical-align: top; padding-bottom: 40px;">
+                                        <table style="
+                                        width: 100%;
+                                        line-height: inherit;
+                                        text-align: left;
+                                        border-collapse: collapse;
+                                      ">
+                                            <tr>
+                                                <td>
+                                                    Company name: ${data.contact.company.name} <br /> Email company: ${data.contact.company.email} <br /> City: ${data.contact.company.city.admin_name}
+                                                </td>
+
+                                                <td>
+                                                    Contact name: ${data.contact.name} <br /> Email contact: ${data.contact.email} <br /> Phone: ${data.contact.phone}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+
+                                <tr class="heading" style=" background: #eee;
+                                border-bottom: 1px solid #ddd;
+                                font-weight: bold;">
+                                    <td style="padding: 5px; vertical-align: top; text-align: left;">Item</td>
+                                    <td style="padding: 5px; vertical-align: top;">Quantity</td>
+                                    <td style="padding: 5px; vertical-align: top; text-align: center;">Discount (%)</td>
+                                    <td style="padding: 5px; vertical-align: top; text-align: right;">Price</td>
+                                </tr>
+
+                                <tr class="item" style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 5px; vertical-align: top; text-align: left; width: 50%;">${data.opportunityRevenue.course.name}</td>
+                                    <td style="padding: 5px; vertical-align: top;">${data.opportunityRevenue.quantity}</td>
+                                    <td style="padding: 5px; vertical-align: top; text-align: center;">${Math.abs(data.expectedRevenue - (data.opportunityRevenue.course.price * data.opportunityRevenue.quantity)) / (data.opportunityRevenue.course.price * data.opportunityRevenue.quantity)}</td>
+                                    <td style="padding: 5px; vertical-align: top; text-align: right;">${numberSeparator(data.opportunityRevenue.course.price, '.')}vnd</td>
+                                </tr>
+
+                                <tr class="total" style=" border-top: 2px solid #eee;
+                                font-weight: bold;">
+                                    <td style="padding: 5px; vertical-align: top;"></td>
+                                    <td style="padding: 5px; vertical-align: top;"></td>
+                                    <td style="padding: 5px; vertical-align: top;"></td>
+                                    <td style="padding: 5px; vertical-align: top; text-align: right;">Total: ${numberSeparator(data.expectedRevenue, '.')}vnd</td>
+                                </tr>
+                            </table>
+                    </div>
+                    `
+                  })
+                })
               }
             });
           }

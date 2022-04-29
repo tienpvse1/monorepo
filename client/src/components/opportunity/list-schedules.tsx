@@ -5,7 +5,7 @@ import { ISchedule } from "@modules/schedule/entity/schedule.entity";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { dateFormat } from "@constance/date-format";
-import { CheckOutlined, CoffeeOutlined, FileTextOutlined, MailOutlined, PhoneOutlined, PushpinOutlined } from "@ant-design/icons";
+import { CheckCircleFilled, CheckOutlined, CoffeeOutlined, FileTextOutlined, MailOutlined, PhoneOutlined, PushpinOutlined } from "@ant-design/icons";
 import { useHandleNavigate } from "@hooks/useHandleNavigate";
 import { useRemoveSchedule } from "@modules/schedule/mutation/schedule.delete";
 import { useQueryClient } from "react-query";
@@ -122,19 +122,22 @@ export const ListSchedules: React.FC<ListSchedulesProps> = ({
         title="Action"
         dataIndex="action"
         key="action"
+        align="center"
         width={70}
         render={(_, record: ISchedule) => (
-          <Button
-            size="small"
-            shape="round"
-            onClick={() => removeSchedule(record.id, {
-              onSuccess: () => {
-                queryClient.refetchQueries([GET_PIPELINE_ITEM_BY_ID, opportunityId]);
-              }
-            })}
-          >
-            <CheckOutlined />
-          </Button>
+          !record.isDone ?
+            <Button
+              size="small"
+              shape="round"
+              onClick={() => removeSchedule({ id: record.id, isDone: true }, {
+                onSuccess: () => {
+                  queryClient.refetchQueries([GET_PIPELINE_ITEM_BY_ID, opportunityId]);
+                }
+              })}
+            >
+              <CheckOutlined />
+            </Button> :
+            <CheckCircleFilled style={{ color: 'rgb(82 196 26)', fontSize: '22px' }} />
         )}
       />
 

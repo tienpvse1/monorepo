@@ -39,7 +39,8 @@ export interface IPipelineItem extends IBase {
   discountCode: IDiscount;
 }
 
-export interface IOpportunityRevenue {
+export interface IOpportunityRevenue{
+  id?: string;
   quantity?: number;
   product?: IProduct;
   productId?: string;

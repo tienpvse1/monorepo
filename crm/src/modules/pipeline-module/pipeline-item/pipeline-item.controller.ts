@@ -47,7 +47,7 @@ import { PipelineItemService } from './pipeline-item.service';
     },
   },
   routes: {
-    exclude: ['createOneBase', 'deleteOneBase'],
+    exclude: ['createOneBase', 'deleteOneBase', 'updateOneBase'],
     updateOneBase: { decorators: [UsePipes(GenerateNestedIdPipe)] },
   },
   query: {
@@ -64,7 +64,8 @@ import { PipelineItemService } from './pipeline-item.service';
       'account.team': {},
       'opportunityRevenue.product': {},
       'opportunityRevenue.course': {},
-      'contact.company': {},
+      'contact.company': { alias: 'companyCity' },
+      'contact.company.city': {},
     },
   },
 })
@@ -147,5 +148,12 @@ export class PipelineItemController {
   @Patch('restore/:id')
   restore(@Param('id') id: string) {
     return this.service.restorePipelineItem(id);
+  }
+  @Patch(':id')
+  updatePipelineItem(
+    @Param('id') id: string,
+    @Body() dto: UpdatePipelineItemDto,
+  ) {
+    return this.service.update(id, dto);
   }
 }
