@@ -4,7 +4,10 @@ import { Crud } from '@nestjsx/crud';
 import { User } from 'src/common/decorators/user.decorator';
 import { getIp } from 'src/util/ip';
 import { DiscountCodeService } from './discount-code.service';
-import { CreateDiscountCodeDto } from './dto/create-discount-code.dto';
+import {
+  CreateDiscountCodeDto,
+  SendDiscountEmailDto,
+} from './dto/create-discount-code.dto';
 import { GenerateTemplateDto } from './dto/generate-template.dto';
 import {
   AssignDiscountCode,
@@ -43,7 +46,24 @@ export class DiscountCodeController {
   ) {
     return this.service.createDiscountCode(dto, getIp(ip), userId);
   }
+  @Post('template')
+  getTemplate(@Body() dto: GenerateTemplateDto) {
+    return this.service.getDiscountCodeTemplate(dto);
+  }
 
+  @Post('send')
+  sendDiscountEmail(
+    @Body() dto: SendDiscountEmailDto,
+    @Ip() ip: string,
+    @User('id') userId: string,
+  ) {
+    return this.service.sendEmail(
+      dto.template,
+      dto.contactEmail,
+      getIp(ip),
+      userId,
+    );
+  }
   @Get('apply/:id')
   apply(@Param('id') id: string) {
     return this.service.applyDiscountCode(id);
@@ -52,10 +72,5 @@ export class DiscountCodeController {
   @Patch('assign/:id')
   assignDiscountCode(@Param('id') id: string, dto: AssignDiscountCode) {
     this.service.assignDiscountCode(id, dto.pipelineItemId);
-  }
-
-  @Post('template')
-  getTemplate(@Body() dto: GenerateTemplateDto) {
-    return this.service.getDiscountCodeTemplate(dto);
   }
 }

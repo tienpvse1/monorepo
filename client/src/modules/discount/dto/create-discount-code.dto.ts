@@ -3,3 +3,8 @@ export interface CreateDiscountCodeDto {
   discount_name: string;
   expired_at: string;
 }
+
+export interface IDiscountEmailDto {
+  contactEmail: string;
+  template: string;
+}

@@ -13,3 +13,8 @@ export class CreateDiscountCodeDto {
   @Optional()
   pipeline_item_id?: string;
 }
+
+export class SendDiscountEmailDto {
+  contactEmail: string;
+  template: string;
+}

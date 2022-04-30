@@ -146,4 +146,25 @@ export class DiscountCodeService extends BaseService<DiscountCode> {
       this.configService.get<string>('app.appDomain'),
     );
   }
+  async sendEmail(
+    template: string,
+    contactEmail: string,
+    ip: string,
+    senderId: string,
+  ) {
+    this.mailer.sendEmail(
+      {
+        subject: 'Claim your discount code now',
+        to: [
+          {
+            email: contactEmail,
+            isTag: false,
+          },
+        ],
+        value: template,
+      },
+      ip,
+      senderId,
+    );
+  }
 }

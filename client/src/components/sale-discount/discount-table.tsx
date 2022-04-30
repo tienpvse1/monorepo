@@ -5,7 +5,10 @@ import {
   useContactsDealsById,
 } from '@modules/contact/query/contact.get';
 import { IDiscount } from '@modules/discount/entity/discount.entity';
-import { useCreateDiscountCodeTemplate } from '@modules/discount/mutation/discount.post';
+import {
+  useCreateDiscountCodeTemplate,
+  useSendDiscountCode,
+} from '@modules/discount/mutation/discount.post';
 import { useDiscountCodes } from '@modules/discount/query/discount.get';
 import { Button, Modal, Select, Table, Tooltip } from 'antd';
 import moment from 'moment';
@@ -28,9 +31,9 @@ export const DiscountTable: React.FC<DiscountTableProps> = ({}) => {
   const [currentDiscountId, setCurrentDiscountId] = useState(undefined);
   const [currentTemplate, setCurrentTemplate] = useState(undefined);
   const { mutate } = useCreateDiscountCodeTemplate();
+  const { mutate: sendEmail } = useSendDiscountCode();
 
   const handleChange = (pipelineItemId: string) => {
-    console.log(currentDiscountId);
     if (currentDiscountId) {
       mutate(
         {
@@ -39,8 +42,7 @@ export const DiscountTable: React.FC<DiscountTableProps> = ({}) => {
           discountId: currentDiscountId,
         },
         {
-          onSettled(data, error, variables, context) {
-            console.log(data);
+          onSettled(data) {
             setCurrentTemplate(data);
           },
         }
@@ -53,7 +55,15 @@ export const DiscountTable: React.FC<DiscountTableProps> = ({}) => {
       <Modal
         title='Send discount code'
         visible={showModal}
-        onOk={() => setShowModal(false)}
+        onOk={() => {
+          sendEmail({
+            contactEmail: myContacts.filter(
+              (contact) => contact.id === currentContactId
+            )[0].email,
+            template: currentTemplate,
+          });
+          setShowModal(false);
+        }}
         style={{
           width: '600px',
         }}
@@ -62,14 +72,23 @@ export const DiscountTable: React.FC<DiscountTableProps> = ({}) => {
         }}
         width='700px'
         onCancel={() => setShowModal(false)}
+        okButtonProps={{
+          disabled: !Boolean(currentTemplate),
+        }}
       >
         {myContacts && (
           <>
             <Select
+              showSearch
+              filterOption={(input, option) =>
+                option.children
+                  .toString()
+                  .toLowerCase()
+                  .indexOf(input.toLowerCase()) >= 0
+              }
               placeholder='Select an deals'
               style={{ width: '300px' }}
               onSelect={(value: string) => {
-                console.log('selected', value);
                 setCurrentContactID(value);
               }}
             >
