@@ -3,7 +3,7 @@ import { isRequired } from "@constance/rules-of-input-antd";
 import { Role } from "@interfaces/type-roles";
 import { useCompanies } from "@modules/company/query/company.get";
 import { IContact } from "@modules/contact/entity/contact.entity";
-import { Form, FormInstance, Select } from "antd"
+import { Form, FormInstance, Input, Select } from "antd"
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 const { Option } = Select;
@@ -41,6 +41,11 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
 
   const handleSelected = (companyId: string) => {
     const data = companies?.find((value) => companyId === value.id);
+    form.setFieldsValue({
+      companyName: data.name,
+      companyEmail: data.email,
+      companyCity: data.city.admin_name
+    })
     if (name === Role.SALE_MANAGER)
       setDataContact(data.contacts)
     else
@@ -76,22 +81,43 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
           placeholder='Select a contact'
           optionFilterProp='children'
           onChange={(_, value) => {
+            console.log("value2:", value);
+            
             form.setFieldsValue({
               //@ts-ignore
-              contactEmail: value.children[2]
+              contactName: value.children[0],
+              //@ts-ignore
+              contactEmail: value.children[2],
+              //@ts-ignore
+              contactPhone: value.children[4]
             })
           }}
         >
           {dataContact?.map((contact) => (
             <Option key={contact.id} value={`${contact.id}`}>
-              {contact.name} - {contact.email}
+              {contact.name} - {contact.email} - {contact.phone}
             </Option>
           ))}
         </Select>
       </Form.Item>
 
       <Form.Item name='contactEmail' style={{ display: 'none' }}>
-
+        <Input />
+      </Form.Item>
+      <Form.Item name='contactName' style={{ display: 'none' }}>
+        <Input />
+      </Form.Item>
+      <Form.Item name='contactPhone' style={{ display: 'none' }}>
+        <Input />
+      </Form.Item>
+      <Form.Item name='companyName' style={{ display: 'none' }}>
+        <Input />
+      </Form.Item>
+      <Form.Item name='companyEmail' style={{ display: 'none' }}>
+        <Input />
+      </Form.Item>
+      <Form.Item name='companyCity' style={{ display: 'none' }}>
+        <Input />
       </Form.Item>
     </>
   )

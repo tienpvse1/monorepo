@@ -75,9 +75,15 @@ export const DashBoard: React.FC = () => {
                     <Upcoming
                       key={item.id}
                       by={`${item.account.firstName} ${item.account.lastName}`}
-                      severity='info'
+                      severity={
+                        item.type == 'todo' && 'info' ||
+                        item.type == 'email' && 'error' ||
+                        item.type == 'meeting' && 'warning' || 'success'
+                      }
                       title={item.summary}
                       time={moment(new Date(item.dueDate)).fromNow()}
+                      type={item.type}
+                      isDone={item.isDone}
                     />
                   ))}
               </div>
