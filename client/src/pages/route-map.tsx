@@ -34,6 +34,7 @@ const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
 // const ManagerContact = lazy(() => import('./sale-manager/contacts'));
 const ManagerStatistic = lazy(() => import('./sale-manager/statistic'));
 const ListSentEmails = lazy(() => import('@components/sent-email/list'));
+const SaleDiscountPage = lazy(() => import('@pages/sale-discount-page'));
 const SoldCoursesStatistic = lazy(
   () => import('@components/statistic/sold-course')
 );
@@ -228,6 +229,10 @@ export const route: RouteObject[] = [
         element: <Product />,
       },
       {
+        path: 'discount',
+        element: <SaleDiscountPage />,
+      },
+      {
         path: 'tag',
         element: <Tag />,
       },
@@ -391,7 +396,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'proposal',
-        element: <Proposal />
+        element: <Proposal />,
       },
       {
         path: 'product',

@@ -9,6 +9,7 @@ import {
   FundOutlined,
   GlobalOutlined,
   LineChartOutlined,
+  PercentageOutlined,
   SketchOutlined,
   SolutionOutlined,
   // TagOutlined,
@@ -90,7 +91,7 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       label: 'Proposal',
       style,
       onClick: () => navigate('/proposal'),
-      icon: <AlertOutlined style={style}/>,
+      icon: <AlertOutlined style={style} />,
     },
     {
       key: 'product',
@@ -112,6 +113,13 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       style,
       onClick: () => navigate('/statistic'),
       icon: <LineChartOutlined style={style} />,
+    },
+    {
+      key: 'discount',
+      label: 'Discount codes',
+      style,
+      onClick: () => navigate('/discount'),
+      icon: <PercentageOutlined style={style} />,
     },
     {
       key: 'map-statistic',
@@ -148,7 +156,7 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       label: 'Rank',
       style,
       onClick: () => navigate('/rank'),
-      icon: <SketchOutlined style={style}/>,
+      icon: <SketchOutlined style={style} />,
     },
   ];
 
