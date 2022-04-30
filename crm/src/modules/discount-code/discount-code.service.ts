@@ -4,12 +4,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { nanoid } from 'nanoid';
 import { InjectKnex, Knex } from 'nestjs-knex';
 import { BaseService } from 'src/base/nestjsx.service';
+import { KnexAssignCode } from 'src/modules/pipeline-module/pipeline-item/dto/update-pipeline-item.dto';
 import { Repository } from 'typeorm';
 import { AccountService } from '../account/account.service';
-import { KnexAssignCode } from 'src/modules/pipeline-module/pipeline-item/dto/update-pipeline-item.dto';
 import { EmailService } from '../mailer/mailer.service';
 import { PipelineItemService } from '../pipeline-module/pipeline-item/pipeline-item.service';
 import { CreateDiscountCodeDto } from './dto/create-discount-code.dto';
+import { generateDiscountTemplate } from './dto/discount-template';
+import { GenerateTemplateDto } from './dto/generate-template.dto';
 import {
   DiscountCode,
   KnexDiscountCode,
@@ -75,38 +77,12 @@ export class DiscountCodeService extends BaseService<DiscountCode> {
             isTag: false,
           },
         ],
-        value: `
-          <h1>${dto.discount_name}</h1>
-          <h3>Claim your ${dto.discount_amount * 100}% discount</h3>
-          <table>
-            <tr>
-              <th>NO.</th>
-              <th>Course</th>
-              <th>Quantity</th>
-              <th>Price</th>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>${pipelineItem.opportunityRevenue.course.name}</td>
-              <td>${pipelineItem.opportunityRevenue.quantity}</td>
-              <td>${pipelineItem.opportunityRevenue.course.price}</td>
-            </tr>
-          </table>
-          <h3 style="text-align:center;text-decoration: line-through;">Total: ${
-            pipelineItem.opportunityRevenue.course.price *
-            pipelineItem.opportunityRevenue.quantity
-          }vnd</h3>
-          <h2 style="color: red">Now only ${
-            pipelineItem.opportunityRevenue.course.price *
-              pipelineItem.opportunityRevenue.quantity -
-            pipelineItem.opportunityRevenue.course.price *
-              pipelineItem.opportunityRevenue.quantity *
-              dto.discount_amount
-          }</h2>
-          <a href="${this.configService.get<string>(
-            'app.appDomain',
-          )}api/v1/apply/${id}">Apply now</a>
-        `,
+        value: generateDiscountTemplate(
+          dto,
+          pipelineItem,
+          id,
+          this.configService.get<string>('app.appDomain'),
+        ),
       },
       ip,
       account.id,
@@ -138,5 +114,36 @@ export class DiscountCodeService extends BaseService<DiscountCode> {
         discount_code_id: pipelineItemId,
       })
       .where({ id: discountId });
+  }
+
+  async getDiscountCodeTemplate(dto: GenerateTemplateDto) {
+    const [discount, pipelineItem] = await Promise.all([
+      this.findOneItem({
+        where: {
+          id: dto.discountId,
+        },
+      }),
+      this.pipelineItemService.findOneItem({
+        where: {
+          id: dto.pipelineItemId,
+        },
+        relations: [
+          'contact',
+          'opportunityRevenue',
+          'opportunityRevenue.course',
+        ],
+      }),
+    ]);
+    return generateDiscountTemplate(
+      {
+        discount_amount: discount.discountAmount,
+        discount_name: discount.name,
+        expired_at: discount.expireAt,
+        pipeline_item_id: dto.pipelineItemId,
+      },
+      pipelineItem,
+      dto.discountId,
+      this.configService.get<string>('app.appDomain'),
+    );
   }
 }
