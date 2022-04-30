@@ -21,3 +21,8 @@ export class CreateDiscountCodeDto {
   @Length(10)
   pipeline_item_id?: string;
 }
+
+export class SendDiscountEmailDto {
+  contactEmail: string;
+  template: string;
+}

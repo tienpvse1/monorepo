@@ -6,6 +6,7 @@ import Statistic from './statistic';
 const Inbox = lazy(() => import('./inbox'));
 const Email = lazy(() => import('./email'));
 const Tag = lazy(() => import('@pages/tag'));
+const Discount = lazy(() => import('./discount'));
 const HomePage = lazy(() => import('@pages/home'));
 const Contact = lazy(() => import('@pages/contact'));
 const LoginPage = lazy(() => import('@pages/login'));
@@ -33,6 +34,7 @@ const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
 // const ManagerContact = lazy(() => import('./sale-manager/contacts'));
 const ManagerStatistic = lazy(() => import('./sale-manager/statistic'));
 const ListSentEmails = lazy(() => import('@components/sent-email/list'));
+const SaleDiscountPage = lazy(() => import('@pages/sale-discount-page'));
 const SoldCoursesStatistic = lazy(
   () => import('@components/statistic/sold-course')
 );
@@ -91,7 +93,6 @@ const ListSchedule = lazy(() => import('@components/schedule/list'));
 const Rank = lazy(() => import('@pages/rank'));
 const Proposal = lazy(() => import('@pages/proposal'));
 
-
 export const route: RouteObject[] = [
   {
     path: '/login',
@@ -147,7 +148,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'proposal',
-        element: <Proposal />
+        element: <Proposal />,
       },
       {
         path: 'statistic',
@@ -226,6 +227,10 @@ export const route: RouteObject[] = [
       {
         path: 'product',
         element: <Product />,
+      },
+      {
+        path: 'discount',
+        element: <SaleDiscountPage />,
       },
       {
         path: 'tag',
@@ -391,7 +396,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'proposal',
-        element: <Proposal />
+        element: <Proposal />,
       },
       {
         path: 'product',
@@ -400,6 +405,10 @@ export const route: RouteObject[] = [
       {
         path: 'forecast',
         element: <ForecastKanban />,
+      },
+      {
+        path: 'discount',
+        element: <Discount />,
       },
       {
         path: 'statistic',
