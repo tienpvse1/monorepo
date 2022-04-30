@@ -8,5 +8,6 @@ import { OpportunityRevenue } from './entities/opportunity-revenue.entity';
   controllers: [OpportunityRevenueController],
   providers: [OpportunityRevenueService],
   imports: [TypeOrmModule.forFeature([OpportunityRevenue])],
+  exports: [OpportunityRevenueService],
 })
 export class OpportunityRevenueModule {}
