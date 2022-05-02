@@ -46,6 +46,7 @@ export const ColumnHeaderName: React.FC<HeaderColumnNameProps> = ({
           option2='Delete'
           handleOption1={setShowInput}
           handleOption2={onDeletePipelineColumn}
+          isWon={pipelineColumn.isWon}
         >
           <Button
             icon={<MoreOutlined />}
