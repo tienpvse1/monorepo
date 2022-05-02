@@ -15,7 +15,7 @@ import { QUERY_COMPANY_DETAILS } from "@modules/company/query/company.get";
 import { message } from "antd";
 import moment from "moment";
 import { dateFormat } from "@constance/date-format";
-const { CRUD_AT } = dateFormat;
+const { CRUD_AT, DEFAULT } = dateFormat;
 
 interface CompanyDetailsProps {
   company: ICompany;
@@ -40,7 +40,8 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
     form.setFieldsValue({
       name: company.name,
       mobile: company.mobile,
-      type: company.type,
+      source: company.source,
+      foundationDate: company.foundationDate ? moment(company.foundationDate) : '',
       email: company.email
     })
   };
@@ -81,8 +82,9 @@ export const CompanyDetails: React.FC<CompanyDetailsProps> = ({
     try {
       const value = await form.validateFields();
       updateCompany({
+        ...value,
         id: company.id,
-        ...value
+        foundationDate: value.foundationDate ? value.foundationDate.format(DEFAULT) : '',
       }, {
         onSuccess: () => {
           queryClient.invalidateQueries(QUERY_COMPANY_DETAILS);

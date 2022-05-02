@@ -6,6 +6,7 @@ import { Button, Typography, message } from 'antd';
 import { CSSProperties } from 'react';
 const { Text } = Typography;
 import { PopoverAction } from '../../popover/popover-action';
+import numberSeparator from "number-separator";
 
 interface HeaderColumnNameProps {
   pipelineColumn: IPipelineColumn;
@@ -47,6 +48,8 @@ export const ColumnHeaderName: React.FC<HeaderColumnNameProps> = ({
           handleOption1={setShowInput}
           handleOption2={onDeletePipelineColumn}
           isWon={pipelineColumn.isWon}
+          opportunityQty={pipelineColumn?.pipelineItems.length}
+          expectedRevenue={numberSeparator(pipelineColumn.pipelineItems.reduce((acc, value) => acc + value.expectedRevenue, 0), '.')}
         >
           <Button
             icon={<MoreOutlined />}

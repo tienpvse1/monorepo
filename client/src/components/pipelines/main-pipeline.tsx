@@ -104,87 +104,87 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
                 toggleModalChangeStageWon();
                 startFireworks();
                 form.resetFields();
-                getPipelineItemById(draggableId).then((data) => {
-                  sendEmail({
-                    subject: 'VJAA CRM - Thank You For Your Purchase !',
-                    to: [{ email: data.contact.email, isTag: false }],
-                    value: `
-                    <div class="invoice-box" style="
-                        max-width: 800px;
-                        margin: auto;
-                        padding: 30px;
-                        padding-top: 0px;
-                        border: 1px solid #eee; 
-                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-                        font-size: 16px;
-                        line-height: 24px;
-                        font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-                        color: #555;
-		                ">
-                          <h1>Thank you for your purchase
-                          <svg width="60" height="60" viewBox="5 -2 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path
-                              d="M10.5858 13.4142L7.75735 10.5858L6.34314 12L10.5858 16.2427L17.6568 9.1716L16.2426 7.75739L10.5858 13.4142Z"
-                              fill="#78b13f"
-                          />
-                          </svg>
-                          </h1>
+                // getPipelineItemById(draggableId).then((data) => {
+                //   sendEmail({
+                //     subject: 'VJAA CRM - Thank You For Your Purchase !',
+                //     to: [{ email: data.contact.email, isTag: false }],
+                //     value: `
+                //     <div class="invoice-box" style="
+                //         max-width: 800px;
+                //         margin: auto;
+                //         padding: 30px;
+                //         padding-top: 0px;
+                //         border: 1px solid #eee; 
+                //         box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+                //         font-size: 16px;
+                //         line-height: 24px;
+                //         font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+                //         color: #555;
+		            //     ">
+                //           <h1>Thank You For Your Purchase
+                //           <svg width="60" height="60" viewBox="5 -2 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                //           <path
+                //               d="M10.5858 13.4142L7.75735 10.5858L6.34314 12L10.5858 16.2427L17.6568 9.1716L16.2426 7.75739L10.5858 13.4142Z"
+                //               fill="#78b13f"
+                //           />
+                //           </svg>
+                //           </h1>
 
-                            <table style="
-                              width: 100%;
-                              line-height: inherit;
-                              text-align: left;
-                              border-collapse: collapse;
-                            ">
-                                <tr class="information">
-                                    <td colspan="2" style="padding: 5px; vertical-align: top; padding-bottom: 40px;">
-                                        <table style="
-                                        width: 100%;
-                                        line-height: inherit;
-                                        text-align: left;
-                                        border-collapse: collapse;
-                                      ">
-                                            <tr>
-                                                <td>
-                                                    Company name: ${data.contact.company.name} <br /> Email company: ${data.contact.company.email} <br /> City: ${data.contact.company.city.admin_name}
-                                                </td>
+                //             <table style="
+                //               width: 100%;
+                //               line-height: inherit;
+                //               text-align: left;
+                //               border-collapse: collapse;
+                //             ">
+                //                 <tr class="information">
+                //                     <td colspan="2" style="padding: 5px; vertical-align: top; padding-bottom: 40px;">
+                //                         <table style="
+                //                         width: 100%;
+                //                         line-height: inherit;
+                //                         text-align: left;
+                //                         border-collapse: collapse;
+                //                       ">
+                //                             <tr>
+                //                                 <td>
+                //                                     Company name: ${data.contact.company.name} <br /> Email company: ${data.contact.company.email} <br /> City: ${data.contact.company.city.admin_name}
+                //                                 </td>
 
-                                                <td>
-                                                    Contact name: ${data.contact.name} <br /> Email contact: ${data.contact.email} <br /> Phone: ${data.contact.phone}
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
+                //                                 <td>
+                //                                     Contact name: ${data.contact.name} <br /> Email contact: ${data.contact.email} <br /> Phone: ${data.contact.phone}
+                //                                 </td>
+                //                             </tr>
+                //                         </table>
+                //                     </td>
+                //                 </tr>
 
-                                <tr class="heading" style=" background: #eee;
-                                border-bottom: 1px solid #ddd;
-                                font-weight: bold;">
-                                    <td style="padding: 5px; vertical-align: top; text-align: left;">Item</td>
-                                    <td style="padding: 5px; vertical-align: top; text-align: center;">Quantity</td>
-                                    <td style="padding: 5px; vertical-align: top; text-align: center; width: 14%;">Discount (%)</td>
-                                    <td style="padding: 5px; vertical-align: top; text-align: right;">Price</td>
-                                </tr>
+                //                 <tr class="heading" style=" background: #eee;
+                //                 border-bottom: 1px solid #ddd;
+                //                 font-weight: bold;">
+                //                     <td style="padding: 5px; vertical-align: top; text-align: left;">Item</td>
+                //                     <td style="padding: 5px; vertical-align: top; text-align: center;">Quantity</td>
+                //                     <td style="padding: 5px; vertical-align: top; text-align: center; width: 14%;">Discount (%)</td>
+                //                     <td style="padding: 5px; vertical-align: top; text-align: right;">Price</td>
+                //                 </tr>
 
-                                <tr class="item" style="border-bottom: 1px solid #eee;">
-                                    <td style="padding: 5px; vertical-align: top; text-align: left; width: 50%;">${data.opportunityRevenue.course.name}</td>
-                                    <td style="padding: 5px; vertical-align: top; text-align: center;">${data.opportunityRevenue.quantity}</td>
-                                    <td style="padding: 5px; vertical-align: top; text-align: center;">${Math.abs(data.expectedRevenue - (data.opportunityRevenue.course.price * data.opportunityRevenue.quantity)) / (data.opportunityRevenue.course.price * data.opportunityRevenue.quantity) * 100}%</td>
-                                    <td style="padding: 5px; vertical-align: top; text-align: right;">${numberSeparator(data.opportunityRevenue.course.price, '.')}vnd</td>
-                                </tr>
+                //                 <tr class="item" style="border-bottom: 1px solid #eee;">
+                //                     <td style="padding: 5px; vertical-align: top; text-align: left; width: 50%;">${data.opportunityRevenue.course.name}</td>
+                //                     <td style="padding: 5px; vertical-align: top; text-align: center;">${data.opportunityRevenue.quantity}</td>
+                //                     <td style="padding: 5px; vertical-align: top; text-align: center;">${Math.abs(data.expectedRevenue - (data.opportunityRevenue.course.price * data.opportunityRevenue.quantity)) / (data.opportunityRevenue.course.price * data.opportunityRevenue.quantity) * 100}%</td>
+                //                     <td style="padding: 5px; vertical-align: top; text-align: right;">${numberSeparator(data.opportunityRevenue.course.price, '.')}vnd</td>
+                //                 </tr>
 
-                                <tr class="total" style=" border-top: 2px solid #eee;
-                                font-weight: bold;">
-                                    <td style="padding: 5px; vertical-align: top;"></td>
-                                    <td style="padding: 5px; vertical-align: top;"></td>
-                                    <td style="padding: 5px; vertical-align: top;"></td>
-                                    <td style="padding: 5px; vertical-align: top; text-align: right;">Total: ${numberSeparator(data.expectedRevenue, '.')}vnd</td>
-                                </tr>
-                            </table>
-                    </div>
-                    `
-                  })
-                })
+                //                 <tr class="total" style=" border-top: 2px solid #eee;
+                //                 font-weight: bold;">
+                //                     <td style="padding: 5px; vertical-align: top;"></td>
+                //                     <td style="padding: 5px; vertical-align: top;"></td>
+                //                     <td style="padding: 5px; vertical-align: top;"></td>
+                //                     <td style="padding: 5px; vertical-align: top; text-align: right;">Total: ${numberSeparator(data.expectedRevenue, '.')}vnd</td>
+                //                 </tr>
+                //             </table>
+                //     </div>
+                //     `
+                //   })
+                // })
               }
             });
           }

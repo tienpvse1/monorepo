@@ -23,6 +23,15 @@ export const getStages = async () => {
         field: 'pipelineItems.contact',
       },
       {
+        field: 'pipelineItems.contact.company',
+      },
+      {
+        field: 'pipelineItems.opportunityRevenue',
+      },
+      {
+        field: 'pipelineItems.opportunityRevenue.course',
+      },
+      {
         field: 'pipelineItems.account',
       },
     ],

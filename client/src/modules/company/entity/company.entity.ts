@@ -15,6 +15,8 @@ export interface ICompany extends IBase {
   website: string;
   type: string;
   contacts?: IContact[];
+  foundationDate: any;
+  source: string;
 }
 
 

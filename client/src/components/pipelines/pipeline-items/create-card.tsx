@@ -77,23 +77,23 @@ export const CreateCardItem: FC<CreateCardItemProps> = ({
         queryClient.invalidateQueries(GET_PIPELINE_DESIGN);
         toggleClose();
         message.success('Created successfully !')
-        sendEmail({
-          subject: 'VJAA CRM - Confirm Order Information',
-          to: [{ email: contactEmail, isTag: false }],
-          value: templateEmailOrderInfo(
-            'Order Information:',
-            companyName,
-            contactEmail,
-            contactName,
-            contactPhone,
-            companyEmail,
-            companyCity,
-            discountCode,
-            courseName,
-            coursePrice,
-            expectedRevenue,
-            quantity)
-        })
+        // sendEmail({
+        //   subject: 'VJAA CRM - Confirm Order Information',
+        //   to: [{ email: contactEmail, isTag: false }],
+        //   value: templateEmailOrderInfo(
+        //     'Order Information:',
+        //     companyName,
+        //     contactEmail,
+        //     contactName,
+        //     contactPhone,
+        //     companyEmail,
+        //     companyCity,
+        //     discountCode,
+        //     courseName,
+        //     coursePrice,
+        //     expectedRevenue,
+        //     quantity)
+        // })
       },
     });
   };

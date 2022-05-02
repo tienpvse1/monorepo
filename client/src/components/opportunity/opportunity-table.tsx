@@ -161,23 +161,23 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
           toggleCreateModal();
           form.resetFields();
           // console.log('a:', contactName, contactEmail, contactPhone, companyName, companyEmail, companyCity, courseName, quantity, discountCode, coursePrice, expectedRevenue);
-          sendEmail({
-            subject: 'VJAA CRM - Confirm Order Information',
-            to: [{ email: contactEmail, isTag: false }],
-            value: templateEmailOrderInfo(
-              'Order Information:',
-              companyName,
-              contactEmail,
-              contactName,
-              contactPhone,
-              companyEmail,
-              companyCity,
-              discountCode,
-              courseName,
-              coursePrice,
-              expectedRevenue,
-              quantity)
-          })
+          // sendEmail({
+          //   subject: 'VJAA CRM - Confirm Order Information',
+          //   to: [{ email: contactEmail, isTag: false }],
+          //   value: templateEmailOrderInfo(
+          //     'Order Information:',
+          //     companyName,
+          //     contactEmail,
+          //     contactName,
+          //     contactPhone,
+          //     companyEmail,
+          //     companyCity,
+          //     discountCode,
+          //     courseName,
+          //     coursePrice,
+          //     expectedRevenue,
+          //     quantity)
+          // })
         },
       }
     );
