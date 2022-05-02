@@ -1,4 +1,5 @@
 import SaleManagerLayout from '@common/sale-manager-layout';
+import { SaleManagerDealStatistic } from '@components/sale-manager/statistic/deals';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
@@ -6,6 +7,7 @@ import Statistic from './statistic';
 const Inbox = lazy(() => import('./inbox'));
 const Email = lazy(() => import('./email'));
 const Tag = lazy(() => import('@pages/tag'));
+const Discount = lazy(() => import('./discount'));
 const HomePage = lazy(() => import('@pages/home'));
 const Contact = lazy(() => import('@pages/contact'));
 const LoginPage = lazy(() => import('@pages/login'));
@@ -33,6 +35,9 @@ const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
 // const ManagerContact = lazy(() => import('./sale-manager/contacts'));
 const ManagerStatistic = lazy(() => import('./sale-manager/statistic'));
 const ListSentEmails = lazy(() => import('@components/sent-email/list'));
+const WholeStatistic = lazy(() => import('./sale-manager/whole-statistic'));
+
+const SaleDiscountPage = lazy(() => import('@pages/sale-discount-page'));
 const SoldCoursesStatistic = lazy(
   () => import('@components/statistic/sold-course')
 );
@@ -91,7 +96,6 @@ const ListSchedule = lazy(() => import('@components/schedule/list'));
 const Rank = lazy(() => import('@pages/rank'));
 const Proposal = lazy(() => import('@pages/proposal'));
 
-
 export const route: RouteObject[] = [
   {
     path: '/login',
@@ -147,7 +151,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'proposal',
-        element: <Proposal />
+        element: <Proposal />,
       },
       {
         path: 'statistic',
@@ -228,6 +232,10 @@ export const route: RouteObject[] = [
         element: <Product />,
       },
       {
+        path: 'discount',
+        element: <SaleDiscountPage />,
+      },
+      {
         path: 'tag',
         element: <Tag />,
       },
@@ -301,7 +309,7 @@ export const route: RouteObject[] = [
   },
 
   /**
-   * !Sale manager statistic
+   * !Sale manager routes
    */
   {
     path: '/sale-manager',
@@ -391,7 +399,7 @@ export const route: RouteObject[] = [
       },
       {
         path: 'proposal',
-        element: <Proposal />
+        element: <Proposal />,
       },
       {
         path: 'product',
@@ -402,8 +410,22 @@ export const route: RouteObject[] = [
         element: <ForecastKanban />,
       },
       {
-        path: 'statistic',
-        element: <ManagerStatistic />,
+        path: 'discount',
+        element: <Discount />,
+      },
+      {
+        path: '/sale-manager/statistic',
+        element: <WholeStatistic />,
+        children: [
+          {
+            index: true,
+            element: <ManagerStatistic />,
+          },
+          {
+            path: '/sale-manager/statistic/deal',
+            element: <SaleManagerDealStatistic />,
+          },
+        ],
       },
       {
         path: 'schedule',

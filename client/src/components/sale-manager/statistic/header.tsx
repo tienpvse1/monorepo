@@ -9,6 +9,7 @@ import {
 } from 'antd';
 import moment, { Moment } from 'moment';
 import { Dispatch, SetStateAction } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const { Option } = Select;
 interface StatisticHeaderProps {
@@ -26,6 +27,7 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = ({
   setTimeRange,
   timeRange,
 }) => {
+  const navigate = useNavigate();
   return (
     <div className='site-page-header-ghost-wrapper'>
       <PageHeader
@@ -45,17 +47,21 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = ({
           <Descriptions.Item label='Total sales'>
             {sales && <span>{sales.length}</span>}
           </Descriptions.Item>
-          <Descriptions.Item label='Range'>
-            <DatePicker.RangePicker
+          <Descriptions.Item label='Statistic type'>
+            <Select
               style={{
-                transform: 'translateY(-7px)',
+                transform: 'translateY(-10px)',
               }}
-              defaultValue={[
-                moment(new Date()).subtract(1, 'M'),
-                moment(new Date()),
-              ]}
-            />
+              defaultValue='contacts'
+              onChange={(value) =>
+                value === 'deal' && navigate('/sale-manager/statistic/deal')
+              }
+            >
+              <Select.Option key='contact'>Contact</Select.Option>
+              <Select.Option key='deal'>Deals</Select.Option>
+            </Select>
           </Descriptions.Item>
+
           <Descriptions.Item label='Sale'>
             <Select
               defaultValue={currentSale.id}

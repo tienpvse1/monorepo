@@ -10,11 +10,13 @@ import {
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
+import { InjectKnex, Knex } from 'nestjs-knex';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
 import { User } from 'src/common/decorators/user.decorator';
 import { InternalServerEvent } from 'src/constance/event';
 import { AUTHORIZATION } from 'src/constance/swagger';
 import { InternalSendNotificationPayload } from 'src/modules/notification/dto/internal-send-notification.dto';
+import { CreateOpportunityRevenueDto } from 'src/modules/opportunity-revenue/dto/create-opportunity-revenue.dto';
 import { AssignAccountToOpportunityDto } from './dto/assign-account.dto';
 import {
   CreatePipelineItemDto,
@@ -48,8 +50,11 @@ import { PipelineItemService } from './pipeline-item.service';
   },
   routes: {
     exclude: ['createOneBase', 'deleteOneBase', 'updateOneBase'],
-    updateOneBase: { decorators: [UsePipes(GenerateNestedIdPipe)] },
+    updateOneBase: {
+      decorators: [UsePipes(GenerateNestedIdPipe)],
+    },
   },
+
   query: {
     join: {
       account: {},
@@ -73,6 +78,7 @@ export class PipelineItemController {
   constructor(
     public service: PipelineItemService,
     private eventEmitter: EventEmitter2,
+    @InjectKnex() private knex: Knex,
   ) {}
 
   @Post()
@@ -98,6 +104,7 @@ export class PipelineItemController {
     @Body() { accountId, ...item }: CreateSinglePipelineItemManagerDto,
     @User('id') managerId: string,
   ) {
+    if (!accountId) accountId = managerId;
     await this.service.createPipelineItem(item, accountId, managerId);
     const payload: InternalSendNotificationPayload = {
       description: 'assigned you to an opportunity',
@@ -150,10 +157,23 @@ export class PipelineItemController {
     return this.service.restorePipelineItem(id);
   }
   @Patch(':id')
-  updatePipelineItem(
+  async updatePipelineItem(
     @Param('id') id: string,
     @Body() dto: UpdatePipelineItemDto,
   ) {
+    if (dto.opportunityRevenue) {
+      const { id, ...rest } =
+        dto.opportunityRevenue as CreateOpportunityRevenueDto & {
+          id: string;
+        };
+      await this.knex('opportunity_revenue')
+        .update({
+          course_id: rest.courseId,
+          quantity: rest.quantity,
+        })
+        .where({ id });
+    }
+    delete dto.opportunityRevenue;
     return this.service.update(id, dto);
   }
 }

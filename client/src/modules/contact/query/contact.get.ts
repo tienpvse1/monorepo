@@ -10,7 +10,9 @@ const { CONTACT } = controllers;
 export const QUERY_CONTACTS = 'query-contacts';
 export const QUERY_CONTACTS_LIKE_EMAIL = 'query-contacts';
 export const QUERY_CONTACTS_BY_ID = 'query-contact-by-id';
+export const QUERY_CONTACTS_DEALS_BY_ID = 'query-contact-deals-by-id';
 export const QUERY_PAGINATED_CONTACTS = 'query-paginated-contacts';
+export const QUERY_CONTACTS_BY_ACCOUNT_ID = 'query-contacts-by-account-id';
 
 const getContacts = async (accountId: string) => {
   const query = RequestQueryBuilder.create({
@@ -68,6 +70,21 @@ export const getContactsEmailLike = async (searchKey = '') => {
   return result;
 };
 
+export const getContactByAccountId = async (accountId: string) => {
+  const queryBuilder = RequestQueryBuilder.create({
+    join: [{ field: 'account' }, { field: 'pipelineItems' }],
+    filter: [
+      {
+        field: 'account.id',
+        operator: '$eq',
+        value: accountId,
+      },
+    ],
+  }).query(false);
+  const { data } = await instance.get<IContact[]>(`${CONTACT}?${queryBuilder}`);
+  return data;
+};
+
 export const getContactsById = async (contactId: string) => {
   const query = RequestQueryBuilder.create({
     filter: [
@@ -91,11 +108,7 @@ export const getContactsById = async (contactId: string) => {
 };
 export const searchContacts = async (text: string) => {
   const query = RequestQueryBuilder.create({
-    join: [
-      { field: 'account' },
-      { field: 'company' },
-      { field: 'tags' },
-    ],
+    join: [{ field: 'account' }, { field: 'company' }, { field: 'tags' }],
     search: {
       $or: [
         {
@@ -121,11 +134,7 @@ export const searchContacts = async (text: string) => {
 };
 export const searchContactsOwner = async (text: string, accountId: string) => {
   const query = RequestQueryBuilder.create({
-    join: [
-      { field: 'account' },
-      { field: 'company' },
-      { field: 'tags' },
-    ],
+    join: [{ field: 'account' }, { field: 'company' }, { field: 'tags' }],
     search: {
       $and: [
         {
@@ -159,6 +168,16 @@ export const searchContactsOwner = async (text: string, accountId: string) => {
   return data;
 };
 
+const getContactsDealsById = async (id: string) => {
+  const query = RequestQueryBuilder.create({
+    join: [{ field: 'pipelineItems' }],
+  }).query(false);
+  const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
+  console.log(data);
+
+  return data[0];
+};
+
 export const useContactsWithEmailLike = (queryKey: string) =>
   useQuery(
     [QUERY_CONTACTS_LIKE_EMAIL, queryKey],
@@ -180,9 +199,15 @@ export const getPaginatedContacts = async (size: number, page: number) => {
 };
 
 export const useContacts = (accountId: string, suspense = false) =>
-  useQuery([QUERY_CONTACTS, 'sale'], () => getContacts(accountId), {
+  useQuery([QUERY_CONTACTS, accountId], () => getContacts(accountId), {
     enabled: Boolean(accountId),
     suspense,
+  });
+
+export const useContactsDealsById = (id: string) =>
+  useQuery([QUERY_CONTACTS_DEALS_BY_ID, id], () => getContactsDealsById(id), {
+    enabled: Boolean(id),
+    placeholderData: undefined,
   });
 
 export const useQueryAllContacts = () =>
@@ -198,4 +223,13 @@ export const useQueryContactsById = (contactId: string) =>
 export const usePaginatedContacts = (size: number, page: number) =>
   useQuery([QUERY_PAGINATED_CONTACTS, size, page], () =>
     getPaginatedContacts(size, page)
+  );
+
+export const useContactsByAccountId = (accountId: string) =>
+  useQuery(
+    [QUERY_CONTACTS_BY_ACCOUNT_ID, accountId],
+    () => getContactByAccountId(accountId),
+    {
+      enabled: Boolean(accountId),
+    }
   );
