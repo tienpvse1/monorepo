@@ -104,6 +104,7 @@ export class PipelineItemController {
     @Body() { accountId, ...item }: CreateSinglePipelineItemManagerDto,
     @User('id') managerId: string,
   ) {
+    if (!accountId) accountId = managerId;
     await this.service.createPipelineItem(item, accountId, managerId);
     const payload: InternalSendNotificationPayload = {
       description: 'assigned you to an opportunity',
