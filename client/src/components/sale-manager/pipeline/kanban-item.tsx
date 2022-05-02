@@ -149,7 +149,7 @@ export const KanBanItem = (
                         </div>
                         <div>
                           manage by: {item.account?.firstName}
-                          {item.account?.lastName} ({item.account?.role.name})
+                          {item.account?.lastName} ({item.account?.role?.name})
                         </div>
                       </>
                     }
