@@ -56,6 +56,7 @@ export class CreateSinglePipelineItemManagerDto {
   name: string;
 
   @Length(10)
+  @IsOptional()
   accountId: string;
 
   @Length(10)
