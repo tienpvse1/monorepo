@@ -314,7 +314,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
         setVisible={setModalCreateStage}
         visible={visible}
         pipelineId={data?.id}
-        hasStageWon={data.pipelineColumns.some((value) => value.isWon)}
+        hasStageWon={data?.pipelineColumns.some((value) => value.isWon)}
       />
       <CreateModal
         destroyOnClose={true}
