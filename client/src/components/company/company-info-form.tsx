@@ -66,11 +66,11 @@ export const CompanyInfoForm = () => {
         <Form.Item
           name="source"
           label="Source Info"
-          initialValue={'None'}
+          initialValue={'Other'}
         >
           <Select>
-            <Option value='None' key='None' >
-              None
+            <Option value='Other' key='Other' >
+              Other
             </Option>
             <Option value='Facebook' key='Facebook' >
               <FacebookOutlined /> Facebook

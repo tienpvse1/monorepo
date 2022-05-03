@@ -4,7 +4,7 @@ import { PipeLineColumn } from '@components/pipelines/pipeline-column';
 import { ScrollBarHorizontal } from '@components/pipelines/scrollbar/scrollbar-horizontal';
 import { useToggle } from '@hooks/useToggle';
 import { IPipelineColumn } from '@modules/pipeline-column/entity/pipeline-column.entity';
-import { Button, Col, Form, message, Row } from 'antd';
+import { Button, Col, Form, Row } from 'antd';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { CreateColumnModal } from './pipeline-column/create-column-modal';
@@ -14,15 +14,15 @@ import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useCookies } from 'react-cookie';
 import { useChangeStage } from '@modules/pipeline-items/mutation/pipeline-items.update';
 import { useQueryClient } from 'react-query';
-import { getPipelineItemById, GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-item.get';
+import { GET_PIPELINE_ITEM_BY_ID } from '@modules/pipeline-items/query/pipeline-item.get';
 import { GET_PIPELINE_DESIGN } from '@modules/pipeline/query/pipeline.get';
 import { startFireworks } from '@util/firework';
 import { UploadInvoice } from '@components/sale/upload-invoice';
 import { useCreateReason } from '@modules/reason/mutation/reason.post';
 import { usePostOpportunityHistory } from '@modules/opportunity-history/mutation/opportunity-history.post';
 import { OpportunityHistoryType } from '@modules/opportunity-history/entity/opportunity-history.entity';
-import { useSendEmail } from '@modules/email/mutate/email.post';
-import numberSeparator from "number-separator";
+// import { useSendEmail } from '@modules/email/mutate/email.post';
+// import numberSeparator from "number-separator";
 
 interface MainPipelineProps {
   data: IPipeline;
@@ -60,10 +60,11 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
   const handleIsRoleAdmin = () => {
     return public_user_info.role.name === 'admin' ? true : false
   }
-  const onError = () => {
-    message.error('Can not send email');
-  }
-  const { mutate: sendEmail } = useSendEmail(onError);
+  
+  // const onError = () => {
+  //   message.error('Can not send email');
+  // }
+  // const { mutate: sendEmail } = useSendEmail(onError);
 
   const handleChangeStageWon = async () => {
     const {
