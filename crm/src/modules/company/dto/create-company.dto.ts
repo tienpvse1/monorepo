@@ -27,6 +27,13 @@ export class CreateCompanyDto {
   address: string;
 
   @IsOptional()
+  foundationDate: Date;
+
+  @IsOptional()
+  @IsString()
+  source: string;
+
+  @IsOptional()
   @IsString()
   country: string;
   @IsOptional()

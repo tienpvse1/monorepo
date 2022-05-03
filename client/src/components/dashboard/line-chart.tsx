@@ -66,7 +66,7 @@ export const LineChart: React.FC<ChartInterface> = ({ height, width }) => {
               return opportunityHistory.filter(
                 (history) =>
                   isIn(history.createdAt.toString(), month) &&
-                  history.newStage.id === label.id
+                  history.newStage?.id === label.id
               ).length;
             }),
             borderColor: 'rgb(255, 99, 132)',

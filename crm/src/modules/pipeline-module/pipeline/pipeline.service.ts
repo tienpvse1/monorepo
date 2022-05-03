@@ -26,6 +26,9 @@ export class PipelineService {
       )
       .leftJoinAndSelect('pipelineItems.schedules', 'schedules')
       .leftJoinAndSelect('pipelineItems.contact', 'contact')
+      .leftJoinAndSelect('contact.company', 'company')
+      .leftJoinAndSelect('pipelineItems.opportunityRevenue', 'revenue')
+      .leftJoinAndSelect('revenue.course', 'course')
       .leftJoinAndSelect('pipelineItems.account', 'account')
       .getMany();
 
@@ -39,6 +42,9 @@ export class PipelineService {
       .leftJoinAndSelect('pipelineColumn.pipelineItems', 'pipelineItems')
       .leftJoinAndSelect('pipelineItems.schedules', 'schedules')
       .leftJoinAndSelect('pipelineItems.contact', 'contact')
+      .leftJoinAndSelect('contact.company', 'company')
+      .leftJoinAndSelect('pipelineItems.opportunityRevenue', 'revenue')
+      .leftJoinAndSelect('revenue.course', 'course')
       .leftJoinAndSelect('pipelineItems.account', 'account')
       .getMany();
 

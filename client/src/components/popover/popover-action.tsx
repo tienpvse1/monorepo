@@ -8,6 +8,8 @@ interface PopoverActionProps {
   handleOption1?: () => void;
   handleOption2?: () => void;
   isWon?: boolean;
+  opportunityQty?: number;
+  expectedRevenue?: string;
 }
 
 export const PopoverAction: React.FC<PopoverActionProps> = ({
@@ -16,12 +18,14 @@ export const PopoverAction: React.FC<PopoverActionProps> = ({
   option2: itemName2,
   handleOption2,
   handleOption1,
-  isWon = false
+  isWon = false,
+  expectedRevenue,
+  opportunityQty
 }) => {
   const [visible, setVisible] = useToggle();
 
   const handleDelete = () => {
-    showDeleteConfirm(handleOption2);
+    showDeleteConfirm(handleOption2, { expectedRevenue, opportunityQty });
     setVisible();
   };
 

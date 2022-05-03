@@ -1,7 +1,7 @@
 import { Col, Row } from 'antd';
 import { MyForm } from '@components/form/my-form';
 import { ICompany } from '@modules/company/entity/company.entity';
-import { TypeOfCompany } from './type-of-company';
+import { TypeOfSource } from './type-of-source';
 
 interface CompanyInfoDetailsProps {
   company: ICompany
@@ -20,16 +20,16 @@ export const CompanyInfoDetails: React.FC<CompanyInfoDetailsProps> = ({
           <MyForm label="Email">
             {company.email}
           </MyForm>
-          <MyForm label="Tags">
-
+          <MyForm label="Foundation Date">
+            {company?.foundationDate}
           </MyForm>
         </Col>
         <Col span={12}>
           <MyForm label="Phone Number">
             {company.mobile}
           </MyForm>
-          <MyForm label="Type">
-            <TypeOfCompany type={company.type} />
+          <MyForm label="Source Info">
+            <TypeOfSource type={company?.source} />
           </MyForm>
         </Col>
       </Row>

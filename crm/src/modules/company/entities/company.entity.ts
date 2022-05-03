@@ -36,6 +36,12 @@ export class Company extends BaseEntity {
   @Column({ nullable: true })
   address: string;
 
+  @Column({ nullable: true, name: 'foundation_date', type: 'date' })
+  foundationDate: Date;
+
+  @Column({ nullable: true })
+  source: string;
+
   @Column({ nullable: true })
   @Index({ unique: true })
   email: string;
