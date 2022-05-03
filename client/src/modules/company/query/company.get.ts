@@ -17,6 +17,7 @@ export const getCompanies = async () => {
       { field: 'contacts.pipelineItems.pipelineColumn' },
       { field: 'contacts.pipelineItems.opportunityRevenue' },
       { field: 'city' },
+      { field: 'creator' },
     ],
     sort: [{ field: 'createdAt', order: 'DESC' }]
   }).query(false);

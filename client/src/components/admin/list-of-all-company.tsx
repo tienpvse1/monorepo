@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react';
 const ListOfAllCompany = () => {
   const { data, isLoading } = useCompanies();
   const [dataCompany, setDataCompany] = useState<ICompany[]>();
+  
+  console.log('dataC:', data);
+  
 
   useEffect(() => {
     setDataCompany(data);

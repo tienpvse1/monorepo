@@ -7,7 +7,7 @@ interface TypeOfSourceProps {
 export const TypeOfSource: React.FC<TypeOfSourceProps> = ({ type }) => {
   if (type === 'Facebook')
     return <><FacebookFilled /> Facebook</>;
-  if (type === 'Direct Meeting')
+  if (type === 'DirectMeeting')
     return <><CoffeeOutlined /> Direct Meeting</>
   if (type === 'Phone')
     return <><PhoneOutlined /> Phone</>
@@ -19,8 +19,10 @@ export const TypeOfSource: React.FC<TypeOfSourceProps> = ({ type }) => {
     return <><TwitterOutlined /> Twitter</>
   if (type === 'Instagram')
     return <><InstagramOutlined /> Instagram</>
+  if (type === 'Youtube')
+    return <><YoutubeFilled /> Youtube</>
 
   return (
-    <><YoutubeFilled /> Youtube</>
+    <>Other</>
   )
 }
