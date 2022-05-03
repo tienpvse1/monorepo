@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/base/nestjsx.service';
-import { getRepository, Repository } from 'typeorm';
+import { getCustomRepository, getRepository, Repository } from 'typeorm';
+import { AccountRepository } from '../account/account.repository';
 import { City } from '../city/entities/city.entity';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
@@ -13,12 +14,17 @@ export class CompanyService extends BaseService<Company> {
     super(repository);
   }
 
-  async create({ cityId, ...rest }: CreateCompanyDto) {
+  async create({ cityId, ...rest }: CreateCompanyDto, userId: string) {
     const cityRepo = getRepository(City);
-    const city = await cityRepo.findOne(cityId);
+    const accountRepository = getCustomRepository(AccountRepository);
+    const [city, account] = await Promise.all([
+      cityRepo.findOne(cityId),
+      accountRepository.findOneItem({ where: { id: userId } }),
+    ]);
     const result = await this.createItem({
       ...rest,
       city,
+      creator: account,
     });
     return result;
   }

@@ -1,13 +1,6 @@
 import { IAccount } from '@interfaces/account';
-import {
-  Avatar,
-  Button,
-  DatePicker,
-  Descriptions,
-  PageHeader,
-  Select,
-} from 'antd';
-import moment, { Moment } from 'moment';
+import { Avatar, Button, Descriptions, PageHeader, Select } from 'antd';
+import { Moment } from 'moment';
 import { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -54,7 +47,8 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = ({
               }}
               defaultValue='contacts'
               onChange={(value) =>
-                value === 'deal' && navigate('/sale-manager/statistic/deal')
+                value === 'deal' ? navigate('/sale-manager/statistic/deal') : 
+                value === 'source' && navigate('/sale-manager/statistic/source') 
               }
             >
               <Select.Option key='contact'>Contact</Select.Option>
