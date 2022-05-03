@@ -12,6 +12,18 @@ import {
   OneToMany,
 } from 'typeorm';
 
+export enum CompanySource {
+  'Twitter',
+  'Phone',
+  'Youtube',
+  'Facebook',
+  'Instagram',
+  'Direct meeting',
+  'Presenter',
+  'Advertisement',
+  'Other',
+}
+
 @Entity()
 export class Company extends BaseEntity {
   @Column()
