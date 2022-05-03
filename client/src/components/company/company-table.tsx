@@ -1,8 +1,7 @@
-import { DeleteOutlined, FormOutlined } from "@ant-design/icons";
-import { Button, FormInstance, Modal, Space, Table } from "antd"
+import { ContactsOutlined, DeleteOutlined, ExclamationCircleOutlined, FormOutlined, SketchOutlined } from "@ant-design/icons";
+import { Button, Empty, FormInstance, List, Modal, Space, Table, Tag } from "antd"
 import Column from "antd/lib/table/Column"
 import { useToggle } from "@hooks/useToggle";
-import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { CompanyTitleTable } from "@components/company/company-title-table";
 import { CreateModal } from "@components/modal/create-modal";
 import { CreateCompanyForm } from "./create-company-form";
@@ -15,7 +14,9 @@ import { useQueryClient } from "react-query";
 import { useDeleteCompany } from "@modules/company/mutation/company.delete";
 import { ICompany } from "@modules/company/entity/company.entity";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 const { DEFAULT } = dateFormat;
+import numberSeparator from "number-separator";
 
 interface CompanyTableProps {
   dataSource: ICompany[];
@@ -32,6 +33,8 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
   const navigate = useNavigate();
   const { mutate: createCompany } = useCreateCompany();
   const { mutate: deleteCompany } = useDeleteCompany();
+  const [deleteItem, setDeleteItem] = useState<ICompany>(null);
+
 
   const [isOpenModal, toggleCreateModal] = useToggle();
 
@@ -45,9 +48,10 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
   };
 
   const handleCreateCompany = (record: any, form: FormInstance<any>) => {
-    const { region, country, ...rest } = record;
+    const { region, country, foundationDate, ...rest } = record;
     createCompany({
       ...rest,
+      foundationDate: foundationDate ? foundationDate.format(DEFAULT) : '',
       country: region === 'VN' ? region : country,
     }, {
       onSuccess: () => {
@@ -164,6 +168,14 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
 
                 <Button
                   type='default'
+                  onClick={() => setDeleteItem(record)}
+                  shape='round'
+                  danger
+                >
+                  <DeleteOutlined />
+                </Button>
+                {/* <Button
+                  type='default'
                   onClick={() => showDeleteConfirm(() => deleteCompany(record.id, {
                     onSuccess: () => {
                       queryClient.invalidateQueries(QUERY_COMPANIES);
@@ -174,7 +186,7 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
                   danger
                 >
                   <DeleteOutlined />
-                </Button>
+                </Button> */}
               </>
             </Space>
           )}
@@ -190,6 +202,81 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
       >
         <CreateCompanyForm />
       </CreateModal>
+      <Modal
+        onCancel={() => setDeleteItem(null)}
+        visible={deleteItem != null}
+        bodyStyle={{ height: '180px' }}
+        title={
+          <span style={{ display: 'flex', alignItems: 'center', fontSize: '18px' }}>
+            <ExclamationCircleOutlined
+              style={{
+                fontSize: '20px',
+                marginRight: '10px',
+                color: '#F9A825'
+              }}
+            />
+            Are you sure want to delete ?
+          </span>
+        }
+        onOk={() =>
+          deleteCompany(deleteItem.id, {
+            onSuccess: () => {
+              queryClient.invalidateQueries(QUERY_COMPANIES);
+              message.success('Deleted company successfully!');
+              setDeleteItem(null);
+            }
+          })
+        }
+      >
+        <>
+          {deleteItem && deleteItem.contacts.length > 0 ? (
+            <List
+              header={
+                <div style={{ fontSize: '17px', marginTop: '-15px' }}>
+                  Company Dependencies:
+                </div>}
+              bordered={false}
+            >
+              {deleteItem && deleteItem.contacts.length > 0 &&
+                <>
+                  <List.Item>
+                    <Tag
+                      icon={<ContactsOutlined />}
+                      style={{ fontSize: '16px' }}
+                      color={'#C2185B'}
+                    >
+                      Contact:
+                    </Tag> {deleteItem?.contacts.length}
+                  </List.Item>
+                  <List.Item>
+                    <Tag
+                      icon={<SketchOutlined />}
+                      style={{ fontSize: '16px' }}
+                      color={'#f50'}
+                    >
+                      Expected revenue:
+                    </Tag>
+                    {numberSeparator(deleteItem?.contacts.reduce((acc, value) =>
+                      acc + value.pipelineItems.reduce((acc2, item) => acc2 + item.expectedRevenue, 0), 0), '.')}đ
+                  </List.Item>
+                  {/* <List.Item >
+                    <Tag
+                      icon={<ScheduleOutlined />}
+                      color={'#7E57C2'}
+                      style={{ fontSize: '16px' }}
+                    >
+                      Scheduled activity:
+                    </Tag> {deleteItem.pipelineItems.reduce((acc, value) =>
+                      acc + value.schedules.length, 0)}
+                  </List.Item> */}
+                </>
+              }
+            </List>
+          ) : (
+            <Empty description='No Dependent' />
+          )}
+        </>
+      </Modal>
     </>
   )
 }

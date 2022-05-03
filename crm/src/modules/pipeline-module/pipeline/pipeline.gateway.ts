@@ -49,6 +49,9 @@ export class PipelineGateway extends BaseGateway<any> {
       .leftJoinAndSelect('pipelineItem.account', 'account')
       .leftJoinAndSelect('account.role', 'role')
       .leftJoinAndSelect('pipelineItem.contact', 'contact')
+      .leftJoinAndSelect('contact.company', 'company')
+      .leftJoinAndSelect('pipelineItems.opportunityRevenue', 'revenue')
+      .leftJoinAndSelect('revenue.course', 'course')
       .leftJoinAndSelect('pipelineItem.schedules', 'schedule')
       .getMany();
 

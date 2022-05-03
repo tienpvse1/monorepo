@@ -47,6 +47,7 @@ export const OpportunityInfoForm: React.FC<OpportunityInfoFormProps> = ({
           disabledCompany={disabledCompany}
           contact={contact}
           companyId={companyId}
+          form={form}
         />
 
         <Form.Item
