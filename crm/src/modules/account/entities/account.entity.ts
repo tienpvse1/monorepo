@@ -28,6 +28,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { DiscountCode } from 'src/modules/discount-code/entities/discount-code.entity';
+import { Company } from 'src/modules/company/entities/company.entity';
 @Entity()
 export class Account extends BaseEntity {
   @Column()
@@ -75,6 +76,9 @@ export class Account extends BaseEntity {
   @Column({ nullable: true })
   country?: string;
 
+  @Column({ name: 'is_leader', type: 'boolean', default: false })
+  isLeader: boolean;
+
   @OneToOne(() => Session, (session) => session.account)
   session: Session;
 
@@ -87,6 +91,9 @@ export class Account extends BaseEntity {
 
   @OneToMany(() => PipelineItem, (pipeline) => pipeline.createBy)
   createdPipelineItems: PipelineItem[];
+
+  @OneToMany(() => Company, (company) => company.creator)
+  createdCompany: Company;
 
   // an account can upload multiple files
   @OneToMany(() => File, (pipeline) => pipeline.account)
