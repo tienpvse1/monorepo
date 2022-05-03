@@ -1,3 +1,4 @@
+import { IAccount } from '@interfaces/account';
 import { IBase } from '@interfaces/base';
 import { IContact } from '@modules/contact/entity/contact.entity';
 import { IProvinces } from '@modules/provinces/entity/provinces.entity';
@@ -27,4 +28,5 @@ export interface ICompany extends IBase {
   contacts?: IContact[];
   foundationDate: any;
   source: CompanySource;
+  creator: IAccount;
 }

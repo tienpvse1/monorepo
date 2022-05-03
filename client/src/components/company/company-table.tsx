@@ -14,30 +14,33 @@ import { useQueryClient } from "react-query";
 import { useDeleteCompany } from "@modules/company/mutation/company.delete";
 import { ICompany } from "@modules/company/entity/company.entity";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 const { DEFAULT } = dateFormat;
 import numberSeparator from "number-separator";
+import { useCookies } from "react-cookie";
+import { PUBLIC_USER_INFO } from "@constance/cookie";
+import { removeDuplicate } from "@util/array";
+import { Role } from "@interfaces/type-roles";
 
 interface CompanyTableProps {
   dataSource: ICompany[];
   isLoading: boolean;
   setDataCompany: (value: []) => void;
+  searchMethod: (text: string, id?: string) => Promise<any>;
 }
 
 export const CompanyTable: React.FC<CompanyTableProps> = ({
   dataSource,
   isLoading,
-  setDataCompany
+  setDataCompany,
+  searchMethod
 }) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { mutate: createCompany } = useCreateCompany();
   const { mutate: deleteCompany } = useDeleteCompany();
   const [deleteItem, setDeleteItem] = useState<ICompany>(null);
-
-
   const [isOpenModal, toggleCreateModal] = useToggle();
-
 
   const rowSelection = {
     onChange: (selectedRowKeys: React.Key[], selectedRows: any[]) => { },
@@ -47,11 +50,34 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
     }),
   };
 
+  //Filter created by follow account id
+  const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
+  const handleFilter = () => {
+    const accountFilter = dataSource?.filter(
+      (value) => value.creator?.id !== public_user_info.id
+    );
+    const accountFormat = accountFilter?.map((value) => ({
+      text: `${value.creator?.firstName} ${value.creator?.lastName}`,
+      value: `${value.creator?.firstName} ${value.creator?.lastName}`,
+    }));
+    const account = removeDuplicate(accountFormat, 'value');
+    account?.unshift({
+      text: 'My company',
+      value: `${public_user_info.firstName} ${public_user_info.lastName}`,
+    });
+    return account;
+  };
+  const arrayFilter = useMemo(() => handleFilter(), [dataSource]);
+
+  const isRoleSaleManager = () => {
+    return public_user_info.role.name === Role.SALE_MANAGER;
+  }
+
   const handleCreateCompany = (record: any, form: FormInstance<any>) => {
     const { region, country, foundationDate, ...rest } = record;
     createCompany({
       ...rest,
-      foundationDate: foundationDate ? foundationDate.format(DEFAULT) : '',
+      foundationDate: foundationDate ? foundationDate.format(DEFAULT) : undefined,
       country: region === 'VN' ? region : country,
     }, {
       onSuccess: () => {
@@ -90,7 +116,12 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
           type: 'checkbox',
           ...rowSelection,
         }}
-        title={() => <CompanyTitleTable setDataCompany={setDataCompany} toggleCreateModal={toggleCreateModal} />}
+        title={() =>
+          <CompanyTitleTable
+            setDataCompany={setDataCompany}
+            toggleCreateModal={toggleCreateModal}
+            searchMethod={searchMethod}
+          />}
         pagination={{ position: ['bottomCenter'], style: { fontSize: 15 } }}
         size={'small'}
         rowKey={(record) => record.id}
@@ -141,6 +172,26 @@ export const CompanyTable: React.FC<CompanyTableProps> = ({
           )}
           sorter={(a, b) => ('' + a.country).localeCompare(b.country)}
         />
+        
+        {isRoleSaleManager() &&
+          <Column
+            title='Created By'
+            dataIndex='username'
+            key='username'
+            width={120}
+            render={(_, record: ICompany) => (
+              <Link className='my-link' to={`view-details/${record?.id}`}>
+                {record?.creator?.firstName} {record?.creator?.lastName}
+              </Link>
+            )}
+            filters={arrayFilter}
+            filterSearch={true}
+            onFilter={(value, record) => {
+              let fullName = `${record.creator?.firstName} ${record.creator?.lastName}`;
+              return fullName.indexOf(value as string) === 0;
+            }}
+          />
+        }
 
         <Column
           title="Created Date"

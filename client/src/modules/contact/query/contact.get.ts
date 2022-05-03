@@ -208,7 +208,7 @@ export const getPaginatedContacts = async (size: number, page: number) => {
 };
 
 export const useContacts = (accountId: string, suspense = false) =>
-  useQuery([QUERY_CONTACTS, accountId], () => getContacts(accountId), {
+  useQuery([QUERY_CONTACTS, 'sale'], () => getContacts(accountId), {
     enabled: Boolean(accountId),
     suspense,
   });

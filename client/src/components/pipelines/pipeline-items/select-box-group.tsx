@@ -1,6 +1,5 @@
 import { PUBLIC_USER_INFO } from "@constance/cookie";
 import { isRequired } from "@constance/rules-of-input-antd";
-import { Role } from "@interfaces/type-roles";
 import { useCompanies } from "@modules/company/query/company.get";
 import { IContact } from "@modules/contact/entity/contact.entity";
 import { Form, FormInstance, Input, Select } from "antd"
@@ -24,9 +23,9 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
   form
 }) => {
 
+  const [{ public_user_info: { id } }] = useCookies([PUBLIC_USER_INFO]);
   const [dataContact, setDataContact] = useState<IContact[]>([]);
   const { data: companies } = useCompanies();
-  const [{ public_user_info: { id, role: { name } } }] = useCookies([PUBLIC_USER_INFO]);
 
   useEffect(() => {
     if (contact) {
@@ -46,10 +45,13 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
       companyEmail: data.email,
       companyCity: data.city.admin_name
     })
-    if (name === Role.SALE_MANAGER)
-      setDataContact(data.contacts)
-    else
-      setDataContact(data.contacts.filter((contact) => contact.account.id === id))
+    console.log('data selected:', data);
+    setDataContact(data.contacts)
+    
+    // if (name === Role.SALE_MANAGER)
+    //   setDataContact(data.contacts)
+    // else
+    //   setDataContact(data.contacts.filter((contact) => contact.account.id === id))
   }
   return (
     <>
@@ -64,7 +66,7 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
           onChange={handleSelected}
           placeholder='Select a company'
         >
-          {companies && companies.map((value) =>
+          {companies && companies.filter((company) => company.creator?.id === id).map((value) =>
             <Option key={value.id}>{value.name}</Option>
           )}
         </Select>
@@ -81,8 +83,6 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
           placeholder='Select a contact'
           optionFilterProp='children'
           onChange={(_, value) => {
-            console.log("value2:", value);
-            
             form.setFieldsValue({
               //@ts-ignore
               contactName: value.children[0],

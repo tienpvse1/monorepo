@@ -51,10 +51,13 @@ export const ContactTable: React.FC<ContactTableProps> = ({
   //CRUD api
   const { mutate: deleteContact } = useDeleteContact(() => {
     client.invalidateQueries([QUERY_CONTACTS, queryKey]);
+    console.log('[QUERY_CONTACTS, queryKey] d:', [QUERY_CONTACTS, queryKey]);
     message.success('Delete successfully !');
   });
   const { mutate: insertContact } = useInsertContact(() => {
     client.invalidateQueries([QUERY_CONTACTS, queryKey]);
+    console.log('[QUERY_CONTACTS, queryKey]', [QUERY_CONTACTS, queryKey]);
+    
     message.success('Create new successfully !');
     toggleCreateModal();
   });
