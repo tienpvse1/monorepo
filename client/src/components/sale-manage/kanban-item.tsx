@@ -17,7 +17,7 @@ export const KanBanItem = (
       ref={provided.innerRef}
       style={{ height: '100%' }}
     >
-      {accounts.map((account, index) => (
+      {accounts?.map((account, index) => (
         <Draggable draggableId={account.id} key={account.id} index={index}>
           {(provided, snapshot) => (
             <div

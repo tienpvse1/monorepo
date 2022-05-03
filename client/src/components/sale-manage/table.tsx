@@ -1,4 +1,5 @@
 import { IAccount } from '@interfaces/account';
+import { useMakeLeader } from '@modules/account/mutation/account.patch';
 import { ITeam } from '@modules/team/entity/team.entity';
 import { useDeleteTeam } from '@modules/team/mutate/team.delete';
 import { Button, Image, Table as AntdTable, Tag, message } from 'antd';
@@ -10,7 +11,20 @@ interface TableProps {
 
 export const Table: React.FC<TableProps> = ({ data, setReload }) => {
   const { mutate: removeTeam } = useDeleteTeam();
-
+  const { mutate: makeLeader } = useMakeLeader();
+  const handleAssignClick = (teamId: string, accountId: string) => {
+    makeLeader(
+      {
+        accountId,
+        teamId,
+      },
+      {
+        onSuccess: () => {
+          message.success('assign successfully');
+        },
+      }
+    );
+  };
   const columns: ColumnsType<ITeam> = [
     { title: 'Name', dataIndex: 'name', key: 'name' },
     {
@@ -18,7 +32,7 @@ export const Table: React.FC<TableProps> = ({ data, setReload }) => {
       key: 'statistic ',
       render: (_, record) => (
         <span>
-          {record.accounts.length}/{record.required}
+          {record.accounts?.length}/{record.required}
         </span>
       ),
     },
@@ -33,7 +47,7 @@ export const Table: React.FC<TableProps> = ({ data, setReload }) => {
       key: 'operation',
       render: (_, record) => (
         <Button
-          disabled={record.accounts.length > 0 && true}
+          disabled={record.accounts?.length > 0 && true}
           type='link'
           onClick={() =>
             removeTeam(record.id, {
@@ -94,9 +108,14 @@ export const Table: React.FC<TableProps> = ({ data, setReload }) => {
         title: 'Action',
         dataIndex: 'operation',
         key: 'operation',
-        render: () => (
+        render: (value, row: IAccount) => (
           <span className='table-operation'>
-            <Button type='default'>Assign</Button>
+            <Button
+              onClick={() => handleAssignClick(data.id, row.id)}
+              type='default'
+            >
+              Assign
+            </Button>
           </span>
         ),
       },

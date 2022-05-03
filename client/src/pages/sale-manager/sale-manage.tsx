@@ -23,7 +23,10 @@ const SaleManage: React.FC<SaleManageProps> = ({}) => {
   });
   // get initial data
   useEffect(() => {
-    getTeamsForManage().then((data) => setData(data));
+    getTeamsForManage().then((data) => {
+      console.log(data);
+      setData(data);
+    });
   }, [reload]);
   // update data when there's an event from server
   useEffect(() => {
