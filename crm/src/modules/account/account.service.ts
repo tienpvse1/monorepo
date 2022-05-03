@@ -96,4 +96,23 @@ export class AccountService extends BaseService<Account> {
       throw new BadRequestException('cannot create account');
     }
   }
+
+  async makeLeader(id: string, teamId: string) {
+    const teamRepository = getCustomRepository(TeamRepository);
+    const [team] = await Promise.all([
+      teamRepository.findOneItem({
+        where: { id: teamId },
+        relations: ['accounts'],
+      }),
+    ]);
+    team.accounts.forEach((account) => {
+      if (account.isLeader) account.isLeader = false;
+    });
+    team.accounts.forEach((account) => {
+      if (account.id === id) {
+        account.isLeader = true;
+      }
+    });
+    return team.save();
+  }
 }

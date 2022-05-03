@@ -20,6 +20,8 @@ import numberSeparator from "number-separator";
 import { useMemo } from 'react';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useCookies } from 'react-cookie';
+import { useSendEmail } from '@modules/email/mutate/email.post';
+import { templateEmailOrderInfo } from '@util/email-template';
 
 const { DEFAULT } = dateFormat;
 
@@ -35,7 +37,7 @@ export interface SubmitFormCreateOpportunity {
   columnId: string;
   contactId: string;
   expectedClosing: string | any;
-  expectedRevenue: string;
+  expectedRevenue: number;
   description: string;
   internalNotes: string;
   name: string;
@@ -45,6 +47,14 @@ export interface SubmitFormCreateOpportunity {
   courseId: string;
   priority: number;
   companyName: string;
+  contactEmail: string;
+  contactName: string;
+  contactPhone: string;
+  companyEmail: string;
+  companyCity: string;
+  discountCode: number;
+  courseName: string;
+  coursePrice: number;
 }
 
 export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
@@ -91,6 +101,10 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
   const { mutate: createOpportunity } = usePostPipelineItems();
   const { mutate: removePipelineItems } = useDeletePipelineItems();
   const queryClient = useQueryClient();
+  const onError = () => {
+    message.error('Can not send email');
+  }
+  const { mutate: sendEmail } = useSendEmail(onError);
 
   const [isOpenModal, toggleCreateModal] = useToggle();
 
@@ -114,7 +128,16 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
       courseId,
       quantity,
       priority,
-      expectedRevenue
+      expectedRevenue,
+      contactEmail,
+      companyCity,
+      companyEmail,
+      companyName,
+      contactName,
+      contactPhone,
+      courseName,
+      coursePrice,
+      discountCode
     } = record;
     createOpportunity(
       {
@@ -137,6 +160,24 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
           message.success('Created opportunity successfully !');
           toggleCreateModal();
           form.resetFields();
+          // console.log('a:', contactName, contactEmail, contactPhone, companyName, companyEmail, companyCity, courseName, quantity, discountCode, coursePrice, expectedRevenue);
+          // sendEmail({
+          //   subject: 'VJAA CRM - Confirm Order Information',
+          //   to: [{ email: contactEmail, isTag: false }],
+          //   value: templateEmailOrderInfo(
+          //     'Order Information:',
+          //     companyName,
+          //     contactEmail,
+          //     contactName,
+          //     contactPhone,
+          //     companyEmail,
+          //     companyCity,
+          //     discountCode,
+          //     courseName,
+          //     coursePrice,
+          //     expectedRevenue,
+          //     quantity)
+          // })
         },
       }
     );
@@ -334,7 +375,7 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
           form={form}
           layout='vertical'
         >
-          <CreateOpportunityForm form={form}/>
+          <CreateOpportunityForm form={form} />
         </Form>
       </CreateModal>
     </>

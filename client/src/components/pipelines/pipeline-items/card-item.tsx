@@ -20,6 +20,7 @@ import {
   Rate,
   Space,
   Tag,
+  Tooltip,
 } from 'antd';
 import { lazy, Suspense } from 'react';
 import { PopoverAction } from '../../popover/popover-action';
@@ -151,8 +152,15 @@ export const PipelineCardItem: React.FC<PipelineCardItemProps> = ({
                       </Tag>
                       : ''
                 }
+
               </div>
+              <div style={{ fontSize: 16 }}>{cardData?.contact?.company?.name}</div>
               <div style={{ fontSize: 16 }}>{cardData?.contact?.name}</div>
+              <div style={{ fontSize: 16, width: '150px' }}>
+                <Tooltip placement='topLeft' title={cardData?.opportunityRevenue.course.name}>
+                  {cardData?.opportunityRevenue.course.name}
+                </Tooltip>
+              </div>
               <Rate
                 tooltips={['Low', 'Medium', 'Important']}
                 disabled

@@ -9,6 +9,7 @@ import {
   UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
@@ -16,6 +17,7 @@ import { IsPassthrough } from 'src/common/decorators/passthrough.decorator';
 import { Public } from 'src/common/decorators/public.decorator';
 import { HasRoles } from 'src/common/decorators/role/decorator';
 import { Roles } from 'src/constance';
+import { InternalServerEvent } from 'src/constance/event';
 import { AUTHORIZATION } from 'src/constance/swagger';
 import { AccountService } from './account.service';
 import { CreateAccountDto, JoinTeamDto } from './dto/create-account.dto';
@@ -66,7 +68,10 @@ import { ExcludePasswordPipe } from './exclude-password.pipe';
 })
 @IsPassthrough()
 export class AccountController {
-  constructor(public service: AccountService) {}
+  constructor(
+    public service: AccountService,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
   @Post('join-team')
   @HistoryLog('joined a team')
@@ -91,6 +96,17 @@ export class AccountController {
     return this.service.repository.update(accountId, {
       isEnable: true,
     });
+  }
+
+  @HasRoles(Roles.SALE_MANAGER)
+  @Patch('assign-leader/:id/:teamId')
+  async assignTeamLeader(
+    @Param('id') accountId: string,
+    @Param('teamId') teamId: string,
+  ) {
+    const result = await this.service.makeLeader(accountId, teamId);
+    this.eventEmitter.emit(InternalServerEvent.TEAM_UPDATED);
+    return result;
   }
   @HasRoles(Roles.ADMIN)
   @Patch('disable/:id')

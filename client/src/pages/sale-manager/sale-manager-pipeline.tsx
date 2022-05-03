@@ -9,6 +9,7 @@ import {
 } from '@modules/pipeline-column/query/pipeline-column.get';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
 import { abstractSort } from '@util/array';
+import { useState } from 'react';
 import { io } from 'socket.io-client';
 import { client } from '../../App';
 const socket = io(`${envVars.VITE_BE_DOMAIN}/pipeline`);
@@ -16,11 +17,11 @@ interface SaleManagerPipelineProps {}
 
 const SaleManagerPipeline: React.FC<SaleManagerPipelineProps> = ({}) => {
   const { data } = useStages();
+  const [searchKey, setSearchKey] = useState('');
   useSocket({
     event: 'manager-pipeline-updated',
     onReceive: ({ pipelineColumns }: IPipeline) => {
       if (pipelineColumns) {
-        console.log(pipelineColumns);
         abstractSort(pipelineColumns, 'pipelineItems');
         client.setQueryData(GET_STAGES, pipelineColumns);
       }
@@ -32,8 +33,23 @@ const SaleManagerPipeline: React.FC<SaleManagerPipelineProps> = ({}) => {
   };
   return (
     <div>
-      <ManagerPipelineHeader />
-      <Kanban data={data} setData={setData} />
+      <ManagerPipelineHeader
+        setSearchKey={setSearchKey}
+        searchKey={searchKey}
+      />
+      <Kanban
+        data={data.map((column) => ({
+          ...column,
+          pipelineItems: column.pipelineItems.map((item) =>
+            item.name
+              .toLocaleLowerCase()
+              .includes(searchKey.toLocaleLowerCase())
+              ? { ...item, show: true }
+              : { ...item, show: false }
+          ),
+        }))}
+        setData={setData}
+      />
     </div>
   );
 };

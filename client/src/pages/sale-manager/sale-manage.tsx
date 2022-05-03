@@ -4,15 +4,15 @@ import { envVars } from '@env/var.env';
 import { useSocket } from '@hooks/socket';
 import { useToggle } from '@hooks/useToggle';
 import { ITeam } from '@modules/team/entity/team.entity';
-import { getTeams } from '@modules/team/query/team.get';
+import { getTeamsForManage } from '@modules/team/query/team.get';
 import { sortTeams } from '@util/array';
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 
 const socket = io(`${envVars.VITE_BE_DOMAIN}/team`);
-interface SaleManageProps { }
+interface SaleManageProps {}
 
-const SaleManage: React.FC<SaleManageProps> = ({ }) => {
+const SaleManage: React.FC<SaleManageProps> = ({}) => {
   const [data, setData] = useState<ITeam[]>([]);
   const [reload, setReload] = useToggle();
 
@@ -23,7 +23,10 @@ const SaleManage: React.FC<SaleManageProps> = ({ }) => {
   });
   // get initial data
   useEffect(() => {
-    getTeams().then((data) => setData(data));
+    getTeamsForManage().then((data) => {
+      console.log(data);
+      setData(data);
+    });
   }, [reload]);
   // update data when there's an event from server
   useEffect(() => {
@@ -35,7 +38,7 @@ const SaleManage: React.FC<SaleManageProps> = ({ }) => {
   return (
     <div className='container-page'>
       <SaleManageHeader setReload={setReload} />
-      <SaleManageBody data={data} setData={setData} setReload={setReload}/>
+      <SaleManageBody data={data} setData={setData} setReload={setReload} />
     </div>
   );
 };

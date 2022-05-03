@@ -10,6 +10,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
+import { User } from 'src/common/decorators/user.decorator';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
@@ -38,6 +39,7 @@ import { Company } from './entities/company.entity';
       'contacts.pipelineItems': { alias: 'items' },
       'contacts.pipelineItems.pipelineColumn': {},
       'contacts.pipelineItems.opportunityRevenue': {},
+      creator: {},
       city: {},
     },
   },
@@ -60,8 +62,8 @@ export class CompanyController {
     return this.service.softDelete(id);
   }
   @Post()
-  create(@Body() dto: CreateCompanyDto) {
-    return this.service.create(dto);
+  create(@Body() dto: CreateCompanyDto, @User('id') userId: string) {
+    return this.service.create(dto, userId);
   }
   @Patch(':id')
   @HistoryLog('update a company')

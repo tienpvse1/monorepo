@@ -60,6 +60,8 @@ export const KanBanItem = (
               style={{
                 ...provided.draggableProps.style,
                 marginTop: 10,
+                // @ts-ignore
+                display: item.show ? 'block' : 'none',
               }}
             >
               <AccountList toggle={toggle} itemId={currentId} visible={value} />
@@ -151,6 +153,7 @@ export const KanBanItem = (
                           manage by: {item.account?.firstName}
                           {item.account?.lastName} ({item.account?.role?.name})
                         </div>
+                        {/* <div>source: {item.contact.company.source}</div> */}
                       </>
                     }
                     avatar={

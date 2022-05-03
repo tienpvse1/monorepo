@@ -4,7 +4,7 @@ import { useCompanies } from '@modules/company/query/company.get';
 import { ICompany } from "@modules/company/entity/company.entity";
 import numberSeparator from "number-separator";
 import { useEffect, useState } from "react";
-import { TypeOfCompany } from '@components/company/type-of-company';
+// import { TypeOfCompany } from '@components/company/type-of-company';
 
 
 export const CompanyRankingRevenue = () => {
@@ -127,7 +127,7 @@ export const CompanyRankingRevenue = () => {
         )}
       />
 
-      <Column
+      {/* <Column
         title="Type"
         dataIndex="type"
         key="type"
@@ -135,7 +135,7 @@ export const CompanyRankingRevenue = () => {
         render={(text) => (
           <TypeOfCompany type={text} />
         )}
-      />
+      /> */}
 
     </Table>
   )

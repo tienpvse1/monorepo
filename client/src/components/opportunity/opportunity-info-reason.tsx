@@ -19,9 +19,9 @@ export const OpportunityInfoReason: React.FC<OpportunityInfoReasonProps> = ({ da
             />
           </Col>
           <Col span={14} style={{ height: '100%' }}>
-            <MyForm fontSizeLabel={'16px'} label='Invoice ID'>
+            {/* <MyForm fontSizeLabel={'16px'} label='Invoice ID'>
               {data.invoiceId}
-            </MyForm>
+            </MyForm> */}
             <MyForm
               fontSizeLabel={'16px'}
               label='Description'

@@ -1,5 +1,4 @@
 import SaleManagerLayout from '@common/sale-manager-layout';
-import { SaleManagerDealStatistic } from '@components/sale-manager/statistic/deals';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
@@ -32,10 +31,15 @@ const Opportunities = lazy(() => import('@pages/opportunities'));
 const LostOpportunity = lazy(() => import('./lost-opportunity'));
 const SentItem = lazy(() => import('@components/sent-email/item'));
 const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
+
+const SourceAnalytic = lazy(() => import('@components/statistic/source'));
 // const ManagerContact = lazy(() => import('./sale-manager/contacts'));
 const ManagerStatistic = lazy(() => import('./sale-manager/statistic'));
 const ListSentEmails = lazy(() => import('@components/sent-email/list'));
 const WholeStatistic = lazy(() => import('./sale-manager/whole-statistic'));
+const SourceStatistic = lazy(
+  () => import('@components/sale-manager/statistic/source-statistic')
+);
 
 const SaleDiscountPage = lazy(() => import('@pages/sale-discount-page'));
 const SoldCoursesStatistic = lazy(
@@ -51,6 +55,9 @@ const SaleManagerDashboard = lazy(() => import('./sale-manager/dashboard'));
 const ViewContactDetails = lazy(() => import('@pages/view-contact-details'));
 const PipelineManager = lazy(() => import('@pages/sale-manager/pipeline'));
 const ContactsChart = lazy(() => import('@components/statistic/chart'));
+const SaleManagerDealStatistic = lazy(
+  () => import('@components/sale-manager/statistic/deals')
+);
 const SentEmailStatistic = lazy(
   () => import('@components/statistic/sent-email-statistic')
 );
@@ -172,6 +179,10 @@ export const route: RouteObject[] = [
           {
             path: '/statistic/sent-email',
             element: <SentEmailStatistic />,
+          },
+          {
+            path: '/statistic/source',
+            element: <SourceAnalytic />,
           },
         ],
       },
@@ -424,6 +435,10 @@ export const route: RouteObject[] = [
           {
             path: '/sale-manager/statistic/deal',
             element: <SaleManagerDealStatistic />,
+          },
+          {
+            path: '/sale-manager/statistic/source',
+            element: <SourceStatistic />,
           },
         ],
       },

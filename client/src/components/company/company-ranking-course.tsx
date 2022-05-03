@@ -4,7 +4,7 @@ import { Table, Tag } from 'antd'
 import Column from 'antd/lib/table/Column'
 import { useEffect, useState } from 'react';
 import moment from 'moment';
-import { TypeOfCompany } from '@components/company/type-of-company';
+// import { TypeOfCompany } from '@components/company/type-of-company';
 import { dateFormat } from "@constance/date-format";
 const { CRUD_AT } = dateFormat;
 
@@ -162,7 +162,7 @@ export const CompanyRankingCourse = () => {
         )}
       />
 
-      <Column
+      {/* <Column
         title="Type"
         dataIndex="type"
         key="type"
@@ -170,7 +170,7 @@ export const CompanyRankingCourse = () => {
         render={(text) => (
           <TypeOfCompany type={text} />
         )}
-      />
+      /> */}
     </Table>
   )
 }

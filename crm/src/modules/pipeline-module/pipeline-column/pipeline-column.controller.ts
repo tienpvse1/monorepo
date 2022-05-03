@@ -46,7 +46,10 @@ import { PipelineColumnService } from './pipeline-column.service';
   query: {
     join: {
       pipelineItems: {},
-      'pipelineItems.contact': {},
+      'pipelineItems.contact': { alias: 'contactCompany' },
+      'pipelineItems.contact.company': {},
+      'pipelineItems.opportunityRevenue': { alias: 'revenueO' },
+      'pipelineItems.opportunityRevenue.course': {},
       'pipelineItems.account': { alias: 'accounts' },
       'pipelineItems.account.role': {},
       'pipelineItems.schedules': {},

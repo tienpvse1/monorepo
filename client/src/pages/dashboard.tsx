@@ -1,6 +1,7 @@
 import { cardData, ICardData } from '@components/dashboard/data';
 import { DashboardHeader } from '@components/dashboard/header';
 import { LineChart } from '@components/dashboard/line-chart';
+import { TaskNote } from '@components/dashboard/task-note';
 import Upcoming from '@components/dashboard/upcoming';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useUpcomingEvents } from '@modules/schedule/query/schedule.get';
@@ -41,6 +42,7 @@ export const DashBoard: React.FC = () => {
           >
             <DashboardHeader setData={setData} data={data} />
             <LineChart height={230} width={'100%'} />
+            <TaskNote />
           </div>
           <div style={{ marginTop: 20 }}>
             <div
@@ -76,9 +78,10 @@ export const DashBoard: React.FC = () => {
                       key={item.id}
                       by={`${item.account.firstName} ${item.account.lastName}`}
                       severity={
-                        item.type == 'todo' && 'info' ||
-                        item.type == 'email' && 'error' ||
-                        item.type == 'meeting' && 'warning' || 'success'
+                        (item.type == 'todo' && 'info') ||
+                        (item.type == 'email' && 'error') ||
+                        (item.type == 'meeting' && 'warning') ||
+                        'success'
                       }
                       title={item.summary}
                       time={moment(new Date(item.dueDate)).fromNow()}

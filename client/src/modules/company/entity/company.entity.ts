@@ -1,7 +1,18 @@
+import { IAccount } from '@interfaces/account';
 import { IBase } from '@interfaces/base';
 import { IContact } from '@modules/contact/entity/contact.entity';
 import { IProvinces } from '@modules/provinces/entity/provinces.entity';
 
+export type CompanySource =
+  | 'Twitter'
+  | 'Phone'
+  | 'Youtube'
+  | 'Facebook'
+  | 'Instagram'
+  | 'DirectMeeting'
+  | 'Presenter'
+  | 'Advertisement'
+  | 'Other';
 export interface ICompany extends IBase {
   name: string;
   email: string;
@@ -15,7 +26,7 @@ export interface ICompany extends IBase {
   website: string;
   type: string;
   contacts?: IContact[];
+  foundationDate: any;
+  source: CompanySource;
+  creator: IAccount;
 }
-
-
-
