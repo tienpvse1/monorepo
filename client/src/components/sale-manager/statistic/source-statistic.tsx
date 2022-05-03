@@ -1,4 +1,5 @@
 import { useContactForStatistic } from '@modules/contact/query/contact.get';
+import { Descriptions, PageHeader } from 'antd';
 import {
   Chart as ChartJS,
   Filler,
@@ -68,18 +69,45 @@ const SourceStatistic: React.FC<SourceStatisticProps> = ({}) => {
     ],
   };
   return (
-    <div
-      style={{
-        height: 500,
-        width: 500,
-      }}
-    >
-      <Radar
-        data={data}
-        options={{ responsive: true, maintainAspectRatio: false }}
-      />
-      ;
-    </div>
+    <>
+      <PageHeader
+        className='site-page-header'
+        onBack={() => null}
+        title='Source statistic'
+        subTitle="Analyze the customer's source"
+      >
+        <Descriptions.Item label='Total customer'>
+          <div>Total contacts: {contacts.length}</div>
+        </Descriptions.Item>
+      </PageHeader>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          style={{
+            height: 500,
+            width: 500,
+          }}
+        >
+          <Radar
+            data={data}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'bottom',
+                },
+              },
+            }}
+          />
+          ;
+        </div>
+      </div>
+    </>
   );
 };
 
