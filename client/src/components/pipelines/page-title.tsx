@@ -1,10 +1,11 @@
 import { DeleteOutlined, FilterOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { envVars } from '@env/var.env';
+import { useDebouncedValue } from '@mantine/hooks';
 import { useCompaniesById } from '@modules/company/query/company.get';
 import { IContact } from '@modules/contact/entity/contact.entity';
 import { IPipeline } from '@modules/pipeline/entity/pipeline.entity';
-import { Button, Descriptions, Input, PageHeader, Select } from 'antd';
-import { useState } from 'react';
+import { Button, Descriptions, Form, Input, PageHeader, Select } from 'antd';
+import { useEffect, useRef, useState } from 'react';
 const { Option } = Select;
 import { useNavigate } from 'react-router-dom';
 
@@ -28,6 +29,20 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
   const { data } = useCompaniesById(accountId);
   const [dataContact, setDataContact] = useState<IContact[]>([]);
   const [valueContact, setValueContact] = useState(null);
+  const isMounted = useRef(false);
+  const [value, setValue] = useState('');
+  const [debounced] = useDebouncedValue(value, 400);
+
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (isMounted.current) {
+      setSearchText(debounced)
+    } else {
+      isMounted.current = true;
+    }
+  }, [debounced])
+
 
   var totalOpportunity = pipeline?.pipelineColumns?.reduce((acc, value) => {
     return acc + value.pipelineItems.length
@@ -37,17 +52,21 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
     const dataFind = data?.find((value) => companyName === value.name);
     setDataContact(dataFind?.contacts);
     setSearchText(companyName);
-    if (companyName === '')
+    if (companyName === '') {
       setValueContact(null)
+      // form.setFieldsValue({ inputSearchPi: '' })
+    }
+      
   }
 
   const handleSelectedContact = (contactName: string) => {
     setValueContact(contactName);
     setSearchText(contactName);
+    form.setFieldsValue({ inputSearchPi: '' })
   }
 
   return (
-    <>
+    <Form form={form}>
       <PageHeader
         className='site-page-header'
         extra={
@@ -70,19 +89,6 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
               >
                 Create Stage
               </Button>}
-            {/* <br />
-            <Input
-              className='input-search-pipeline'
-              // onChange={(event) => setValue(event.currentTarget.value)}
-              size="small"
-              style={{ borderRadius: '10px', width: '250px', height: '35px', marginTop: '10px' }}
-              suffix={
-                <Button
-                  shape="circle"
-                  icon={<SearchOutlined />}
-                  style={{ borderStyle: 'none' }} />
-              }
-            /> */}
           </div>
         }
         title={
@@ -120,23 +126,27 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
               </Descriptions.Item>
             </Descriptions>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column'}}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div>
-              <Input
-                className='input-search-pipeline'
-                onChange={(event) => setSearchText(event.currentTarget.value)}
-                placeholder='Search for name opportunity'
-                size="small"
-                style={{ borderRadius: '10px', width: '270px', height: '40px', float: 'right' }}
-                suffix={
-                  <Button
-                    shape="circle"
-                    icon={<SearchOutlined />}
-                    style={{ borderStyle: 'none' }} />
-                }
-              />
+              <Form.Item name='inputSearchPi' style={{ margin: 0 }}>
+                <Input
+                  className='input-search-pipeline'
+                  onChange={(event) => setValue(event.currentTarget.value)}
+                  value={value}
+                  placeholder='Search for name opportunity'
+                  size="small"
+                  style={{ borderRadius: '10px', width: '270px', height: '40px', float: 'right' }}
+                  suffix={
+                    <Button
+                      shape="circle"
+                      icon={<SearchOutlined />}
+                      style={{ borderStyle: 'none' }} />
+                  }
+                  allowClear
+                />
+              </Form.Item>
             </div>
-            <div style={{marginTop: '10px'}}>
+            <div style={{ marginTop: '10px' }}>
               <FilterOutlined style={{ fontSize: '18px' }} />: {'  '}
               <Select
                 style={{ width: '150px' }}
@@ -164,6 +174,6 @@ export const PageTitlePipeline: React.FC<PageTitlePipelineProps> = ({
           </div>
         </div>
       </PageHeader>
-    </>
+    </Form>
   );
 };
