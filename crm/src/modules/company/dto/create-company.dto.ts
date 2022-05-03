@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsEnum,
   IsOptional,
   IsPhoneNumber,
   IsPostalCode,
@@ -7,6 +8,7 @@ import {
   IsUrl,
   Length,
 } from 'class-validator';
+import { CompanySource } from '../entities/company.entity';
 
 export class CreateCompanyDto {
   @IsString()
@@ -30,8 +32,8 @@ export class CreateCompanyDto {
   foundationDate: Date;
 
   @IsOptional()
-  @IsString()
-  source: string;
+  @IsEnum(CompanySource)
+  source: CompanySource;
 
   @IsOptional()
   @IsString()

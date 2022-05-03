@@ -13,15 +13,15 @@ import {
 } from 'typeorm';
 
 export enum CompanySource {
-  'Twitter',
-  'Phone',
-  'Youtube',
-  'Facebook',
-  'Instagram',
-  'Direct meeting',
-  'Presenter',
-  'Advertisement',
-  'Other',
+  Twitter = 'Twitter',
+  Phone = 'Phone',
+  Youtube = 'Youtube',
+  Facebook = 'Facebook',
+  Instagram = 'Instagram',
+  DirectMeeting = 'DirectMeeting',
+  Presenter = 'Presenter',
+  Advertisement = 'Advertisement',
+  Other = 'Other',
 }
 
 @Entity()
@@ -39,7 +39,12 @@ export class Company extends BaseEntity {
   @Column({ nullable: true, name: 'foundation_date', type: 'date' })
   foundationDate: Date;
 
-  @Column({ nullable: true })
+  @Column({
+    nullable: true,
+    enum: CompanySource,
+    type: 'enum',
+    default: CompanySource.Other,
+  })
   source: string;
 
   @Column({ nullable: true })
