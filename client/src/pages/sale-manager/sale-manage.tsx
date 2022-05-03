@@ -4,7 +4,7 @@ import { envVars } from '@env/var.env';
 import { useSocket } from '@hooks/socket';
 import { useToggle } from '@hooks/useToggle';
 import { ITeam } from '@modules/team/entity/team.entity';
-import { getTeams, getTeamsForManage } from '@modules/team/query/team.get';
+import { getTeamsForManage } from '@modules/team/query/team.get';
 import { sortTeams } from '@util/array';
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
@@ -23,7 +23,10 @@ const SaleManage: React.FC<SaleManageProps> = ({}) => {
   });
   // get initial data
   useEffect(() => {
-    getTeamsForManage().then((data) => setData(data));
+    getTeamsForManage().then((data) => {
+      console.log(data);
+      setData(data);
+    });
   }, [reload]);
   // update data when there's an event from server
   useEffect(() => {

@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface StatisticHeaderProps {}
-type ChartType = 'contacts' | 'deal' | 'sent-email' | 'sold';
+type ChartType = 'contacts' | 'deal' | 'sent-email' | 'sold' | 'source';
 const chartTypeWithColor: {
   label: string;
   color: AntColorType;
@@ -24,6 +24,7 @@ const chartTypeWithColor: {
   { key: 'deal', color: 'purple', label: 'Deal' },
   { key: 'sent-email', color: 'blue', label: 'Sent emails' },
   { key: 'sold', color: 'green', label: 'Sold' },
+  { key: 'source', color: 'geekblue', label: 'Source' },
 ];
 export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
   const [chartType, setChartType] = useState<ChartType>('contacts');

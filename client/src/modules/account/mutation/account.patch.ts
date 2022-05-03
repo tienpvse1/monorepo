@@ -1,7 +1,6 @@
 import { instance } from '@axios';
 import { controllers } from '@constance/controllers';
 import { IAccount } from '@interfaces/account';
-import Account from '@pages/administration/account';
 import { useMutation } from 'react-query';
 import { IUpdateAccountDto } from '../dto/update-account.dto';
 
@@ -25,6 +24,19 @@ const changeState = async ({
   return data;
 };
 
+export const makeLeader = async ({
+  teamId,
+  accountId,
+}: {
+  teamId: string;
+  accountId: string;
+}) => {
+  const { data } = await instance.patch(
+    `${ACCOUNT}/assign-leader/${accountId}/${teamId}`
+  );
+  return data;
+};
+
 export const useUpdateAccount = () =>
   useMutation(
     ({ id, ...rest }: IUpdateAccountDto & { id: string }) =>
@@ -33,3 +45,5 @@ export const useUpdateAccount = () =>
   );
 
 export const useChangeAccountState = () => useMutation(changeState);
+
+export const useMakeLeader = () => useMutation(makeLeader);

@@ -31,6 +31,8 @@ const Opportunities = lazy(() => import('@pages/opportunities'));
 const LostOpportunity = lazy(() => import('./lost-opportunity'));
 const SentItem = lazy(() => import('@components/sent-email/item'));
 const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
+
+const SourceAnalytic = lazy(() => import('@components/statistic/source'));
 // const ManagerContact = lazy(() => import('./sale-manager/contacts'));
 const ManagerStatistic = lazy(() => import('./sale-manager/statistic'));
 const ListSentEmails = lazy(() => import('@components/sent-email/list'));
@@ -177,6 +179,10 @@ export const route: RouteObject[] = [
           {
             path: '/statistic/sent-email',
             element: <SentEmailStatistic />,
+          },
+          {
+            path: '/statistic/source',
+            element: <SourceAnalytic />,
           },
         ],
       },

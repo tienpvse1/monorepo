@@ -22,7 +22,6 @@ ChartJS.register(
   Legend
 );
 
-const { Item } = Descriptions;
 
 interface SourceStatisticProps {}
 type Label =
