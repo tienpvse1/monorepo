@@ -21,6 +21,7 @@ import { UploadInvoice } from '@components/sale/upload-invoice';
 import { useCreateReason } from '@modules/reason/mutation/reason.post';
 import { usePostOpportunityHistory } from '@modules/opportunity-history/mutation/opportunity-history.post';
 import { OpportunityHistoryType } from '@modules/opportunity-history/entity/opportunity-history.entity';
+import { useState } from 'react';
 // import { useSendEmail } from '@modules/email/mutate/email.post';
 // import numberSeparator from "number-separator";
 
@@ -47,6 +48,8 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
   const [visible, setModalCreateStage] = useToggle();
   const [isVisible, toggleModalChangeStageWon] = useToggle();
   const { mutateAsync: mutateOpportunityHistory } = usePostOpportunityHistory();
+  const [text, setSearchText] = useState('');
+
 
   const queryClient = useQueryClient();
   const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
@@ -60,7 +63,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
   const handleIsRoleAdmin = () => {
     return public_user_info.role.name === 'admin' ? true : false
   }
-  
+
   // const onError = () => {
   //   message.error('Can not send email');
   // }
@@ -121,7 +124,7 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
                 //         line-height: 24px;
                 //         font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
                 //         color: #555;
-		            //     ">
+                //     ">
                 //           <h1>Thank You For Your Purchase
                 //           <svg width="60" height="60" viewBox="5 -2 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                 //           <path
@@ -258,6 +261,8 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
         isRoleAdmin={handleIsRoleAdmin()}
         setModalCreateStage={setModalCreateStage}
         pipeline={data}
+        accountId={public_user_info.id}
+        setSearchText={setSearchText}
       />
       {data?.pipelineColumns.length == 0 ? (
         <EmptyComponent
@@ -285,7 +290,18 @@ export const MainPipeline: React.FC<MainPipelineProps> = ({
                         <PipeLineColumn
                           index={pipelineColumn.index}
                           key={pipelineColumn.id}
-                          pipelineColumn={pipelineColumn}
+                          pipelineColumn={{
+                            ...pipelineColumn,
+                            pipelineItems: pipelineColumn.pipelineItems.map((item) =>
+                              (
+                                item.contact.company.name.includes(text) ||
+                                item.contact.name.includes(text) ||
+                                item.name.toLocaleLowerCase().includes(text.toLocaleLowerCase())
+                              ) ?
+                                { ...item, filter: true } :
+                                { ...item, filter: false }
+                            )
+                          }}
                         />
                       )
                     )}
