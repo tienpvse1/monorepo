@@ -9,6 +9,7 @@ import { ISchedule } from '../entity/schedule.entity';
 
 const { SCHEDULE } = controllers;
 export const QUERY_SCHEDULES = 'query-schedules';
+export const QUERY_ALL_SCHEDULES = 'query-schedules';
 export const QUERY_UPCOMING_SCHEDULES = 'query-upcoming-schedules';
 const getMySchedules = async (id: string, pipelineItemId: string) => {
   const query = RequestQueryBuilder.create({
@@ -61,16 +62,13 @@ const getMySchedulesByMonth = async (id: string, month: number) => {
 
 const getAllSchedule = async () => {
   const query = RequestQueryBuilder.create({
-    join: [
-      { field: 'account' },
-      { field: 'pipelineItem' }
-    ],
-  }).query(false)
+    join: [{ field: 'account' }, { field: 'pipelineItem' }],
+  }).query(false);
   const { data } = await instance.get<ISchedule[]>(`${SCHEDULE}?${query}`);
   return data;
-}
+};
 
-export const useQueryAllSchedule = () => useQuery(SCHEDULE, getAllSchedule)
+export const useQueryAllSchedule = () => useQuery(SCHEDULE, getAllSchedule);
 
 /**
  * get upcoming event in date
@@ -114,6 +112,27 @@ export const getUpcomingEvents = async ({
   const { data } = await instance.get<ISchedule[]>(`${SCHEDULE}?${query}`);
   return data;
 };
+
+const getAllMySchedules = async (accountId: string) => {
+  const query = RequestQueryBuilder.create({
+    join: [{ field: 'account' }],
+    filter: [
+      { field: 'account.id', operator: '$eq', value: accountId },
+      { field: 'isDone', operator: '$eq', value: false },
+    ],
+  }).query(false);
+  const { data } = await instance.get<ISchedule[]>(`${SCHEDULE}?${query}`);
+  return data;
+};
+
+export const useAllMySchedules = (accountId: string) =>
+  useQuery(
+    [QUERY_ALL_SCHEDULES, accountId],
+    () => getAllMySchedules(accountId),
+    {
+      enabled: Boolean(accountId),
+    }
+  );
 
 export const useSchedules = (
   accountId: string,
