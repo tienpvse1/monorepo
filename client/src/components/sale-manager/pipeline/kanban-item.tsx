@@ -153,6 +153,7 @@ export const KanBanItem = (
                           manage by: {item.account?.firstName}
                           {item.account?.lastName} ({item.account?.role?.name})
                         </div>
+                        {/* <div>source: {item.contact.company.source}</div> */}
                       </>
                     }
                     avatar={

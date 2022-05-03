@@ -31,15 +31,22 @@ export const Table: React.FC<TableProps> = ({ data, setReload }) => {
     {
       title: 'Action',
       key: 'operation',
-      render: (_, record) =>
-        <Button disabled={(record.accounts.length > 0) && true} type='link' onClick={() => removeTeam(record.id, {
-          onSuccess: () => {
-            message.success('Remove team successfully');
-            setReload();
+      render: (_, record) => (
+        <Button
+          disabled={record.accounts.length > 0 && true}
+          type='link'
+          onClick={() =>
+            removeTeam(record.id, {
+              onSuccess: () => {
+                message.success('Remove team successfully');
+                setReload();
+              },
+            })
           }
-        })}>
+        >
           Remove
         </Button>
+      ),
     },
   ];
 
@@ -62,9 +69,13 @@ export const Table: React.FC<TableProps> = ({ data, setReload }) => {
       {
         title: 'Position',
         key: 'position',
-        render: () => (
+        render: (row: IAccount) => (
           <span>
-            <Tag color={'blue'}>Sale</Tag>
+            {row.isLeader ? (
+              <Tag color={'error'}>Leader</Tag>
+            ) : (
+              <Tag color={'blue'}>Sale</Tag>
+            )}
           </span>
         ),
       },

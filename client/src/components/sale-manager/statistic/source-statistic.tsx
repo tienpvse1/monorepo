@@ -1,5 +1,5 @@
 import { useContactForStatistic } from '@modules/contact/query/contact.get';
-import { Descriptions, PageHeader } from 'antd';
+import { Descriptions, PageHeader, Select } from 'antd';
 import {
   Chart as ChartJS,
   Filler,
@@ -11,6 +11,7 @@ import {
 } from 'chart.js';
 import React from 'react';
 import { Radar } from 'react-chartjs-2';
+import { useNavigate } from 'react-router-dom';
 
 ChartJS.register(
   RadialLinearScale,
@@ -20,6 +21,8 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
+const { Item } = Descriptions;
 
 interface SourceStatisticProps {}
 type Label =
@@ -34,6 +37,7 @@ type Label =
   | 'Other';
 const SourceStatistic: React.FC<SourceStatisticProps> = ({}) => {
   const { data: contacts } = useContactForStatistic();
+  const navigate = useNavigate();
   console.log(contacts);
   const labels: Label[] = [
     'Twitter',
@@ -76,9 +80,34 @@ const SourceStatistic: React.FC<SourceStatisticProps> = ({}) => {
         title='Source statistic'
         subTitle="Analyze the customer's source"
       >
-        <Descriptions.Item label='Total customer'>
-          <div>Total contacts: {contacts.length}</div>
-        </Descriptions.Item>
+        <Descriptions column={2}>
+          <Descriptions.Item label='Statistic type'>
+            <Select
+              style={{
+                transform: 'translateY(-10px)',
+              }}
+              defaultValue='source'
+              onChange={(value) =>
+                value === 'deal'
+                  ? navigate('/sale-manager/statistic/deal')
+                  : value === 'contact' &&
+                    navigate('/sale-manager/statistic/contact')
+              }
+            >
+              <Select.Option key='contact'>Contact</Select.Option>
+              <Select.Option key='deal'>Deals</Select.Option>
+              <Select.Option key='source'>Source</Select.Option>
+            </Select>
+          </Descriptions.Item>
+          <Descriptions.Item
+            label='Total customer'
+            style={{
+              marginLeft: 50,
+            }}
+          >
+            <span>Total contacts: {contacts.length}</span>
+          </Descriptions.Item>
+        </Descriptions>
       </PageHeader>
       <div
         style={{

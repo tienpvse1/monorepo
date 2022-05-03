@@ -42,17 +42,17 @@ export class PipelineGateway extends BaseGateway<any> {
       .createQueryBuilder('pipelineColumn')
       .leftJoinAndSelect(
         'pipelineColumn.pipelineItems',
-        'pipelineItem',
-        'pipelineItem.is_lose = :isLose',
+        'pipelineItems',
+        'pipelineItems.is_lose = :isLose',
         { isLose: false },
       )
-      .leftJoinAndSelect('pipelineItem.account', 'account')
+      .leftJoinAndSelect('pipelineItems.account', 'account')
       .leftJoinAndSelect('account.role', 'role')
-      .leftJoinAndSelect('pipelineItem.contact', 'contact')
+      .leftJoinAndSelect('pipelineItems.contact', 'contact')
       .leftJoinAndSelect('contact.company', 'company')
       .leftJoinAndSelect('pipelineItems.opportunityRevenue', 'revenue')
       .leftJoinAndSelect('revenue.course', 'course')
-      .leftJoinAndSelect('pipelineItem.schedules', 'schedule')
+      .leftJoinAndSelect('pipelineItems.schedules', 'schedule')
       .getMany();
 
     const reindexed = sortColumns(payload);

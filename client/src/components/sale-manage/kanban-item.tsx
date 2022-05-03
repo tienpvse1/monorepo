@@ -1,5 +1,5 @@
 import { IAccount } from '@interfaces/account';
-import { Avatar, Card } from 'antd';
+import { Avatar, Card, Tag } from 'antd';
 import {
   Draggable,
   DroppableProvided,
@@ -45,6 +45,9 @@ export const KanBanItem = (
                     title={`${account.firstName} ${account.lastName}`}
                     description={
                       <div>
+                        <Is condition={account.isLeader}>
+                          <Tag color={'error'}>Leader</Tag>
+                        </Is>
                         <Is
                           condition={
                             account.team != null && account.team != undefined
