@@ -3,9 +3,7 @@ import { DealLineChart } from './deal-line-chart';
 
 interface SaleManagerStatisticProps {}
 
-export const SaleManagerDealStatistic: React.FC<
-  SaleManagerStatisticProps
-> = ({}) => {
+const SaleManagerDealStatistic: React.FC<SaleManagerStatisticProps> = ({}) => {
   return (
     <div>
       <DealHeader />
@@ -13,3 +11,5 @@ export const SaleManagerDealStatistic: React.FC<
     </div>
   );
 };
+
+export default SaleManagerDealStatistic;

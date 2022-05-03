@@ -9,7 +9,9 @@ interface SaleManageHeaderProps {
   setReload: () => void;
 }
 
-export const SaleManageHeader: React.FC<SaleManageHeaderProps> = ({ setReload }) => {
+export const SaleManageHeader: React.FC<SaleManageHeaderProps> = ({
+  setReload,
+}) => {
   const [isVisible, toggleModal] = useToggle();
   const { mutate: createTeam } = useCreateTeam();
   const navigate = useNavigate();
@@ -19,9 +21,9 @@ export const SaleManageHeader: React.FC<SaleManageHeaderProps> = ({ setReload })
       onSuccess: () => {
         message.success('Created team successfully !');
         setReload();
-      }
-    })
-  }
+      },
+    });
+  };
 
   return (
     <>
@@ -51,9 +53,7 @@ export const SaleManageHeader: React.FC<SaleManageHeaderProps> = ({ setReload })
         }
         title={
           <>
-            <h2 style={{ fontSize: 23 }} >
-              Sale Manage
-            </h2>
+            <h2 style={{ fontSize: 23 }}>Sale Manage</h2>
             <Tag color={'volcano'}>Opportunity</Tag>
             <Tag color={'cyan'}>Sales</Tag>
             <Tag color={'volcano'}>Manage</Tag>
@@ -68,11 +68,7 @@ export const SaleManageHeader: React.FC<SaleManageHeaderProps> = ({ setReload })
         toggleCreateModal={toggleModal}
         callback={handleSubmit}
       >
-        <Form.Item
-          name="name"
-          label="Name:"
-          required
-        >
+        <Form.Item name='name' label='Name:' required>
           <Input />
         </Form.Item>
       </CreateModal>

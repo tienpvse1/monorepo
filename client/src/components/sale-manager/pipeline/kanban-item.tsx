@@ -60,6 +60,8 @@ export const KanBanItem = (
               style={{
                 ...provided.draggableProps.style,
                 marginTop: 10,
+                // @ts-ignore
+                display: item.show ? 'block' : 'none',
               }}
             >
               <AccountList toggle={toggle} itemId={currentId} visible={value} />

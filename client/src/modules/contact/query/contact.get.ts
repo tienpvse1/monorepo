@@ -8,6 +8,7 @@ import { IContact } from '../entity/contact.entity';
 const { CONTACT } = controllers;
 
 export const QUERY_CONTACTS = 'query-contacts';
+export const QUERY_CONTACTS_WITH_COMPANY = 'query-contacts-with-company';
 export const QUERY_CONTACTS_LIKE_EMAIL = 'query-contacts';
 export const QUERY_CONTACTS_BY_ID = 'query-contact-by-id';
 export const QUERY_CONTACTS_DEALS_BY_ID = 'query-contact-deals-by-id';
@@ -50,6 +51,14 @@ const getAllContacts = async () => {
       { field: 'pipelineItems.opportunityRevenue.course' },
     ],
     sort: [{ field: 'createdAt', order: 'DESC' }],
+  }).query(false);
+  const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
+  return data;
+};
+
+const getContactsWithCompany = async () => {
+  const query = RequestQueryBuilder.create({
+    join: [{ field: 'company' }],
   }).query(false);
   const { data } = await instance.get<IContact[]>(`${CONTACT}?${query}`);
   return data;
@@ -202,6 +211,11 @@ export const useContacts = (accountId: string, suspense = false) =>
   useQuery([QUERY_CONTACTS, accountId], () => getContacts(accountId), {
     enabled: Boolean(accountId),
     suspense,
+  });
+
+export const useContactForStatistic = () =>
+  useQuery([QUERY_CONTACTS_WITH_COMPANY], getContactsWithCompany, {
+    suspense: true,
   });
 
 export const useContactsDealsById = (id: string) =>
