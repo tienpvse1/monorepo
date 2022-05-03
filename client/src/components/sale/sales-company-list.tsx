@@ -16,8 +16,6 @@ const SalesCompanyList = () => {
   const { data, isLoading } = useCompaniesById(id);
   const [dataCompany, setDataCompany] = useState<ICompany[]>();
   
-  console.log('dataC:', data);
-  
   useEffect(() => {
     setDataCompany(data);
     return () => {

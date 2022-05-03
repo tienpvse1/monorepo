@@ -1,14 +1,26 @@
 import { PUBLIC_USER_INFO } from "@constance/cookie";
 import { isRequired } from "@constance/rules-of-input-antd";
+import { Role } from "@interfaces/type-roles";
+import { ICompany } from "@modules/company/entity/company.entity";
 import { useCompanies } from "@modules/company/query/company.get";
 import { Form, Select } from "antd"
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 const { Option } = Select;
 
 export const SelectBoxCompany = () => {
-  const { data } = useCompanies();
-  const [{ public_user_info: { id } }] = useCookies([PUBLIC_USER_INFO]);
 
+  const [dataCompany, setDataCompany] = useState<ICompany[]>([]);
+  const { data } = useCompanies();
+  const [{ public_user_info: { id, role: { name } } }] = useCookies([PUBLIC_USER_INFO]);
+
+  useEffect(() => {
+    if (name === Role.SALE_MANAGER) {
+      setDataCompany(data)
+    } else {
+      setDataCompany(data?.filter((value) => value.creator?.id === id))
+    }
+  }, [data])
 
   return (
     <>
@@ -30,7 +42,7 @@ export const SelectBoxCompany = () => {
               .localeCompare(optionB.children.toLowerCase())
           }
         >
-          {data && data.filter((company) => company.creator?.id === id).map((value) => 
+          {dataCompany && dataCompany.map((value) =>
             <Option key={value.name}>{value.name}</Option>
           )}
         </Select>

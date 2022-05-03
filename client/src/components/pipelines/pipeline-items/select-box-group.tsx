@@ -1,5 +1,7 @@
 import { PUBLIC_USER_INFO } from "@constance/cookie";
 import { isRequired } from "@constance/rules-of-input-antd";
+import { Role } from "@interfaces/type-roles";
+import { ICompany } from "@modules/company/entity/company.entity";
 import { useCompanies } from "@modules/company/query/company.get";
 import { IContact } from "@modules/contact/entity/contact.entity";
 import { Form, FormInstance, Input, Select } from "antd"
@@ -23,9 +25,10 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
   form
 }) => {
 
-  const [{ public_user_info: { id } }] = useCookies([PUBLIC_USER_INFO]);
-  const [dataContact, setDataContact] = useState<IContact[]>([]);
+  const [{ public_user_info: { id, role: { name } } }] = useCookies([PUBLIC_USER_INFO]);
   const { data: companies } = useCompanies();
+  const [dataContact, setDataContact] = useState<IContact[]>([]);
+  const [dataCompany, setDataCompany] = useState<ICompany[]>([]);
 
   useEffect(() => {
     if (contact) {
@@ -36,6 +39,11 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
       const data = companies?.find((value) => value.id === companyId)
       setDataContact(data?.contacts);
     }
+    if(name === Role.SALE_MANAGER) {
+      setDataCompany(companies)
+    } else {
+      setDataCompany(companies?.filter((value) => value.creator?.id === id))
+    }
   }, [companies, companyId])
 
   const handleSelected = (companyId: string) => {
@@ -45,9 +53,8 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
       companyEmail: data.email,
       companyCity: data.city.admin_name
     })
-    console.log('data selected:', data);
     setDataContact(data.contacts)
-    
+
     // if (name === Role.SALE_MANAGER)
     //   setDataContact(data.contacts)
     // else
@@ -66,7 +73,7 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
           onChange={handleSelected}
           placeholder='Select a company'
         >
-          {companies && companies.filter((company) => company.creator?.id === id).map((value) =>
+          {dataCompany && dataCompany.map((value) =>
             <Option key={value.id}>{value.name}</Option>
           )}
         </Select>
