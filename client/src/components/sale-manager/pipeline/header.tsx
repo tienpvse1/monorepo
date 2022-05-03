@@ -1,10 +1,17 @@
+import { DeleteOutlined } from '@ant-design/icons';
+import { Button, Input, PageHeader } from 'antd';
+import { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DeleteOutlined, DropboxOutlined } from '@ant-design/icons';
-import { Button, PageHeader } from 'antd';
 
-interface SaleManageHeaderProps { }
+interface SaleManageHeaderProps {
+  searchKey: string;
+  setSearchKey: Dispatch<SetStateAction<string>>;
+}
 
-export const ManagerPipelineHeader: React.FC<SaleManageHeaderProps> = ({ }) => {
+export const ManagerPipelineHeader: React.FC<SaleManageHeaderProps> = ({
+  searchKey,
+  setSearchKey,
+}) => {
   const navigate = useNavigate();
   return (
     <div className='site-page-header-ghost-wrapper'>
@@ -13,9 +20,10 @@ export const ManagerPipelineHeader: React.FC<SaleManageHeaderProps> = ({ }) => {
         onBack={() => window.history.back()}
         title='Pipeline'
         extra={[
-          <Button key='2'>
-            <DropboxOutlined />
-          </Button>,
+          <Input.Search
+            onChange={(e) => setSearchKey(e.target.value)}
+            style={{ width: 400 }}
+          />,
           <Button
             key='1'
             onClick={() => navigate('opportunities-lost')}
