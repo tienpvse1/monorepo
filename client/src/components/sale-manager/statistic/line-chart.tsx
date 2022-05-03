@@ -49,7 +49,7 @@ export const LineChart: FC<ILineChart> = ({ currentSale }) => {
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
+        label: 'Contacts',
         data: months.map(
           (month) =>
             contacts.filter((item) => isIn(item.createdAt.toString(), month))

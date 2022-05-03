@@ -34,6 +34,9 @@ export const getStages = async () => {
       {
         field: 'pipelineItems.account',
       },
+      {
+        field: 'pipelineItems.account.role',
+      },
     ],
   }).query(false);
   const { data } = await instance.get<IPipelineColumn[]>(

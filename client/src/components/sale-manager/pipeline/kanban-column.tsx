@@ -25,7 +25,7 @@ export const KanbanColumn = (
               ref={provided.innerRef}
               style={{
                 ...provided.draggableProps.style,
-                width: 250,
+                width: 300,
                 minHeight: 600,
                 marginLeft: 10,
                 padding: '10px ',

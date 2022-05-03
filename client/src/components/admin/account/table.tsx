@@ -84,13 +84,6 @@ export const AccountTable: React.FC<AccountTableProps> = ({}) => {
             align='center'
             render={(text, record: IAccount) => (
               <>
-                <Button
-                  style={{
-                    marginRight: 10,
-                  }}
-                >
-                  Update
-                </Button>
                 {record.isEnable ? (
                   <Button
                     danger

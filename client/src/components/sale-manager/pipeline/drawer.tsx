@@ -182,16 +182,7 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item
-                name='accountId'
-                label='Opportunity owner'
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please choose the sale to handle this deal',
-                  },
-                ]}
-              >
+              <Form.Item name='accountId' label='Opportunity owner' rules={[]}>
                 <Select
                   showSearch
                   placeholder='Select a contact'

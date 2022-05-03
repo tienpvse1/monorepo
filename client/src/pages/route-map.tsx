@@ -1,4 +1,5 @@
 import SaleManagerLayout from '@common/sale-manager-layout';
+import { SaleManagerDealStatistic } from '@components/sale-manager/statistic/deals';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
@@ -34,6 +35,8 @@ const ForecastKanban = lazy(() => import('@pages/forecast-kanban'));
 // const ManagerContact = lazy(() => import('./sale-manager/contacts'));
 const ManagerStatistic = lazy(() => import('./sale-manager/statistic'));
 const ListSentEmails = lazy(() => import('@components/sent-email/list'));
+const WholeStatistic = lazy(() => import('./sale-manager/whole-statistic'));
+
 const SaleDiscountPage = lazy(() => import('@pages/sale-discount-page'));
 const SoldCoursesStatistic = lazy(
   () => import('@components/statistic/sold-course')
@@ -306,7 +309,7 @@ export const route: RouteObject[] = [
   },
 
   /**
-   * !Sale manager statistic
+   * !Sale manager routes
    */
   {
     path: '/sale-manager',
@@ -411,8 +414,18 @@ export const route: RouteObject[] = [
         element: <Discount />,
       },
       {
-        path: 'statistic',
-        element: <ManagerStatistic />,
+        path: '/sale-manager/statistic',
+        element: <WholeStatistic />,
+        children: [
+          {
+            index: true,
+            element: <ManagerStatistic />,
+          },
+          {
+            path: '/sale-manager/statistic/deal',
+            element: <SaleManagerDealStatistic />,
+          },
+        ],
       },
       {
         path: 'schedule',

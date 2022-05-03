@@ -143,9 +143,15 @@ export const KanBanItem = (
                       </Tooltip>
                     }
                     description={
-                      <div>
-                        <div>contact: {item.contact?.name}</div>
-                      </div>
+                      <>
+                        <div>
+                          <div>contact: {item.contact?.name}</div>
+                        </div>
+                        <div>
+                          manage by: {item.account?.firstName}
+                          {item.account?.lastName} ({item.account?.role?.name})
+                        </div>
+                      </>
                     }
                     avatar={
                       <Avatar
