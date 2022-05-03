@@ -53,6 +53,7 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = ({
             >
               <Select.Option key='contact'>Contact</Select.Option>
               <Select.Option key='deal'>Deals</Select.Option>
+              <Select.Option key='source'>Source</Select.Option>
             </Select>
           </Descriptions.Item>
 
