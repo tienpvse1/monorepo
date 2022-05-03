@@ -31,9 +31,8 @@ import { TeamService } from './team.service';
   },
   query: {
     join: {
-      accounts: {
-        alias: 'acc',
-      },
+      accounts: {},
+      'accounts.role': {},
       'accounts.pipelineItems': {},
     },
   },

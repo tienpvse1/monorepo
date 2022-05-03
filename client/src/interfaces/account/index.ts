@@ -25,4 +25,5 @@ export interface IAccount extends IBase {
   };
   pipeline: IPipeline;
   pipelineItems: IPipelineItem[];
+  isLeader?: boolean;
 }
