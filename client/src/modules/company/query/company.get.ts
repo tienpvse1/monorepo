@@ -17,6 +17,32 @@ export const getCompanies = async () => {
       { field: 'contacts.pipelineItems.pipelineColumn' },
       { field: 'contacts.pipelineItems.opportunityRevenue' },
       { field: 'city' },
+      { field: 'creator' },
+    ],
+    sort: [{ field: 'createdAt', order: 'DESC' }]
+  }).query(false);
+
+  const { data } = await instance.get<ICompany[]>(`${COMPANY}?${query}`);
+  return data;
+};
+
+export const getCompaniesById = async (accountId: string) => {
+  const query = RequestQueryBuilder.create({
+    join: [
+      { field: 'contacts' },
+      { field: 'contacts.account' },
+      { field: 'contacts.pipelineItems' },
+      { field: 'contacts.pipelineItems.pipelineColumn' },
+      { field: 'contacts.pipelineItems.opportunityRevenue' },
+      { field: 'city' },
+      { field: 'creator' },
+    ],
+    filter: [
+      {
+        field: 'creator.id',
+        operator: '$eq',
+        value: accountId,
+      },
     ],
     sort: [{ field: 'createdAt', order: 'DESC' }]
   }).query(false);
@@ -82,7 +108,59 @@ export const searchCompany = async (text: string) => {
   return data;
 };
 
+export const searchCompanyOwner = async (text: string, accountId: string) => {
+  const query = RequestQueryBuilder.create({
+    join: [
+      { field: 'city' },
+      { field: 'creator' }
+    ],
+    search: {
+      $and: [
+        {
+          $or: [
+            {
+              name: {
+                $cont: text
+              },
+            },
+            {
+              mobile: {
+                $cont: text
+              },
+            },
+            {
+              'city.admin_name': {
+                $cont: text
+              }
+            },
+            {
+              country: {
+                $cont: text
+              }
+            }
+          ]
+        },
+        {
+          'creator.id': {
+            $eq: accountId
+          }
+        }
+      ]
+    },
+
+  }).query(false);
+  const { data } = await instance.get<ICompany[]>(`${COMPANY}?${query}`);
+  return data;
+};
+
 export const useCompanies = () => useQuery(QUERY_COMPANIES, getCompanies);
+
+export const useCompaniesById = (accountId: string, suspense = false) =>
+  useQuery([QUERY_COMPANIES, 'sale'], () => getCompaniesById(accountId), {
+    enabled: Boolean(accountId),
+    suspense,
+  });
+
 export const useCompaniesWithColumn = () => useQuery([QUERY_COMPANIES, 'with-column'], getCompaniesWithColumn);
 
 export const useQueryCompanyById = (companyId: string) =>

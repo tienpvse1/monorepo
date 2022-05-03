@@ -12,7 +12,7 @@ export const showDeleteConfirm = (callback: () => void, value?: showDeleteConfir
   confirm({
     title: 'Are you sure want to delete ?',
     icon: <ExclamationCircleOutlined />,
-    content: value ? <>
+    content: value.expectedRevenue ? <>
       <h3>Stage Dependencies:</h3>
       Opportunity: {value.opportunityQty} <br />
       Expected Revenue: {value.expectedRevenue}đ

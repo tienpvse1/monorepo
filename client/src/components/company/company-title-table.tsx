@@ -2,16 +2,17 @@ import { PlusOutlined } from '@ant-design/icons'
 import { SearchBar } from '@components/search-bar'
 import { Button, Col, Row, Space } from 'antd'
 import { envVars } from '@env/var.env';
-import { searchCompany } from '@modules/company/query/company.get';
 
 interface CompanyTitleTableProps {
   toggleCreateModal: () => void;
   setDataCompany: (value: []) => void;
+  searchMethod: (text: string, id?: string) => Promise<any>;
 }
 
 export const CompanyTitleTable: React.FC<CompanyTitleTableProps> = ({
   toggleCreateModal,
-  setDataCompany
+  setDataCompany,
+  searchMethod
 }) => {
   return (
     <>
@@ -58,7 +59,7 @@ export const CompanyTitleTable: React.FC<CompanyTitleTableProps> = ({
                 width={400}
                 placeholder='Search for name, phone, city or country'
                 setData={setDataCompany}
-                getApi={searchCompany}
+                getApi={searchMethod}
               />
             </Space>
           </Col>

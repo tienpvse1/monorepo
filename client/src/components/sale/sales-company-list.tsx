@@ -1,13 +1,21 @@
 import { CompanyTable } from '@components/company/company-table';
+import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { ICompany } from '@modules/company/entity/company.entity';
-import { useCompanies } from '@modules/company/query/company.get';
+import { useCompaniesById } from '@modules/company/query/company.get';
 import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
+import { searchCompanyOwner } from '@modules/company/query/company.get';
 
 const SalesCompanyList = () => {
-  const { data, isLoading } = useCompanies();
+  const [
+    {
+      public_user_info: { id },
+    },
+  ] = useCookies([PUBLIC_USER_INFO]);
 
+  const { data, isLoading } = useCompaniesById(id);
   const [dataCompany, setDataCompany] = useState<ICompany[]>();
-
+  
   useEffect(() => {
     setDataCompany(data);
     return () => {
@@ -22,6 +30,7 @@ const SalesCompanyList = () => {
         dataSource={dataCompany}
         isLoading={isLoading}
         setDataCompany={setDataCompany}
+        searchMethod={searchCompanyOwner}
       />
     </div>
   )

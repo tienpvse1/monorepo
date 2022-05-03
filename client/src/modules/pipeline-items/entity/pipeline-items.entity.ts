@@ -37,6 +37,7 @@ export interface IPipelineItem extends IBase {
   isLose: boolean;
   reason: IReason;
   discountCode: IDiscount;
+  filter?: boolean;
 }
 
 export interface IOpportunityRevenue{

@@ -1,6 +1,7 @@
 import { PUBLIC_USER_INFO } from "@constance/cookie";
 import { isRequired } from "@constance/rules-of-input-antd";
 import { Role } from "@interfaces/type-roles";
+import { ICompany } from "@modules/company/entity/company.entity";
 import { useCompanies } from "@modules/company/query/company.get";
 import { IContact } from "@modules/contact/entity/contact.entity";
 import { Form, FormInstance, Input, Select } from "antd"
@@ -24,9 +25,10 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
   form
 }) => {
 
-  const [dataContact, setDataContact] = useState<IContact[]>([]);
-  const { data: companies } = useCompanies();
   const [{ public_user_info: { id, role: { name } } }] = useCookies([PUBLIC_USER_INFO]);
+  const { data: companies } = useCompanies();
+  const [dataContact, setDataContact] = useState<IContact[]>([]);
+  const [dataCompany, setDataCompany] = useState<ICompany[]>([]);
 
   useEffect(() => {
     if (contact) {
@@ -37,6 +39,11 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
       const data = companies?.find((value) => value.id === companyId)
       setDataContact(data?.contacts);
     }
+    if(name === Role.SALE_MANAGER) {
+      setDataCompany(companies)
+    } else {
+      setDataCompany(companies?.filter((value) => value.creator?.id === id))
+    }
   }, [companies, companyId])
 
   const handleSelected = (companyId: string) => {
@@ -46,10 +53,12 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
       companyEmail: data.email,
       companyCity: data.city.admin_name
     })
-    if (name === Role.SALE_MANAGER)
-      setDataContact(data.contacts)
-    else
-      setDataContact(data.contacts.filter((contact) => contact.account.id === id))
+    setDataContact(data.contacts)
+
+    // if (name === Role.SALE_MANAGER)
+    //   setDataContact(data.contacts)
+    // else
+    //   setDataContact(data.contacts.filter((contact) => contact.account.id === id))
   }
   return (
     <>
@@ -64,7 +73,7 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
           onChange={handleSelected}
           placeholder='Select a company'
         >
-          {companies && companies.map((value) =>
+          {dataCompany && dataCompany.map((value) =>
             <Option key={value.id}>{value.name}</Option>
           )}
         </Select>
@@ -81,8 +90,6 @@ export const SelectBoxGroup: React.FC<SelectBoxGroupProps> = ({
           placeholder='Select a contact'
           optionFilterProp='children'
           onChange={(_, value) => {
-            console.log("value2:", value);
-            
             form.setFieldsValue({
               //@ts-ignore
               contactName: value.children[0],

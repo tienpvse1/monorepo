@@ -78,7 +78,7 @@ export const CompanyInfoForm = () => {
             <Option value='Youtube' key='Youtube' >
               <YoutubeOutlined /> Youtube
             </Option>
-            <Option value='Direct Meeting' key='DirectMeeting' >
+            <Option value='DirectMeeting' key='DirectMeeting' >
               <CoffeeOutlined /> Direct Meeting
             </Option>
             <Option value='Phone' key='Phone' >
