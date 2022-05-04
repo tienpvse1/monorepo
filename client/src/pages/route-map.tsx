@@ -301,7 +301,7 @@ export const route: RouteObject[] = [
     element: <AdminLayout />,
     children: [
       {
-        index: true,
+        path: '/administration/dashboard',
         element: <AdminPage />,
       },
       {
@@ -309,7 +309,8 @@ export const route: RouteObject[] = [
         element: <AdminPipeline />,
       },
       {
-        path: '/administration/account',
+        index: true,
+        path: '/administration/',
         element: <Account />,
       },
       {

@@ -33,18 +33,10 @@ export const AdminMenuSider = ({ style }: MenuSiderAdminProps) => {
         mode='inline'
       >
         <Menu.Item
-          key='admin'
-          style={style}
-          onClick={() => navigate('/administration')}
-          icon={<AppstoreOutlined style={style} />}
-        >
-          Dashboard
-        </Menu.Item>
-        <Menu.Item
-          key='account'
+          key=''
           style={style}
           icon={<TeamOutlined style={style} />}
-          onClick={() => navigate('/administration/account')}
+          onClick={() => navigate('/administration/')}
         >
           Account
         </Menu.Item>

@@ -143,6 +143,7 @@ export class PipelineItemService extends BaseService<PipelineItem> {
       contactId,
       opportunityRevenue,
       expectedClosing,
+      expectedRevenue,
       ...rest
     } = dto;
     const pipelineItemId = nanoid(10);
@@ -154,6 +155,7 @@ export class PipelineItemService extends BaseService<PipelineItem> {
       pipeline_column_id: columnId,
       expected_closing: new Date(expectedClosing),
       contact_id: contactId,
+      expected_revenue: expectedRevenue,
       ...rest,
     });
 
