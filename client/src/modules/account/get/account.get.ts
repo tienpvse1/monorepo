@@ -10,6 +10,7 @@ export const GET_ACCOUNT_BY_SALE_ROLE = 'get-account-by-sale-role';
 export const QUERY_SALE_ACCOUNTS = 'query-sale-accounts';
 export const QUERY_ALL_ACCOUNTS = 'query-all-accounts';
 export const QUERY_ACCOUNT_BY_ID = 'query-account-by-id';
+export const QUERY_TEAM_PIPELINE_ITEMS = 'query-team-pipeline-items';
 export const getUser = async () => {
   const { instance } = new Axios();
   const { data } = await instance.get(`${ACCOUNT}/custom`, {
@@ -99,6 +100,31 @@ export const getAccountById = async (id: string) => {
 
   return result[0];
 };
+export const getTeamPipelineItems = async (id: string) => {
+  const query = RequestQueryBuilder.create({
+    join: [
+      { field: 'team' },
+      { field: 'team.accounts' },
+      { field: 'team.accounts.schedules' },
+      { field: 'team.accounts.pipelineItems' },
+    ],
+    filter: [
+      {
+        field: 'id',
+        operator: '$eq',
+        value: id,
+      },
+    ],
+  }).query(false);
+  const { data } = await instance.get<IAccount[]>(`${ACCOUNT}?${query}`);
+  const mapped = data[0].team.accounts.map((item) => item.pipelineItems);
+  const result = [];
+  mapped.forEach((item) => {
+    result.push(...item);
+  });
+
+  return result;
+};
 
 export const useAccountById = (id: string) =>
   useQuery([QUERY_ACCOUNT_BY_ID, id], () => getAccountById(id), {
@@ -114,3 +140,8 @@ export const useSaleAccounts = (suspense = false) =>
 
 export const useAccounts = (suspense = false) =>
   useQuery(QUERY_ALL_ACCOUNTS, getAllAccount, { suspense });
+
+export const useTeamPipelineItems = (id: string) =>
+  useQuery([QUERY_TEAM_PIPELINE_ITEMS, id], () => getTeamPipelineItems(id), {
+    enabled: Boolean(id),
+  });

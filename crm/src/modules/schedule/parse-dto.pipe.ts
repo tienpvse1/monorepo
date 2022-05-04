@@ -1,6 +1,7 @@
-import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
-import { getCustomRepository } from 'typeorm';
+import { Injectable, PipeTransform } from '@nestjs/common';
+import { getCustomRepository, getRepository } from 'typeorm';
 import { AccountRepository } from '../account/account.repository';
+import { ActivityType } from '../activity-type/entities/activity-type.entity';
 import { PipelineItemRepository } from '../pipeline-module/pipeline-item/pipeline-item.repository';
 import {
   CreateScheduleDto,
@@ -9,15 +10,16 @@ import {
 
 @Injectable()
 export class ParseDtoPipe implements PipeTransform {
-  async transform(
-    value: CreateScheduleDto,
-    metadata: ArgumentMetadata,
-  ): Promise<ParsedCreateScheduleDto> {
+  async transform(value: CreateScheduleDto): Promise<ParsedCreateScheduleDto> {
     const accountRepository = getCustomRepository(AccountRepository);
-    const { accountId, pipelineItemId, ...rest } = value;
+    const activityTypeRepository = getRepository(ActivityType);
+    const { accountId, pipelineItemId, activityTypeId, ...rest } = value;
     const pipelineItemRepository = getCustomRepository(PipelineItemRepository);
     const account = await accountRepository.findOneItem({
       where: { id: accountId },
+    });
+    const activityType = await activityTypeRepository.findOne({
+      where: { id: activityTypeId },
     });
     const pipelineItem = await pipelineItemRepository.findOneItem({
       where: { id: pipelineItemId },
@@ -27,6 +29,7 @@ export class ParseDtoPipe implements PipeTransform {
       ...rest,
       account,
       pipelineItem,
+      activityType,
     };
   }
 }

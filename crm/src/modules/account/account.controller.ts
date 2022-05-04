@@ -63,7 +63,9 @@ import { ExcludePasswordPipe } from './exclude-password.pipe';
     join: {
       team: {},
       role: {},
+      pipelineItems: {},
       'team.accounts': { alias: 'teamAccounts' },
+      'team.accounts.pipelineItems': { alias: 'teamAccountsPipelineItems' },
       'team.accounts.schedules': { alias: 'teamAccountsSchedule' },
     },
   },

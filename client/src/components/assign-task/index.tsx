@@ -2,7 +2,9 @@ import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { IAccount } from '@interfaces/account';
 import { useAccountById } from '@modules/account/get/account.get';
 import { Button, List, PageHeader, Table, Typography } from 'antd';
+import { useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { CreateScheduleDrawer } from './create-schedule';
 
 const { Column } = Table;
 const AssignTaskForLeader = ({}) => {
@@ -12,6 +14,8 @@ const AssignTaskForLeader = ({}) => {
     },
   ] = useCookies([PUBLIC_USER_INFO]);
   const { data: account } = useAccountById(id);
+  const [isVisible, setVisible] = useState(false);
+  const [currentAccount, setCurrentAccount] = useState<IAccount>(undefined);
   return (
     <>
       <PageHeader
@@ -20,12 +24,16 @@ const AssignTaskForLeader = ({}) => {
         title='Task'
         subTitle='assign task to teammate'
       />
+      <CreateScheduleDrawer
+        currentAccount={currentAccount}
+        setCurrentAccount={setCurrentAccount}
+        isVisible={isVisible}
+        setVisible={setVisible}
+      />
       <Table
         expandable={{
           expandedRowRender: ({ schedules }) => (
             <List
-              header={<div>Header</div>}
-              footer={<div>Footer</div>}
               bordered
               dataSource={schedules}
               renderItem={(item) => (
@@ -59,7 +67,16 @@ const AssignTaskForLeader = ({}) => {
         <Column
           key='actions'
           title='Actions'
-          render={() => <Button>Add task</Button>}
+          render={(_, record: IAccount) => (
+            <Button
+              onClick={() => {
+                setCurrentAccount(record);
+                setVisible(true);
+              }}
+            >
+              Add task
+            </Button>
+          )}
         />
       </Table>
     </>
