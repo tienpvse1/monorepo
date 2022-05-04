@@ -55,7 +55,7 @@ export const CreateScheduleDrawer: React.FC<CreateScheduleDrawerProps> = ({
   };
 
   const { data: activityTypes } = useActivityTypes(false);
-  const { data: pipelineItems } = useMyPipelineItems(currentAccount.id);
+  const { data: pipelineItems } = useMyPipelineItems(currentAccount?.id);
   return (
     <>
       <Drawer

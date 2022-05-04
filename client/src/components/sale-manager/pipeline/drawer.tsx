@@ -23,6 +23,7 @@ import {
   Space,
 } from 'antd';
 import moment from 'moment';
+import { useState } from 'react';
 
 interface CreateOpportunityProps {
   visible: boolean;
@@ -43,6 +44,7 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
   const onClose = () => {
     toggle();
   };
+  const [expectedRevenue, setExpectedRevenue] = useState(1);
   const [form] = Form.useForm();
   const handleSubmit = (value: any) => {
     const { courseId, quantity, expectedClosing, ...rest } = value;
@@ -55,6 +57,7 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
         courseId,
         quantity: Number.parseInt(quantity),
       },
+      expectedRevenue: expectedRevenue * 10000000,
     };
     mutate(payload, {
       onSuccess: async () => {
@@ -80,6 +83,7 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
     });
     // mutate(payload);
   };
+
   return (
     <>
       <Drawer
@@ -107,10 +111,11 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
             <Col span={12}>
               <Form.Item
                 name='name'
+                required
                 label='Name'
                 rules={[{ required: true, message: 'Please enter user name' }]}
               >
-                <Input placeholder='Please enter user name' />
+                <Input required placeholder='Please enter user name' />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -148,9 +153,14 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
                 >
                   {contacts.map((contact) => (
                     <Select.Option key={contact.id} value={contact.id}>
-                      {contact.name} <span style={{
-                        color: 'rgba(0,0,0,0.5)'
-                      }}>({contact.company.name})</span>
+                      {contact.name}{' '}
+                      <span
+                        style={{
+                          color: 'rgba(0,0,0,0.5)',
+                        }}
+                      >
+                        ({contact.company.name})
+                      </span>
                     </Select.Option>
                   ))}
                 </Select>
@@ -234,36 +244,40 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
           </Divider>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item
-                name='courseId'
-                label='Course'
-                initialValue={courses?.data.length > 0 && courses?.data[0].code}
-                rules={[{ required: true, message: 'Please choose a course' }]}
-              >
-                <Select
-                  showSearch
-                  placeholder='Select a course'
-                  filterOption={(input, option) => {
-                    return option.children
-                      .toString()
-                      .toLowerCase()
-                      .includes(input.toLowerCase());
-                  }}
+              {courses && (
+                <Form.Item
+                  name='courseId'
+                  label='Course'
+                  required
+                  initialValue={courses?.data[0].id}
+                  rules={[
+                    { required: true, message: 'Please choose a course' },
+                  ]}
                 >
-                  {courses?.data
-                    .filter((_item, index) => index < 5)
-                    .map((course) => (
+                  <Select
+                    showSearch
+                    placeholder='Select a course'
+                    filterOption={(input, option) => {
+                      return option.children
+                        .toString()
+                        .toLowerCase()
+                        .includes(input.toLowerCase());
+                    }}
+                  >
+                    {courses?.data.map((course) => (
                       <Select.Option key={course.id} value={course.id}>
                         {course.name}
                       </Select.Option>
                     ))}
-                </Select>
-              </Form.Item>
+                  </Select>
+                </Form.Item>
+              )}
             </Col>
             <Col span={12}>
               <Form.Item
                 name='quantity'
                 label='Quantity'
+                initialValue={1}
                 rules={[
                   {
                     required: true,
@@ -271,8 +285,33 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
                   },
                 ]}
               >
-                <Input type='number' />
+                <Input
+                  onChange={(value) =>
+                    setExpectedRevenue(Number.parseInt(value.target.value))
+                  }
+                  type='number'
+                />
               </Form.Item>
+            </Col>
+            <Col span={12}>
+              <h4
+                style={{
+                  marginBottom: 10,
+                }}
+              >
+                Expected revenue
+              </h4>
+              <span
+                style={{
+                  marginTop: 10,
+                  border: '1px solid rgba(0,0,0,0.2)',
+                  borderRadius: 5,
+                  padding: '10px',
+                  paddingRight: 230,
+                }}
+              >
+                {expectedRevenue * 10000000}
+              </span>
             </Col>
           </Row>
 

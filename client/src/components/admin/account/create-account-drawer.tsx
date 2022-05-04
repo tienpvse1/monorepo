@@ -1,4 +1,9 @@
 import { InboxOutlined } from '@ant-design/icons';
+import {
+  isNotWhiteSpace,
+  isRequired,
+  textLength,
+} from '@constance/rules-of-input-antd';
 import { envVars } from '@env/var.env';
 import { ICreateAccountDto } from '@modules/account/dto/create-account.dto';
 import { QUERY_ALL_ACCOUNTS } from '@modules/account/get/account.get';
@@ -48,7 +53,8 @@ export const CreateAccountDrawer: React.FC<CreateAccountDrawerProps> = ({
         },
       }
     );
-  };``
+  };
+  ``;
   return (
     <Drawer
       title='Create a new account'
@@ -76,7 +82,12 @@ export const CreateAccountDrawer: React.FC<CreateAccountDrawerProps> = ({
             <Form.Item
               name='firstName'
               label='First name'
-              rules={[{ required: true, message: 'Please enter first name' }]}
+              required
+              rules={[
+                isRequired('Name is required'),
+                textLength(3, 50, 'Name'),
+                isNotWhiteSpace,
+              ]}
             >
               <Input placeholder='First name' />
             </Form.Item>
