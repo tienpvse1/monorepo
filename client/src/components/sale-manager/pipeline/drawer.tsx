@@ -148,7 +148,9 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
                 >
                   {contacts.map((contact) => (
                     <Select.Option key={contact.id} value={contact.id}>
-                      {contact.name}
+                      {contact.name} <span style={{
+                        color: 'rgba(0,0,0,0.5)'
+                      }}>({contact.company.name})</span>
                     </Select.Option>
                   ))}
                 </Select>

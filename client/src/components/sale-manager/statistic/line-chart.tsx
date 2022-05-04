@@ -1,8 +1,5 @@
 import { IAccount } from '@interfaces/account';
-import {
-  useContacts,
-  useContactsForManagerStatistic,
-} from '@modules/contact/query/contact.get';
+import { useContactsForManagerStatistic } from '@modules/contact/query/contact.get';
 import { getMonthToShow, isIn } from '@util/date';
 import {
   CategoryScale,
