@@ -21,7 +21,7 @@ const ManagerStatistic: React.FC<StatisticProps> = ({}) => {
     sales,
   };
   return (
-    <div>
+    <div className='container-page'>
       <StatisticHeader {...headerProps} />
       <Suspense fallback={<Spin />}>
         <LineChart currentSale={currentSale} />

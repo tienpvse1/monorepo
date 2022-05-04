@@ -6,7 +6,7 @@ interface SaleDiscountPageProps {}
 
 const SaleDiscountPage: React.FC<SaleDiscountPageProps> = ({}) => {
   return (
-    <div>
+    <div className='container-page'>
       <SaleDiscountHeader />
       <Suspense fallback={<Spin />}>
         <DiscountTable />

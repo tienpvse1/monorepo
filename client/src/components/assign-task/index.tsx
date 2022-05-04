@@ -17,7 +17,7 @@ const AssignTaskForLeader = ({}) => {
   const [isVisible, setVisible] = useState(false);
   const [currentAccount, setCurrentAccount] = useState<IAccount>(undefined);
   return (
-    <>
+    <div className='container-page'>
       <PageHeader
         className='site-page-header'
         onBack={() => null}
@@ -79,7 +79,7 @@ const AssignTaskForLeader = ({}) => {
           )}
         />
       </Table>
-    </>
+    </div>
   );
 };
 export default AssignTaskForLeader;
