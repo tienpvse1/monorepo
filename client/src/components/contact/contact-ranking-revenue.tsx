@@ -95,7 +95,7 @@ export const ContactRankingRevenue = () => {
         title="Name"
         dataIndex="name"
         key="name"
-        width={150}
+        // width={150}
         render={(_, record: IContact) => (
           <span>
             {record.name}
@@ -103,12 +103,12 @@ export const ContactRankingRevenue = () => {
         )}
       />
 
-      <Column
+      {/* <Column
         title="Email"
         dataIndex="email"
         key="email"
         width={250}
-      />
+      /> */}
 
       <Column
         title="Revenue"
@@ -125,7 +125,7 @@ export const ContactRankingRevenue = () => {
         title="Won Opportunity"
         dataIndex="opportunities"
         key="opportunities"
-        width={130}
+        // width={130}
         align="center"
         render={(_, record: IContact) => (
           <span>
@@ -137,7 +137,7 @@ export const ContactRankingRevenue = () => {
         title="Rank"
         dataIndex="rank"
         key="rank"
-        width={100}
+        // width={100}
         render={(_, record: any) => (
           handleRank(record.revenue)
         )}
@@ -159,6 +159,7 @@ export const ContactRankingRevenue = () => {
           return fullName.indexOf(value as string) === 0;
         }}
       />
+
     </Table>
   )
 }

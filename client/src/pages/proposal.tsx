@@ -1,15 +1,15 @@
 import { PageHeaderProposal } from "@components/proposal/page-header"
 import { Col, Form, message, Row } from "antd"
 import { ListCourseEndDate } from "@components/proposal/list-course-end-date";
-import { SwapRightOutlined } from "@ant-design/icons";
-import { ListCourseProposal } from "@components/proposal/list-course-proposal";
+// import { SwapRightOutlined } from "@ant-design/icons";
+// import { ListCourseProposal } from "@components/proposal/list-course-proposal";
 import { useToggle } from "@hooks/useToggle";
 import { CreateModal } from "@components/modal/create-modal";
 import { CreateOpportunityForm } from "@components/opportunity/create-opportunity-form";
 import { SubmitFormCreateOpportunity } from "@components/opportunity/opportunity-table";
 import { dateFormat } from "@constance/date-format";
 import { usePostPipelineItems } from "@modules/pipeline-items/mutation/pipeline-items.post";
-import { envVars } from "@env/var.env";
+// import { envVars } from "@env/var.env";
 const { DEFAULT } = dateFormat;
 
 const Proposal = () => {
@@ -75,10 +75,10 @@ const Proposal = () => {
       <div className='container-content-details-page'>
         <PageHeaderProposal />
         <Row gutter={[24, 0]}>
-          <Col span={10}>
-            <ListCourseEndDate mountProposal={handleProposal} form={form} />
+          <Col span={22}>
+            <ListCourseEndDate mountProposal={handleProposal} form={form} toggleCreateModal={toggleCreateModal}/>
           </Col>
-          <Col span={4} style={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
+          {/* <Col span={4} style={{ alignItems: 'center', display: 'flex', justifyContent: 'center' }}>
             <div>
               <img
                 src={`${envVars.VITE_BE_DOMAIN}/files/proposition.png`}
@@ -90,7 +90,7 @@ const Proposal = () => {
           </Col>
           <Col span={10}>
             <ListCourseProposal flag={flag} toggleCreateModal={toggleCreateModal} form={form} />
-          </Col>
+          </Col> */}
         </Row>
       </div>
       <CreateModal
