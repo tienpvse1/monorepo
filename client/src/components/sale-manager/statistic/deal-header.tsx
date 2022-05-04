@@ -30,13 +30,19 @@ export const DealHeader: React.FC<DealHeaderProps> = ({}) => {
               onChange={(value) =>
                 value === 'contact'
                   ? navigate('/sale-manager/statistic/')
-                  : value === 'source' &&
-                    navigate('/sale-manager/statistic/source')
+                  : value === 'source'
+                  ? navigate('/sale-manager/statistic/source')
+                  : value === 'contact-and-company' &&
+                    navigate(
+                      '/sale-manager/statistic/total-contact-and-company'
+                    )
               }
             >
               <Select.Option key='contact'>Contact</Select.Option>
-              <Select.Option key='deal'>Deals</Select.Option>
               <Select.Option key='source'>Source</Select.Option>
+              <Select.Option key='contact-and-company'>
+                Contact and company
+              </Select.Option>
             </Select>
           </Descriptions.Item>
         </Descriptions>

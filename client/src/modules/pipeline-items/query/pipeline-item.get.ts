@@ -88,7 +88,6 @@ export const getAllPipelineItem = async () => {
   const { data } = await instance.get<IPipelineItem[]>(
     `${PIPELINE_ITEM}?${queryBuilder}`
   );
-  console.log('fetched');
 
   return data;
 };

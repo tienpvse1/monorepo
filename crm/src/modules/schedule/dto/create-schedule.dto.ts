@@ -1,30 +1,22 @@
 import { Optional } from '@nestjs/common';
-import { IsDate, Matches } from 'class-validator';
 import { Account } from 'src/modules/account/entities/account.entity';
+import { ActivityType } from 'src/modules/activity-type/entities/activity-type.entity';
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
-import { ActivityTypeEnum } from '../entities/schedule.entity';
 
 export class CreateScheduleDto {
-  @Matches(
-    `^${Object.values(ActivityTypeEnum)
-      .filter((v) => typeof v !== 'number')
-      .join('|')}$`,
-    'i',
-  )
-  type: ActivityTypeEnum;
   @Optional()
   summary: string;
   @Optional()
   note: string;
   @Optional()
   isDone: boolean;
-  @IsDate()
   dueDate: Date;
   accountId: string;
   pipelineItemId: string;
+  activityTypeId: string;
 }
 export class ParsedCreateScheduleDto {
-  type: ActivityTypeEnum;
+  activityType: ActivityType;
   summary: string;
   note: string;
   dueDate: Date;

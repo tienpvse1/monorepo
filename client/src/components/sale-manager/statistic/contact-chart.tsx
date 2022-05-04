@@ -1,8 +1,11 @@
 import { Is } from '@common/is';
 import { Loading } from '@components/loading/loading';
+import LineChart from '@components/statistic/contact/line-chart';
+import DoughnutChart from '@components/statistic/contact/pie-chart';
+import VerticalChart from '@components/statistic/contact/vertical-chart';
 import { PUBLIC_USER_INFO } from '@constance/cookie';
-import { useCompaniesById } from '@modules/company/query/company.get';
-import { useContacts } from '@modules/contact/query/contact.get';
+import { useCompanies } from '@modules/company/query/company.get';
+import { useQueryAllContacts } from '@modules/contact/query/contact.get';
 import { getMonthToShow, isIn } from '@util/date';
 import { Spin } from 'antd';
 import {
@@ -16,11 +19,8 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
-import { Dispatch, lazy, SetStateAction, Suspense } from 'react';
+import { Dispatch, SetStateAction, Suspense } from 'react';
 import { useCookies } from 'react-cookie';
-const VerticalChart = lazy(() => import('./vertical-chart'));
-const Doughnut = lazy(() => import('./pie-chart'));
-const LineChart = lazy(() => import('./line-chart'));
 
 ChartJS.register(
   CategoryScale,
@@ -44,9 +44,8 @@ const Chart: React.FC<ChartInterface> = ({ chartType, setChartType }) => {
       public_user_info: { id: accountId },
     },
   ] = useCookies([PUBLIC_USER_INFO]);
-  const { data: contacts, isLoading: loadingContacts } = useContacts(accountId);
-  const { data: companies, isLoading: loadingCompanies } =
-    useCompaniesById(accountId);
+  const { data: contacts, isLoading: loadingContacts } = useQueryAllContacts();
+  const { data: companies, isLoading: loadingCompanies } = useCompanies();
   if (loadingCompanies || loadingContacts) return <Spin size='large' />;
   const labels = monthsToShow.map((month) => month.format('MMMM YYYY'));
 
@@ -103,7 +102,7 @@ const Chart: React.FC<ChartInterface> = ({ chartType, setChartType }) => {
       </Is>
       <Is condition={chartType === 'pie'}>
         <Suspense fallback={<Loading />}>
-          <Doughnut {...chartProps} />
+          <DoughnutChart {...chartProps} />
         </Suspense>
       </Is>
       <Is condition={chartType === 'line'}>

@@ -8,6 +8,7 @@ import { ITeam } from '../entity/team.entity';
 
 const { TEAM } = controllers;
 export const QUERY_TEAM = 'query-team';
+export const QUERY_TEAM_WITH_TASK = 'query-team-with-task';
 export const getTeams = async () => {
   const query = RequestQueryBuilder.create({
     join: [
@@ -49,4 +50,32 @@ export const getTeamsForManage = async () => {
   return result;
 };
 
+export const getMemberWithTask = async (teamId: string) => {
+  const query = RequestQueryBuilder.create({
+    join: [
+      {
+        field: 'accounts',
+      },
+      {
+        field: 'accounts.schedules',
+      },
+    ],
+    filter: [
+      {
+        field: 'id',
+        operator: '$eq',
+        value: teamId,
+      },
+    ],
+  }).query(false);
+
+  const { data } = await instance.get<ITeam[]>(`${TEAM}?${query}`);
+  sortTeams(data);
+  return data;
+};
+
 export const useTeams = () => useQuery([QUERY_TEAM], getTeams);
+export const useTeamWithTask = (teamId: string) =>
+  useQuery([QUERY_TEAM_WITH_TASK, teamId], () => getMemberWithTask(teamId), {
+    enabled: !!teamId,
+  });

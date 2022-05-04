@@ -19,6 +19,7 @@ import { AccountList } from './account-list';
 import { DetailDropdown } from './drop-down';
 import { client } from '../../../App';
 import { GET_STAGES } from '@modules/pipeline-column/query/pipeline-column.get';
+import { CreateScheduleDrawer } from './create-schedule';
 export const KanBanItem = (
   provided: DroppableProvided,
   pipelineItems: IPipelineItem[],
@@ -44,12 +45,16 @@ export const KanBanItem = (
   const handleLose = (id: string) => {
     mutate({ id }, { onSuccess: () => client.invalidateQueries(GET_STAGES) });
   };
+
+  const [visible, setVisible] = useState(false);
+
   return (
     <div
       {...provided.droppableProps}
       ref={provided.innerRef}
       style={{ height: '100%' }}
     >
+      <CreateScheduleDrawer isVisible={visible} setVisible={setVisible} />
       {pipelineItems.map((item, index) => (
         <Draggable draggableId={item.id} key={item.id} index={index}>
           {(provided, _snapshot) => (
@@ -80,19 +85,18 @@ export const KanBanItem = (
                       <DeleteOutlined />
                     </Popconfirm>
                   </Tooltip>,
-                  <Tooltip placement='bottom' title='More' arrowContent>
-                    <Dropdown
-                      trigger={['click']}
-                      overlay={
-                        <DetailDropdown
-                          pipelineItemId={item.id}
-                          onViewMore={onViewMore}
-                        />
-                      }
-                    >
-                      <EllipsisOutlined key='ellipsis' />
-                    </Dropdown>
-                  </Tooltip>,
+                  <Dropdown
+                    trigger={['hover']}
+                    overlay={
+                      <DetailDropdown
+                        pipelineItemId={item.id}
+                        onViewMore={onViewMore}
+                        setDrawerVisible={setVisible}
+                      />
+                    }
+                  >
+                    <EllipsisOutlined key='ellipsis' />
+                  </Dropdown>,
                   <>
                     {item.account ? (
                       <Tooltip

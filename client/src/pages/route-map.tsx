@@ -1,4 +1,5 @@
 import SaleManagerLayout from '@common/sale-manager-layout';
+import AssignTaskForLeader from '@components/assign-task';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
@@ -42,6 +43,9 @@ const SourceStatistic = lazy(
 );
 
 const SaleDiscountPage = lazy(() => import('@pages/sale-discount-page'));
+const ContactAndCompany = lazy(
+  () => import('@components/sale-manager/statistic/contact-and-company')
+);
 const SoldCoursesStatistic = lazy(
   () => import('@components/statistic/sold-course')
 );
@@ -137,6 +141,10 @@ export const route: RouteObject[] = [
             element: <AddContact />,
           },
         ],
+      },
+      {
+        path: 'assign-task',
+        element: <AssignTaskForLeader />,
       },
       {
         path: 'pipeline',
@@ -431,6 +439,10 @@ export const route: RouteObject[] = [
           {
             index: true,
             element: <ManagerStatistic />,
+          },
+          {
+            path: '/sale-manager/statistic/total-contact-and-company',
+            element: <ContactAndCompany />,
           },
           {
             path: '/sale-manager/statistic/deal',

@@ -1,4 +1,5 @@
 import { PUBLIC_USER_INFO } from '@constance/cookie';
+import { useActivityTypes } from '@modules/activity/query/activity.get';
 import { DatePicker, Form, Input, Select } from 'antd';
 import moment from 'moment';
 import { useCookies } from 'react-cookie';
@@ -9,17 +10,22 @@ export const CreateScheduleForm = () => {
       public_user_info: { id, firstName },
     },
   ] = useCookies([PUBLIC_USER_INFO]);
+  const { data: type } = useActivityTypes(false);
   return (
     <div style={{ padding: '14px' }}>
-      <Form.Item name='type' initialValue={'todo'} label='Activity Type'>
-        <Select style={{ width: '100%' }}>
-          <Select.Option value='todo'>Todo</Select.Option>
-          <Select.Option value='email'>Email</Select.Option>
-          <Select.Option value='call'>Call</Select.Option>
-          <Select.Option value='meeting'>Meeting</Select.Option>
-          <Select.Option value='upload-document'>Upload document</Select.Option>
-        </Select>
-      </Form.Item>
+      {type && (
+        <Form.Item
+          name='activityTypeId'
+          initialValue={[type[0].id]}
+          label='Activity Type'
+        >
+          <Select style={{ width: '100%' }}>
+            {type?.map((item) => (
+              <Select.Option key={item.id}>{item.name}</Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+      )}
 
       <Form.Item name='summary' label='Summary'>
         <Input.TextArea />
