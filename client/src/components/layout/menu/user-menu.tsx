@@ -4,6 +4,7 @@ import {
   BranchesOutlined,
   CalendarOutlined,
   ContactsOutlined,
+  CopyOutlined,
   CrownOutlined,
   FieldTimeOutlined,
   FundOutlined,
@@ -120,6 +121,13 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       style,
       onClick: () => navigate('/discount'),
       icon: <PercentageOutlined style={style} />,
+    },
+    {
+      key: 'assign-task',
+      label: 'Assign task',
+      style,
+      onClick: () => navigate('/assign-task'),
+      icon: <CopyOutlined style={style} />,
     },
     {
       key: 'map-statistic',

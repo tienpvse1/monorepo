@@ -1,4 +1,5 @@
 import SaleManagerLayout from '@common/sale-manager-layout';
+import AssignTaskForLeader from '@components/assign-task';
 import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
@@ -137,6 +138,10 @@ export const route: RouteObject[] = [
             element: <AddContact />,
           },
         ],
+      },
+      {
+        path: 'assign-task',
+        element: <AssignTaskForLeader />,
       },
       {
         path: 'pipeline',

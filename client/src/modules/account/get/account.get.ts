@@ -9,6 +9,7 @@ const { ACCOUNT } = controllers;
 export const GET_ACCOUNT_BY_SALE_ROLE = 'get-account-by-sale-role';
 export const QUERY_SALE_ACCOUNTS = 'query-sale-accounts';
 export const QUERY_ALL_ACCOUNTS = 'query-all-accounts';
+export const QUERY_ACCOUNT_BY_ID = 'query-account-by-id';
 export const getUser = async () => {
   const { instance } = new Axios();
   const { data } = await instance.get(`${ACCOUNT}/custom`, {
@@ -68,9 +69,42 @@ export const getSaleAccounts = async () => {
 };
 
 export const getAccountById = async (id: string) => {
-  const { data } = await instance.get<IAccount>(`${ACCOUNT}/${id}`);
-  return data;
+  const query = RequestQueryBuilder.create({
+    join: [
+      { field: 'team' },
+      { field: 'team.accounts' },
+      { field: 'team.accounts.schedules' },
+    ],
+    filter: [
+      {
+        field: 'id',
+        operator: '$eq',
+        value: id,
+      },
+    ],
+  }).query(false);
+  const { data } = await instance.get<IAccount[]>(`${ACCOUNT}?${query}`);
+  const result = data.map((item) => ({
+    ...item,
+    team: {
+      ...item.team,
+      accounts: item.team.accounts
+        .filter((account) => account.id !== id)
+        .map((account) => ({
+          ...account,
+          schedules: account.schedules.filter((schedule) => !schedule.isDone),
+        })),
+    },
+  }));
+
+  return result[0];
 };
+
+export const useAccountById = (id: string) =>
+  useQuery([QUERY_ACCOUNT_BY_ID, id], () => getAccountById(id), {
+    enabled: Boolean(id),
+    suspense: true,
+  });
 
 export const useQueryAccountBySaleRole = () =>
   useQuery(GET_ACCOUNT_BY_SALE_ROLE, () => getSaleAccounts());
