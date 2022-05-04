@@ -41,13 +41,6 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
         onBack={() => window.history.back()}
         title='Statistic'
         subTitle='an overview of your work'
-        extra={[
-          <Button key='3'>refresh</Button>,
-          <Button key='2'>export</Button>,
-          <Button key='1' type='primary'>
-            report
-          </Button>,
-        ]}
       >
         <Descriptions size='small' column={3}>
           <Descriptions.Item
