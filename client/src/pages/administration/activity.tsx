@@ -10,9 +10,9 @@ import moment from 'moment';
 import { client } from '../../App';
 
 const { Column } = Table;
-interface ActivityProps {}
+interface ActivityProps { }
 
-const Activity: React.FC<ActivityProps> = ({}) => {
+const Activity: React.FC<ActivityProps> = ({ }) => {
   const { data } = useActivityTypes(true);
   const { mutate } = useCreateActivityType();
   const [isVisible, toggle] = useBooleanToggle(false);
@@ -43,11 +43,11 @@ const Activity: React.FC<ActivityProps> = ({}) => {
           <Form.Item
             name='name'
             label='Activity name'
-            rules={[{ required: true }]}
+            rules={[{ required: true , message: 'Activity name is required' }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item name='description' label='Description'>
+          <Form.Item required rules={[{ required: true, message: 'Description is required' }]} name='description' label='Description'>
             <Input.TextArea />
           </Form.Item>
           <Button onClick={() => form.submit()} type='primary'>

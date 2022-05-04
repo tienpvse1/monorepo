@@ -165,7 +165,7 @@ export const route: RouteObject[] = [
         element: <MyCalendar />,
       },
       {
-        path: 'proposal',
+        path: 'renewal',
         element: <Proposal />,
       },
       {
@@ -418,7 +418,7 @@ export const route: RouteObject[] = [
         element: <LostOpportunity />,
       },
       {
-        path: 'proposal',
+        path: 'renewal',
         element: <Proposal />,
       },
       {

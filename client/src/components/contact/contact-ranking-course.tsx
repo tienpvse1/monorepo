@@ -163,18 +163,18 @@ export const ContactRankingCourse = () => {
         key="name"
       />
 
-      <Column
+      {/* <Column
         title="Email"
         dataIndex="email"
         key="email"
-      />
+      /> */}
 
       <Column
         title="Purchased Course"
         dataIndex="course"
         key="course"
         align='center'
-        width={150}
+        // width={150}
         render={(_, record: any) => (
           <span>
             {record.courses.totalQty}
@@ -185,7 +185,7 @@ export const ContactRankingCourse = () => {
         title="Rank"
         dataIndex="rank"
         key="rank"
-        width={100}
+        // width={100}
         render={(_, record: any) => (
           handleRank(record.courses.totalQty)
         )}
@@ -195,7 +195,7 @@ export const ContactRankingCourse = () => {
         title="Created By"
         dataIndex="username"
         key="username"
-        width={120}
+        // width={120}
         render={(_, record: any) => (
           <span >
             {record?.account?.firstName} {record?.account?.lastName}

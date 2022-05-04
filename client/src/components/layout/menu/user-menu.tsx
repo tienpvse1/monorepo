@@ -99,10 +99,10 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       icon: <UserDeleteOutlined style={style} />,
     },
     {
-      key: 'proposal',
-      label: 'Proposal',
+      key: 'renewal',
+      label: 'Renewal',
       style,
-      onClick: () => navigate('/proposal'),
+      onClick: () => navigate('/renewal'),
       icon: <AlertOutlined style={style} />,
     },
     {
@@ -223,10 +223,10 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       icon: <UserDeleteOutlined style={style} />,
     },
     {
-      key: 'proposal',
-      label: 'Proposal',
+      key: 'renewal',
+      label: 'Renewal',
       style,
-      onClick: () => navigate('/proposal'),
+      onClick: () => navigate('/Renewal'),
       icon: <AlertOutlined style={style} />,
     },
     {

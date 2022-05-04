@@ -52,7 +52,7 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
       ...rest,
       expectedClosing: `${moment(expectedClosing).year()}-${moment(
         expectedClosing
-      ).month()}-${moment(expectedClosing).date()}`,
+      ).month() + 1}-${moment(expectedClosing).date()}`,
       opportunityRevenue: {
         courseId,
         quantity: Number.parseInt(quantity),
@@ -105,7 +105,6 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
           form={form}
           layout='vertical'
           onFinish={handleSubmit}
-          hideRequiredMark
         >
           <Row gutter={16}>
             <Col span={12}>
@@ -227,9 +226,9 @@ export const CreateOpportunity: React.FC<CreateOpportunityProps> = ({
                 label='Expected closing'
                 rules={[{ required: true, message: 'Please pick the date' }]}
               >
-                <DatePicker.MonthPicker
+                <DatePicker
                   style={{ width: '100%' }}
-                  getPopupContainer={(trigger) => trigger.parentElement}
+                  // getPopupContainer={(trigger) => trigger.parentElement}
                 />
               </Form.Item>
             </Col>

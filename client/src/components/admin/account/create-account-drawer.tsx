@@ -75,7 +75,6 @@ export const CreateAccountDrawer: React.FC<CreateAccountDrawerProps> = ({
         onFinish={(value) => handleSubmit(value)}
         form={form}
         layout='vertical'
-        hideRequiredMark
       >
         <Row gutter={16}>
           <Col span={12}>

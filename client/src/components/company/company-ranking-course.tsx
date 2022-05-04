@@ -2,16 +2,22 @@ import { ICompany } from '@modules/company/entity/company.entity';
 import { useCompaniesWithColumn } from '@modules/company/query/company.get';
 import { Table, Tag } from 'antd'
 import Column from 'antd/lib/table/Column'
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import moment from 'moment';
 // import { TypeOfCompany } from '@components/company/type-of-company';
 import { dateFormat } from "@constance/date-format";
+import { useCookies } from 'react-cookie';
+import { PUBLIC_USER_INFO } from '@constance/cookie';
+import { removeDuplicate } from '@util/array';
 const { CRUD_AT } = dateFormat;
 
 export const CompanyRankingCourse = () => {
   const { data } = useCompaniesWithColumn();
   const [dataMap, setDataMap] = useState<ICompany[]>();
   const [loading, setLoading] = useState(true);
+
+  console.log("dataColumn:", data);
+
 
   const handleCourseQuantity = (record: any) =>
     record.reduce((acc: number, course: any) => {
@@ -51,6 +57,25 @@ export const CompanyRankingCourse = () => {
       return <Tag color={'volcano'}>Bronze</Tag>
     }
   }
+
+  //Filter created by follow account id
+  const [{ public_user_info }] = useCookies([PUBLIC_USER_INFO]);
+  const handleFilter = () => {
+    const accountFilter = data?.filter(
+      (value) => value.creator?.id !== public_user_info.id
+    );
+    const accountFormat = accountFilter?.map((value) => ({
+      text: `${value.creator?.firstName} ${value.creator?.lastName}`,
+      value: `${value.creator?.firstName} ${value.creator?.lastName}`,
+    }));
+    const account = removeDuplicate(accountFormat, 'value');
+    account?.unshift({
+      text: 'My company',
+      value: `${public_user_info.firstName} ${public_user_info.lastName}`,
+    });
+    return account;
+  };
+  const arrayFilter = useMemo(() => handleFilter(), [data]);
 
   useEffect(() => {
     const dataMap = data?.map((value) => (
@@ -134,18 +159,18 @@ export const CompanyRankingCourse = () => {
         key="name"
       />
 
-      <Column
+      {/* <Column
         title="Email"
         dataIndex="email"
         key="email"
-      />
+      /> */}
 
       <Column
         title="Purchased Course"
         dataIndex="course"
         key="course"
         align='center'
-        width={150}
+        // width={150}
         render={(_, record: any) => (
           <span>
             {record.courses.totalQty}
@@ -156,10 +181,27 @@ export const CompanyRankingCourse = () => {
         title="Rank"
         dataIndex="rank"
         key="rank"
-        width={100}
+        // width={100}
         render={(_, record: any) => (
           handleRank(record.courses.totalQty)
         )}
+      />
+
+      <Column
+        title="Created By"
+        dataIndex="username"
+        key="username"
+        render={(_, record: any) => (
+          <span >
+            {record?.creator?.firstName} {record?.creator?.lastName}
+          </span>
+        )}
+        filters={arrayFilter}
+        filterSearch={true}
+        onFilter={(value, record) => {
+          let fullName = `${record.creator?.firstName} ${record.creator?.lastName}`;
+          return fullName.indexOf(value as string) === 0;
+        }}
       />
 
       {/* <Column
