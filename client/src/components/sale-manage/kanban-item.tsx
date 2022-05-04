@@ -15,10 +15,15 @@ export const KanBanItem = (
     <div
       {...provided.droppableProps}
       ref={provided.innerRef}
-      style={{ height: '100%' }}
+      style={{ height: '100%', userSelect: 'none' }}
     >
       {accounts?.map((account, index) => (
-        <Draggable draggableId={account.id} key={account.id} index={index}>
+        <Draggable
+          isDragDisabled={account.isLeader}
+          draggableId={account.id}
+          key={account.id}
+          index={index}
+        >
           {(provided, snapshot) => (
             <div
               ref={provided.innerRef}
