@@ -37,7 +37,7 @@ const getMySchedulesByMonth = async (id: string, month: number) => {
   var lastDay = new Date(date.getFullYear(), month + 1, 0);
 
   const query = RequestQueryBuilder.create({
-    join: [{ field: 'account' }, { field: 'pipelineItem' }],
+    join: [{ field: 'account' }, { field: 'pipelineItem' }, { field: 'activityType' }],
     filter: [
       {
         field: 'account.id',
@@ -81,9 +81,10 @@ export const getUpcomingEvents = async ({
   date: Date;
 }) => {
   const query = RequestQueryBuilder.create({
-    join: {
-      field: 'account',
-    },
+    join: [
+      { field: 'account' },
+      { field: 'activityType' }
+    ],
     filter: [
       {
         field: 'account.id',

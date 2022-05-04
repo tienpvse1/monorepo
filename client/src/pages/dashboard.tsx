@@ -78,14 +78,14 @@ export const DashBoard: React.FC = () => {
                       key={item.id}
                       by={`${item.account.firstName} ${item.account.lastName}`}
                       severity={
-                        (item.type == 'todo' && 'info') ||
-                        (item.type == 'email' && 'error') ||
-                        (item.type == 'meeting' && 'warning') ||
+                        (item.activityType.name == 'Todo' && 'info') ||
+                        (item.activityType.name == 'Email' && 'error') ||
+                        (item.activityType.name == 'Meeting' && 'warning') ||
                         'success'
                       }
                       title={item.summary}
                       time={moment(new Date(item.dueDate)).fromNow()}
-                      type={item.type}
+                      type={item.activityType.name}
                       isDone={item.isDone}
                     />
                   ))}

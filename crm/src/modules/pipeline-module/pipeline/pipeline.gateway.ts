@@ -53,6 +53,7 @@ export class PipelineGateway extends BaseGateway<any> {
       .leftJoinAndSelect('pipelineItems.opportunityRevenue', 'revenue')
       .leftJoinAndSelect('revenue.course', 'course')
       .leftJoinAndSelect('pipelineItems.schedules', 'schedule')
+      .leftJoinAndSelect('schedules.activityType', 'activityType')
       .getMany();
 
     const reindexed = sortColumns(payload);
