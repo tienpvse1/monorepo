@@ -234,6 +234,14 @@ export const useContacts = (accountId: string, suspense = false) =>
     enabled: Boolean(accountId),
     suspense,
   });
+export const useContactsForManagerStatistic = (
+  accountId: string,
+  suspense = false
+) =>
+  useQuery([QUERY_CONTACTS, accountId], () => getContacts(accountId), {
+    enabled: Boolean(accountId),
+    suspense,
+  });
 
 export const useContactForStatistic = () =>
   useQuery([QUERY_CONTACTS_WITH_COMPANY], getContactsWithCompany, {

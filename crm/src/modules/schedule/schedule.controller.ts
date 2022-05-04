@@ -1,23 +1,19 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Param,
-  Patch,
-  Post,
-  UsePipes,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { Crud } from '@nestjsx/crud';
 import { HistoryLog } from 'src/common/decorators/message.decorator';
+import { User } from 'src/common/decorators/user.decorator';
+import { InternalServerEvent } from 'src/constance/event';
 import { AUTHORIZATION } from 'src/constance/swagger';
-import {
-  CreateScheduleDto,
-  ParsedCreateScheduleDto,
-} from './dto/create-schedule.dto';
+import { getCustomRepository, getRepository } from 'typeorm';
+import { AccountRepository } from '../account/account.repository';
+import { ActivityType } from '../activity-type/entities/activity-type.entity';
+import { InternalSendNotificationPayload } from '../notification/dto/internal-send-notification.dto';
+import { PipelineItemRepository } from '../pipeline-module/pipeline-item/pipeline-item.repository';
+import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { Schedule } from './entities/schedule.entity';
-import { ParseDtoPipe } from './parse-dto.pipe';
 import { ScheduleService } from './schedule.service';
 
 @Controller('schedule')
@@ -52,13 +48,52 @@ import { ScheduleService } from './schedule.service';
   },
 })
 export class ScheduleController {
-  constructor(public readonly service: ScheduleService) {}
+  constructor(
+    public readonly service: ScheduleService,
+    private eventEmitter: EventEmitter2,
+  ) {}
 
   @Post()
   @ApiBody({ type: CreateScheduleDto })
   @HistoryLog('scheduled an activity')
-  @UsePipes(ParseDtoPipe)
-  createSchedule(@Body() parsedDto: ParsedCreateScheduleDto) {
+  // @UsePipes(ParseDtoPipe)
+  async createSchedule(
+    @Body() dto: CreateScheduleDto,
+    @User('id') userId: string,
+  ) {
+    const accountRepository = getCustomRepository(AccountRepository);
+    const activityTypeRepository = getRepository(ActivityType);
+    const { accountId, pipelineItemId, activityTypeId, ...rest } = dto;
+    const pipelineItemRepository = getCustomRepository(PipelineItemRepository);
+    const account = await accountRepository.findOne({
+      where: { id: accountId },
+    });
+    const activityType = await activityTypeRepository.findOne({
+      where: { id: activityTypeId },
+    });
+    const pipelineItem = await pipelineItemRepository.findOne({
+      where: { id: pipelineItemId },
+    });
+    const parsedDto = {
+      ...rest,
+      account,
+      pipelineItem,
+      activityType,
+    };
+    if (userId !== parsedDto.account.id) {
+      const accountRepository = getCustomRepository(AccountRepository);
+
+      const account = await accountRepository.findOne({
+        where: { id: userId },
+      });
+      const payload: InternalSendNotificationPayload = {
+        description: `${account.firstName} ${account.lastName} scheduled you an activity`,
+        receiverId: parsedDto.account.id,
+        name: 'Scheduled Activity',
+        senderId: userId,
+      };
+      this.eventEmitter.emit(InternalServerEvent.SEND_NOTIFICATION, payload);
+    }
     return this.service.createItem(parsedDto);
   }
 

@@ -20,7 +20,7 @@ const chartTypeWithColor: {
   color: AntColorType;
   key: ChartType;
 }[] = [
-  { key: 'contacts', color: 'volcano', label: 'Contacts' },
+  { key: 'contacts', color: 'volcano', label: 'Contacts and companies' },
   { key: 'deal', color: 'purple', label: 'Deal' },
   { key: 'sent-email', color: 'blue', label: 'Sent emails' },
   { key: 'sold', color: 'green', label: 'Sold' },
@@ -41,13 +41,6 @@ export const StatisticHeader: React.FC<StatisticHeaderProps> = () => {
         onBack={() => window.history.back()}
         title='Statistic'
         subTitle='an overview of your work'
-        extra={[
-          <Button key='3'>refresh</Button>,
-          <Button key='2'>export</Button>,
-          <Button key='1' type='primary'>
-            report
-          </Button>,
-        ]}
       >
         <Descriptions size='small' column={3}>
           <Descriptions.Item
