@@ -126,10 +126,10 @@ export const getTeamPipelineItems = async (id: string) => {
   return result;
 };
 
-export const useAccountById = (id: string) =>
+export const useAccountById = (id: string, suspense = true) =>
   useQuery([QUERY_ACCOUNT_BY_ID, id], () => getAccountById(id), {
     enabled: Boolean(id),
-    suspense: true,
+    suspense,
   });
 
 export const useQueryAccountBySaleRole = () =>
