@@ -226,7 +226,7 @@ export const UserSideMenu = ({ style }: MenuSiderUserProps) => {
       key: 'renewal',
       label: 'Renewal',
       style,
-      onClick: () => navigate('/Renewal'),
+      onClick: () => navigate('/renewal'),
       icon: <AlertOutlined style={style} />,
     },
     {
