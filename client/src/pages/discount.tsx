@@ -12,7 +12,7 @@ const { Column } = Table;
 const Discount: React.FC<DiscountProps> = ({}) => {
   const { data } = useDiscountCodes(true);
   return (
-    <div>
+    <div className='container-page'>
       <DiscountHeader />
       <Table dataSource={data} rowKey={(row) => row.id}>
         <Column dataIndex='name' title='Title' key='name' />

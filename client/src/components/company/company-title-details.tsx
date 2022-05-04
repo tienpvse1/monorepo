@@ -5,6 +5,7 @@ import { ICompany } from '@modules/company/entity/company.entity'
 import { useDeleteCompany } from '@modules/company/mutation/company.delete';
 import { Button, Descriptions, PageHeader, Tag } from 'antd'
 import { useNavigate } from 'react-router-dom';
+import { TypeOfSource } from './type-of-source';
 
 interface CompanyTitleDetailsProps {
   company: ICompany;
@@ -61,8 +62,8 @@ export const CompanyTitleDetails: React.FC<CompanyTitleDetailsProps> = ({
         }
       >
         <Descriptions size='small' column={3}>
-          <Descriptions.Item label='Type'>
-            {company.type}
+          <Descriptions.Item label='Source Info'>
+            {company.source}
           </Descriptions.Item>
           <Descriptions.Item label='Phone'>
             {company.mobile}

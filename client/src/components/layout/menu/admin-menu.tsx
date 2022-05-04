@@ -1,5 +1,4 @@
 import {
-  AppstoreOutlined,
   BranchesOutlined,
   CarryOutOutlined,
   // CoffeeOutlined,
@@ -33,7 +32,7 @@ export const AdminMenuSider = ({ style }: MenuSiderAdminProps) => {
         mode='inline'
       >
         <Menu.Item
-          key=''
+          key='admin'
           style={style}
           icon={<TeamOutlined style={style} />}
           onClick={() => navigate('/administration/')}
