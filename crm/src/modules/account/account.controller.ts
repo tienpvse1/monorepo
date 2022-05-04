@@ -89,7 +89,6 @@ export class AccountController {
   }
   @Public()
   @Post('')
-  @HistoryLog('Deleted an account')
   verifyAndCreate(@Body() body: CreateAccountDto) {
     return this.service.createAccount(body);
   }
