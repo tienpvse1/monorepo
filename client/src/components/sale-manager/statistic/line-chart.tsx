@@ -1,5 +1,8 @@
 import { IAccount } from '@interfaces/account';
-import { useContacts } from '@modules/contact/query/contact.get';
+import {
+  useContacts,
+  useContactsForManagerStatistic,
+} from '@modules/contact/query/contact.get';
 import { getMonthToShow, isIn } from '@util/date';
 import {
   CategoryScale,
@@ -44,7 +47,10 @@ export interface ILineChart {
 export const LineChart: FC<ILineChart> = ({ currentSale }) => {
   const months = getMonthToShow();
   const labels = months.map((month) => month.format('MMMM YYYY'));
-  const { data: contacts } = useContacts(currentSale.id, true);
+  const { data: contacts } = useContactsForManagerStatistic(
+    currentSale.id,
+    true
+  );
   const data = {
     labels,
     datasets: [

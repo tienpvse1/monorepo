@@ -20,7 +20,7 @@ const chartTypeWithColor: {
   color: AntColorType;
   key: ChartType;
 }[] = [
-  { key: 'contacts', color: 'volcano', label: 'Contacts' },
+  { key: 'contacts', color: 'volcano', label: 'Contacts and companies' },
   { key: 'deal', color: 'purple', label: 'Deal' },
   { key: 'sent-email', color: 'blue', label: 'Sent emails' },
   { key: 'sold', color: 'green', label: 'Sold' },

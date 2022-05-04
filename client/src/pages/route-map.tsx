@@ -43,6 +43,9 @@ const SourceStatistic = lazy(
 );
 
 const SaleDiscountPage = lazy(() => import('@pages/sale-discount-page'));
+const ContactAndCompany = lazy(
+  () => import('@components/sale-manager/statistic/contact-and-company')
+);
 const SoldCoursesStatistic = lazy(
   () => import('@components/statistic/sold-course')
 );
@@ -436,6 +439,10 @@ export const route: RouteObject[] = [
           {
             index: true,
             element: <ManagerStatistic />,
+          },
+          {
+            path: '/sale-manager/statistic/total-contact-and-company',
+            element: <ContactAndCompany />,
           },
           {
             path: '/sale-manager/statistic/deal',
