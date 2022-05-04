@@ -85,10 +85,10 @@ export const SaleManagerMenuSider = ({ style }: SaleManagerSiderProps) => {
       icon: <UserDeleteOutlined style={style} />,
     },
     {
-      key: 'proposal',
-      label: 'Proposal',
+      key: 'renewal',
+      label: 'Renewal',
       style,
-      onClick: () => navigate('/sale-manager/proposal'),
+      onClick: () => navigate('/sale-manager/renewal'),
       icon: <AlertOutlined style={style}/>,
     },
     {
