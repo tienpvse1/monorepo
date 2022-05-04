@@ -1,7 +1,7 @@
 import { envVars } from "@env/var.env"
 import { Avatar, Button, FormInstance, List, Modal, Tag } from "antd"
 import { useHover } from '@mantine/hooks';
-import { FileSearchOutlined } from "@ant-design/icons";
+import { FileAddOutlined, FileSearchOutlined } from "@ant-design/icons";
 import { ThemeColor } from "@constance/color";
 import { IPipelineItem } from "@modules/pipeline-items/entity/pipeline-items.entity";
 import moment from "moment";
@@ -18,6 +18,7 @@ interface MyListItemProps {
   isActive: (id: number) => boolean;
   index: number;
   form: FormInstance;
+  toggleCreateModal: () => void;
 }
 
 const getItemStyle = () => ({
@@ -30,7 +31,8 @@ export const MyListItem: React.FC<MyListItemProps> = ({
   onActiveTab,
   isActive,
   index,
-  form
+  form,
+  toggleCreateModal
 }) => {
 
   const { hovered, ref } = useHover();
@@ -38,11 +40,20 @@ export const MyListItem: React.FC<MyListItemProps> = ({
 
   const onClickListItem = () => {
     onActiveTab(index);
-    form.resetFields();
+    // form.resetFields();
+    // form.setFieldsValue({
+    //   contactId: item.contact.id,
+    //   companyName: item.contact.company.id
+    // });
+  }
+  const onClickCreate = () => {
+    toggleCreateModal()
     form.setFieldsValue({
+      courseId: item.opportunityRevenue.course.id,
+      expectedRevenue: item.opportunityRevenue.course.price,
       contactId: item.contact.id,
       companyName: item.contact.company.id
-    });
+    })
   }
 
   return (
@@ -64,7 +75,7 @@ export const MyListItem: React.FC<MyListItemProps> = ({
                   ID: {item.opportunityRevenue.course.id}
                 </Tag> <br /> */}
                 <Tag color={'purple'}>
-                  End Date: {moment(item.opportunityRevenue.course.endDate).format(DEFAULT)}
+                  Certificate Exp: {moment(item.opportunityRevenue.course.certificateExp).format(DEFAULT)}
                 </Tag>
               </>
             }
@@ -80,9 +91,14 @@ export const MyListItem: React.FC<MyListItemProps> = ({
                   <Text type="danger">Contact:</Text> {item.contact.name} - {item.contact.email}
                 </span>
                 {hovered &&
-                  <span style={{ float: 'right' }} >
-                    <FileSearchOutlined onClick={() => toggleModal()} style={{ fontSize: '18px' }} />
-                  </span>
+                  <>
+                    <span style={{ float: 'right' }} >
+                      <FileAddOutlined onClick={onClickCreate} style={{ fontSize: '18px' }} />
+                    </span>
+                    <span style={{ float: 'right' }} >
+                      <FileSearchOutlined onClick={() => toggleModal()} style={{ fontSize: '18px' }} />
+                    </span>
+                  </>
                 }
               </>
             }

@@ -13,9 +13,10 @@ const { DEFAULT } = dateFormat;
 interface ListCourseEndDateProps {
   mountProposal?: React.Dispatch<React.SetStateAction<boolean>>;
   form: FormInstance;
+  toggleCreateModal: () => void;
 }
 
-export const ListCourseEndDate: React.FC<ListCourseEndDateProps> = ({ mountProposal, form }) => {
+export const ListCourseEndDate: React.FC<ListCourseEndDateProps> = ({ mountProposal, form, toggleCreateModal }) => {
   const [
     {
       public_user_info: { id },
@@ -29,7 +30,7 @@ export const ListCourseEndDate: React.FC<ListCourseEndDateProps> = ({ mountPropo
     afterTime = moment().add(1, 'months')
   ) => {
     return array?.filter((value) =>
-      moment(value.opportunityRevenue.course.endDate, DEFAULT)
+      moment(value.opportunityRevenue.course.certificateExp, DEFAULT)
         .isBetween(moment(beforeTime, DEFAULT), moment(afterTime, DEFAULT), undefined, '[]'))
   }
 
@@ -66,7 +67,7 @@ export const ListCourseEndDate: React.FC<ListCourseEndDateProps> = ({ mountPropo
           size: 'small'
         }}
         itemLayout="horizontal"
-        header={<span style={{ fontSize: '16px' }}>List Course End Date</span>}
+        // header={<span style={{ fontSize: '16px' }}>List of customers whose course certificates are about to expire.</span>}
         dataSource={dataFinal}
         renderItem={(item, index: number) => (
           <MyListItem
@@ -75,6 +76,7 @@ export const ListCourseEndDate: React.FC<ListCourseEndDateProps> = ({ mountPropo
             onActiveTab={onActiveTab}
             isActive={isActive}
             form={form}
+            toggleCreateModal={toggleCreateModal}
           />
         )}
       />
