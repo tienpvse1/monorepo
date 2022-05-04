@@ -66,7 +66,6 @@ export const CreateScheduleDrawer: React.FC<CreateScheduleDrawerProps> = ({
           onFinish={(value) => handleSubmit(value)}
           form={form}
           layout='vertical'
-          hideRequiredMark
         >
           <Row gutter={16}>
             <Col span={22}>
