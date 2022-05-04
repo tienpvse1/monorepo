@@ -59,16 +59,16 @@ const Planned: React.FC<PlannedProps> = ({
                 </>
               }
               type={
-                schedule.type == 'todo' && 'info' ||
-                schedule.type == 'email' && 'error' ||
-                schedule.type == 'meeting' && 'warning' || 'success'
+                schedule.activityType.name == 'Todo' && 'info' ||
+                schedule.activityType.name == 'Email' && 'error' ||
+                schedule.activityType.name == 'Meeting' && 'warning' || 'success'
               }
               showIcon
               icon={
-                schedule.type == 'todo' && <FileTextOutlined /> ||
-                schedule.type == 'email' && <MailOutlined /> ||
-                schedule.type == 'meeting' && <CoffeeOutlined /> ||
-                schedule.type == 'call' && <PhoneOutlined /> || <PushpinOutlined />
+                schedule.activityType.name == 'Todo' && <FileTextOutlined /> ||
+                schedule.activityType.name == 'Email' && <MailOutlined /> ||
+                schedule.activityType.name == 'Meeting' && <CoffeeOutlined /> ||
+                schedule.activityType.name == 'Call' && <PhoneOutlined /> || <PushpinOutlined />
               }
               closable
               closeIcon={

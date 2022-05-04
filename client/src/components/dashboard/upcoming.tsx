@@ -43,10 +43,10 @@ const Upcoming: React.FC<UpcomingProps> = ({
       }
       showIcon
       icon={
-        type == 'todo' && <FileTextOutlined /> ||
-        type == 'email' && <MailOutlined /> ||
-        type == 'meeting' && <CoffeeOutlined /> ||
-        type == 'call' && <PhoneOutlined /> || <PushpinOutlined />
+        type == 'Todo' && <FileTextOutlined /> ||
+        type == 'Email' && <MailOutlined /> ||
+        type == 'Meeting' && <CoffeeOutlined /> ||
+        type == 'Call' && <PhoneOutlined /> || <PushpinOutlined />
       }
     />
   );

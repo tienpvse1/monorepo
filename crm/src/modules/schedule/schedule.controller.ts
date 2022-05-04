@@ -44,6 +44,7 @@ import { ScheduleService } from './schedule.service';
     join: {
       account: {},
       pipelineItem: {},
+      activityType: {},
     },
   },
 })

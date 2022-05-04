@@ -1,6 +1,6 @@
 import { CoffeeOutlined, FileTextOutlined, MailOutlined, PhoneOutlined, PushpinOutlined } from '@ant-design/icons';
 import { ISchedule } from '@modules/schedule/entity/schedule.entity';
-import { Alert, Drawer, Empty } from 'antd';
+import { Alert, Drawer, Empty, Tag } from 'antd';
 import moment from 'moment';
 
 interface ScheduleDrawerProps {
@@ -15,7 +15,7 @@ export const ScheduleDrawer: React.FC<ScheduleDrawerProps> = ({
   toggle,
 }) => {
   console.log('schedule:', data);
-  
+
   return (
     <Drawer
       title='Upcoming activities'
@@ -32,33 +32,39 @@ export const ScheduleDrawer: React.FC<ScheduleDrawerProps> = ({
             message={
               <>
                 <span style={{ fontSize: '17px' }}>
-                  {schedule.type.toUpperCase()}
+                  {schedule.activityType.name.toUpperCase()}
                 </span>
-                <span style={{float: 'right'}}>{schedule.pipelineItem.name}</span>
+                {schedule.isDone ?
+                  <Tag color={'purple'} style={{ borderRadius: '10px', float: 'right' }}>
+                    Done
+                  </Tag> :
+                  <Tag color={'magenta'} style={{ borderRadius: '10px', float: 'right' }}>
+                    Undone
+                  </Tag>}
               </>
             }
             description={
               <>
+                <span >{schedule.pipelineItem.name}</span> <br />
                 <span style={{ fontSize: '16px' }}>
                   {schedule.summary}
                 </span> <br />
-
                 <span style={{ fontSize: '12px', float: 'right' }}>
                   Due {moment(new Date(schedule.dueDate)).fromNow()}
-                </span>
+                </span> <br />
               </>
             }
             type={
-              schedule.type == 'todo' && 'info' ||
-              schedule.type == 'email' && 'error' ||
-              schedule.type == 'meeting' && 'warning' || 'success'
+              schedule.activityType.name == 'Todo' && 'info' ||
+              schedule.activityType.name == 'Email' && 'error' ||
+              schedule.activityType.name == 'Meeting' && 'warning' || 'success'
             }
             showIcon
             icon={
-              schedule.type == 'todo' && <FileTextOutlined /> ||
-              schedule.type == 'email' && <MailOutlined /> ||
-              schedule.type == 'meeting' && <CoffeeOutlined /> ||
-              schedule.type == 'call' && <PhoneOutlined /> || <PushpinOutlined />
+              schedule.activityType.name == 'Todo' && <FileTextOutlined /> ||
+              schedule.activityType.name == 'Email' && <MailOutlined /> ||
+              schedule.activityType.name == 'Meeting' && <CoffeeOutlined /> ||
+              schedule.activityType.name == 'Call' && <PhoneOutlined /> || <PushpinOutlined />
             }
           />
         ))

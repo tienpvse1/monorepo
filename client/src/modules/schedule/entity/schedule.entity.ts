@@ -10,4 +10,8 @@ export interface ISchedule extends IBase {
   account: IAccount;
   pipelineItem: IPipelineItem;
   isDone: boolean;
+  activityType: {
+    name: string;
+    description: string;
+  }
 }

@@ -25,6 +25,7 @@ export class PipelineService {
         { userId },
       )
       .leftJoinAndSelect('pipelineItems.schedules', 'schedules')
+      .leftJoinAndSelect('schedules.activityType', 'activityType')
       .leftJoinAndSelect('pipelineItems.contact', 'contact')
       .leftJoinAndSelect('contact.company', 'company')
       .leftJoinAndSelect('pipelineItems.opportunityRevenue', 'revenue')
@@ -41,6 +42,7 @@ export class PipelineService {
     const column = await queryBuilder
       .leftJoinAndSelect('pipelineColumn.pipelineItems', 'pipelineItems')
       .leftJoinAndSelect('pipelineItems.schedules', 'schedules')
+      .leftJoinAndSelect('schedules.activityType', 'activityType')
       .leftJoinAndSelect('pipelineItems.contact', 'contact')
       .leftJoinAndSelect('contact.company', 'company')
       .leftJoinAndSelect('pipelineItems.opportunityRevenue', 'revenue')

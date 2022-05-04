@@ -43,7 +43,9 @@ export class EmailService extends BaseService<Email> {
         id: senderId,
       },
     });
-    const urlString = `${this.config.get<string>('email.serverUrl')}/send`;
+    const urlString = `${this.config.get<string>(
+      'email.serverUrl',
+    )}/email/send`;
 
     for (const target of email.to) {
       if (target.isTag) continue;
