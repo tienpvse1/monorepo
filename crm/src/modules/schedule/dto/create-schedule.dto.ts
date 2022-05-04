@@ -1,5 +1,4 @@
 import { Optional } from '@nestjs/common';
-import { IsDate } from 'class-validator';
 import { Account } from 'src/modules/account/entities/account.entity';
 import { ActivityType } from 'src/modules/activity-type/entities/activity-type.entity';
 import { PipelineItem } from 'src/modules/pipeline-module/pipeline-item/entities/pipeline-item.entity';
@@ -11,7 +10,6 @@ export class CreateScheduleDto {
   note: string;
   @Optional()
   isDone: boolean;
-  @IsDate()
   dueDate: Date;
   accountId: string;
   pipelineItemId: string;

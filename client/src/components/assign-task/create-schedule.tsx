@@ -1,7 +1,6 @@
-import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { IAccount } from '@interfaces/account';
-import { useTeamPipelineItems } from '@modules/account/get/account.get';
 import { useActivityTypes } from '@modules/activity/query/activity.get';
+import { useMyPipelineItems } from '@modules/pipeline-items/query/pipeline-item.get';
 import { useCreateSchedule } from '@modules/schedule/mutation/schedule.post';
 import { QUERY_TEAM_WITH_TASK } from '@modules/team/query/team.get';
 import {
@@ -16,7 +15,6 @@ import {
   Space,
 } from 'antd';
 import { Dispatch, SetStateAction } from 'react';
-import { useCookies } from 'react-cookie';
 import { client } from '../../App';
 
 interface CreateScheduleDrawerProps {
@@ -35,17 +33,14 @@ export const CreateScheduleDrawer: React.FC<CreateScheduleDrawerProps> = ({
   setCurrentAccount,
 }) => {
   const [form] = Form.useForm();
-  const [
-    {
-      public_user_info: { id },
-    },
-  ] = useCookies([PUBLIC_USER_INFO]);
+
   const { mutate } = useCreateSchedule();
   const handleSubmit = (value: any) => {
     mutate(
       {
         ...value,
         accountId: currentAccount.id,
+        dueDate: value.dueDate.toDate(),
         isDone: false,
       },
       {
@@ -60,7 +55,7 @@ export const CreateScheduleDrawer: React.FC<CreateScheduleDrawerProps> = ({
   };
 
   const { data: activityTypes } = useActivityTypes(false);
-  const { data: pipelineItems } = useTeamPipelineItems(id);
+  const { data: pipelineItems } = useMyPipelineItems(currentAccount.id);
   return (
     <>
       <Drawer

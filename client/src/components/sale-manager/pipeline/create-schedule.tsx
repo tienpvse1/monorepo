@@ -1,14 +1,7 @@
-import { PUBLIC_USER_INFO } from '@constance/cookie';
-import { IAccount } from '@interfaces/account';
-import {
-  useSaleAccounts,
-  useTeamPipelineItems,
-} from '@modules/account/get/account.get';
+import { useSaleAccounts } from '@modules/account/get/account.get';
 import { useActivityTypes } from '@modules/activity/query/activity.get';
-import { useQueryAllContacts } from '@modules/contact/query/contact.get';
 import { usePipelineItems } from '@modules/pipeline-items/query/pipeline-item.get';
 import { useCreateSchedule } from '@modules/schedule/mutation/schedule.post';
-import { QUERY_TEAM_WITH_TASK } from '@modules/team/query/team.get';
 import {
   Avatar,
   Button,
@@ -23,7 +16,6 @@ import {
   Space,
 } from 'antd';
 import { Dispatch, SetStateAction } from 'react';
-import { useCookies } from 'react-cookie';
 // import { client } from '../../../App';
 
 interface CreateScheduleDrawerProps {
