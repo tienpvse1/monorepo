@@ -1,6 +1,4 @@
-/client/node_modules
-/crm/node_modules
-/crm/dist
-/crm/client
-/node_modules
+node_modules
+/dist
+/client
 /.vscode

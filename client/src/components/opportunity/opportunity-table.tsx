@@ -1,27 +1,25 @@
 import { DeleteOutlined, FormOutlined } from '@ant-design/icons';
-import { Button, Form, Space, Table, Tag } from 'antd';
-import Column from 'antd/lib/table/Column';
-import { useToggle } from '@hooks/useToggle';
+import { CreateModal } from '@components/modal/create-modal';
 import { showDeleteConfirm } from '@components/modal/delete-confirm';
 import { OpportunityTitleTable } from '@components/opportunity/opportunity-title-table';
-import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
-import { CreateModal } from '@components/modal/create-modal';
-import { CreateOpportunityForm } from './create-opportunity-form';
-import { Link, useNavigate } from 'react-router-dom';
-import moment from 'moment';
-import { message } from 'antd';
-import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
-import { useQueryClient } from 'react-query';
-import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.delete';
-import { removeDuplicate } from '@util/array';
+import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { dateFormat } from '@constance/date-format';
 import { useHandleNavigate } from '@hooks/useHandleNavigate';
+import { useToggle } from '@hooks/useToggle';
+import { useSendEmail } from '@modules/email/mutate/email.post';
+import { IPipelineItem } from '@modules/pipeline-items/entity/pipeline-items.entity';
+import { useDeletePipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.delete';
+import { usePostPipelineItems } from '@modules/pipeline-items/mutation/pipeline-items.post';
+import { removeDuplicate } from '@util/array';
+import { Button, Form, Space, Table, Tag, message } from 'antd';
+import Column from 'antd/lib/table/Column';
+import moment from 'moment';
 import numberSeparator from "number-separator";
 import { useMemo } from 'react';
-import { PUBLIC_USER_INFO } from '@constance/cookie';
 import { useCookies } from 'react-cookie';
-import { useSendEmail } from '@modules/email/mutate/email.post';
-import { templateEmailOrderInfo } from '@util/email-template';
+import { useQueryClient } from 'react-query';
+import { Link, useNavigate } from 'react-router-dom';
+import { CreateOpportunityForm } from './create-opportunity-form';
 
 const { DEFAULT } = dateFormat;
 
@@ -129,15 +127,6 @@ export const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
       quantity,
       priority,
       expectedRevenue,
-      contactEmail,
-      companyCity,
-      companyEmail,
-      companyName,
-      contactName,
-      contactPhone,
-      courseName,
-      coursePrice,
-      discountCode
     } = record;
     createOpportunity(
       {
