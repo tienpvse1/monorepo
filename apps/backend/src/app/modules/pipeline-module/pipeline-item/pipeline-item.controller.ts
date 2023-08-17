@@ -1,8 +1,15 @@
-import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { User } from '../../../common/decorators/user.decorator';
 import { AUTHORIZATION } from '../../../constant/swagger';
-import { InternalSendNotificationPayload } from '../../notification/dto/internal-send-notification.dto';
 import { AssignAccountToOpportunityDto } from './dto/assign-account.dto';
 import {
   CreateSinglePipelineItemDto,
@@ -17,17 +24,11 @@ import { PipelineItemService } from './pipeline-item.service';
 export class PipelineItemController {
   constructor(public service: PipelineItemService) {}
 
-  /**
-   * things to implement:
-   * - soft delete pipeline item
-   * - reassign opportunity to sale
-   * - mark opportunity as lost
-   */
   @Post()
   @ApiBody({ type: CreateSinglePipelineItemDto })
   async addOpportunity(
     @Body() item: CreateSinglePipelineItemDto,
-    @User('id') accountId: string
+    @User('id', new ParseUUIDPipe({ version: '4' })) accountId: string
   ) {
     const result = await this.service.createPipelineItemForSale(
       item,
@@ -40,35 +41,39 @@ export class PipelineItemController {
   @ApiBody({ type: CreateSinglePipelineItemManagerDto })
   async addOpportunityForManager(
     @Body() { accountId, ...item }: CreateSinglePipelineItemManagerDto,
-    @User('id') managerId: string
+    @User('id', new ParseUUIDPipe({ version: '4' })) managerId: string
   ) {
-    if (!accountId) accountId = managerId;
-    await this.service.createPipelineItem(item, accountId, managerId);
-    const payload: InternalSendNotificationPayload = {
-      description: 'assigned you to an opportunity',
-      name: 'Assignment',
-      receiverId: accountId,
-      senderId: managerId,
-    };
-
-    return item;
+    return this.service.createPipelineItem(item, accountId, managerId);
   }
 
   @Patch('change-stage/:id')
-  changeStage(@Param('id') id: string, @Body() dto: ChangeStageDto) {
+  changeStage(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Body() dto: ChangeStageDto
+  ) {
     return this.service.changeStage(id, dto);
   }
 
   @Patch('assign')
   assignAccount(
     @Body() { id, accountId }: AssignAccountToOpportunityDto,
-    @User('id') managerId: string
+    @User('id', new ParseUUIDPipe({ version: '4' })) managerId: string
   ) {
     return this.service.assignAccount(id, accountId, managerId);
   }
 
   @Patch('restore/:id')
-  restore(@Param('id') id: string) {
+  restore(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     return this.service.restorePipelineItem(id);
+  }
+
+  @Patch('lost/:id')
+  lost(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
+    return this.service.markAsLost(id);
+  }
+
+  @Delete(':id')
+  softDelete(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
+    return this.service.softDelete(id);
   }
 }

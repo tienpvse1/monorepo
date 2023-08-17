@@ -35,6 +35,11 @@ export interface Account {
   role: string | null;
 }
 
+export interface AccountPipelineItem {
+  accountId: string;
+  pipelineItemId: string;
+}
+
 export interface BaseTable {
   id: Generated<string>;
   createdAt: Generated<Timestamp | null>;
@@ -111,6 +116,7 @@ export interface PipelineItem {
   contactId: string | null;
   pipelineColumnId: string | null;
   deletedAt: Timestamp | null;
+  createdById: string | null;
 }
 
 export interface Product {
@@ -173,6 +179,7 @@ export interface Team {
 
 export interface DB {
   account: Account;
+  accountPipelineItem: AccountPipelineItem;
   baseTable: BaseTable;
   contact: Contact;
   geographyColumns: GeographyColumns;

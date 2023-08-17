@@ -1,8 +1,8 @@
 import {
-  IsArray,
   IsNumber,
   IsOptional,
   IsString,
+  IsUUID,
   Length,
   Min,
 } from 'class-validator';
@@ -29,7 +29,7 @@ export class CreateSinglePipelineItemDto {
 
   @Length(10)
   @IsOptional()
-  columnId: string;
+  pipelineColumnId: string;
 
   @IsNumber()
   @IsOptional()
@@ -45,12 +45,6 @@ export class CreateSinglePipelineItemDto {
   @IsString()
   @IsOptional()
   description?: string;
-
-  @IsOptional()
-  @IsArray()
-  noteWorthies?: CreateNoteWorthyDto[];
-
-  opportunityRevenue: CreateOpportunityRevenueDto;
 }
 export class CreateSinglePipelineItemManagerDto {
   @Length(1)
@@ -80,6 +74,9 @@ export class CreateSinglePipelineItemManagerDto {
   @IsString()
   @IsOptional()
   description?: string;
+
+  @IsUUID('4')
+  pipelineColumnId: string;
 
   opportunityRevenue: CreateOpportunityRevenueDto;
 }

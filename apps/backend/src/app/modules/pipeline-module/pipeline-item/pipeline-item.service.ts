@@ -30,13 +30,41 @@ export class PipelineItemService {
   async createPipelineItemForSale(
     dto: CreateSinglePipelineItemDto,
     accountId: string
-  ) {}
+  ) {
+    const createFn = this.kysely
+      .insertInto('pipelineItem')
+      .values({ ...dto, createdById: accountId })
+      .returningAll()
+      .executeTakeFirst();
+    const [createdItem, err] = await resolve(createFn);
+    await this.kysely
+      .insertInto('accountPipelineItem')
+      .values({ pipelineItemId: createdItem.id, accountId })
+      .execute();
+    if (!createdItem || err)
+      throw new BadRequestException('cannot create pipeline item');
+    return createdItem;
+  }
 
   async createPipelineItem(
     dto: CreateSinglePipelineItemDto,
     accountId: string,
     managerId: string
-  ) {}
+  ) {
+    if (!accountId) accountId = managerId;
+    const createFn = this.kysely
+      .insertInto('pipelineItem')
+      .values({ ...dto, createdById: managerId })
+      .returningAll()
+      .executeTakeFirst();
+    const [createdPipelineItem, err] = await resolve(createFn);
+    if (err) throw new BadRequestException('cannot create pipeline item');
+    await this.kysely
+      .insertInto('accountPipelineItem')
+      .values({ accountId, pipelineItemId: createdPipelineItem.id })
+      .execute();
+    return createdPipelineItem;
+  }
 
   async assignAccount(id: string, accountId: string, managerId: string) {}
 
@@ -44,5 +72,33 @@ export class PipelineItemService {
 
   sendAssignMessage(managerId: string, accountId: string) {}
 
-  async restorePipelineItem(id: string) {}
+  async restorePipelineItem(id: string) {
+    const restoreFn = this.kysely
+      .updateTable('pipelineItem')
+      .set({ deletedAt: null })
+      .where('id', '=', id)
+      .returningAll()
+      .executeTakeFirst();
+    const [restoreResult, err] = await resolve(restoreFn);
+    if (!restoreResult || err)
+      throw new BadRequestException('cannot restore pipeline item');
+    return restoreResult;
+  }
+
+  async softDelete(id: string) {
+    return this.kysely
+      .updateTable('pipelineItem')
+      .set({ deletedAt: new Date() })
+      .returningAll()
+      .executeTakeFirst();
+  }
+
+  async markAsLost(id: string) {
+    return this.kysely
+      .updateTable('pipelineItem')
+      .set({ lost: true })
+      .where('id', '=', id)
+      .returningAll()
+      .executeTakeFirst();
+  }
 }
