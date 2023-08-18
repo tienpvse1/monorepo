@@ -1,5 +1,6 @@
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsOptional, Length } from 'class-validator';
+import { IsEmail, IsOptional, IsUUID, Length } from 'class-validator';
 
 export class CreateAccountDto {
   @Length(6)
@@ -10,22 +11,24 @@ export class CreateAccountDto {
   @Length(2, 100)
   @IsOptional()
   lastName: string;
-  @IsEmail()
+  @IsEmail({})
+  @ApiProperty({ type: 'string', format: 'email' })
   email: string;
   @Length(6, 50)
   password: string;
-  @ApiProperty({ description: 'image url' })
+  @ApiProperty({ description: 'image url', format: 'uri' })
   @IsOptional()
   image: string;
   @Length(10)
+  @ApiProperty({ type: 'string', format: 'uuid' })
   teamId: string;
   @Length(10)
   roleId: string;
 }
 
+@InputType()
 export class JoinTeamDto {
-  @Length(10)
+  @Field(() => ID)
+  @IsUUID('4')
   teamId: string;
-  @Length(10)
-  accountId: string;
 }

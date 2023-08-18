@@ -19,6 +19,15 @@ export class TeamService {
     return team;
   }
 
+  async getOwnTeam(userId: string) {
+    return this.kysely
+      .selectFrom('team')
+      .leftJoin('account', 'teamId', 'team.id')
+      .where('account.id', '=', userId)
+      .selectAll('team')
+      .executeTakeFirst();
+  }
+
   async changeLeader({ accountId, id }: ChangeLeaderDto) {
     const updateFn = this.kysely
       .updateTable('team')

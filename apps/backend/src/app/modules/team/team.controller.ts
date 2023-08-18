@@ -1,4 +1,12 @@
-import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { HasRoles } from '../../common/decorators/role/decorator';
 import { User } from '../../common/decorators/user.decorator';
@@ -10,6 +18,11 @@ import { TeamService } from './team.service';
 @ApiTags('team')
 export class TeamController {
   constructor(public readonly service: TeamService) {}
+
+  @Get()
+  findOwnTeam(@User('id', new ParseUUIDPipe({ version: '4' })) userId: string) {
+    return this.service.getOwnTeam(userId);
+  }
 
   @Post()
   @HasRoles(Roles.SALE_MANAGER)

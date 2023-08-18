@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { InsertObject } from 'kysely';
 import { InjectKysely, Kysely } from '../../kysely';
 import { DB } from '../../kysely/models';
-import { CreateAccountDto, JoinTeamDto } from './dto/create-account.dto';
+import { CreateAccountDto } from './dto/create-account.dto';
 
 @Injectable()
 export class AccountService {
@@ -12,11 +12,6 @@ export class AccountService {
     @InjectKysely private readonly kysely: Kysely,
     private config: ConfigService
   ) {}
-
-  /**
-   * add this account to team id, if already join then throw 400 bad request with already join team message
-   */
-  async joinTeam(dto: JoinTeamDto) {}
 
   async create(account: InsertObject<DB, 'account'>) {
     return this.kysely
@@ -61,6 +56,15 @@ export class AccountService {
         'active',
         'role',
       ])
+      .executeTakeFirst();
+  }
+
+  joinTeam(userId: string, teamId: string) {
+    return this.kysely
+      .updateTable('account')
+      .set({ teamId })
+      .where('id', '=', userId)
+      .returningAll()
       .executeTakeFirst();
   }
 }
