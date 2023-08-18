@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { resolve } from '@monorepo/common';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -18,7 +16,7 @@ export class AccountService {
   /**
    * add this account to team id, if already join then throw 400 bad request with already join team message
    */
-  async joinTeam(_dto: JoinTeamDto) {}
+  async joinTeam(dto: JoinTeamDto) {}
 
   async create(account: InsertObject<DB, 'account'>) {
     return this.kysely

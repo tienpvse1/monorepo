@@ -6,10 +6,9 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Public } from '../../common/decorators/public.decorator';
 import { AUTHORIZATION } from '../../constant/swagger';
 import { AccountService } from './account.service';
-import { CreateAccountDto, JoinTeamDto } from './dto/create-account.dto';
+import { JoinTeamDto } from './dto/create-account.dto';
 
 @Controller('account')
 @ApiTags('account')
@@ -21,11 +20,5 @@ export class AccountController {
   @Post('join-team')
   joinTeam(@Body() dto: JoinTeamDto) {
     return this.service.joinTeam(dto);
-  }
-
-  @Public()
-  @Post('')
-  verifyAndCreate(@Body() body: CreateAccountDto) {
-    return this.service.createAccount(body);
   }
 }

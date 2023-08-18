@@ -8,10 +8,10 @@ import { CreateTeamDto } from './dto/create-team.dto';
 export class TeamService {
   constructor(@InjectKysely private readonly kysely: Kysely) {}
 
-  async createTeam(accountId: string, { name }: CreateTeamDto) {
+  async createTeam(accountId: string, dto: CreateTeamDto) {
     const createFn = this.kysely
       .insertInto('team')
-      .values({ name, createdById: accountId })
+      .values({ ...dto, createdById: accountId })
       .returningAll()
       .executeTakeFirstOrThrow();
     const [team, error] = await resolve(createFn);

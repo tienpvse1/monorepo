@@ -87,7 +87,7 @@ CREATE TABLE public.account (
     is_leader boolean DEFAULT false,
     team_index integer,
     team_id uuid,
-    role text
+    role text DEFAULT 'sale'::text
 );
 
 
@@ -653,4 +653,5 @@ INSERT INTO public.schema_migrations (version) VALUES
     ('20230818023336'),
     ('20230818031749'),
     ('20230818032055'),
-    ('20230818032223');
+    ('20230818032223'),
+    ('20230818044325');
