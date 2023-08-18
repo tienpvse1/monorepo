@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { BaseService } from 'src/base/nestjsx.service';
-import { Repository } from 'typeorm';
-import { Permission } from './entities/permission.entity';
+import { InjectKysely, Kysely } from '../../kysely';
 
 @Injectable()
-export class PermissionService extends BaseService<Permission> {
-  constructor(
-    @InjectRepository(Permission) repository: Repository<Permission>,
-  ) {
-    super(repository);
+export class PermissionService {
+  constructor(@InjectKysely private readonly kysely: Kysely) {}
+
+  softDelete(id: string) {
+    return this.kysely
+      .updateTable('permission')
+      .set({ deletedAt: new Date() })
+      .where('id', '=', id)
+      .returningAll()
+      .executeTakeFirstOrThrow();
   }
 }

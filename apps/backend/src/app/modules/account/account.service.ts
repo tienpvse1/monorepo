@@ -21,7 +21,11 @@ export class AccountService {
   async joinTeam(_dto: JoinTeamDto) {}
 
   async create(account: InsertObject<DB, 'account'>) {
-    return this.kysely.insertInto('account').values(account).executeTakeFirst();
+    return this.kysely
+      .insertInto('account')
+      .values(account)
+      .returningAll()
+      .executeTakeFirst();
   }
 
   async findOneOrCreate(account: InsertObject<DB, 'account'>) {

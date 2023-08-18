@@ -6,10 +6,6 @@ import {
   Length,
   Min,
 } from 'class-validator';
-import { CreateNoteWorthyDto } from '../../../note-worthy/dto/create-note-worthy.dto';
-import { CreateOpportunityRevenueDto } from '../../../opportunity-revenue/dto/create-opportunity-revenue.dto';
-import { OpportunityRevenue } from '../../../opportunity-revenue/entities/opportunity-revenue.entity';
-import { PipelineColumn } from '../../pipeline-column/entities/pipeline-column.entity';
 
 export class CreatePipelineItemDto {
   @Length(1)
@@ -77,21 +73,14 @@ export class CreateSinglePipelineItemManagerDto {
 
   @IsUUID('4')
   pipelineColumnId: string;
-
-  opportunityRevenue: CreateOpportunityRevenueDto;
 }
 export class ParsedCreateSinglePipelineItemDto {
   name: string;
   index: number;
-  column: PipelineColumn;
   accountId: string;
 
   expectedClosing?: Date;
   description?: string;
-
-  opportunityRevenue: OpportunityRevenue;
-
-  noteWorthies?: CreateNoteWorthyDto[];
 }
 
 export class KnexCreatePipelineItemForSaleDto {

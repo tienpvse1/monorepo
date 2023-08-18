@@ -1,19 +1,16 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { TasksService } from './cron/cron.service';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './common/filter/exception.filter';
 import { KyselyModule } from './kysely';
-import { LoggingMiddleware } from './middleware/logging.middleware';
 import { AccountModule } from './modules/account/account.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { GlobalModule } from './modules/global/global.module';
 @Module({
   imports: [
+    AuthModule,
     AccountModule,
-    ConfigModule,
+    ConfigModule.forRoot({ isGlobal: true }),
     KyselyModule.forRoot({
       databaseName: 'crm',
       host: 'localhost',
@@ -23,14 +20,10 @@ import { GlobalModule } from './modules/global/global.module';
       camelCase: true,
     }),
   ],
-  providers: [GlobalModule, TasksService],
+  providers: [
+    // GlobalModule,
+    { provide: APP_FILTER, useClass: HttpExceptionFilter },
+  ],
   controllers: [],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggingMiddleware).forRoutes({
-      path: '*',
-      method: RequestMethod.ALL,
-    });
-  }
-}
+export class AppModule {}

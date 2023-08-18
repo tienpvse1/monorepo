@@ -11,7 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcryptjs';
 import { Cache } from 'cache-manager';
 import dayjs from 'dayjs';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { Selectable } from 'kysely';
 import { Account } from '../../kysely/models';
 import { AccountService } from '../account/account.service';
@@ -37,16 +37,18 @@ export class AuthService {
 
   async register(dto: RegisterDto) {
     const password = await this.hashPassword(dto.password);
+
     const createAccountFn = this.accountService.create({ ...dto, password });
     const [account, error] = await resolve(createAccountFn);
     if (error) throw new BadRequestException('cannot create account');
+    delete account.password;
     return account;
   }
 
   async loginWithEmailPassword(
     email: string,
     password: string,
-    response: Response
+    request: Request
   ) {
     // refresh token will has ttl of 10 days
     const refreshTokenTtl = 10 * 24 * 60 * 60;
@@ -58,8 +60,8 @@ export class AuthService {
     const accessToken = this.generateJWTToken(account);
     const refreshToken = this.generateJWTToken(account, '10d');
     this.cache.set(account.id, refreshToken, refreshTokenTtl);
-    this.setCookie(response, accessToken);
-    this.setCookie(response, refreshToken, refreshTokenTtl);
+    this.setCookie(request.res, accessToken);
+    this.setCookie(request.res, refreshToken, refreshTokenTtl);
     return accessToken;
   }
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { resolve } from '@monorepo/common';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectKysely, Kysely } from '../../../kysely';
@@ -66,11 +65,16 @@ export class PipelineItemService {
     return createdPipelineItem;
   }
 
-  async assignAccount(id: string, accountId: string, managerId: string) {}
-
-  sendUnassignMessage(managerId: string, accountId: string) {}
-
-  sendAssignMessage(managerId: string, accountId: string) {}
+  async assignAccount(id: string, accountId: string) {
+    const assignFn = this.kysely
+      .insertInto('accountPipelineItem')
+      .values({ accountId, pipelineItemId: id })
+      .returningAll()
+      .executeTakeFirstOrThrow();
+    const [assignedResult, err] = await resolve(assignFn);
+    if (err) throw new BadRequestException('cannot assign this pipeline item');
+    return assignedResult;
+  }
 
   async restorePipelineItem(id: string) {
     const restoreFn = this.kysely

@@ -92,6 +92,26 @@ CREATE TABLE public.account (
 
 
 --
+-- Name: account_pipeline; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.account_pipeline (
+    account_id uuid NOT NULL,
+    pipeline_id uuid NOT NULL
+);
+
+
+--
+-- Name: account_pipeline_item; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.account_pipeline_item (
+    account_id uuid NOT NULL,
+    pipeline_item_id uuid NOT NULL
+);
+
+
+--
 -- Name: base_table; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -118,7 +138,32 @@ CREATE TABLE public.contact (
     address text,
     job_position text,
     internal_notes text,
-    deleted_at timestamp with time zone
+    deleted_at timestamp with time zone,
+    created_by_id uuid
+);
+
+
+--
+-- Name: permission; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.permission (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    created_at timestamp with time zone DEFAULT '2023-08-18 03:24:49.22546+00'::timestamp with time zone,
+    updated_at timestamp with time zone,
+    deleted_at timestamp with time zone,
+    resource text NOT NULL,
+    action text NOT NULL
+);
+
+
+--
+-- Name: permission_role; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.permission_role (
+    permission_id uuid NOT NULL,
+    role text NOT NULL
 );
 
 
@@ -149,7 +194,8 @@ CREATE TABLE public.pipeline_column (
     name text NOT NULL,
     is_won boolean DEFAULT false,
     pipeline_id uuid,
-    deleted_at timestamp with time zone
+    deleted_at timestamp with time zone,
+    index double precision
 );
 
 
@@ -170,7 +216,8 @@ CREATE TABLE public.pipeline_item (
     lost boolean DEFAULT false,
     contact_id uuid,
     pipeline_column_id uuid,
-    deleted_at timestamp with time zone
+    deleted_at timestamp with time zone,
+    created_by_id uuid
 );
 
 
@@ -261,6 +308,22 @@ CREATE TABLE public.team (
 
 
 --
+-- Name: account_pipeline_item account_pipeline_item_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_pipeline_item
+    ADD CONSTRAINT account_pipeline_item_pkey PRIMARY KEY (account_id, pipeline_item_id);
+
+
+--
+-- Name: account_pipeline account_pipeline_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_pipeline
+    ADD CONSTRAINT account_pipeline_pkey PRIMARY KEY (account_id, pipeline_id);
+
+
+--
 -- Name: account account_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -282,6 +345,22 @@ ALTER TABLE ONLY public.base_table
 
 ALTER TABLE ONLY public.contact
     ADD CONSTRAINT contact_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: permission permission_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.permission
+    ADD CONSTRAINT permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: permission_role permission_role_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.permission_role
+    ADD CONSTRAINT permission_role_pkey PRIMARY KEY (permission_id, role);
 
 
 --
@@ -394,6 +473,22 @@ ALTER TABLE ONLY public.product_account
 
 
 --
+-- Name: account_pipeline_item account_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_pipeline_item
+    ADD CONSTRAINT account_fk FOREIGN KEY (account_id) REFERENCES public.account(id);
+
+
+--
+-- Name: account_pipeline account_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_pipeline
+    ADD CONSTRAINT account_fk FOREIGN KEY (account_id) REFERENCES public.account(id);
+
+
+--
 -- Name: pipeline_item contact_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -410,11 +505,35 @@ ALTER TABLE ONLY public.team
 
 
 --
+-- Name: pipeline_item created_by_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pipeline_item
+    ADD CONSTRAINT created_by_fk FOREIGN KEY (created_by_id) REFERENCES public.account(id);
+
+
+--
+-- Name: contact created_by_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.contact
+    ADD CONSTRAINT created_by_fk FOREIGN KEY (created_by_id) REFERENCES public.account(id);
+
+
+--
 -- Name: team leader_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.team
     ADD CONSTRAINT leader_fk FOREIGN KEY (leader_id) REFERENCES public.account(id);
+
+
+--
+-- Name: permission_role permission_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.permission_role
+    ADD CONSTRAINT permission_fk FOREIGN KEY (permission_id) REFERENCES public.permission(id);
 
 
 --
@@ -431,6 +550,22 @@ ALTER TABLE ONLY public.pipeline_item
 
 ALTER TABLE ONLY public.pipeline_column
     ADD CONSTRAINT pipeline_fk FOREIGN KEY (pipeline_id) REFERENCES public.pipeline(id);
+
+
+--
+-- Name: account_pipeline pipeline_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_pipeline
+    ADD CONSTRAINT pipeline_fk FOREIGN KEY (pipeline_id) REFERENCES public.pipeline(id);
+
+
+--
+-- Name: account_pipeline_item pipeline_item_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.account_pipeline_item
+    ADD CONSTRAINT pipeline_item_fk FOREIGN KEY (pipeline_item_id) REFERENCES public.pipeline_item(id);
 
 
 --
@@ -455,6 +590,14 @@ ALTER TABLE ONLY public.tag_product
 
 ALTER TABLE ONLY public.account
     ADD CONSTRAINT role_account_fk_role FOREIGN KEY (role) REFERENCES public.role(name);
+
+
+--
+-- Name: permission_role role_fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.permission_role
+    ADD CONSTRAINT role_fk FOREIGN KEY (role) REFERENCES public.role(name);
 
 
 --
@@ -502,4 +645,12 @@ INSERT INTO public.schema_migrations (version) VALUES
     ('20230817092115'),
     ('20230817093655'),
     ('20230817094447'),
-    ('20230817094756');
+    ('20230817094756'),
+    ('20230817102804'),
+    ('20230817134254'),
+    ('20230817135716'),
+    ('20230817142516'),
+    ('20230818023336'),
+    ('20230818031749'),
+    ('20230818032055'),
+    ('20230818032223');

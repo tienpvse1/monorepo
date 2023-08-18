@@ -35,6 +35,11 @@ export interface Account {
   role: string | null;
 }
 
+export interface AccountPipeline {
+  accountId: string;
+  pipelineId: string;
+}
+
 export interface AccountPipelineItem {
   accountId: string;
   pipelineItemId: string;
@@ -59,6 +64,7 @@ export interface Contact {
   jobPosition: string | null;
   internalNotes: string | null;
   deletedAt: Timestamp | null;
+  createdById: string | null;
 }
 
 export interface GeographyColumns {
@@ -79,6 +85,20 @@ export interface GeometryColumns {
   coordDimension: number | null;
   srid: number | null;
   type: string | null;
+}
+
+export interface Permission {
+  id: Generated<string>;
+  createdAt: Generated<Timestamp | null>;
+  updatedAt: Timestamp | null;
+  deletedAt: Timestamp | null;
+  resource: string;
+  action: string;
+}
+
+export interface PermissionRole {
+  permissionId: string;
+  role: string;
 }
 
 export interface Pipeline {
@@ -180,11 +200,14 @@ export interface Team {
 
 export interface DB {
   account: Account;
+  accountPipeline: AccountPipeline;
   accountPipelineItem: AccountPipelineItem;
   baseTable: BaseTable;
   contact: Contact;
   geographyColumns: GeographyColumns;
   geometryColumns: GeometryColumns;
+  permission: Permission;
+  permissionRole: PermissionRole;
   pipeline: Pipeline;
   pipelineColumn: PipelineColumn;
   pipelineItem: PipelineItem;

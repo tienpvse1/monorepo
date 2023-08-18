@@ -55,11 +55,8 @@ export class PipelineItemController {
   }
 
   @Patch('assign')
-  assignAccount(
-    @Body() { id, accountId }: AssignAccountToOpportunityDto,
-    @User('id', new ParseUUIDPipe({ version: '4' })) managerId: string
-  ) {
-    return this.service.assignAccount(id, accountId, managerId);
+  assignAccount(@Body() { id, accountId }: AssignAccountToOpportunityDto) {
+    return this.service.assignAccount(id, accountId);
   }
 
   @Patch('restore/:id')

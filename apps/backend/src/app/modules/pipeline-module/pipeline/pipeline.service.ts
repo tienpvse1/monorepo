@@ -1,89 +1,32 @@
-import { Injectable } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
-import { InternalServerEvent } from 'src/constance/event';
-import { reIndexColumn, sortColumns } from 'src/util/pipeline';
-import { getRepository } from 'typeorm';
-import { PipelineColumn } from '../pipeline-column/entities/pipeline-column.entity';
-import { PipelineColumnService } from '../pipeline-column/pipeline-column.service';
-import { PipelineItemService } from '../pipeline-item/pipeline-item.service';
+import { resolve } from '@monorepo/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectKysely, Kysely } from '../../../kysely';
+import { CreatePipelineDto } from './dto/create-pipeline.dto';
 
 @Injectable()
 export class PipelineService {
-  constructor(
-    private eventEmitter: EventEmitter2,
-    private itemService: PipelineItemService,
-    private columnService: PipelineColumnService,
-  ) {}
+  constructor(@InjectKysely private readonly kysely: Kysely) {}
   async findOwnOnePipeline(userId: string) {
-    const queryBuilder =
-      getRepository(PipelineColumn).createQueryBuilder('pipelineColumn');
-    const column = await queryBuilder
-      .leftJoinAndSelect(
-        'pipelineColumn.pipelineItems',
-        'pipelineItems',
-        'pipelineItems.account_id = :userId',
-        { userId },
-      )
-      .leftJoinAndSelect('pipelineItems.schedules', 'schedules')
-      .leftJoinAndSelect('schedules.activityType', 'activityType')
-      .leftJoinAndSelect('pipelineItems.contact', 'contact')
-      .leftJoinAndSelect('contact.company', 'company')
-      .leftJoinAndSelect('pipelineItems.opportunityRevenue', 'revenue')
-      .leftJoinAndSelect('revenue.course', 'course')
-      .leftJoinAndSelect('pipelineItems.account', 'account')
-      .getMany();
-
-    reIndexColumn(sortColumns(column));
-    return column;
-  }
-  async findPipeline() {
-    const queryBuilder =
-      getRepository(PipelineColumn).createQueryBuilder('pipelineColumn');
-    const column = await queryBuilder
-      .leftJoinAndSelect('pipelineColumn.pipelineItems', 'pipelineItems')
-      .leftJoinAndSelect('pipelineItems.schedules', 'schedules')
-      .leftJoinAndSelect('schedules.activityType', 'activityType')
-      .leftJoinAndSelect('pipelineItems.contact', 'contact')
-      .leftJoinAndSelect('contact.company', 'company')
-      .leftJoinAndSelect('pipelineItems.opportunityRevenue', 'revenue')
-      .leftJoinAndSelect('revenue.course', 'course')
-      .leftJoinAndSelect('pipelineItems.account', 'account')
-      .getMany();
-
-    reIndexColumn(sortColumns(column));
-    return column;
+    return this.kysely
+      .selectFrom('pipeline')
+      .leftJoin('accountPipeline', 'accountPipeline.pipelineId', 'pipeline.id')
+      .where('accountPipeline.accountId', '=', userId)
+      .selectAll('pipeline')
+      .execute();
   }
 
-  async updateColumns(pipelineColumns: PipelineColumn[]) {
-    for (const { index, id } of pipelineColumns) {
-      await this.columnService.updateColumnIndex(id, { index });
-    }
-  }
-  async updateItems(pipelineColumns: PipelineColumn[]) {
-    for (const column of pipelineColumns) {
-      for (const { index, id } of column.pipelineItems) {
-        await this.itemService.updatePipelineItemIndex(id, column.id, {
-          index,
-        });
-      }
-    }
-  }
-
-  async updatePipeline(columns: PipelineColumn[], accountId: string) {
-    reIndexColumn(sortColumns(columns));
-    await this.updateColumns(columns);
-    await this.updateItems(columns);
-
-    const result = await this.findOwnOnePipeline(accountId);
-    this.eventEmitter.emit(InternalServerEvent.PIPELINE_UPDATED, columns);
-
-    return {
-      id: 'QIECTiuvzY',
-      createdAt: '2022-02-24T10:11:45.518Z',
-      updatedAt: '2022-02-24T10:12:03.000Z',
-      deletedAt: null,
-      name: 'pipeline 1',
-      pipelineColumns: result,
-    };
+  async createPipeline(dto: CreatePipelineDto, userId: string) {
+    const createFn = this.kysely
+      .insertInto('pipeline')
+      .values(dto)
+      .returningAll()
+      .executeTakeFirst();
+    const [createdPipeline, err] = await resolve(createFn);
+    if (err) throw new BadRequestException('cannot create pipeline');
+    await this.kysely
+      .insertInto('accountPipeline')
+      .values({ accountId: userId, pipelineId: createdPipeline.id })
+      .executeTakeFirst();
+    return createdPipeline;
   }
 }
