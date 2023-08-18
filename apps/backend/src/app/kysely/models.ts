@@ -100,6 +100,7 @@ export interface PipelineColumn {
   isWon: Generated<boolean | null>;
   pipelineId: string | null;
   deletedAt: Timestamp | null;
+  index: number | null;
 }
 
 export interface PipelineItem {
