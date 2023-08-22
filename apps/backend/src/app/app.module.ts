@@ -9,11 +9,14 @@ import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guard/jwt.guard';
 import { RoleGuard } from './modules/auth/guard/role.guard';
 import { TeamModule } from './modules/team/team.module';
+import { PipelineItemResolver } from './modules/pipeline-module/pipeline-item/pipeline-item.resolver';
+import { PipelineItemModule } from './modules/pipeline-module/pipeline-item/pipeline-item.module';
 @Module({
   imports: [
     TeamModule,
     AuthModule,
     AccountModule,
+    PipelineItemModule,
     ConfigModule.forRoot({ isGlobal: true }),
     GraphQLModule.forRoot<YogaDriverConfig>({
       driver: YogaDriver,

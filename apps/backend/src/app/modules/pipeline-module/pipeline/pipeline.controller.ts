@@ -1,7 +1,7 @@
 import { Body, Controller, Get, ParseUUIDPipe, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { User } from '../../../common/decorators/user.decorator';
-import { AUTHORIZATION } from '../../../constant/swagger';
+import { AUTHORIZATION } from '../../../constant';
 import { CreatePipelineDto } from './dto/create-pipeline.dto';
 import { PipelineService } from './pipeline.service';
 

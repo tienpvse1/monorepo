@@ -11,19 +11,33 @@ import {
 export class PipelineItemService {
   constructor(@InjectKysely private readonly kysely: Kysely) {}
 
-  async changeStage(id: string, dto: ChangeStageDto) {}
+  async changeStage(dto: ChangeStageDto) {}
 
   async updatePipelineItemIndex(id: string, dto: UpdatePipelineItemIndexDto) {
     const updatedIndex = (dto.bottomIndex + dto.topIndex) / 2;
     const updateFn = this.kysely
       .updateTable('pipelineItem')
       .set({ index: updatedIndex, pipelineColumnId: dto.newStageId })
+      .where('id', '=', id)
       .returningAll()
       .execute();
     const [updatedItem, error] = await resolve(updateFn);
     if (!updatedItem || error)
       throw new BadRequestException('cannot update pipeline item');
     return updatedItem;
+  }
+
+  async findOwnPipelineItems(accountId: string) {
+    return this.kysely
+      .selectFrom('pipelineItem')
+      .leftJoin(
+        'accountPipeline',
+        'accountPipeline.accountId',
+        'pipelineItem.id'
+      )
+      .where('accountPipeline.accountId', '=', accountId)
+      .selectAll('pipelineItem')
+      .execute();
   }
 
   async createPipelineItemForSale(
@@ -60,7 +74,10 @@ export class PipelineItemService {
     if (err) throw new BadRequestException('cannot create pipeline item');
     await this.kysely
       .insertInto('accountPipelineItem')
-      .values({ accountId, pipelineItemId: createdPipelineItem.id })
+      .values([
+        { pipelineItemId: createdPipelineItem.id, accountId },
+        { pipelineItemId: createdPipelineItem.id, accountId: managerId },
+      ])
       .execute();
     return createdPipelineItem;
   }
@@ -73,7 +90,10 @@ export class PipelineItemService {
       .executeTakeFirstOrThrow();
     const [assignedResult, err] = await resolve(assignFn);
     if (err) throw new BadRequestException('cannot assign this pipeline item');
-    return assignedResult;
+    return this.kysely
+      .selectFrom('pipelineItem')
+      .where('id', '=', assignedResult.pipelineItemId)
+      .executeTakeFirst();
   }
 
   async restorePipelineItem(id: string) {

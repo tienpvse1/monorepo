@@ -1,11 +1,5 @@
-import {
-  IsNumber,
-  IsOptional,
-  IsString,
-  IsUUID,
-  Length,
-  Min,
-} from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
+import { IsNumber, IsUUID, Length, Min } from 'class-validator';
 
 export class CreatePipelineItemDto {
   @Length(1)
@@ -15,64 +9,36 @@ export class CreatePipelineItemDto {
   index: number;
 }
 
+@InputType()
 export class CreateSinglePipelineItemDto {
-  @Length(1)
+  @Field()
   name: string;
 
-  @Length(10)
-  @IsOptional()
+  @Field()
   contactId: string;
 
-  @Length(10)
-  @IsOptional()
-  pipelineColumnId: string;
-
-  @IsNumber()
-  @IsOptional()
-  expectedRevenue?: number;
-
-  @IsNumber()
-  @IsOptional()
-  priority?: number;
-
-  @IsOptional()
-  expectedClosing?: Date;
-
-  @IsString()
-  @IsOptional()
-  description?: string;
-}
-export class CreateSinglePipelineItemManagerDto {
-  @Length(1)
-  name: string;
-
-  @Length(10)
-  @IsOptional()
-  accountId: string;
-
-  @Length(10)
-  contactId: string;
-
-  @Length(10)
-  columnId: string;
-
-  @IsNumber()
-  @IsOptional()
-  expectedRevenue?: number;
-
-  @IsNumber()
-  @IsOptional()
-  priority?: number;
-
-  @IsOptional()
-  expectedClosing?: Date;
-
-  @IsString()
-  @IsOptional()
-  description?: string;
-
+  @Field()
   @IsUUID('4')
   pipelineColumnId: string;
+
+  @Field({ nullable: true })
+  expectedRevenue?: number;
+
+  @Field({ nullable: true })
+  priority?: number;
+
+  @Field({ nullable: true })
+  expectedClosing?: Date;
+
+  @Field({ nullable: true })
+  description?: string;
+}
+
+@InputType()
+export class CreateSinglePipelineItemManagerDto extends CreateSinglePipelineItemDto {
+  @Field()
+  @IsUUID('4')
+  accountId: string;
 }
 export class ParsedCreateSinglePipelineItemDto {
   name: string;

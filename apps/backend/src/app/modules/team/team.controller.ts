@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { HasRoles } from '../../common/decorators/role/decorator';
+import { HasRoles } from '../../common/decorators/has-role.decorator';
 import { User } from '../../common/decorators/user.decorator';
 import { Roles } from '../../constant';
 import { CreateTeamDto } from './dto/create-team.dto';

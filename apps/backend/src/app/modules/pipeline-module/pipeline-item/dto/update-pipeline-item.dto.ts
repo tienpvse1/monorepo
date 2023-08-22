@@ -1,3 +1,4 @@
+import { Field, InputType } from '@nestjs/graphql';
 import { PartialType } from '@nestjs/swagger';
 import { CreateSinglePipelineItemDto } from './create-pipeline-item.dto';
 
@@ -5,10 +6,17 @@ export class UpdatePipelineItemDto extends PartialType(
   CreateSinglePipelineItemDto
 ) {}
 
+@InputType()
 export class ChangeStageDto {
-  oldStageId: string;
-  newStageId: string;
+  @Field()
+  pipelineItemId: string;
+  @Field()
+  oldColumnId: string;
+  @Field()
+  newColumnId: string;
+  @Field()
   topIndex: number;
+  @Field()
   bottomIndex: number;
 }
 

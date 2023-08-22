@@ -4,12 +4,14 @@ import { GraphqlDate } from '../../../common/types/graphql';
 import { Account } from '../../../kysely/models';
 
 @ObjectType()
-export class AccountGql implements Omit<Selectable<Account>, 'image'> {
+export class AccountGql
+  implements Omit<Selectable<Account>, 'image' | 'password'>
+{
   @Field(() => ID)
   id: string;
-  @Field(() => GraphqlDate)
+  @Field(() => GraphqlDate, { nullable: true })
   createdAt: Date;
-  @Field(() => GraphqlDate)
+  @Field(() => GraphqlDate, { nullable: true })
   updatedAt: Date;
   @Field()
   username: string;
@@ -21,13 +23,11 @@ export class AccountGql implements Omit<Selectable<Account>, 'image'> {
   active: boolean;
   @Field()
   email: string;
-  @Field()
-  password: string;
   @Field(() => Boolean)
   isLeader: boolean;
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   teamIndex: number;
-  @Field()
+  @Field({ nullable: true })
   teamId: string;
   @Field()
   role: string;

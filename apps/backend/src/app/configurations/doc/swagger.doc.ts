@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Env } from '../../common/types/env';
-import { AUTHORIZATION } from '../../constant/swagger';
+import { AUTHORIZATION } from '../../constant';
 
 export const initializeSwagger = (
   app: INestApplication,

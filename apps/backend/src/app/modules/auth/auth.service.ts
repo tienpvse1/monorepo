@@ -13,10 +13,11 @@ import { Cache } from 'cache-manager';
 import dayjs from 'dayjs';
 import { Request, Response } from 'express';
 import { Selectable } from 'kysely';
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '../../constant';
 import { Account } from '../../kysely/models';
 import { AccountService } from '../account/account.service';
-import { RegisterDto } from './interfaces/register.dto';
-import { IToken } from './interfaces/token.interface';
+import { RegisterDto } from './dto/register.dto';
+import { IToken } from './dto/token.interface';
 
 @Injectable()
 export class AuthService {
@@ -35,20 +36,22 @@ export class AuthService {
     return this.jwtService.sign(tokenPayload, { expiresIn });
   }
 
-  async register(dto: RegisterDto) {
+  async register(dto: RegisterDto, req: Request) {
     const password = await this.hashPassword(dto.password);
 
     const createAccountFn = this.accountService.create({ ...dto, password });
     const [account, error] = await resolve(createAccountFn);
     if (error) throw new BadRequestException('cannot create account');
-    delete account.password;
-    return account;
+    return this.loginWithEmailPassword(account.email, dto.password, req, {
+      skipPasswordCheck: true,
+    });
   }
 
   async loginWithEmailPassword(
     email: string,
     password: string,
-    request: Request
+    request: Request,
+    options?: { skipPasswordCheck: boolean }
   ) {
     // refresh token will has ttl of 10 days
     const refreshTokenTtl = 10 * 24 * 60 * 60;
@@ -56,13 +59,19 @@ export class AuthService {
     const [account, error] = await resolve(findAccountFn);
     if (error || !account)
       throw new NotFoundException(`cannot find account with email ${email}`);
-    await this.comparePassword(password, account.password);
+    if (!options?.skipPasswordCheck)
+      await this.comparePassword(password, account.password);
     const accessToken = this.generateJWTToken(account);
     const refreshToken = this.generateJWTToken(account, '10d');
     this.cache.set(account.id, refreshToken, refreshTokenTtl);
-    this.setCookie(request.res, accessToken);
-    this.setCookie(request.res, refreshToken, refreshTokenTtl);
-    return accessToken;
+    this.setCookie(ACCESS_TOKEN_KEY, request.res, accessToken);
+    this.setCookie(
+      REFRESH_TOKEN_KEY,
+      request.res,
+      refreshToken,
+      refreshTokenTtl
+    );
+    return { accessToken, refreshToken, accountId: account.id };
   }
 
   private hashPassword(password: string) {
@@ -75,8 +84,13 @@ export class AuthService {
    * @param token what ever kind of token in string data type
    * @param expires expires time in **second**
    */
-  private setCookie(response: Response, token: string, expires = 3 * 60) {
-    response.cookie('accessToken', token, {
+  private setCookie(
+    key: string,
+    response: Response,
+    token: string,
+    expires = 3 * 60
+  ) {
+    response.cookie(key, token, {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',

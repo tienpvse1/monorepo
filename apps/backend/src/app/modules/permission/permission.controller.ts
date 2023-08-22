@@ -1,6 +1,6 @@
 import { Controller, Delete, Param } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AUTHORIZATION } from '../../constant/swagger';
+import { AUTHORIZATION } from '../../constant';
 import { PermissionService } from './permission.service';
 
 @Controller('permission')

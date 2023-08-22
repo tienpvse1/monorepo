@@ -1,5 +1,9 @@
 import { resolve } from '@monorepo/common';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InsertObject } from 'kysely';
 import { InjectKysely, Kysely } from '../../kysely';
@@ -19,6 +23,18 @@ export class AccountService {
       .values(account)
       .returningAll()
       .executeTakeFirst();
+  }
+
+  async findOne(id: string) {
+    const findFn = this.kysely
+      .selectFrom('account')
+      .where('account.id', '=', id)
+      .selectAll()
+      .executeTakeFirst();
+    const [account, err] = await resolve(findFn);
+    if (!account || err) throw new NotFoundException();
+    delete account.password;
+    return account;
   }
 
   async findOneOrCreate(account: InsertObject<DB, 'account'>) {

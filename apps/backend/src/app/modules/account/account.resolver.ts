@@ -1,7 +1,5 @@
 import { ParseUUIDPipe } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { randomUUID } from 'crypto';
-import { Public } from '../../common/decorators/public.decorator';
 import { User } from '../../common/decorators/user.decorator';
 import { AccountService } from './account.service';
 import { JoinTeamDto } from './dto/create-account.dto';
@@ -11,24 +9,9 @@ import { AccountGql } from './gql/account.gql';
 export class AccountResolver {
   constructor(private readonly service: AccountService) {}
 
-  @Public()
-  @Query(() => AccountGql, { nullable: true })
-  hello(): AccountGql {
-    return {
-      active: true,
-      createdAt: new Date(),
-      email: 'tienpvse',
-      firstName: 'tienpvse',
-      id: randomUUID(),
-      isLeader: false,
-      lastName: 'phan',
-      password: 'ajsfdoasdikfj',
-      role: 'admin',
-      teamId: randomUUID(),
-      teamIndex: 1,
-      updatedAt: new Date(),
-      username: 'tienpvse',
-    };
+  @Query(() => AccountGql)
+  me(@User('id') userId: string) {
+    return this.service.findOne(userId);
   }
 
   @Mutation(() => AccountGql, { nullable: true })

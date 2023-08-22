@@ -5,7 +5,7 @@ import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Env } from '../../../common/types/env';
 import { ACCESS_TOKEN_KEY } from '../../../constant';
-import { IToken } from '../interfaces/token.interface';
+import { IToken } from '../dto/token.interface';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -28,5 +28,5 @@ function cookiesExtractor(req: Request) {
 }
 
 function headerExtractor(req: Request) {
-  return req.headers.authorization.replace('Bearer ', '');
+  return req.headers.authorization?.replace('Bearer ', '');
 }

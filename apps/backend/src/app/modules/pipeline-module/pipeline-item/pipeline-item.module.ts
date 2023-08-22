@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { PipelineItemController } from './pipeline-item.controller';
+import { PipelineItemResolver } from './pipeline-item.resolver';
 import { PipelineItemService } from './pipeline-item.service';
 
 @Module({
-  controllers: [PipelineItemController],
-  providers: [PipelineItemService],
+  providers: [PipelineItemService, PipelineItemResolver],
   exports: [PipelineItemService],
 })
 export class PipelineItemModule {}

@@ -1,6 +1,8 @@
 import { resolve } from '@monorepo/common';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { ExpressionBuilder } from 'kysely';
 import { InjectKysely, Kysely } from '../../../kysely';
+import { DB } from '../../../kysely/models';
 import { CreatePipelineColumnDto } from './dto/create-pipeline-column.dto';
 import { UpdatePipelineColumnDto } from './dto/update-pipeline-column.dto';
 
@@ -46,12 +48,15 @@ export class PipelineColumnService {
    * reset won column in db then assign won to the desire column
    * @param id
    */
-  async setWon(id: string, pipelineId: string) {
+  async setWon(id: string) {
     await this.kysely
       .updateTable('pipelineColumn')
       .set({ isWon: false })
       .where((eb) =>
-        eb.and([eb('isWon', '=', true), eb('pipelineId', '=', pipelineId)])
+        eb.and([
+          eb('isWon', '=', true),
+          eb('pipelineId', '=', this.getPipelineId(id, eb)),
+        ])
       )
       .execute();
     const updateFn = this.kysely
@@ -63,5 +68,15 @@ export class PipelineColumnService {
     const [updatedColumn, err] = await resolve(updateFn);
     if (err) throw new BadRequestException('cannot set pipeline column to won');
     return updatedColumn;
+  }
+
+  private getPipelineId(
+    columnId: string,
+    eb: ExpressionBuilder<DB, 'pipelineColumn'>
+  ) {
+    return eb
+      .selectFrom('pipelineColumn')
+      .select('pipelineColumn.pipelineId')
+      .where('id', '=', columnId);
   }
 }
