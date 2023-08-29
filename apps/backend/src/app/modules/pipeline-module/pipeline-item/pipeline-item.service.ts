@@ -2,16 +2,11 @@ import { resolve } from '@monorepo/common';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectKysely, Kysely } from '../../../kysely';
 import { CreateSinglePipelineItemDto } from './dto/create-pipeline-item.dto';
-import {
-  ChangeStageDto,
-  UpdatePipelineItemIndexDto,
-} from './dto/update-pipeline-item.dto';
+import { UpdatePipelineItemIndexDto } from './dto/update-pipeline-item.dto';
 
 @Injectable()
 export class PipelineItemService {
   constructor(@InjectKysely private readonly kysely: Kysely) {}
-
-  async changeStage(dto: ChangeStageDto) {}
 
   async updatePipelineItemIndex(id: string, dto: UpdatePipelineItemIndexDto) {
     const updatedIndex = (dto.bottomIndex + dto.topIndex) / 2;

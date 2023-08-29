@@ -1,0 +1,20 @@
+postgresql:
+  image:
+    tag: '14'
+  auth:
+    password: postgrespassword
+
+pgAdmin:
+  ingress:
+    name: pg-admin-ingress
+  service:
+    port: 80
+    name: pg-admin-service
+  deployment:
+    name: pg-admin
+    image:
+      name: dpage/pgadmin4
+      tag: latest
+    env:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin

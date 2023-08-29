@@ -3,14 +3,14 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
+import 'dotenv/config';
 import { KyselyModule } from './kysely';
 import { AccountModule } from './modules/account/account.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guard/jwt.guard';
 import { RoleGuard } from './modules/auth/guard/role.guard';
-import { TeamModule } from './modules/team/team.module';
-import { PipelineItemResolver } from './modules/pipeline-module/pipeline-item/pipeline-item.resolver';
 import { PipelineItemModule } from './modules/pipeline-module/pipeline-item/pipeline-item.module';
+import { TeamModule } from './modules/team/team.module';
 @Module({
   imports: [
     TeamModule,
@@ -23,11 +23,11 @@ import { PipelineItemModule } from './modules/pipeline-module/pipeline-item/pipe
       autoSchemaFile: true,
     }),
     KyselyModule.forRoot({
-      databaseName: 'crm',
-      host: 'localhost',
-      password: 'password',
-      port: 5432,
-      user: 'postgres',
+      databaseName: process.env.NEST_APP_DATABASE_DB,
+      host: process.env.NEST_APP_DATABASE_HOST,
+      password: process.env.NEST_APP_DATABASE_PASS,
+      port: parseInt(process.env.NEST_APP_DATABASE_PORT),
+      user: process.env.NEST_APP_DATABASE_USER,
       camelCase: true,
     }),
   ],

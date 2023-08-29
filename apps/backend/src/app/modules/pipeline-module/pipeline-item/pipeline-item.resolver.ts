@@ -53,10 +53,10 @@ export class PipelineItemResolver {
     return this.service.createPipelineItem(item, accountId, managerId);
   }
 
-  @Mutation(() => PipelineItemGql)
-  changeStage(@Args('input') dto: ChangeStageDto) {
-    return this.service.changeStage(dto);
-  }
+  // @Mutation(() => PipelineItemGql)
+  // changeStage(@Args('input') dto: ChangeStageDto) {
+  //   return this.service.changeStage(dto);
+  // }
 
   @Mutation(() => PipelineItemGql)
   assignAccount(

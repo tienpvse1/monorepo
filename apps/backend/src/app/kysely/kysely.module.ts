@@ -1,6 +1,6 @@
 import { DynamicModule, Logger, Module } from '@nestjs/common';
 import 'dotenv/config';
-import { CamelCasePlugin, Kysely, PostgresDialect } from 'kysely';
+import { CamelCasePlugin, Kysely, LogEvent, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
 export type KyselyConfig = {
   databaseName: string;
@@ -26,15 +26,7 @@ export class KyselyModule {
     });
     const db = new Kysely({
       dialect,
-      log(event) {
-        if (
-          event.level === 'error' &&
-          (JSON.parse(process.env.KYSELY_LOGGING) as string[]).includes('error')
-        ) {
-          Logger.error(event.query.sql);
-          Logger.error(event.query.parameters);
-        }
-      },
+      log: this.log,
       ...(config.camelCase && { plugins: [new CamelCasePlugin()] }),
     });
     const service = {
@@ -47,5 +39,15 @@ export class KyselyModule {
       providers: [service],
       exports: [service],
     };
+  }
+
+  private static log(event: LogEvent) {
+    if (
+      event.level === 'error' &&
+      (JSON.parse(process.env.KYSELY_LOGGING) as string[]).includes('error')
+    ) {
+      Logger.error(event.query.sql);
+      Logger.error(event.query.parameters);
+    }
   }
 }

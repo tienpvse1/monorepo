@@ -1,6 +1,3 @@
 {
-  "a-file-icon-vscode.activeIconPacks": [
-    "nest",
-    "rails"
-  ]
+  "a-file-icon-vscode.activeIconPacks": ["nest", "rails"]
 }

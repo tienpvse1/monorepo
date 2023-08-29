@@ -8,6 +8,11 @@ declare global {
       NEST_APP_PREFIX: string;
       NEST_APP_VERSION: string;
       NEST_APP_JWT_SECRET: string;
+      NEST_APP_DATABASE_HOST: string;
+      NEST_APP_DATABASE_PORT: string;
+      NEST_APP_DATABASE_USER: string;
+      NEST_APP_DATABASE_PASS: string;
+      NEST_APP_DATABASE_DB: string;
     }
   }
 

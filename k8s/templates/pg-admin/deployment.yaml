@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.pgAdmin.deployment.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.pgAdmin.deployment.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.pgAdmin.deployment.name }}
+    spec:
+      containers:
+      - name: {{ .Values.pgAdmin.deployment.name }}
+        image: {{ .Values.pgAdmin.deployment.image.name }}:{{ .Values.pgAdmin.deployment.image.tag }}
+        resources:
+          limits:
+            memory: "1024Mi"
+            cpu: "2000m"
+        env:
+        {{- range $key, $val := .Values.pgAdmin.deployment.env }}
+          - name: {{ $key }}
+            value: {{ $val }}
+        {{ end -}}
+
+        ports:
+        - containerPort: {{ .Values.pgAdmin.service.port }}
